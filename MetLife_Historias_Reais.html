@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MetLife · Histórias Reais de Pagamento de Seguro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Base — profundidade real, não flat */
+  --bg:          #080B12;
+  --bg2:         #0C1018;
+  --surface:     #111520;
+  --surface2:    #181D2C;
+  --surface3:    #1E2438;
+  --glass:       rgba(255,255,255,0.035);
+  --glass2:      rgba(255,255,255,0.06);
+
+  /* Borders ultra-finas */
+  --b:           rgba(255,255,255,0.07);
+  --b2:          rgba(255,255,255,0.04);
+  --b-hover:     rgba(255,255,255,0.14);
+
+  /* Text */
+  --t1:          #F4F6FC;
+  --t2:          #8B94A8;
+  --t3:          #4E5870;
+
+  /* Accent — indigo/violeta (Linear, Arc, Stripe) */
+  --accent:      #6366F1;
+  --accent2:     #818CF8;
+  --accent3:     #A5B4FC;
+  --accent-lt:   rgba(99,102,241,0.12);
+  --accent-glow: rgba(99,102,241,0.25);
+
+  /* Emerald — para chips de sucesso (Stripe, Linear) */
+  --em:          #10B981;
+  --em-lt:       rgba(16,185,129,0.12);
+
+  /* Cyan — highlight secundário (Vercel, Arc) */
+  --cy:          #06B6D4;
+  --cy-lt:       rgba(6,182,212,0.10);
+
+  /* Payout — branco frio premium (sem amarelo) */
+  --pay:         #E0E7FF;
+  --pay2:        #C7D2FE;
+  --pay-lt:      rgba(199,210,254,0.10);
+  --pay-b:       rgba(165,180,252,0.25);
+
+  --white:       #ffffff;
+  --r:           14px;
+  --r-lg:        20px;
+  --r-xl:        24px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { background: var(--bg); }
+
+body {
+  background: var(--bg);
+  color: var(--t1);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ─── NOISE TEXTURE OVERLAY ─── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.018;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── MESH GRADIENT BG ─── */
+.mesh-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.mesh-bg::before {
+  content: '';
+  position: absolute;
+  top: -200px; left: -200px;
+  width: 700px; height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(99,102,241,0.14) 0%, transparent 65%);
+  animation: drift1 18s ease-in-out infinite alternate;
+}
+.mesh-bg::after {
+  content: '';
+  position: absolute;
+  bottom: -150px; right: -150px;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(6,182,212,0.09) 0%, transparent 65%);
+  animation: drift2 22s ease-in-out infinite alternate;
+}
+.mesh-orb {
+  position: absolute;
+  top: 45%; left: 60%;
+  width: 400px; height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(129,140,248,0.07) 0%, transparent 65%);
+  animation: drift3 26s ease-in-out infinite alternate;
+  transform: translate(-50%,-50%);
+}
+@keyframes drift1 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(60px, 80px) scale(1.1); }
+}
+@keyframes drift2 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(-50px, -60px) scale(1.08); }
+}
+@keyframes drift3 {
+  from { transform: translate(-50%,-50%) scale(1); }
+  to   { transform: translate(-50%,-50%) scale(1.15); }
+}
+
+/* Tudo acima do mesh */
+.hero, .section-wrap, .page-footer { position: relative; z-index: 1; }
+
+/* ─── HERO ─── */
+.hero {
+  padding: 64px 24px 60px;
+  text-align: center;
+  border-bottom: 1px solid var(--b);
+  position: relative;
+}
+
+/* Linha de luz no topo */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 280px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent2), transparent);
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--accent-lt);
+  border: 1px solid rgba(99,102,241,0.28);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--accent3);
+  margin-bottom: 30px;
+}
+.hero-badge .dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--accent2);
+  animation: pulse 2.5s infinite;
+  box-shadow: 0 0 6px var(--accent);
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; transform: scale(1); box-shadow: 0 0 6px var(--accent); }
+  50%      { opacity: 0.4; transform: scale(1.5); box-shadow: 0 0 12px var(--accent); }
+}
+
+.hero-title {
+  font-size: clamp(28px, 8vw, 50px);
+  font-weight: 800;
+  line-height: 1.08;
+  color: var(--t1);
+  margin-bottom: 16px;
+  letter-spacing: -0.03em;
+}
+.hero-title .accent-word {
+  background: linear-gradient(135deg, var(--accent2) 0%, var(--cy) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-size: 14px;
+  color: var(--t2);
+  max-width: 380px;
+  margin: 0 auto 44px;
+  line-height: 1.75;
+  font-weight: 400;
+}
+
+/* Divider — linha accent */
+.accent-line {
+  width: 32px; height: 1.5px;
+  background: linear-gradient(90deg, var(--accent), var(--cy));
+  margin: 0 auto 44px;
+  border-radius: 2px;
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+
+/* Stats grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  max-width: 460px;
+  margin: 0 auto;
+}
+.stat-card {
+  background: var(--glass);
+  border: 1px solid var(--b);
+  border-radius: var(--r);
+  padding: 18px 14px;
+  text-align: center;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: border-color 0.25s, background 0.25s;
+}
+.stat-card:hover {
+  border-color: rgba(99,102,241,0.3);
+  background: var(--glass2);
+}
+.stat-value {
+  font-size: 23px;
+  font-weight: 800;
+  color: var(--pay);
+  line-height: 1;
+  margin-bottom: 6px;
+  letter-spacing: -0.025em;
+}
+.stat-label {
+  font-size: 10.5px;
+  color: var(--t2);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+/* ─── SECTION WRAP ─── */
+.section-wrap {
+  max-width: 580px;
+  margin: 0 auto;
+  padding: 0 16px 56px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin: 48px 0 18px;
+}
+.section-icon {
+  width: 38px; height: 38px;
+  border-radius: 11px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; flex-shrink: 0;
+}
+.si-blue  { background: var(--accent-lt); border: 1px solid rgba(99,102,241,0.22); }
+.si-em    { background: var(--em-lt);     border: 1px solid rgba(16,185,129,0.22); }
+.si-cy    { background: var(--cy-lt);     border: 1px solid rgba(6,182,212,0.22); }
+.si-pay   { background: var(--pay-lt);    border: 1px solid var(--pay-b); }
+
+.section-title {
+  font-size: 16px; font-weight: 700;
+  color: var(--t1); line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+.section-count {
+  font-size: 10px; color: var(--t3);
+  font-weight: 600; letter-spacing: 0.06em;
+  text-transform: uppercase; margin-top: 1px;
+}
+
+/* ─── INTRO BANNER ─── */
+.intro-banner {
+  background: rgba(16,185,129,0.05);
+  border: 1px solid rgba(16,185,129,0.14);
+  border-radius: var(--r);
+  padding: 14px 16px;
+  margin: 0 0 10px;
+  display: flex; gap: 11px; align-items: flex-start;
+}
+.ib-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.ib-text { font-size: 11.5px; color: var(--t2); line-height: 1.65; }
+.ib-text strong { color: var(--t1); font-weight: 600; }
+
+/* ─── CASE CARD ─── */
+.case-card {
+  background: var(--surface);
+  border: 1px solid var(--b);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  margin-bottom: 10px;
+  transition: border-color 0.22s, transform 0.22s, box-shadow 0.22s;
+}
+.case-card:hover {
+  border-color: rgba(99,102,241,0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 0 0 1px rgba(99,102,241,0.08);
+}
+
+/* Card highlight — sem border amarela, usa accent glow */
+.case-card.highlight {
+  background: var(--surface2);
+  border-color: rgba(99,102,241,0.2);
+  box-shadow: 0 0 0 1px rgba(99,102,241,0.08) inset;
+}
+.case-card.highlight:hover {
+  border-color: rgba(99,102,241,0.4);
+  box-shadow: 0 8px 40px rgba(99,102,241,0.15), 0 0 0 1px rgba(99,102,241,0.12);
+}
+
+.card-top {
+  padding: 18px 18px 14px;
+  border-bottom: 1px solid var(--b2);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+.card-title {
+  font-size: 12.5px; font-weight: 700;
+  color: var(--t1); line-height: 1.35;
+  flex: 1; letter-spacing: -0.01em;
+}
+.card-subtitle {
+  font-size: 10.5px; color: var(--t3);
+  margin-top: 3px; font-weight: 400;
+  line-height: 1.4;
+}
+
+/* Payout badge — branco frio, sem amarelo */
+.payout-badge {
+  background: var(--pay-lt);
+  border: 1px solid var(--pay-b);
+  border-radius: 12px;
+  padding: 9px 13px;
+  text-align: center; flex-shrink: 0;
+  position: relative;
+}
+.payout-badge::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 13px;
+  background: linear-gradient(135deg, rgba(165,180,252,0.12), transparent 60%);
+  pointer-events: none;
+}
+.payout-amount {
+  font-size: 17px; font-weight: 800;
+  color: var(--pay);
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+.case-card.highlight .payout-amount { font-size: 21px; }
+.payout-label {
+  font-size: 8.5px; color: var(--accent3);
+  font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; display: block; margin-top: 3px;
+}
+
+.card-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.card-col { padding: 13px 18px; }
+.card-col:first-child { border-right: 1px solid var(--b2); }
+
+.col-label {
+  font-size: 9.5px; font-weight: 700;
+  letter-spacing: 0.09em; text-transform: uppercase;
+  color: var(--t3); margin-bottom: 6px;
+}
+.col-text { font-size: 11.5px; color: var(--t2); line-height: 1.6; }
+.col-text b { color: var(--t1); font-weight: 700; }
+
+.card-footer {
+  padding: 9px 18px;
+  background: rgba(255,255,255,0.015);
+  border-top: 1px solid var(--b2);
+  display: flex; align-items: center;
+  gap: 5px; flex-wrap: wrap;
+}
+
+/* Chips — sem verde/azul/amarelo antigos */
+.chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  border-radius: 100px; padding: 3px 9px;
+  font-size: 9.5px; font-weight: 600;
+}
+.chip-em    { background: var(--em-lt);     border: 1px solid rgba(16,185,129,0.18);  color: #34D399; }
+.chip-acc   { background: var(--accent-lt); border: 1px solid rgba(99,102,241,0.18);  color: var(--accent3); }
+.chip-cy    { background: var(--cy-lt);     border: 1px solid rgba(6,182,212,0.18);   color: #67E8F9; }
+.chip-pay   { background: var(--pay-lt);    border: 1px solid var(--pay-b);           color: var(--pay); }
+
+/* ─── PAGE FOOTER ─── */
+.page-footer {
+  background: var(--surface);
+  border-top: 1px solid var(--b);
+  padding: 32px 24px;
+  text-align: center;
+}
+.footer-brand {
+  font-size: 13px; font-weight: 700;
+  color: var(--t1); margin-bottom: 10px;
+  letter-spacing: -0.01em;
+  display: flex; align-items: center;
+  justify-content: center; gap: 8px;
+}
+.footer-brand-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent2);
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+.footer-text {
+  font-size: 10.5px; color: var(--t3);
+  max-width: 400px; margin: 0 auto;
+  line-height: 1.75;
+}
+.footer-reg {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 16px;
+  background: var(--glass);
+  border: 1px solid var(--b);
+  border-radius: 100px;
+  padding: 6px 14px;
+  font-size: 9.5px; color: var(--t2); font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* ─── MOBILE ─── */
+@media (max-width: 480px) {
+  .hero { padding: 48px 18px 44px; }
+  .stats-grid { gap: 7px; }
+  .stat-value { font-size: 20px; }
+  .card-body { grid-template-columns: 1fr; }
+  .card-col:first-child { border-right: none; border-bottom: 1px solid var(--b2); }
+  .card-top { flex-direction: column; gap: 10px; }
+  .payout-badge { align-self: flex-start; }
+  .section-wrap { padding: 0 14px 48px; }
+}
+</style>
+</head>
+<body>
+
+<div class="mesh-bg"><div class="mesh-orb"></div></div>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero">
+  <div class="hero-badge"><span class="dot"></span> MetLife UK · 2025</div>
+  <h1 class="hero-title">
+    Histórias <span class="accent-word">Reais</span> de<br>Pagamento de Seguro
+  </h1>
+  <p class="hero-sub">Casos reais de clientes protegidos pela MetLife — o valor concreto de um seguro no momento em que ele mais importa.</p>
+  <div class="accent-line"></div>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-value">31.553</div>
+      <div class="stat-label">Indenizações pagas em 2025</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">£34,2M</div>
+      <div class="stat-label">Total pago em indenizações</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">18.019</div>
+      <div class="stat-label">Pagamentos por internação</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">125/dia</div>
+      <div class="stat-label">Indenizações por dia útil</div>
+    </div>
+  </div>
+</div>
+
+<div class="section-wrap">
+
+  <!-- ═══ SEÇÃO 1: DOENÇAS ═══ -->
+  <div class="section-header">
+    <div class="section-icon si-blue">🏥</div>
+    <div>
+      <div class="section-title">Internações por Doença</div>
+      <div class="section-count">6 casos reais</div>
+    </div>
+  </div>
+  <div class="intro-banner">
+    <div class="ib-icon">📋</div>
+    <div class="ib-text">A cobertura por internação paga <strong>£50 por cada 24h no hospital por unidade contratada</strong>. Com 5 unidades, a pessoa recebe £250 por dia — o valor vai acumulando enquanto estiver internada.</div>
+  </div>
+
+  <div class="case-card">
+    <div class="card-top">
+      <div>
+        <div class="card-title">Internação por Crise de Asma</div>
+        <div class="card-subtitle">107.481 internações por asma no Reino Unido</div>
+      </div>
+      <div class="payout-badge">
+        <div class="payout-amount">£4.000</div>
+        <span class="payout-label">recebido</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-col">
+        <div class="col-label">O que aconteceu</div>
+        <div class="col-text">Sophie, funcionária de uma ONG, teve uma crise de asma grave e ficou <b>40 dias internada</b> no hospital.</div>
+      </div>
+      <div class="card-col">
+        <div class="col-label">O que a MetLife pagou</div>
+        <div class="col-text">Com 2 unidades (£16/mês), ela recebia £100 por cada 24h. Total recebido: £4.000.</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="chip chip-em">✓ 2 unidades</span>
+      <span class="chip chip-acc">£16/mês</span>
+    </div>
+  </div>
+
+  <div class="case-card">
+    <div class="card-top">
+      <div>
+        <div class="card-title">Anemia Falciforme — 7 internações</div>
+        <div class="card-subtitle">84 dias no hospital ao longo de 7 internações</div>
+      </div>
+      <div class="payout-badge">
+        <div class="payout-amount">£21.000</div>
+        <span class="payout-label">recebido</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-col">
+        <div class="col-label">O que aconteceu</div>
+        <div class="col-text">Aisha precisou ser internada sete vezes, acumulando <b>84 dias no hospital</b>.</div>
+      </div>
+      <div class="card-col">
+        <div class="col-label">O que a MetLife pagou</div>
+        <div class="col-text">Com 5 unidades, avaliou todas juntas e fez um único pagamento de £21.000.</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="chip chip-em">✓ 5 unidades</span>
+      <span class="chip chip-acc">pagamento único</span>
+    </div>
+  </div>
+
+  <div class="case-card">
+    <div class="card-top">
+      <div>
+        <div class="card-title">Feridas nas Pernas por Diabetes — 4 internações</div>
+        <div class="card-subtitle">85 dias no total ao longo de 4 internações</div>
+      </div>
+      <div class="payout-badge">
+        <div class="payout-amount">£12.750</div>
+        <span class="payout-label">recebido</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-col">
+        <div class="col-label">O que aconteceu</div>
+        <div class="col-text">Margaret foi internada quatro vezes com feridas causadas pelo diabetes, ficando <b>85 dias no hospital</b> ao todo.</div>
+      </div>
+      <div class="card-col">
+        <div class="col-label">O que a MetLife pagou</div>
+        <div class="col-text">Com 3 unidades: £150 por cada 24h no hospital. Total: £12.750.</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="chip chip-em">✓ 3 unidades</span>
+    </div>
+  </div>
+
+  <div class="case-card">
+    <div class="card-top">
+      <div>
+        <div class="card-title">Infecção no Marcapasso Cardíaco</div>
+        <div class="card-subtitle">148,9 milhões de dias de trabalho perdidos em 2024</div>
+      </div>
+      <div class="payout-badge">
+        <div class="payout-amount">£8.400</div>
+        <span class="payout-label">recebido</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-col">
+        <div class="col-label">O que aconteceu</div>
+        <div class="col-text">Kevin, operário de fábrica, ficou <b>56 dias internado</b> com infecção grave no marcapasso do coração.</div>
+      </div>
+      <div class="card-col">
+        <div class="col-label">O que a MetLife pagou</div>
+        <div class="col-text">Com 3 unidades: £150 por cada dia no hospital. Total: £8.400.</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="chip chip-em">✓ 3 unidades</span>
+      <span class="chip chip-cy">£150/dia</span>
+    </div>
+  </div>
+
+  <div class="case-card">
+    <div class="card-top">
+      <div>
+        <div class="card-title">Ferida no Pé por Diabetes com Lesão no Osso</div>
+        <div class="card-subtitle">1 em cada 6 leitos no Reino Unido é de paciente diabético</div>
+      </div>
+      <div class="payout-badge">
+        <div class="payout-amount">£10.250</div>
+        <span class="payout-label">recebido</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-col">
+        <div class="col-label">O que aconteceu</div>
+        <div class="col-text">Lawrence, pastor, foi internado com ferida no pé que evoluiu e atingiu o osso. Ficou <b>41 dias no hospital</b>.</div>
+      </div>
+      <div class="card-col">
+        <div class="col-label">O que a MetLife pagou</div>
+        <div class="col-text">Com 5 unidades e 41 dias: £10.250 pagos direto na conta.</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="chip chip-em">✓ 5 unidades</span>
+    </div>
+  </div>
+
+  <div class="case-card highlight">
+    <div class="card-top">
+      <div>
+        <div class="card-title">Transplante de Coração — mais de um ano internado</div>
+        <div class="card-subtitle">672.363 diagnósticos de doença cardíaca entre 2023–2024</div>
+      </div>
+      <div class="payout-badge">
+        <div class="payout-amount">£109.250</div>
+        <span class="payout-label">recebido</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-col">
+        <div class="col-label">O que aconteceu</div>
+        <div class="col-text">Nathan foi internado com inflamação no coração, teve complicações e precisou de um transplante. Ficou <b>437 dias no hospital</b>.</div>
+      </div>
+      <div class="card-col">
+        <div class="col-label">O que a MetLife pagou</div>
+        <div class="col-text">Com 5 unidades e 437 dias: £109.250 pagos ao longo de 18 meses.</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="chip chip-em">✓ 5 unidades</span>
+      <span class="chip chip-pay">⭐ maior pagamento por internação</span>
+    </div>
+  </div>
+
+  <!-- ═══ SEÇÃO 2: ACIDENTES ═══ -->
+  <div class="section-header">
+    <div class="section-icon si-em">🦴</div>
+    <div>
+      <div class="section-title">Acidentes e Ossos Quebrados</div>
+      <div class="section-count">8 casos reais</div>
+    </div>
+  </div>
+  <div class="intro-banner">
+    <div class="ib-icon">⚡</div>
+    <div class="ib-text">A MetLife paga por <strong>ossos quebrados, deslocamentos e rompimento de ligamento</strong>, não importa onde aconteça. O dinheiro vai direto na conta, sem burocracia.</div>
+  </div>
+
+  <div class="case-card">
+    <div class="card-top">
+      <div>
+        <div class="card-title">Acidente de Moto — osso quebrado + deslocamento</div>
+        <div class="card-subtitle">Canela, fíbula, tornozelo e ligamento afetados</div>
+      </div>
+      <div class="payout-badge">
+        <div class="payout-amount">£12.450</div>
+        <span class="payout-label">recebido</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-col">
+        <div class="col-label">O que aconteceu</div>
+        <div class="col-text">Harry quebrou a canela e a fíbula, teve deslocamento no tornozelo e rompeu um ligamento. Ficou <b>13 dias no hospital</b>.</div>
+      </div>
+      <div class="card-col">
+        <div class="col-label">O que a MetLife pagou</div>
+        <div class="col-text">3 unidades: £1.950 pela internação, £2.250 por osso, £3.000 pelo deslocamento, £3.000 pelo ligamento.</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="chip chip-em">✓ 3 unidades</span>
+      <span class="chip chip-acc">4 coberturas ativadas</span>
+    </div>
+  </div>
+
+  <div class="case-card">
+    <div class="card-top">
+      <div>
+        <div class="card-title">Acidente de Carro — vários ossos quebrados</div>
+        <div class="card-subtitle">6 ossos + <b>12 dias internado</b></div>
+      </div>
+      <div class="payout-badge">
+        <div class="payout-amount">£6.600</div>
+        <span class="payout-label">recebido</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-col">
+        <div class="col-label">O que aconteceu</div>
+        <div class="col-text">James quebrou o braço, perna, tornozelo, esterno e dois ossos do pé. Ficou <b>12 dias no hospital</b>.</div>
+      </div>
+      <div class="card-col">
+        <div class="col-label">O que a MetLife pagou</div>
+        <div class="col-text">2 unidades: £5.400 pelos ossos e £1.200 pela internação. Total: £6.600.</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="chip chip-em">✓ 2 unidades</span>
+    </div>
+  </div>
+
+  <div class="case-card">
+    <div class="card-top">
+      <div>
+        <div class="card-title">Queda da Escada em Casa — coluna</div>
+        <div class="card-subtitle">Quase metade dos adultos já quebrou um osso</div>
+      </div>
+      <div class="payout-badge">
+        <div class="payout-amount">£13.200</div>
+        <span class="payout-label">recebido</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-col">
+        <div class="col-label">O que aconteceu</div>
+        <div class="col-text">Georgia caiu da escada dentro de casa e quebrou quatro ossos da coluna. Ficou <b>2 dias no hospital</b>.</div>
+      </div>
+      <div class="card-col">
+        <div class="col-label">O que a MetLife pagou</div>
+        <div class="col-text">£12.800 pelas quatro fraturas e £400 pela internação. Total: £13.200.</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="chip chip-em">✓ Acidente em casa coberto</span>
+    </div>
+  </div>
+
+  <div class="case-card">
+    <div class="card-top">
+      <div>
+        <div class="card-title">Queda em Obra — 3 metros de altura</div>
+        <div class="card-subtitle">466.938 internações por quedas no último ano</div>
+      </div>
+      <div class="payout-badge">
+        <div class="payout-amount">£22.000</div>
+        <span class="payout-label">recebido</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-col">
+        <div class="col-label">O que aconteceu</div>
+        <div class="col-text">Kyle caiu 3 metros em uma obra. Quebrou 5 ossos da coluna e 5 costelas. Ficou <b>20 dias no hospital</b>.</div>
+      </div>
+      <div class="card-col">
+        <div class="col-label">O que a MetLife pagou</div>
+        <div class="col-text">4 unidades: £15.000 pela coluna, £3.000 pelas costelas e £4.000 pela internação.</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="chip chip-em">✓ 4 unidades</span>
+      <span class="chip chip-acc">Acidente de trabalho coberto</span>
+    </div>
+  </div>
+
+  <div class="case-card highlight">
+    <div class="card-top">
+      <div>
+        <div class="card-title">Atropelado por Caminhão — 42 ossos quebrados</div>
+        <div class="card-subtitle">61.069 internações por acidentes de trânsito</div>
+      </div>
+      <div class="payout-badge">
+        <div class="payout-amount">£114.000</div>
+        <span class="payout-label">recebido</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-col">
+        <div class="col-label">O que aconteceu</div>
+        <div class="col-text">Graham foi atingido por um caminhão. Quebrou 20 ossos grandes, 14 vértebras, 2 pulsos e 6 ossos menores. Ficou <b>32 dias no hospital</b>.</div>
+      </div>
+      <div class="card-col">
+        <div class="col-label">O que a MetLife pagou</div>
+        <div class="col-text">5 unidades: £100.000 pelos ossos grandes, £6.000 pelos menores e £8.000 pela internação.</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="chip chip-em">✓ 5 unidades</span>
+      <span class="chip chip-pay">⭐ maior pagamento por fraturas</span>
+    </div>
+  </div>
+
+  <div class="case-card">
+    <div class="card-top">
+      <div>
+        <div class="card-title">Acidente com Quadriciclo — ossos do crânio</div>
+        <div class="card-subtitle">3 ossos grandes do crânio + 2 ossos do rosto</div>
+      </div>
+      <div class="payout-badge">
+        <div class="payout-amount">£15.000</div>
+        <span class="payout-label">recebido</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-col">
+        <div class="col-label">O que aconteceu</div>
+        <div class="col-text">Marcus foi jogado do quadriciclo ao cair em um buraco. Quebrou 3 ossos do crânio e 2 do rosto. Ficou <b>4 dias no hospital</b>.</div>
+      </div>
+      <div class="card-col">
+        <div class="col-label">O que a MetLife pagou</div>
+        <div class="col-text">5 unidades: £4.000 por osso grande, £1.000 por osso menor e £250 por dia de internação.</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="chip chip-em">✓ 5 unidades</span>
+    </div>
+  </div>
+
+  <div class="case-card">
+    <div class="card-top">
+      <div>
+        <div class="card-title">Queda de 2 Andares — traumatismo na cabeça</div>
+        <div class="card-subtitle">16 ossos grandes + 9 costelas quebradas</div>
+      </div>
+      <div class="payout-badge">
+        <div class="payout-amount">£54.300</div>
+        <span class="payout-label">recebido</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-col">
+        <div class="col-label">O que aconteceu</div>
+        <div class="col-text">George, pedreiro, caiu dois andares no trabalho. Traumatismo grave na cabeça. Ficou <b>95 dias no hospital</b>.</div>
+      </div>
+      <div class="card-col">
+        <div class="col-label">O que a MetLife pagou</div>
+        <div class="col-text">3 unidades: £36.000 pelos 16 ossos, £4.050 pelos 9 menores e £14.250 pelos 95 dias.</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="chip chip-em">✓ 3 unidades</span>
+      <span class="chip chip-cy">95 dias cobertos</span>
+    </div>
+  </div>
+
+  <div class="case-card">
+    <div class="card-top">
+      <div>
+        <div class="card-title">Ossos quebrados durante as férias</div>
+        <div class="card-subtitle">Canela e fíbula fraturadas em trilha costeira</div>
+      </div>
+      <div class="payout-badge">
+        <div class="payout-amount">£8.250</div>
+        <span class="payout-label">recebido</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-col">
+        <div class="col-label">O que aconteceu</div>
+        <div class="col-text">Peter escorregou em uma trilha nas férias e quebrou a canela e a fíbula. Ficou <b>1 dia no hospital</b>.</div>
+      </div>
+      <div class="card-col">
+        <div class="col-label">O que a MetLife pagou</div>
+        <div class="col-text">5 unidades: £4.000 por cada osso e £250 pela internação. Total: £8.250.</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="chip chip-em">✓ Cobertura no exterior</span>
+    </div>
+  </div>
+
+  <!-- ═══ SEÇÃO 3: CRIANÇAS ═══ -->
+  <div class="section-header">
+    <div class="section-icon si-cy">👦</div>
+    <div>
+      <div class="section-title">Acidentes e Doenças nos Filhos</div>
+      <div class="section-count">7 casos reais</div>
+    </div>
+  </div>
+  <div class="intro-banner">
+    <div class="ib-icon">🛡️</div>
+    <div class="ib-text">A <strong>Cobertura Infantil opcional</strong> protege os filhos dos segurados — acidentes em esportes, escola, férias e atividades do dia a dia, dentro e fora do Reino Unido.</div>
+  </div>
+
+  <div class="case-card">
+    <div class="card-top">
+      <div>
+        <div class="card-title">Filho atropelado nas férias — Bulgária</div>
+        <div class="card-subtitle">Canela e fíbula quebradas fora do Reino Unido</div>
+      </div>
+      <div class="payout-badge">
+        <div class="payout-amount">£2.500</div>
+        <span class="payout-label">recebido</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-col">
+        <div class="col-label">O que aconteceu</div>
+        <div class="col-text">O filho de Graham foi atropelado durante as férias na Bulgária, quebrando a canela e a fíbula.</div>
+      </div>
+      <div class="card-col">
+        <div class="col-label">O que a MetLife pagou</div>
+        <div class="col-text">Com 5 unidades e Cobertura Infantil: pagamento por cada osso. Válido também fora do Reino Unido.</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="chip chip-em">✓ Cobertura no exterior</span>
+    </div>
+  </div>
+
+  <div class="case-card highlight">
+    <div class="card-top">
+      <div>
+        <div class="card-title">Câncer na criança — diagnóstico raro</div>
+        <div class="card-subtitle">Câncer é a principal causa de indenizações infantis</div>
+      </div>
+      <div class="payout-badge">
+        <div class="payout-amount">£15.780</div>
+        <span class="payout-label">recebido</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-col">
+        <div class="col-label">O que aconteceu</div>
+        <div class="col-text">A filha de Kyle foi diagnosticada com câncer maligno raro e ficou <b>13 dias no hospital</b> no início do tratamento.</div>
+      </div>
+      <div class="card-col">
+        <div class="col-label">O que a MetLife pagou</div>
+        <div class="col-text">3 unidades + Cobertura Infantil: £15.000 pelo diagnóstico e £780 pela internação.</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="chip chip-em">✓ 3 unidades</span>
+      <span class="chip chip-pay">⭐ doença grave infantil coberta</span>
+    </div>
+  </div>
+
+  <div class="case-card">
+    <div class="card-top">
+      <div>
+        <div class="card-title">Filho passageiro em colisão de carro</div>
+        <div class="card-subtitle">Fêmur, canela, fíbula nos dois lados + 2 ossos do crânio</div>
+      </div>
+      <div class="payout-badge">
+        <div class="payout-amount">£4.780</div>
+        <span class="payout-label">recebido</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-col">
+        <div class="col-label">O que aconteceu</div>
+        <div class="col-text">O filho de Ben e Lucy estava no carro que bateu. Sofreu fraturas graves e ficou <b>32 dias no hospital</b>.</div>
+      </div>
+      <div class="card-col">
+        <div class="col-label">O que a MetLife pagou</div>
+        <div class="col-text">As duas apólices dos pais foram usadas juntas: £3.500 pelos ossos e £1.280 pela internação.</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="chip chip-em">✓ 2 apólices combinadas</span>
+    </div>
+  </div>
+
+  <div class="case-card">
+    <div class="card-top">
+      <div>
+        <div class="card-title">Queda de bicicleta no jardim de casa</div>
+        <div class="card-subtitle">34,48 milhões de dias de aula perdidos por lesão</div>
+      </div>
+      <div class="payout-badge">
+        <div class="payout-amount">£2.480</div>
+        <span class="payout-label">recebido</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-col">
+        <div class="col-label">O que aconteceu</div>
+        <div class="col-text">O filho de Simon caiu da bicicleta no jardim e quebrou a canela e a fíbula direitas. Ficou <b>6 dias no hospital</b>.</div>
+      </div>
+      <div class="card-col">
+        <div class="col-label">O que a MetLife pagou</div>
+        <div class="col-text">4 unidades + Cobertura Infantil: £2.000 pelas fraturas e £480 pela internação.</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="chip chip-em">✓ Acidente em casa coberto</span>
+    </div>
+  </div>
+
+  <div class="case-card">
+    <div class="card-top">
+      <div>
+        <div class="card-title">Pulso quebrado em aula de artes marciais</div>
+        <div class="card-subtitle">Fratura durante treino recreativo</div>
+      </div>
+      <div class="payout-badge">
+        <div class="payout-amount">£1.000</div>
+        <span class="payout-label">recebido</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-col">
+        <div class="col-label">O que aconteceu</div>
+        <div class="col-text">O filho de Matthew e Emma quebrou o pulso durante uma aula de artes marciais mistas.</div>
+      </div>
+      <div class="card-col">
+        <div class="col-label">O que a MetLife pagou</div>
+        <div class="col-text">2 unidades cada + Cobertura Infantil: £500 por apólice. Total: £1.000.</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="chip chip-em">✓ Esportes cobertos</span>
+    </div>
+  </div>
+
+  <div class="case-card">
+    <div class="card-top">
+      <div>
+        <div class="card-title">Cotovelo quebrado no supermercado</div>
+        <div class="card-subtitle">Acidente depois da escola, em local público</div>
+      </div>
+      <div class="payout-badge">
+        <div class="payout-amount">£1.350</div>
+        <span class="payout-label">recebido</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-col">
+        <div class="col-label">O que aconteceu</div>
+        <div class="col-text">O filho de Charlotte escorregou no supermercado depois da escola e quebrou o cotovelo.</div>
+      </div>
+      <div class="card-col">
+        <div class="col-label">O que a MetLife pagou</div>
+        <div class="col-text">3 unidades de Cobertura Infantil + ChildShield Plus: pagamento pelas duas apólices.</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="chip chip-em">✓ Cobertura em local público</span>
+    </div>
+  </div>
+
+  <div class="case-card">
+    <div class="card-top">
+      <div>
+        <div class="card-title">Joelho quebrado jogando futebol</div>
+        <div class="card-subtitle">Queda durante treino com o time da vizinhança</div>
+      </div>
+      <div class="payout-badge">
+        <div class="payout-amount">£1.000</div>
+        <span class="payout-label">recebido</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-col">
+        <div class="col-label">O que aconteceu</div>
+        <div class="col-text">O filho de Zoe caiu durante um treino de futebol local e quebrou o joelho.</div>
+      </div>
+      <div class="card-col">
+        <div class="col-label">O que a MetLife pagou</div>
+        <div class="col-text">5 unidades de Cobertura Infantil: £1.000 pela fratura.</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="chip chip-em">✓ 5 unidades</span>
+    </div>
+  </div>
+
+  <!-- ═══ SEÇÃO 4: ESPORTES ═══ -->
+  <div class="section-header">
+    <div class="section-icon si-pay">⚽</div>
+    <div>
+      <div class="section-title">Lesões em Esportes — Adultos</div>
+      <div class="section-count">8 casos reais</div>
+    </div>
+  </div>
+  <div class="intro-banner">
+    <div class="ib-icon">🏃</div>
+    <div class="ib-text">A <strong>Cobertura de Estilo de Vida Ativo</strong> cobre lesões em esportes recreativos — rugby, futebol, ciclismo, hipismo. Rompimento de tendão e ligamento incluídos para amadores.</div>
+  </div>
+
+  <div class="case-card">
+    <div class="card-top">
+      <div>
+        <div class="card-title">Rompimento do bíceps no boxe</div>
+        <div class="card-subtitle">Pagamento concluído em 9 dias úteis</div>
+      </div>
+      <div class="payout-badge">
+        <div class="payout-amount">£4.200</div>
+        <span class="payout-label">recebido</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-col">
+        <div class="col-label">O que aconteceu</div>
+        <div class="col-text">Kieran rompeu o bíceps esquerdo em treino de boxe amador. Ficou <b>1 dia no hospital</b>. 4 unidades + Estilo de Vida Ativo (£36/mês).</div>
+      </div>
+      <div class="card-col">
+        <div class="col-label">O que a MetLife pagou</div>
+        <div class="col-text">£4.000 pelo rompimento + £200 pela internação. Resolvido em 9 dias úteis.</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="chip chip-em">✓ Estilo de Vida Ativo</span>
+      <span class="chip chip-cy">9 dias úteis</span>
+    </div>
+  </div>
+
+  <div class="case-card">
+    <div class="card-top">
+      <div>
+        <div class="card-title">Ligamento do joelho rompido — rugby amador</div>
+        <div class="card-subtitle">Lesão grave durante partida nos fins de semana</div>
+      </div>
+      <div class="payout-badge">
+        <div class="payout-amount">£5.000</div>
+        <span class="payout-label">recebido</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-col">
+        <div class="col-label">O que aconteceu</div>
+        <div class="col-text">Ryan rompeu o ligamento cruzado durante partida amadora de rugby nos fins de semana.</div>
+      </div>
+      <div class="card-col">
+        <div class="col-label">O que a MetLife pagou</div>
+        <div class="col-text">5 unidades + Estilo de Vida Ativo: cobertura total pelo rompimento — mesmo sendo amador.</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="chip chip-em">✓ Amador coberto</span>
+    </div>
+  </div>
+
+  <div class="case-card">
+    <div class="card-top">
+      <div>
+        <div class="card-title">Ombro deslocado no rugby — com cirurgia</div>
+        <div class="card-subtitle">Diagnóstico confirmado 7 meses depois</div>
+      </div>
+      <div class="payout-badge">
+        <div class="payout-amount">£3.500</div>
+        <span class="payout-label">recebido</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-col">
+        <div class="col-label">O que aconteceu</div>
+        <div class="col-text">Gemma se machucou no rugby. Exame 7 meses depois confirmou osso quebrado e ombro deslocado. Precisou de cirurgia.</div>
+      </div>
+      <div class="card-col">
+        <div class="col-label">O que a MetLife pagou</div>
+        <div class="col-text">2 unidades + Estilo de Vida Ativo: £1.500 pelo osso e £2.000 pelo deslocamento.</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="chip chip-em">✓ Diagnóstico tardio aceito</span>
+    </div>
+  </div>
+
+  <div class="case-card">
+    <div class="card-top">
+      <div>
+        <div class="card-title">Ligamento rompido — queda de bicicleta no lazer</div>
+        <div class="card-subtitle">Acidente fora do horário de trabalho</div>
+      </div>
+      <div class="payout-badge">
+        <div class="payout-amount">£4.000</div>
+        <span class="payout-label">recebido</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-col">
+        <div class="col-label">O que aconteceu</div>
+        <div class="col-text">Scott, soldador, caiu da bicicleta no tempo livre e rompeu completamente o ligamento cruzado do joelho.</div>
+      </div>
+      <div class="card-col">
+        <div class="col-label">O que a MetLife pagou</div>
+        <div class="col-text">4 unidades + Estilo de Vida Ativo: cobertura total pelo rompimento.</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="chip chip-em">✓ Acidente fora do trabalho coberto</span>
+    </div>
+  </div>
+
+  <div class="case-card">
+    <div class="card-top">
+      <div>
+        <div class="card-title">Acidente de mountain bike — coluna e costelas</div>
+        <div class="card-subtitle">6 ossos da coluna + 7 costelas quebradas</div>
+      </div>
+      <div class="payout-badge">
+        <div class="payout-amount">£17.400</div>
+        <span class="payout-label">recebido</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-col">
+        <div class="col-label">O que aconteceu</div>
+        <div class="col-text">William bateu com a mountain bike e quebrou 6 ossos da coluna e 7 costelas. Ficou <b>5 dias no hospital</b>.</div>
+      </div>
+      <div class="card-col">
+        <div class="col-label">O que a MetLife pagou</div>
+        <div class="col-text">3 unidades: £13.500 pela coluna, £3.150 pelas costelas e £750 pela internação.</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="chip chip-em">✓ 3 unidades</span>
+    </div>
+  </div>
+
+  <div class="case-card">
+    <div class="card-top">
+      <div>
+        <div class="card-title">Tendão de Aquiles rompido — futebol com amigos</div>
+        <div class="card-subtitle">Seguro contratado apenas 4 meses antes do acidente</div>
+      </div>
+      <div class="payout-badge">
+        <div class="payout-amount">£2.000</div>
+        <span class="payout-label">recebido</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-col">
+        <div class="col-label">O que aconteceu</div>
+        <div class="col-text">Sean rompeu o tendão de Aquiles jogando futebol com os amigos. Precisou de cirurgia.</div>
+      </div>
+      <div class="card-col">
+        <div class="col-label">O que a MetLife pagou</div>
+        <div class="col-text">Após envio dos documentos: £2.000 pelo rompimento — 4 meses depois de contratar o seguro.</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="chip chip-em">✓ Pago após 4 meses de seguro</span>
+    </div>
+  </div>
+
+  <div class="case-card">
+    <div class="card-top">
+      <div>
+        <div class="card-title">Futebol recreativo — rim removido</div>
+        <div class="card-subtitle">Professora — sangramento interno grave</div>
+      </div>
+      <div class="payout-badge">
+        <div class="payout-amount">£21.500</div>
+        <span class="payout-label">recebido</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-col">
+        <div class="col-label">O que aconteceu</div>
+        <div class="col-text">Amanda, professora, bateu com outro jogador. Seu rim sofreu sangramento interno — o órgão teve que ser removido. Ficou <b>15 dias no hospital</b>.</div>
+      </div>
+      <div class="card-col">
+        <div class="col-label">O que a MetLife pagou</div>
+        <div class="col-text">2 unidades: £20.000 pela perda do órgão e £1.500 pela internação.</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="chip chip-em">✓ Perda de órgão coberta</span>
+      <span class="chip chip-pay">⭐ cobertura crítica ativada</span>
+    </div>
+  </div>
+
+  <div class="case-card highlight">
+    <div class="card-top">
+      <div>
+        <div class="card-title">Queda de cavalo — 12 ossos grandes quebrados</div>
+        <div class="card-subtitle">Atingiu uma cerca antes de cair no concreto</div>
+      </div>
+      <div class="payout-badge">
+        <div class="payout-amount">£22.500</div>
+        <span class="payout-label">recebido</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-col">
+        <div class="col-label">O que aconteceu</div>
+        <div class="col-text">Claire foi jogada do cavalo, bateu em uma cerca e caiu no concreto. Quebrou 12 ossos grandes e 5 menores. Ficou <b>13 dias no hospital</b>.</div>
+      </div>
+      <div class="card-col">
+        <div class="col-label">O que a MetLife pagou</div>
+        <div class="col-text">2 unidades: £19.200 pelos ossos grandes, £2.000 pelos menores e £1.300 pela internação.</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="chip chip-em">✓ Hipismo recreativo coberto</span>
+      <span class="chip chip-pay">⭐ 3 coberturas ativadas ao mesmo tempo</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<div class="page-footer">
+  <div class="footer-brand">
+    <span class="footer-brand-dot"></span>
+    MetLife · Proteção Individual
+  </div>
+  <p class="footer-text">
+    Os nomes usados são fictícios para preservar a privacidade. Todos os casos são baseados em indenizações reais pagas pela MetLife. As apólices estão sujeitas a termos, condições e exclusões aplicáveis.
+  </p>
+  <div class="footer-reg">
+    🏛️ Regulado pela FCA · MetLife Europe d.a.c. · Brighton BN1 4FR
+  </div>
+</div>
+
+</body>
+</html>
