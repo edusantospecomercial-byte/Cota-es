@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Lead Tracker — Eduardo & Mardila</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0D0D12;--bg2:#13131A;--bg3:#1A1A24;--bg4:#22222E;--bg5:#2A2A38;
+  --border:#252530;--border2:#32323F;--border3:#404050;
+  --text:#E8E8F0;--text2:#9898B0;--text3:#5A5A72;--text4:#38384A;
+  --blue:#5B9CF6;--blue-bg:#0D1E3A;--blue-light:#8BB8FF;
+  --green:#3DD68C;--green-bg:#071F12;
+  --amber:#F5A623;--amber-bg:#2A1800;
+  --red:#F75F5F;--red-bg:#2A0808;
+  --purple:#A78BFA;--purple-bg:#1A1030;
+  --teal:#2DD4BF;--teal-bg:#091E1B;
+  --pink:#F472B6;--pink-bg:#2A0E1E;
+  --gray:#6B7280;--gray-bg:#1A1A22;
+  --header-h:52px;--toolbar-h:48px;--row-h:38px;
+  --font:'Inter',sans-serif;--mono:'JetBrains Mono',monospace;
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:var(--font);font-size:13px}
+
+/* === APP SHELL === */
+.app{display:flex;flex-direction:column;height:100vh;width:100vw}
+
+/* HEADER */
+.hdr{height:var(--header-h);background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:16px;flex-shrink:0;z-index:50}
+.hdr-logo{display:flex;align-items:center;gap:8px}
+.hdr-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);box-shadow:0 0 10px var(--blue);flex-shrink:0}
+.hdr-title{font-size:15px;font-weight:600;letter-spacing:-.02em;white-space:nowrap}
+.hdr-sep{width:1px;height:24px;background:var(--border2)}
+.hdr-stat{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text3);white-space:nowrap}
+.hdr-stat strong{color:var(--text2);font-weight:500;font-family:var(--mono)}
+.hdr-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.hdr-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:7px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);font-family:var(--font);transition:all .15s;white-space:nowrap}
+.hdr-btn:hover{border-color:var(--border3);color:var(--text)}
+.hdr-btn.primary{background:var(--blue-bg);color:var(--blue);border-color:#1E3A6A}
+.hdr-btn.primary:hover{background:#112860}
+.hdr-btn.success{background:var(--green-bg);color:var(--green);border-color:#0B3A20}
+
+/* TOOLBAR */
+.toolbar{height:var(--toolbar-h);background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:8px;flex-shrink:0}
+.srch-wrap{position:relative;flex:0 0 280px}
+.srch-wrap svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text3);pointer-events:none}
+.srch{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:6px 10px 6px 32px;font-size:12px;color:var(--text);font-family:var(--font);outline:none;transition:border .15s}
+.srch:focus{border-color:var(--border3)}
+.srch::placeholder{color:var(--text4)}
+.fsel{appearance:none;background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:6px 10px;font-size:12px;color:var(--text2);font-family:var(--font);cursor:pointer;outline:none;height:32px}
+.fsel:focus{border-color:var(--border3)}
+.tb-sep{width:1px;height:24px;background:var(--border);flex-shrink:0}
+.lcount-badge{font-size:11px;color:var(--text3);font-family:var(--mono);white-space:nowrap}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+
+/* STATUS PILLS */
+.sp{display:inline-flex;align-items:center;font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;white-space:nowrap;letter-spacing:.02em;font-family:var(--mono)}
+.s-novo{background:var(--blue-bg);color:var(--blue)}
+.s-contato{background:var(--purple-bg);color:var(--purple)}
+.s-cotacao{background:var(--amber-bg);color:var(--amber)}
+.s-agendado{background:var(--green-bg);color:var(--green)}
+.s-venda{background:var(--teal-bg);color:var(--teal)}
+.s-followup{background:var(--pink-bg);color:var(--pink)}
+.s-nao_atendeu{background:var(--red-bg);color:var(--red)}
+
+/* AVATAR */
+.av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;font-family:var(--mono)}
+.va{background:#0D1A3A;color:#5B9CF6}
+.vb{background:#071F12;color:#3DD68C}
+.vc{background:#2A1800;color:#F5A623}
+.vd{background:#2A0808;color:#F75F5F}
+.ve{background:#1A1030;color:#A78BFA}
+.vf{background:#2A0E1E;color:#F472B6}
+.vg{background:#091E1B;color:#2DD4BF}
+
+/* === SPREADSHEET TABLE === */
+.sheet-wrap{flex:1;overflow:auto;position:relative}
+.sheet-wrap::-webkit-scrollbar{width:8px;height:8px}
+.sheet-wrap::-webkit-scrollbar-track{background:var(--bg)}
+.sheet-wrap::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
+
+table{width:100%;border-collapse:collapse;table-layout:fixed}
+thead{position:sticky;top:0;z-index:20;background:var(--bg2)}
+thead th{height:36px;padding:0 12px;text-align:left;font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.05em;text-transform:uppercase;border-bottom:1px solid var(--border2);border-right:1px solid var(--border);white-space:nowrap;cursor:pointer;user-select:none;position:relative}
+thead th:hover{color:var(--text2);background:var(--bg3)}
+thead th .sort-arrow{margin-left:4px;opacity:.5;font-size:10px}
+thead th.sorted{color:var(--blue)}
+thead th.sorted .sort-arrow{opacity:1}
+
+/* ROW NUMBERS */
+.col-num{width:48px;flex-shrink:0}
+th.col-num,td.col-num{width:48px;text-align:center;font-size:11px;color:var(--text4);font-family:var(--mono);border-right:2px solid var(--border2)!important;background:var(--bg2);position:sticky;left:0;z-index:10}
+thead th.col-num{z-index:25}
+
+/* COL WIDTHS */
+.col-name{width:200px;min-width:160px}
+.col-date{width:90px}
+.col-fonte{width:70px}
+.col-owner{width:110px}
+.col-phone{width:160px}
+.col-email{width:220px}
+.col-status{width:140px}
+.col-obs{min-width:200px}
+.col-actions{width:110px;flex-shrink:0}
+
+tbody tr{border-bottom:1px solid var(--border);transition:background .1s;cursor:pointer}
+tbody tr:hover{background:var(--bg3)}
+tbody tr.selected{background:#0D1E3A!important;outline:1px solid var(--blue) inset}
+
+td{height:var(--row-h);padding:0 12px;vertical-align:middle;border-right:1px solid var(--border);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12px}
+td.col-name{font-weight:500;color:var(--text)}
+td.col-date{font-family:var(--mono);font-size:11px;color:var(--text3)}
+td.col-phone{font-family:var(--mono);font-size:11px;color:var(--blue-light)}
+td.col-email{font-size:11px;color:var(--text3)}
+td.col-obs{color:var(--text2);font-size:11px;font-style:italic}
+.name-cell{display:flex;align-items:center;gap:8px}
+
+/* ACTION BUTTONS IN ROW */
+.row-actions{display:flex;gap:4px;opacity:0}
+tbody tr:hover .row-actions{opacity:1}
+.ra{width:26px;height:26px;border-radius:5px;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .15s}
+.ra:hover{border-color:var(--border3);color:var(--text)}
+.ra.wa:hover{border-color:#1a4a20;background:var(--green-bg);color:var(--green)}
+.ra.view:hover{border-color:#1E3A6A;background:var(--blue-bg);color:var(--blue)}
+
+/* === MODALS === */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.overlay.open{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;width:600px;max-width:95vw;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.6)}
+.modal-lg{width:820px}
+.modal-hdr{padding:18px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal-title{font-size:15px;font-weight:600;color:var(--text)}
+.modal-sub{font-size:12px;color:var(--text3);margin-top:2px}
+.modal-close{width:28px;height:28px;border-radius:6px;border:1px solid var(--border2);background:none;cursor:pointer;color:var(--text2);font-size:16px;display:flex;align-items:center;justify-content:center;font-family:var(--font)}
+.modal-close:hover{background:var(--bg3);color:var(--text)}
+.modal-body{padding:20px;overflow-y:auto;flex:1}
+.modal-footer{padding:14px 20px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:flex-end;gap:8px}
+
+/* FORM */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-grid.full{grid-template-columns:1fr}
+.fl{display:flex;flex-direction:column;gap:5px}
+.flab{font-size:11px;color:var(--text3);font-weight:500;font-family:var(--mono)}
+.finp{background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:8px 11px;font-size:13px;color:var(--text);font-family:var(--font);outline:none;transition:border .15s;width:100%}
+.finp:focus{border-color:var(--border3)}
+.finp::placeholder{color:var(--text4)}
+.fsel2{appearance:none;background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:8px 11px;font-size:13px;color:var(--text2);font-family:var(--font);cursor:pointer;outline:none;width:100%}
+.btn{padding:8px 18px;border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font);transition:all .15s;border:1px solid var(--border2);background:var(--bg3);color:var(--text2)}
+.btn:hover{border-color:var(--border3);color:var(--text)}
+.btn.primary{background:var(--blue-bg);color:var(--blue);border-color:#1E3A6A}
+.btn.primary:hover{background:#112860}
+.btn.success{background:var(--green-bg);color:var(--green);border-color:#0B3A20}
+.btn.danger{background:var(--red-bg);color:var(--red);border-color:#3A1010}
+
+/* IMPORT AREA */
+.import-info{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:14px;margin-bottom:14px;font-size:12px;color:var(--text2);line-height:1.6}
+.import-info code{background:var(--bg4);color:var(--blue);padding:1px 5px;border-radius:4px;font-family:var(--mono);font-size:11px}
+.import-textarea{width:100%;height:200px;background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:12px;font-size:12px;color:var(--text2);font-family:var(--mono);outline:none;resize:vertical;transition:border .15s}
+.import-textarea:focus{border-color:var(--border3)}
+.import-textarea::placeholder{color:var(--text4)}
+.import-preview{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:12px;margin-top:12px;max-height:180px;overflow-y:auto}
+.import-row{display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px}
+.import-row:last-child{border-bottom:none}
+.import-row .iname{flex:1;color:var(--text);font-weight:500}
+.import-row .iph{color:var(--blue-light);font-family:var(--mono);font-size:11px}
+.import-row .istat{font-size:10px}
+.import-count{font-size:12px;color:var(--text3);margin-bottom:8px;font-family:var(--mono)}
+
+/* DETAIL SIDEBAR */
+.sidebar{position:fixed;right:0;top:0;height:100vh;width:420px;background:var(--bg2);border-left:1px solid var(--border2);z-index:90;transform:translateX(100%);transition:transform .25s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow:hidden}
+.sidebar.open{transform:translateX(0)}
+.sb-hdr{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0}
+.sb-body{flex:1;overflow-y:auto;padding:16px 18px}
+.sb-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.sb-row:last-child{border-bottom:none}
+.sb-lbl{font-size:11px;color:var(--text3);min-width:72px;padding-top:1px;font-family:var(--mono)}
+.sb-val{font-size:12px;color:var(--text);flex:1;word-break:break-all;line-height:1.45}
+.sb-footer{padding:14px 18px;border-top:1px solid var(--border);flex-shrink:0}
+.sb-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+.nta{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:9px 11px;font-size:12px;color:var(--text);resize:none;height:72px;font-family:var(--font);outline:none;transition:border .15s;margin-top:6px}
+.nta:focus{border-color:var(--border3)}
+.nta::placeholder{color:var(--text4)}
+.svbtn{width:100%;margin-top:6px;padding:8px;border-radius:7px;background:var(--green-bg);color:var(--green);border:1px solid #0B3A20;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font)}
+.ssel{display:flex;flex-wrap:wrap;gap:4px;padding:6px 0}
+.ssopt{font-size:10px;padding:3px 9px;border-radius:20px;cursor:pointer;border:1px solid transparent;opacity:.45;transition:opacity .15s;font-weight:600;font-family:var(--mono)}
+.ssopt:hover,.ssopt.sel{opacity:1;border-color:currentColor}
+
+/* STATS PANEL */
+.stats-panel{display:flex;gap:0;height:100%}
+.stats-left{width:300px;border-right:1px solid var(--border);padding:20px;overflow-y:auto;flex-shrink:0}
+.stats-right{flex:1;padding:20px;overflow-y:auto}
+.stat-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:10px}
+.stat-n{font-size:28px;font-weight:600;color:var(--text);line-height:1;font-family:var(--mono)}
+.stat-l{font-size:12px;color:var(--text3);margin-top:4px}
+.stat-s{font-size:11px;margin-top:2px}
+.bar-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)}
+.bar-row:last-child{border-bottom:none}
+.bar-lbl{font-size:11px;color:var(--text2);min-width:120px}
+.bar-track{flex:1;background:var(--bg4);border-radius:3px;height:5px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;transition:width .6s}
+.bar-cnt{font-size:11px;font-family:var(--mono);color:var(--text3);min-width:28px;text-align:right}
+
+/* EMPTY */
+.empty-row td{text-align:center;padding:48px!important;color:var(--text3);font-size:13px}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:10px 18px;font-size:13px;color:var(--text);z-index:200;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* HIGHLIGHT SEARCH */
+mark{background:#1E3A6A;color:var(--blue-light);border-radius:2px}
+
+.fonte-tag{display:inline-flex;align-items:center;font-size:10px;background:var(--bg4);border:1px solid var(--border2);color:var(--text3);padding:1px 6px;border-radius:4px;font-family:var(--mono)}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-logo"><div class="hdr-dot"></div><div class="hdr-title">Lead Tracker</div></div>
+  <div class="hdr-sep"></div>
+  <div class="hdr-stat"><strong id="h-total">213</strong> leads</div>
+  <div class="hdr-sep"></div>
+  <div class="hdr-stat">🏆 <strong id="h-venda" style="color:var(--teal)">18</strong> vendas</div>
+  <div class="hdr-sep"></div>
+  <div class="hdr-stat">📅 <strong id="h-ag" style="color:var(--green)">51</strong> agendados</div>
+  <div class="hdr-sep"></div>
+  <div class="hdr-stat">⚠️ <strong id="h-pend" style="color:var(--amber)">20</strong> pendências</div>
+  <div class="hdr-right">
+    <button class="hdr-btn" onclick="openModal('stats')">📊 Resumo</button>
+    <button class="hdr-btn" onclick="openModal('import')">⬆ Importar Meta</button>
+    <button class="hdr-btn primary" onclick="openModal('add')">+ Novo Lead</button>
+  </div>
+</div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <div class="srch-wrap">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input class="srch" id="srch" placeholder="Buscar nome, telefone, email, observação..." oninput="applyFilter()"/>
+  </div>
+  <select class="fsel" id="fst" onchange="applyFilter()">
+    <option value="">Todos os status</option>
+    <option value="agendado">✅ Agendado</option>
+    <option value="novo">🔵 Novo</option>
+    <option value="contato">🟣 Em contato</option>
+    <option value="cotacao">🟡 Cotação</option>
+    <option value="followup">🩷 Follow-up</option>
+    <option value="venda">🟢 Venda</option>
+    <option value="nao_atendeu">🔴 Não atendeu</option>
+  </select>
+  <select class="fsel" id="fow" onchange="applyFilter()">
+    <option value="">Todos os responsáveis</option>
+    <option value="Eduardo">Eduardo</option>
+    <option value="Mardila">Mardila</option>
+    <option value="INDEFINIDO">Sem responsável</option>
+  </select>
+  <select class="fsel" id="fft" onchange="applyFilter()">
+    <option value="">Todas as fontes</option>
+    <option value="IG">Instagram</option>
+    <option value="FB">Facebook</option>
+    <option value="WA">WhatsApp</option>
+  </select>
+  <select class="fsel" id="fmo" onchange="applyFilter()">
+    <option value="">Todos os meses</option>
+    <option value="01">Janeiro</option>
+    <option value="02">Fevereiro</option>
+    <option value="03">Março</option>
+    <option value="04">Abril</option>
+    <option value="05">Maio</option>
+  </select>
+  <div class="tb-sep"></div>
+  <span class="lcount-badge" id="lcount">213 resultados</span>
+  <div class="tb-right">
+    <button class="hdr-btn" onclick="exportCSV()" title="Exportar CSV">⬇ Export CSV</button>
+  </div>
+</div>
+
+<!-- SHEET -->
+<div class="sheet-wrap">
+  <table id="leads-table">
+    <thead>
+      <tr>
+        <th class="col-num">#</th>
+        <th class="col-date" onclick="sortBy('d')">Data <span class="sort-arrow" id="sort-d">↕</span></th>
+        <th class="col-name" onclick="sortBy('n')">Nome <span class="sort-arrow" id="sort-n">↕</span></th>
+        <th class="col-status" onclick="sortBy('st')">Status <span class="sort-arrow" id="sort-st">↕</span></th>
+        <th class="col-owner" onclick="sortBy('ow')">Responsável <span class="sort-arrow" id="sort-ow">↕</span></th>
+        <th class="col-phone">Telefone</th>
+        <th class="col-fonte">Fonte</th>
+        <th class="col-obs">Observação</th>
+        <th class="col-email">Email</th>
+        <th class="col-actions">Ações</th>
+      </tr>
+    </thead>
+    <tbody id="leads-body"></tbody>
+  </table>
+</div>
+</div>
+
+<!-- SIDEBAR DETAIL -->
+<div class="sidebar" id="sidebar">
+  <div class="sb-hdr">
+    <div class="av" id="sb-av" style="width:38px;height:38px;font-size:13px"></div>
+    <div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--text)" id="sb-name"></div><div style="font-size:11px;color:var(--text3);margin-top:2px" id="sb-meta"></div></div>
+    <div class="sp" id="sb-badge"></div>
+    <button class="modal-close" onclick="closeSidebar()">✕</button>
+  </div>
+  <div class="sb-body" id="sb-body"></div>
+  <div class="sb-footer">
+    <div class="sb-actions" id="sb-actions"></div>
+    <div style="font-size:11px;color:var(--text3);margin-bottom:5px">Mudar status</div>
+    <div class="ssel" id="sb-ssel"></div>
+    <div style="font-size:11px;color:var(--text3);margin-top:10px;margin-bottom:2px">Adicionar nota</div>
+    <textarea class="nta" id="sb-note" placeholder="Resultado, próximo passo, produto..."></textarea>
+    <button class="svbtn" onclick="saveNote()">✓ Salvar nota</button>
+  </div>
+</div>
+
+<!-- MODAL ADD LEAD -->
+<div class="overlay" id="modal-add">
+  <div class="modal">
+    <div class="modal-hdr">
+      <div><div class="modal-title">Novo lead</div><div class="modal-sub">Adicionar lead manualmente</div></div>
+      <button class="modal-close" onclick="closeModal('add')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="fl"><label class="flab">Nome completo *</label><input class="finp" id="a-name" placeholder="Ex: Maria Silva"/></div>
+        <div class="fl"><label class="flab">Telefone</label><input class="finp" id="a-phone" placeholder="+44 7700..."/></div>
+        <div class="fl"><label class="flab">Email</label><input class="finp" id="a-email" placeholder="email@..."/></div>
+        <div class="fl"><label class="flab">Data de entrada</label><input class="finp" id="a-date" type="date"/></div>
+        <div class="fl"><label class="flab">Fonte</label><select class="fsel2" id="a-fonte"><option value="IG">Instagram</option><option value="FB">Facebook</option><option value="WA">WhatsApp</option><option value="REF">Indicação</option></select></div>
+        <div class="fl"><label class="flab">Responsável</label><select class="fsel2" id="a-owner"><option>Eduardo</option><option>Mardila</option></select></div>
+        <div class="fl"><label class="flab">Status</label><select class="fsel2" id="a-status"><option value="novo">Novo</option><option value="contato">Em contato</option><option value="agendado">Agendado</option><option value="cotacao">Cotação</option><option value="followup">Follow-up</option></select></div>
+        <div class="fl"><label class="flab">Produto de interesse</label><input class="finp" id="a-product" placeholder="Life Insurance, Income Protection..."/></div>
+      </div>
+      <div class="fl" style="margin-top:12px"><label class="flab">Observação</label><input class="finp" id="a-obs" placeholder="Notas iniciais, agendamento, situação..."/></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal('add')">Cancelar</button>
+      <button class="btn primary" onclick="addLead()">+ Adicionar lead</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL IMPORT META -->
+<div class="overlay" id="modal-import">
+  <div class="modal modal-lg">
+    <div class="modal-hdr">
+      <div><div class="modal-title">⬆ Importar leads do Meta Ads</div><div class="modal-sub">Cole os dados do formulário de anúncio do Facebook/Instagram</div></div>
+      <button class="modal-close" onclick="closeModal('import')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="import-info">
+        <strong style="color:var(--text)">Como usar:</strong><br/>
+        1. Vá no Meta Ads Manager → Formulários de contato → Baixar leads (CSV)<br/>
+        2. Cole o conteúdo abaixo. O sistema detecta automaticamente os campos.<br/><br/>
+        <strong style="color:var(--text)">Formatos aceitos:</strong><br/>
+        • CSV do Meta: <code>nome,email,telefone,data</code><br/>
+        • Uma linha por lead: <code>Nome | +447700... | email@... | 15/05/2026</code><br/>
+        • Texto simples: <code>Nome Sobrenome +447700900000</code><br/>
+        • Qualquer separador: vírgula, ponto-e-vírgula, tab, pipe (|)
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:8px;align-items:center">
+        <select class="fsel2" id="imp-owner" style="width:150px;height:36px"><option>Eduardo</option><option>Mardila</option></select>
+        <select class="fsel2" id="imp-fonte" style="width:150px;height:36px"><option value="FB">Facebook</option><option value="IG">Instagram</option><option value="WA">WhatsApp</option></select>
+        <select class="fsel2" id="imp-status" style="width:150px;height:36px"><option value="novo">Novo</option><option value="contato">Em contato</option></select>
+        <input class="finp" id="imp-date" type="date" style="width:160px;height:36px" title="Data padrão se não detectada"/>
+      </div>
+      <textarea class="import-textarea" id="imp-text" placeholder="Cole aqui os dados do Meta Ads...&#10;&#10;Exemplo:&#10;Maria Silva,maria@email.com,+447700123456,15/05/2026&#10;João Santos,joao@email.com,+447700654321&#10;&#10;Ou texto simples:&#10;Ana Costa +447700111222" oninput="previewImport()"></textarea>
+      <div id="import-preview-wrap" style="display:none">
+        <div class="import-count" id="imp-count"></div>
+        <div class="import-preview" id="imp-preview"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal('import')">Cancelar</button>
+      <button class="btn" onclick="document.getElementById('imp-text').value='';previewImport()">Limpar</button>
+      <button class="btn success" id="imp-confirm" onclick="confirmImport()" disabled>⬆ Importar leads</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL STATS -->
+<div class="overlay" id="modal-stats">
+  <div class="modal modal-lg" style="height:80vh">
+    <div class="modal-hdr">
+      <div><div class="modal-title">📊 Resumo do Pipeline</div><div class="modal-sub">Visão geral de todos os leads</div></div>
+      <button class="modal-close" onclick="closeModal('stats')">✕</button>
+    </div>
+    <div class="modal-body" style="padding:0">
+      <div class="stats-panel" id="stats-panel"></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+const SL={novo:'Novo',contato:'Em contato',cotacao:'Cotação',agendado:'Agendado',venda:'Venda',followup:'Follow-up',nao_atendeu:'Não atendeu'};
+const SP={novo:'s-novo',contato:'s-contato',cotacao:'s-cotacao',agendado:'s-agendado',venda:'s-venda',followup:'s-followup',nao_atendeu:'s-nao_atendeu'};
+const SCOLOR={novo:'var(--blue)',contato:'var(--purple)',cotacao:'var(--amber)',agendado:'var(--green)',venda:'var(--teal)',followup:'var(--pink)',nao_atendeu:'var(--red)'};
+const AVC=['va','vb','vc','vd','ve','vf','vg'];
+
+let LEADS=[
+{id:1,n:'Jean Nascimento',ph:'+447400397981',em:'jeanvasconcelostemporario@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'tentei ligar',st:'novo',mo:''},
+{id:2,n:'Cledison Pereira',ph:'+447944958693',em:'Cldisonrp@hotmail.com',ow:'Eduardo',ft:'FB',d:'12/01',ob:'n tem whats',st:'novo',mo:'01'},
+{id:3,n:'Helian Kelly',ph:'+447853224888',em:'heliankelly@hotmail.com',ow:'Eduardo',ft:'IG',d:'12/01',ob:'edu enviou',st:'contato',mo:'01'},
+{id:4,n:'Raine Hintz Alves',ph:'07734711816',em:'evab240890@icloud.com',ow:'Mardila',ft:'IG',d:'12/01',ob:'liguei e envie whats',st:'contato',mo:'01'},
+{id:5,n:'Valeria De Oliveira McSherry',ph:'+447785274711',em:'valeiriamcsherry@gmail.com',ow:'Mardila',ft:'IG',d:'12/01',ob:'tentei ligar',st:'novo',mo:'01'},
+{id:6,n:'Chinaglia Santos',ph:'07479207313',em:'chinaglia19@yahoo.com',ow:'Mardila',ft:'IG',d:'12/01',ob:'n tem whats',st:'novo',mo:'01'},
+{id:7,n:'ERIC',ph:'+447392944667',em:'Tklar85@hotmail.com',ow:'Mardila',ft:'IG',d:'12/01',ob:'envia msg quinta',st:'contato',mo:'01'},
+{id:8,n:'Valdete Nascimento',ph:'+447300558223',em:'valdeteverginiaalessio@gmail.com',ow:'Mardila',ft:'IG',d:'12/01',ob:'n tem whats',st:'novo',mo:'01'},
+{id:9,n:'Shimene Rodrigues',ph:'+447414654560',em:'Shimenegaucha@gmail.com',ow:'Mardila',ft:'IG',d:'12/01',ob:'VENDA',st:'venda',mo:'01'},
+{id:10,n:"Vanessa D'Avila",ph:'447565489112',em:'Vanessadavila2506@hotmail.com',ow:'Eduardo',ft:'IG',d:'15/01',ob:'',st:'novo',mo:'01'},
+{id:11,n:'Denis Oliveira',ph:'+447394813409',em:'dennisuk036@gmail.com',ow:'Eduardo',ft:'IG',d:'15/01',ob:'RETORNAR 25 janeiro',st:'followup',mo:'01'},
+{id:12,n:'Adão Silva',ph:'+447956705162',em:'Adaojacomo4@gmail.com',ow:'Eduardo',ft:'FB',d:'15/01',ob:'',st:'novo',mo:'01'},
+{id:13,n:'Rose Borba',ph:'+447828544082',em:'roseborba77@hotmail.com',ow:'Mardila',ft:'IG',d:'26/01',ob:'QUARTA 18H30',st:'agendado',mo:'01'},
+{id:14,n:'Santiago Costa',ph:'07880681662',em:'rui_santiago_34@hotmail.com',ow:'Mardila',ft:'IG',d:'26/01',ob:'HOJE 20H UK',st:'agendado',mo:'01'},
+{id:15,n:'Weverton Luiz Cowal',ph:'+447549272098',em:'Quickcowal@hotmail.com',ow:'Mardila',ft:'IG',d:'26/01',ob:'AGENDADO',st:'agendado',mo:'01'},
+{id:16,n:'Alexandre Rodrigues',ph:'+447713958040',em:'alexandao1813@hotmail.com',ow:'Mardila',ft:'IG',d:'26/01',ob:'NAO ATENDEU - RESPONDEU MSG',st:'nao_atendeu',mo:'01'},
+{id:17,n:'Wisley',ph:'+447894428918',em:'wisleylopes27@gmail.com',ow:'Mardila',ft:'IG',d:'26/01',ob:'DESLIGADO',st:'nao_atendeu',mo:'01'},
+{id:18,n:'Bernadete De Andrade',ph:'+447578338331',em:'bernaoxford@hotmail.com',ow:'Mardila',ft:'IG',d:'26/01',ob:'NAO ATENDEU',st:'nao_atendeu',mo:'01'},
+{id:19,n:'Viviane Oliveira',ph:'+447704049990',em:'vivioliveira.251084@gmail.com',ow:'Mardila',ft:'IG',d:'26/01',ob:'Viegem retornar',st:'followup',mo:'01'},
+{id:20,n:'Anderson Fernandes',ph:'+447936859338',em:'brotheraf42@gmail.com',ow:'Mardila',ft:'IG',d:'26/01',ob:'Viegem retornar',st:'followup',mo:'01'},
+{id:21,n:'Carlos Roberto Damasceno Junior',ph:'+447375049540',em:'juniordamasceno1976@gmail.com',ow:'Mardila',ft:'IG',d:'26/01',ob:'AGENDADO TERCA 10/02',st:'agendado',mo:'01'},
+{id:22,n:'BRUNO',ph:'+447429493454',em:'brunoscarabelli82@gmail.com',ow:'Mardila',ft:'IG',d:'26/01',ob:'VENDA',st:'venda',mo:'01'},
+{id:23,n:'Diene Felipe Rosa',ph:'+447736755144',em:'dienyfeliperosauk@gmail.com',ow:'Mardila',ft:'IG',d:'26/01',ob:'MSG ENVIADA',st:'contato',mo:'01'},
+{id:24,n:'Cláudio Bortoloti',ph:'+447518931552',em:'claudio.borto@gmail.com',ow:'Mardila',ft:'FB',d:'26/01',ob:'N ATENDEU/ENVIEI MSG',st:'nao_atendeu',mo:'01'},
+{id:25,n:'Júlio Leite',ph:'+447477932558',em:'julioacademiauk@gmail.com',ow:'Mardila',ft:'IG',d:'26/01',ob:'AGENDADO',st:'agendado',mo:'01'},
+{id:26,n:'Tatiana Xavier',ph:'+447745387169',em:'tatiana.xavier1@gmail.com',ow:'Eduardo',ft:'IG',d:'26/01',ob:'16h AMANHA',st:'agendado',mo:'01'},
+{id:27,n:'Lucelia De Aquino Nogueira',ph:'+447832292799',em:'luceliaan71@gmail.com',ow:'Eduardo',ft:'FB',d:'26/01',ob:'MSG',st:'contato',mo:'01'},
+{id:28,n:'Antonia Barata',ph:'+447459782289',em:'antonia_barata75@hotmail.com',ow:'Eduardo',ft:'IG',d:'26/01',ob:'errado',st:'novo',mo:'01'},
+{id:29,n:'Andreia',ph:'+447933850044',em:'andreiasouza@sapo.pt',ow:'Eduardo',ft:'IG',d:'26/01',ob:'MUDANÇA PORTUGAL',st:'novo',mo:'01'},
+{id:30,n:'Reinaldo Silva',ph:'+447429829929',em:'reinaldos084@gmail.com',ow:'Eduardo',ft:'FB',d:'26/01',ob:'MSG',st:'contato',mo:'01'},
+{id:31,n:'Itamara de campos',ph:'+447985990576',em:'itamaracampos1949@gmail.com',ow:'Eduardo',ft:'FB',d:'26/01',ob:'RETORNAR QUARTA',st:'followup',mo:'01'},
+{id:32,n:'Bryan Ferreira',ph:'07507949052',em:'Bryanjrf99@gmail.com',ow:'Mardila',ft:'IG',d:'—',ob:'AMANHA 19H',st:'agendado',mo:''},
+{id:33,n:'Marcia Albanny',ph:'+447743781480',em:'marciaalbanocarneiro@gmail.com',ow:'Mardila',ft:'IG',d:'—',ob:'nao atendeu',st:'nao_atendeu',mo:''},
+{id:34,n:'Alexandre Soares',ph:'07880526767',em:'alexiamaqueen@gmail.com',ow:'Mardila',ft:'IG',d:'—',ob:'nao atendeu',st:'nao_atendeu',mo:''},
+{id:35,n:'Simone Carvalho',ph:'+447535438699',em:'simoneamor1971@gmail.com',ow:'Mardila',ft:'IG',d:'—',ob:'retornar proxima segunda',st:'followup',mo:''},
+{id:36,n:'Cleiton Van Der Wee',ph:'+447388939039',em:'cleytonnn@gmail.com',ow:'Mardila',ft:'IG',d:'—',ob:'nao atendeu',st:'nao_atendeu',mo:''},
+{id:37,n:'Iraci Bueno',ph:'+447598835511',em:'ibuenomail@gmail.com',ow:'Mardila',ft:'FB',d:'—',ob:'13h QUINTA',st:'agendado',mo:''},
+{id:38,n:'Janete Vieira',ph:'+447379831713',em:'janetevieiradossantos@hotmail.com',ow:'Mardila',ft:'FB',d:'—',ob:'',st:'novo',mo:''},
+{id:39,n:'Victor Espirito Santo',ph:'+447866890124',em:'vinte.quatror@hotmail.com',ow:'Eduardo',ft:'FB',d:'—',ob:'',st:'novo',mo:''},
+{id:40,n:'Kubitzki',ph:'+447437612388',em:'Larlakubitzki1@gmail.com',ow:'Eduardo',ft:'IG',d:'—',ob:'',st:'novo',mo:''},
+{id:41,n:'Matheus Fernandes',ph:'+447565400418',em:'fernandesmatheusjj@gmail.com',ow:'Mardila',ft:'IG',d:'09/02',ob:'enviado mensagem',st:'contato',mo:'02'},
+{id:42,n:'Joaquim Dias Neto',ph:'+447565819986',em:'joaquimdiasuk1803@icloud.com',ow:'Mardila',ft:'IG',d:'09/02',ob:'não tem whats',st:'novo',mo:'02'},
+{id:43,n:'will',ph:'+447546025176',em:'willianswill27@outlook.com',ow:'Mardila',ft:'IG',d:'08/02',ob:'nao atendeu',st:'nao_atendeu',mo:'02'},
+{id:44,n:'Julia Vitoria Zambam Mangoni',ph:'+447542000998',em:'julia.zamban@hotmail.com',ow:'Mardila',ft:'IG',d:'08/02',ob:'SEXTA 14H',st:'agendado',mo:'02'},
+{id:45,n:'Vanessa onofri',ph:'+447763989093',em:'vanessa_onofri@hotmail.com',ow:'Mardila',ft:'IG',d:'07/02',ob:'amanha 13h30',st:'agendado',mo:'02'},
+{id:46,n:'Cassio Leite',ph:'+351910151740',em:'cassioleite7@hotmail.com',ow:'Mardila',ft:'IG',d:'07/02',ob:'nao atendeu',st:'nao_atendeu',mo:'02'},
+{id:47,n:'Rafaela Twumasi-Ankrah',ph:'+447858317783',em:'rafinha180@yahoo.com.br',ow:'Mardila',ft:'IG',d:'07/02',ob:'mensagem',st:'contato',mo:'02'},
+{id:48,n:'Marcos Túlio Araújo',ph:'+5534991770858',em:'marcostulioaraujo3@gmail.com',ow:'Mardila',ft:'IG',d:'07/02',ob:'nao atendeu',st:'nao_atendeu',mo:'02'},
+{id:49,n:'Venancio rosa neto',ph:'+447951982287',em:'netovenancio146@gmail.com',ow:'Mardila',ft:'FB',d:'07/02',ob:'amanha 15h',st:'agendado',mo:'02'},
+{id:50,n:'Maria Inez Daniel Goncalves',ph:'+447450253084',em:'esteveskelvio@gmail.com',ow:'Mardila',ft:'FB',d:'06/02',ob:'quarta 14h',st:'agendado',mo:'02'},
+{id:51,n:'Tatiana Gonçalves',ph:'+447934232497',em:'tati.mega@hotmail.com',ow:'Mardila',ft:'IG',d:'06/02',ob:'nao atendeu',st:'nao_atendeu',mo:'02'},
+{id:52,n:'Janaina',ph:'+447300320601',em:'kaled-ryan@hotmail.com',ow:'Mardila',ft:'FB',d:'05/02',ob:'amanha 17h',st:'agendado',mo:'02'},
+{id:53,n:'Nelson F',ph:'+447377811137',em:'nmlfrancisco@yahoo.co.uk',ow:'Mardila',ft:'IG',d:'05/02',ob:'nao atendeu',st:'nao_atendeu',mo:'02'},
+{id:54,n:'Maritissa Maciel',ph:'+5531982398700',em:'maritissamaciel@gmail.com',ow:'Mardila',ft:'IG',d:'05/02',ob:'nao atendeu',st:'nao_atendeu',mo:'02'},
+{id:55,n:'Ghenor leite',ph:'+447521580083',em:'Genivaldosantossantos43@gmail.com',ow:'Eduardo',ft:'IG',d:'09/02',ob:'nao atendeu',st:'nao_atendeu',mo:'02'},
+{id:56,n:'Nanda',ph:'+447498892243',em:'fernandamachaopt@outlook.com',ow:'Eduardo',ft:'IG',d:'09/02',ob:'nao tem whats',st:'novo',mo:'02'},
+{id:57,n:'Jhon kelvin',ph:'+447355944437',em:'jhonkelvinr161@gamil.com',ow:'Eduardo',ft:'IG',d:'08/02',ob:'nao tem whats',st:'novo',mo:'02'},
+{id:58,n:'Hugo Leonardo da silva',ph:'+447856177439',em:'hlenzo181019@gmail.com',ow:'Eduardo',ft:'IG',d:'07/02',ob:'18h agendado',st:'agendado',mo:'02'},
+{id:59,n:'Edileusa Dos Reis de Souza',ph:'+447955856748',em:'edysousa408@gmail.com',ow:'Eduardo',ft:'FB',d:'07/02',ob:'nao atendeu',st:'nao_atendeu',mo:'02'},
+{id:60,n:'Sol Sol',ph:'+447414908390',em:'solange.guimaraesgyn@hotmail.com',ow:'Eduardo',ft:'IG',d:'07/02',ob:'terca 18h',st:'agendado',mo:'02'},
+{id:61,n:'Vania Maria Aguiar de Sousa Pedrosa',ph:'+447730453140',em:'vanguiar@hotmail.com',ow:'Eduardo',ft:'FB',d:'07/02',ob:'SABADO 11H30',st:'agendado',mo:'02'},
+{id:62,n:'Sirley de Araujo',ph:'+447742057877',em:'sirleysardinha@gmail.com',ow:'Eduardo',ft:'IG',d:'06/02',ob:'QUARTA 18H',st:'agendado',mo:'02'},
+{id:63,n:'Ana Figueiredo',ph:'+447342384662',em:'anapaulafk12@gmail.com',ow:'Eduardo',ft:'FB',d:'06/02',ob:'proxima semana',st:'followup',mo:'02'},
+{id:64,n:'Diego Augusto Ferreira',ph:'+447521430087',em:'fe.diego@hotmail.com.br',ow:'Eduardo',ft:'IG',d:'06/02',ob:'Enviado Jaque',st:'contato',mo:'02'},
+{id:65,n:'Braga Clau',ph:'+447450799023',em:'claubraga24@yahoo.com',ow:'Eduardo',ft:'IG',d:'05/02',ob:'Enviado Jaque',st:'contato',mo:'02'},
+{id:66,n:'André Santos',ph:'+447781519957',em:'andre-luiz-ftf@hotmail.com',ow:'Eduardo',ft:'IG',d:'—',ob:'Enviado Jaque',st:'contato',mo:''},
+{id:67,n:'Leo Alves',ph:'+447511124148',em:'lenoircescon3@hotmail.com',ow:'Eduardo',ft:'FB',d:'—',ob:'Enviado Jaque',st:'contato',mo:''},
+{id:68,n:'Ana Maria',ph:'+447851921639',em:'anamariavolpato75@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'nao atendeu',st:'nao_atendeu',mo:''},
+{id:69,n:'Maria de Fatima Falbo Silva',ph:'+447467515335',em:'mariahenrique18@hotmail.com',ow:'INDEFINIDO',ft:'FB',d:'—',ob:'nao atendeu',st:'nao_atendeu',mo:''},
+{id:70,n:'Andres Villarinho',ph:'+447742528715',em:'andre_rana@hotmail.com',ow:'Mardila',ft:'IG',d:'—',ob:'somente sabado',st:'agendado',mo:''},
+{id:71,n:'Roberto Herphs',ph:'+447749522315',em:'dherphs@gmail.com',ow:'Eduardo',ft:'IG',d:'—',ob:'nao atendeu',st:'nao_atendeu',mo:''},
+{id:72,n:'Marly Produções',ph:'63991298415',em:'marllyamiga@hotmail.com',ow:'Eduardo',ft:'IG',d:'22/02',ob:'',st:'novo',mo:'02'},
+{id:73,n:'Victor Foster',ph:'+447886894120',em:'fostervl@hotmail.co.uk',ow:'Eduardo',ft:'FB',d:'22/02',ob:'',st:'novo',mo:'02'},
+{id:74,n:'luciana cerqueira',ph:'+447495715275',em:'lucianacerqueira2326@gmail.com',ow:'Eduardo',ft:'IG',d:'22/02',ob:'MENSAGEM',st:'contato',mo:'02'},
+{id:75,n:'Joaquim Mazzucchetto',ph:'+447538386194',em:'joaquim@hotmail.co.uk',ow:'INDEFINIDO',ft:'FB',d:'23/02',ob:'Enviado Jaque',st:'contato',mo:'02'},
+{id:76,n:'Fernando',ph:'+447541232419',em:'oliveirafernando@live.co.uk',ow:'INDEFINIDO',ft:'IG',d:'23/02',ob:'Enviado Jaque',st:'contato',mo:'02'},
+{id:77,n:'Manuel Pinto Tenda',ph:'+447821736045',em:'manueltenda@googlemail.com',ow:'INDEFINIDO',ft:'FB',d:'23/02',ob:'Enviado Jaque',st:'contato',mo:'02'},
+{id:78,n:'Alefe Gomes Nogueira',ph:'+5562993326416',em:'alefe123456samuel@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'',st:'novo',mo:''},
+{id:79,n:'Rosilene Pereira',ph:'+447853595569',em:'rosilenemp@hotmail.com',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'14h',st:'agendado',mo:''},
+{id:80,n:'Susana machado',ph:'+447543950204',em:'Sue170670@gmail.com',ow:'INDEFINIDO',ft:'FB',d:'—',ob:'Enviado Jaque',st:'contato',mo:''},
+{id:81,n:'Dione Barros',ph:'+447301233218',em:'dione1cristaoinvestidor@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'Enviado Jaque',st:'contato',mo:''},
+{id:82,n:'Paula Figueiredo',ph:'+447460806450',em:'hl.paulafigueiredo@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'Enviado Jaque',st:'contato',mo:''},
+{id:83,n:'Tatiane Braz',ph:'447711967933',em:'tatianebraz324@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'Enviado Jaque',st:'contato',mo:''},
+{id:84,n:'Donnelly Fernandes',ph:'+447949549446',em:'donnellyfernandes12@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'Enviado Jaque',st:'contato',mo:''},
+{id:85,n:'Bel Zinha',ph:'+447554725967',em:'cibelliimhoff@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'quinta 13h',st:'agendado',mo:''},
+{id:86,n:'Bruno Oliveira',ph:'+447507103131',em:'Bruno2428@hotmail.com',ow:'INDEFINIDO',ft:'FB',d:'—',ob:'14h30',st:'agendado',mo:''},
+{id:87,n:'Marilia Ezequiel',ph:'+447552854077',em:'mariliaezequiel73@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'VENDA',st:'venda',mo:''},
+{id:88,n:'Marcelo cardoso',ph:'+447804832184',em:'marceilda@hotmail.com',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'COTACAO',st:'cotacao',mo:''},
+{id:89,n:'Sheyla Leal',ph:'+447395235728',em:'sheylalealuk@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'NAO ATENDEU',st:'nao_atendeu',mo:''},
+{id:90,n:'Patricia Moura',ph:'+447718931818',em:'patriciadmmachado@gmail.com',ow:'INDEFINIDO',ft:'FB',d:'—',ob:'NAO ATENDEU',st:'nao_atendeu',mo:''},
+{id:91,n:'Renato Bastos',ph:'+447925027338',em:'xrenatox17@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'NAO ATENDEU',st:'nao_atendeu',mo:''},
+{id:92,n:'Paulo Isaac',ph:'+447943660936',em:'Maremaraccommodations@hotmail.com',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'completo',st:'novo',mo:''},
+{id:93,n:'Evanise Oliveira',ph:'07516308626',em:'baill_limpserv@hotmail.com',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'VENDA',st:'venda',mo:''},
+{id:94,n:'Dina S. G. Ferreira Melo',ph:'+447859292997',em:'dinamelo2205@gmail.com',ow:'Mardila',ft:'FB',d:'—',ob:'AGENDADO',st:'agendado',mo:''},
+{id:95,n:'Isabel',ph:'+447572179661',em:'Simoneisabel24@outlook.com',ow:'INDEFINIDO',ft:'FB',d:'—',ob:'NAO ATENDEU',st:'nao_atendeu',mo:''},
+{id:96,n:'Ângehlla Ramos',ph:'+447596978104',em:'laysa.22@hotmail.com',ow:'Mardila',ft:'IG',d:'—',ob:'VENDA',st:'venda',mo:''},
+{id:97,n:'Marcos',ph:'+447888394783',em:'carsellebrasil@gmail.com',ow:'Mardila',ft:'IG',d:'—',ob:'AGENDADO',st:'agendado',mo:''},
+{id:98,n:'Joao Barreto',ph:'+447563110568',em:'joaodedeinha@icloud.com',ow:'Mardila',ft:'IG',d:'—',ob:'VENDA',st:'venda',mo:''},
+{id:99,n:'Washington Storti',ph:'+447501876116',em:'washingtonmergulhocomercial2@hotmail.com',ow:'Mardila',ft:'FB',d:'—',ob:'VENDA',st:'venda',mo:''},
+{id:100,n:'Lucia Duarte',ph:'+447771146777',em:'luciaduarte98@yahoo.com',ow:'Mardila',ft:'IG',d:'—',ob:'amanha 17h',st:'agendado',mo:''},
+{id:101,n:'Maykison Moreno',ph:'+447565461892',em:'maykisonbarbo@gmail.com',ow:'Mardila',ft:'IG',d:'—',ob:'agendado 18h terca',st:'agendado',mo:''},
+{id:102,n:'Magda Siqueira',ph:'+447926559184',em:'magdasiqueira016@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'19h terça',st:'agendado',mo:''},
+{id:103,n:'Mário Lopes',ph:'+3519360202693',em:'mariolopes15@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'Enviado Jaque',st:'contato',mo:''},
+{id:104,n:'Alzenira Antônio Pereira Fagulha',ph:'+447534079498',em:'alzenirasoares@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'18h30 segunda',st:'agendado',mo:''},
+{id:105,n:'Antonio Sousa',ph:'+447939855904',em:'antoniosousapereira@outlook.com',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'16h segunda',st:'agendado',mo:''},
+{id:106,n:'Cida Pereira',ph:'+447481360972',em:'cidapereira.ukk@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'Enviado Jaque',st:'contato',mo:''},
+{id:107,n:'Goncalves Veiga',ph:'+447448674030',em:'trikydipaz@icloud.com',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'Enviado Jaque',st:'contato',mo:''},
+{id:108,n:'Cristiano Biazussi',ph:'+447925181656',em:'cbiazussi@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'Enviado Jaque',st:'contato',mo:''},
+{id:109,n:'Claudia Gomes',ph:'+447385172820',em:'claudiagomesguedes84@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'19h30',st:'agendado',mo:''},
+{id:110,n:'Antonely',ph:'+447307974439',em:'brankabarbosa13@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'Enviado Jaque',st:'contato',mo:''},
+{id:111,n:'Reinaldo Paixao',ph:'+447756807497',em:'rpaixao1969@gmail.com',ow:'INDEFINIDO',ft:'FB',d:'—',ob:'Quinta 14h',st:'agendado',mo:''},
+{id:112,n:'Filipe Batista',ph:'+447894985152',em:'fbitransport77@gmail.com',ow:'INDEFINIDO',ft:'FB',d:'—',ob:'Enviado Jaque',st:'contato',mo:''},
+{id:113,n:'Adriane Trofin',ph:'+447944960256',em:'Adrianetrofin@gmail.com',ow:'INDEFINIDO',ft:'FB',d:'—',ob:'Enviado Jaque',st:'contato',mo:''},
+{id:114,n:'Janete Redivo',ph:'+447515533354',em:'janetlondres@hotmail.com',ow:'INDEFINIDO',ft:'FB',d:'—',ob:'Enviado Jaque',st:'contato',mo:''},
+{id:115,n:'Eliane Pereira Silva',ph:'+447714946550',em:'eliane.p.06@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'Enviado Jaque',st:'contato',mo:''},
+{id:116,n:'Erika Prateado',ph:'+447830329293',em:'eprateado1106@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'Enviado Jaque',st:'contato',mo:''},
+{id:117,n:'Marcelo Gallinari',ph:'+447519515541',em:'Marceloelvisg@gmail.com',ow:'INDEFINIDO',ft:'FB',d:'—',ob:'Enviado Jaque',st:'contato',mo:''},
+{id:118,n:'Mateus bellafronte',ph:'+447743927895',em:'mateusfronte@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'21/03',ob:'Enviado Jaque',st:'contato',mo:'03'},
+{id:119,n:'Eduardo Araujo',ph:'+447729430771',em:'eduardofaaraujo@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'21/03',ob:'Enviado Jaque',st:'contato',mo:'03'},
+{id:120,n:'Sérgio Gomes',ph:'+447475726613',em:'25ssgomes@gmail.com',ow:'INDEFINIDO',ft:'FB',d:'21/03',ob:'Enviado Jaque',st:'contato',mo:'03'},
+{id:121,n:'Maria Freitas',ph:'+447718374710',em:'mariafreitas.mf390@gmail.com',ow:'INDEFINIDO',ft:'FB',d:'21/03',ob:'Enviado Jaque',st:'contato',mo:'03'},
+{id:122,n:'Comece do zero',ph:'+447731602724',em:'kaykeborges50@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'21/03',ob:'VENDA',st:'venda',mo:'03'},
+{id:123,n:'Zitto Lomba',ph:'+351968946295',em:'jd.lomba20@gmail.com',ow:'Mardila',ft:'IG',d:'20/03',ob:'',st:'novo',mo:'03'},
+{id:124,n:'Antonio Vasconcelos',ph:'+447596058970',em:'anvhv@hotmail.com',ow:'INDEFINIDO',ft:'FB',d:'20/03',ob:'Enviado Jaque',st:'contato',mo:'03'},
+{id:125,n:'Ângehlla Ramos (venda)',ph:'+447596978104',em:'leticiaangela531@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'23/03',ob:'VENDA',st:'venda',mo:'03'},
+{id:126,n:'Rita Scarabelli',ph:'+447597989907',em:'ritascarabellilondres@gmail.com',ow:'INDEFINIDO',ft:'FB',d:'22/03',ob:'',st:'novo',mo:'03'},
+{id:127,n:'Lenira Dias',ph:'+447913914891',em:'Lenijones5347@gmail.com',ow:'INDEFINIDO',ft:'FB',d:'21/03',ob:'',st:'novo',mo:'03'},
+{id:128,n:'Morena',ph:'+447389830121',em:'Milkamilquia@gmail.com',ow:'Eduardo',ft:'IG',d:'29/03',ob:'',st:'novo',mo:'03'},
+{id:129,n:'Priscilla Dawson',ph:'+447411507544',em:'pridawson@icloud.com',ow:'Eduardo',ft:'FB',d:'29/03',ob:'VENDA',st:'venda',mo:'03'},
+{id:130,n:'Kerol Garcia',ph:'+447361616109',em:'Kerol@eunetwork.co.uk',ow:'Eduardo',ft:'IG',d:'29/03',ob:'',st:'novo',mo:'03'},
+{id:131,n:'Priscilla Santana',ph:'+5511916501660',em:'santanapricila@icloud.com',ow:'Eduardo',ft:'IG',d:'28/03',ob:'',st:'novo',mo:'03'},
+{id:132,n:'Aquila Fernandes',ph:'07493763121',em:'fernandesaquila64@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'28/03',ob:'VENDA',st:'venda',mo:'03'},
+{id:133,n:'Thuany barros',ph:'+447709064685',em:'thuanyghn@gmail.com',ow:'Eduardo',ft:'IG',d:'28/03',ob:'TERCA 17H30',st:'agendado',mo:'03'},
+{id:134,n:'Priscilla Faustino',ph:'+447709776757',em:'pryfaustinolondon@gmail.com',ow:'Eduardo',ft:'IG',d:'27/03',ob:'',st:'novo',mo:'03'},
+{id:135,n:'Santa Evangelista',ph:'+447415194076',em:'santa.evangel@gmail.com',ow:'Mardila',ft:'IG',d:'30/03',ob:'',st:'novo',mo:'03'},
+{id:136,n:'Eliane Machado Psicanalista',ph:'+447706026036',em:'elianemachado.london@outlook.com',ow:'Mardila',ft:'IG',d:'30/03',ob:'RETORNAR TERCA',st:'followup',mo:'03'},
+{id:137,n:'Elvis Santos',ph:'+447354221754',em:'elvissantos0118@gmail.com',ow:'Mardila',ft:'FB',d:'29/03',ob:'QUARTA 15H',st:'agendado',mo:'03'},
+{id:138,n:'Regilson Brasil',ph:'+447787274991',em:'brasilregilson@gmail.com',ow:'Mardila',ft:'IG',d:'29/03',ob:'18h',st:'agendado',mo:'03'},
+{id:139,n:'Henrique Bruno',ph:'+447491325663',em:'henriqueceia@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'27/03',ob:'VENDA',st:'venda',mo:'03'},
+{id:140,n:'Gisely',ph:'+447754161404',em:'giselyoliveira4000@gmail.com',ow:'Mardila',ft:'IG',d:'27/03',ob:'',st:'novo',mo:'03'},
+{id:141,n:'Magda Constantino',ph:'+447463412230',em:'magda.orquidea54@gmail.com',ow:'Eduardo',ft:'IG',d:'05/04',ob:'',st:'novo',mo:'04'},
+{id:142,n:'Aline Martins',ph:'+447378658315',em:'asneto92@gmail.com',ow:'Mardila',ft:'IG',d:'03/04',ob:'FAZENDO COTAÇÃO',st:'cotacao',mo:'04'},
+{id:143,n:'Ambrosio Rufino Antonio',ph:'+447769432072',em:'ambrosiorufinoantonio@hotmail.com',ow:'Mardila',ft:'FB',d:'03/04',ob:'',st:'novo',mo:'04'},
+{id:144,n:'Marcelo Mattos',ph:'+447853067497',em:'marceloalgusto38@hotmail.com',ow:'Mardila',ft:'IG',d:'03/04',ob:'FAZENDO COTAÇÃO',st:'cotacao',mo:'04'},
+{id:145,n:'Andressa Nunes',ph:'+447925466788',em:'andressasn21@icloud.com',ow:'Mardila',ft:'IG',d:'03/04',ob:'',st:'novo',mo:'04'},
+{id:146,n:'Luciene Cortezão',ph:'+447901391234',em:'luciene_goulart@hotmail.com',ow:'Mardila',ft:'IG',d:'08/04',ob:'VENDA',st:'venda',mo:'04'},
+{id:147,n:'Marta Lorena Ribeiro Silva',ph:'+447778226277',em:'lorenasiovajoana@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'08/04',ob:'',st:'novo',mo:'04'},
+{id:148,n:'Hellen Miranda',ph:'+447916162467',em:'Karlacleaner@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'cotação',st:'cotacao',mo:''},
+{id:149,n:'João Paulo Ribeiro',ph:'07594036073',em:'joaopenides2001@gmail.com',ow:'Eduardo',ft:'IG',d:'11/04',ob:'nao atendeu',st:'nao_atendeu',mo:'04'},
+{id:150,n:'Cintia Silva',ph:'07782786148',em:'cindy_isaeluca@hotmail.com',ow:'Eduardo',ft:'IG',d:'11/04',ob:'19h30 terca',st:'agendado',mo:'04'},
+{id:151,n:'Harlison Arantes',ph:'+447859031212',em:'harlisonarantes@hotmail.com',ow:'Eduardo',ft:'IG',d:'10/04',ob:'QUARTA 18H',st:'agendado',mo:'04'},
+{id:152,n:'Jesse Erasmo',ph:'+447403806248',em:'Petterenzo87@gmail.com',ow:'Eduardo',ft:'IG',d:'10/04',ob:'',st:'novo',mo:'04'},
+{id:153,n:'Joelson',ph:'+447414698008',em:'londonjoelson22@gmail.com',ow:'Eduardo',ft:'IG',d:'12/04',ob:'',st:'novo',mo:'04'},
+{id:154,n:'Cristino Antonio',ph:'+447549266991',em:'cristiano_antonio1969@hotmail.co.uk',ow:'Eduardo',ft:'FB',d:'12/04',ob:'20h30 quarta',st:'agendado',mo:'04'},
+{id:155,n:'Maria de Fatima',ph:'+447516280408',em:'mariadefatimarsantos@hotmail.com',ow:'Eduardo',ft:'FB',d:'12/04',ob:'21h30 terca',st:'agendado',mo:'04'},
+{id:156,n:'Patricia',ph:'07518121183',em:'patriciacolly@hotmail.com',ow:'Eduardo',ft:'IG',d:'12/04',ob:'',st:'novo',mo:'04'},
+{id:157,n:'Valsecchi',ph:'+447355557324',em:'marcielandrevalsecchi@gmail.com',ow:'Eduardo',ft:'IG',d:'11/04',ob:'Quinta 14h',st:'agendado',mo:'04'},
+{id:158,n:'Stefanio Germano',ph:'+447719554633',em:'stefanionovais31@yahoo.com.br',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'VENDA',st:'venda',mo:''},
+{id:159,n:'Luciene Cortezão (2)',ph:'+447901391234',em:'lucienecortezao@hotmail.com',ow:'Mardila',ft:'IG',d:'11/04',ob:'VENDA',st:'venda',mo:'04'},
+{id:160,n:'jilvan santos de jesus',ph:'+447856461463',em:'jilvansantosdejesus@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'19/04',ob:'VENDA',st:'venda',mo:'04'},
+{id:161,n:'Gerry Silva',ph:'+447383381821',em:'gerrily@hotmail.com',ow:'INDEFINIDO',ft:'IG',d:'18/04',ob:'cotação',st:'cotacao',mo:'04'},
+{id:162,n:'neyllah walters',ph:'+447460133323',em:'neyllah21@hotmail.com',ow:'INDEFINIDO',ft:'FB',d:'17/04',ob:'cotação',st:'cotacao',mo:'04'},
+{id:163,n:'Carmen Riemslag',ph:'+447934384391',em:'martycarmen@hotmail.com',ow:'INDEFINIDO',ft:'IG',d:'18/04',ob:'SEXTA 14H',st:'agendado',mo:'04'},
+{id:164,n:'Andre Machado',ph:'+447828698944',em:'1Andredefreitamachado39@gmail.com',ow:'INDEFINIDO',ft:'FB',d:'18/04',ob:'VENDA',st:'venda',mo:'04'},
+{id:165,n:'Edileuza Souza',ph:'929223843',em:'edihsouza1973@gmail.com',ow:'Mardila',ft:'IG',d:'18/04',ob:'',st:'novo',mo:'04'},
+{id:166,n:'Nattalia Brito',ph:'07380877304',em:'nathalia_britto23@icloud.com',ow:'INDEFINIDO',ft:'IG',d:'26/04',ob:'',st:'novo',mo:'04'},
+{id:167,n:'Bel Zinha (2)',ph:'+447554725967',em:'cibelliimhoff@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'26/04',ob:'AGENDADO',st:'agendado',mo:'04'},
+{id:168,n:'Rita',ph:'+447398713905',em:'rita.dcmm.szerman@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'26/04',ob:'AGENDADO',st:'agendado',mo:'04'},
+{id:169,n:'Fatima Soares',ph:'+447449758158',em:'pregnolatofatima@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'26/04',ob:'AGENDADO QUINTA',st:'agendado',mo:'04'},
+{id:170,n:'D Craig',ph:'+447545190231',em:'dulcimar@hotmail.co.uk',ow:'INDEFINIDO',ft:'IG',d:'26/04',ob:'QUARTA 16H',st:'agendado',mo:'04'},
+{id:171,n:'Zenil Reis',ph:'+447985299630',em:'zenilreis@hotmail.com',ow:'INDEFINIDO',ft:'IG',d:'25/04',ob:'BANCON MANDAR JAQUE',st:'contato',mo:'04'},
+{id:172,n:'Juvenir De Oliveira Santos',ph:'+447723652024',em:'santosjuvenir092@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'25/04',ob:'COTAÇÃO HIV',st:'cotacao',mo:'04'},
+{id:173,n:'Eunice Aurigemma',ph:'+447925467876',em:'euniceaurigemma1978@gmail.com',ow:'INDEFINIDO',ft:'FB',d:'25/04',ob:'LIGAR PELA MANHA',st:'followup',mo:'04'},
+{id:174,n:'Roberto souza',ph:'+447544943028',em:'company.m.g.b.uk@gmail.com',ow:'INDEFINIDO',ft:'FB',d:'27/04',ob:'',st:'novo',mo:'04'},
+{id:175,n:'Rosana Shekinah',ph:'+447742485575',em:'rorosanasilva590@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'26/04',ob:'cotacao',st:'cotacao',mo:'04'},
+{id:176,n:'Erica Ganz',ph:'+447393189937',em:'ericaganz@hotmail.com',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'',st:'novo',mo:''},
+{id:177,n:'Leila Pereira',ph:'+447742280977',em:'leila35pereira@hotmail.com',ow:'INDEFINIDO',ft:'FB',d:'—',ob:'',st:'novo',mo:''},
+{id:178,n:'Silva Helena',ph:'+447907798983',em:'cardosoborlinhas@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'03/05',ob:'Ligar as 19h',st:'followup',mo:'05'},
+{id:179,n:'Paulo Valle',ph:'+447415306234',em:'pcgv1973@gmail.com',ow:'INDEFINIDO',ft:'FB',d:'03/05',ob:'LIGAR PELA MANHA',st:'followup',mo:'05'},
+{id:180,n:'Leiliane',ph:'+447506450870',em:'leilianeiene@hotmail.com',ow:'INDEFINIDO',ft:'IG',d:'03/05',ob:'quinta 16h',st:'agendado',mo:'05'},
+{id:181,n:'Maria Silva',ph:'+447841124443',em:'Mariasc152@gmail.com',ow:'INDEFINIDO',ft:'FB',d:'02/05',ob:'',st:'novo',mo:'05'},
+{id:182,n:'Meilene ruiz cesar wong',ph:'+447840599514',em:'meilenewong@gmail.com',ow:'INDEFINIDO',ft:'FB',d:'02/05',ob:'FAZER COTACAO',st:'cotacao',mo:'05'},
+{id:183,n:'Francisco Mor',ph:'+447570832958',em:'lailtonkatlyn@hotmail.com',ow:'INDEFINIDO',ft:'FB',d:'02/05',ob:'',st:'novo',mo:'05'},
+{id:184,n:'Rafaella Gayardo',ph:'+44776654059',em:'Rafaellagayardo@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'02/05',ob:'',st:'novo',mo:'05'},
+{id:185,n:'Arielly',ph:'077405794844',em:'ariellyjesus@hotmail.com',ow:'INDEFINIDO',ft:'IG',d:'02/05',ob:'',st:'novo',mo:'05'},
+{id:186,n:'Nadioreth Suraia',ph:'+447378280635',em:'nadiorethbentonb@gmail.com',ow:'INDEFINIDO',ft:'FB',d:'02/05',ob:'VENDA',st:'venda',mo:'05'},
+{id:187,n:'Antonio Pereira',ph:'+447778082580',em:'antoniojmp1974@gmail.com',ow:'INDEFINIDO',ft:'FB',d:'02/05',ob:'',st:'novo',mo:'05'},
+{id:188,n:'Aldaiza',ph:'+447932594582',em:'yzaalbuquerk@hotmail.com',ow:'INDEFINIDO',ft:'FB',d:'02/05',ob:'quarta as 13h',st:'agendado',mo:'05'},
+{id:189,n:'Rosenilson Lima Dias',ph:'+447407631546',em:'scamparine@outlook.com',ow:'INDEFINIDO',ft:'IG',d:'02/05',ob:'',st:'novo',mo:'05'},
+{id:190,n:'crisolita da Cruz Rodrigues',ph:'+447414876124',em:'LitacruzO6@gmail.com',ow:'INDEFINIDO',ft:'FB',d:'02/05',ob:'',st:'novo',mo:'05'},
+{id:191,n:'Carla Carlos',ph:'+447446539059',em:'claudiabusiness@outlook.com',ow:'INDEFINIDO',ft:'FB',d:'01/05',ob:'terca as 15h',st:'agendado',mo:'05'},
+{id:192,n:'Raul Cunha',ph:'+447762734103',em:'raullisbon@gmail.com',ow:'INDEFINIDO',ft:'FB',d:'01/05',ob:'',st:'novo',mo:'05'},
+{id:193,n:'Luciana Gonçalves',ph:'+447713196210',em:'lu.almeida84@hotmail.com',ow:'INDEFINIDO',ft:'FB',d:'03/05',ob:'segunda as 18h30',st:'agendado',mo:'05'},
+{id:194,n:'Ricardo Soares Rissi',ph:'+447523713962',em:'ricardosoares30@gmail.com',ow:'INDEFINIDO',ft:'FB',d:'03/05',ob:'',st:'novo',mo:'05'},
+{id:195,n:'Rennan',ph:'+447307972358',em:'rennan.rodrigues19@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'02/05',ob:'',st:'novo',mo:'05'},
+{id:196,n:'Djalo Lamy',ph:'+447344195098',em:'Djdjalolamine@gmail.com',ow:'INDEFINIDO',ft:'FB',d:'02/05',ob:'',st:'novo',mo:'05'},
+{id:197,n:'fatima leandro',ph:'+447850291137',em:'fatimaleandro15@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'',st:'novo',mo:''},
+{id:198,n:'Cristiano Bernardo Ferreira',ph:'+447803772207',em:'ferreiracristianob@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'—',ob:'',st:'novo',mo:''},
+{id:199,n:'Ctistiany alves carnelossi',ph:'+447727666080',em:'gbrick418@gmail.com',ow:'INDEFINIDO',ft:'FB',d:'—',ob:'',st:'novo',mo:''},
+{id:200,n:'Eli Maluquinha',ph:'+447508746857',em:'elianasantoslima@hotmail.com',ow:'INDEFINIDO',ft:'FB',d:'11/05',ob:'',st:'novo',mo:'05'},
+{id:201,n:'Maycon Benfica',ph:'62984273847',em:'mayconbenfica.kdp10@hotmail.com',ow:'INDEFINIDO',ft:'IG',d:'11/05',ob:'RETORNO NA QUARTA',st:'followup',mo:'05'},
+{id:202,n:'Lu Lino',ph:'+447938861754',em:'lulynnagatinhas@gmail.com',ow:'INDEFINIDO',ft:'FB',d:'10/05',ob:'',st:'novo',mo:'05'},
+{id:203,n:'Maynna Leal',ph:'+447514609735',em:'maynna.leal.com@gmail.com',ow:'INDEFINIDO',ft:'FB',d:'09/05',ob:'',st:'novo',mo:'05'},
+{id:204,n:'Anaires Moraes',ph:'+447497306724',em:'mesquita5@hotmail.es',ow:'INDEFINIDO',ft:'IG',d:'09/05',ob:'',st:'novo',mo:'05'},
+{id:205,n:'Maycon Ridiere',ph:'+447899790599',em:'santosdiasdirieri@gmail.com',ow:'INDEFINIDO',ft:'FB',d:'08/05',ob:'',st:'novo',mo:'05'},
+{id:206,n:'Roberto Filho',ph:'+447707530085',em:'roberttofugger29@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'08/05',ob:'17H TERÇA REGULARIZADO',st:'agendado',mo:'05'},
+{id:207,n:'Rosane Zane Lopes',ph:'+447845176054',em:'zanecarlo@hotmail.com',ow:'Mardila',ft:'IG',d:'10/05',ob:'18H30 HOJE',st:'agendado',mo:'05'},
+{id:208,n:'Joelma Barros',ph:'+447448882437',em:'joelmauk49@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'09/05',ob:'NUMERO ERRADO',st:'nao_atendeu',mo:'05'},
+{id:209,n:'Nisi Macedo',ph:'+447711567548',em:'nice.london@hotmail.co.uk',ow:'INDEFINIDO',ft:'FB',d:'09/05',ob:'',st:'novo',mo:'05'},
+{id:210,n:'Rogério Borella',ph:'+447376620777',em:'borellarogerio@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'09/05',ob:'',st:'novo',mo:'05'},
+{id:211,n:'Luciano Solvalagem',ph:'+447860647486',em:'Luciano.cmd@outlook.com',ow:'INDEFINIDO',ft:'FB',d:'09/05',ob:'QUARTA FEIRA 15H',st:'agendado',mo:'05'},
+{id:212,n:'Davis Amazonas',ph:'+447456690588',em:'Amazonasdavis23@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'11/05',ob:'',st:'novo',mo:'05'},
+{id:213,n:'Savio Luiz',ph:'+447308957637',em:'81086438s@gmail.com',ow:'INDEFINIDO',ft:'IG',d:'11/05',ob:'18H HOJE',st:'agendado',mo:'05'},
+];
+
+LEADS.forEach((l,i)=>{l.av=AVC[i%7];l.in=(l.n.split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase())||'?'});
+
+let filtered=[...LEADS],sortCol='',sortDir=1,curLead=null,parsedImport=[];
+
+// ===== FILTER =====
+function applyFilter(){
+  const q=(document.getElementById('srch').value||'').toLowerCase();
+  const st=document.getElementById('fst').value;
+  const ow=document.getElementById('fow').value;
+  const ft=document.getElementById('fft').value;
+  const mo=document.getElementById('fmo').value;
+  filtered=LEADS.filter(l=>{
+    if(st&&l.st!==st)return false;
+    if(ow&&l.ow!==ow)return false;
+    if(ft&&l.ft!==ft)return false;
+    if(mo&&l.mo!==mo)return false;
+    if(q&&!l.n.toLowerCase().includes(q)&&!l.ph.includes(q)&&!l.ob.toLowerCase().includes(q)&&!l.em.toLowerCase().includes(q))return false;
+    return true;
+  });
+  if(sortCol) doSort(sortCol,false);
+  else renderTable();
+  updateHeader();
+}
+
+// ===== SORT =====
+function sortBy(col){
+  if(sortCol===col) sortDir*=-1; else{sortCol=col;sortDir=1;}
+  doSort(col,true);
+}
+function doSort(col,render){
+  const order={'novo':0,'contato':1,'cotacao':2,'followup':3,'agendado':4,'nao_atendeu':5,'venda':6};
+  filtered.sort((a,b)=>{
+    let av=a[col]||'',bv=b[col]||'';
+    if(col==='st'){av=order[av]||0;bv=order[bv]||0;return(av-bv)*sortDir;}
+    return String(av).localeCompare(String(bv),'pt')*sortDir;
+  });
+  document.querySelectorAll('.sort-arrow').forEach(el=>el.textContent='↕');
+  document.querySelectorAll('thead th').forEach(th=>th.classList.remove('sorted'));
+  const arrow=document.getElementById('sort-'+col);
+  if(arrow){arrow.textContent=sortDir===1?'↑':'↓';}
+  document.querySelectorAll('thead th').forEach(th=>{if(th.getAttribute('onclick')&&th.getAttribute('onclick').includes("'"+col+"'"))th.classList.add('sorted');});
+  if(render!==false) renderTable();
+}
+
+// ===== RENDER TABLE =====
+function renderTable(){
+  const q=(document.getElementById('srch').value||'').toLowerCase();
+  const body=document.getElementById('leads-body');
+  if(!filtered.length){body.innerHTML=`<tr class="empty-row"><td colspan="10">Nenhum lead encontrado</td></tr>`;document.getElementById('lcount').textContent='0 resultados';return;}
+  document.getElementById('lcount').textContent=`${filtered.length} resultado${filtered.length!==1?'s':''}`;
+  body.innerHTML=filtered.map((l,i)=>{
+    const hl=q?(t)=>t.replace(new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi'),m=>`<mark>${m}</mark>`):(t)=>t;
+    return `<tr onclick="openSidebar(${l.id})" id="row-${l.id}">
+      <td class="col-num">${i+1}</td>
+      <td class="col-date">${l.d}</td>
+      <td class="col-name"><div class="name-cell"><div class="av ${l.av}">${l.in}</div><span>${hl(l.n)}</span></div></td>
+      <td class="col-status"><span class="sp ${SP[l.st]}">${SL[l.st]}</span></td>
+      <td class="col-owner" style="color:var(--text2)">${l.ow==='INDEFINIDO'?'<span style="color:var(--text4)">—</span>':l.ow}</td>
+      <td class="col-phone">${hl(l.ph)}</td>
+      <td class="col-fonte"><span class="fonte-tag">${l.ft}</span></td>
+      <td class="col-obs">${hl(l.ob||'')}</td>
+      <td class="col-email" style="font-size:11px;color:var(--text3)">${l.em}</td>
+      <td class="col-actions"><div class="row-actions">
+        <button class="ra wa" onclick="event.stopPropagation();window.open('https://wa.me/${l.ph.replace(/[^\d]/g,'')}?text=Olá+${encodeURIComponent(l.n)}!')" title="WhatsApp">💬</button>
+        <button class="ra" onclick="event.stopPropagation();navigator.clipboard.writeText('${l.ph}');showToast('📋 '+${JSON.stringify(l.ph)}+' copiado!')" title="Copiar tel.">📋</button>
+        <button class="ra view" onclick="event.stopPropagation();openSidebar(${l.id})" title="Ver detalhes">→</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+// ===== HEADER STATS =====
+function updateHeader(){
+  document.getElementById('h-total').textContent=LEADS.length;
+  document.getElementById('h-venda').textContent=LEADS.filter(l=>l.st==='venda').length;
+  document.getElementById('h-ag').textContent=LEADS.filter(l=>l.st==='agendado').length;
+  document.getElementById('h-pend').textContent=LEADS.filter(l=>['cotacao','followup'].includes(l.st)).length;
+}
+
+// ===== SIDEBAR =====
+function openSidebar(id){
+  curLead=LEADS.find(l=>l.id===id);if(!curLead) return;
+  const l=curLead;
+  document.querySelectorAll('tbody tr').forEach(r=>r.classList.remove('selected'));
+  const row=document.getElementById('row-'+id);if(row) row.classList.add('selected');
+  document.getElementById('sb-av').className=`av ${l.av}`;document.getElementById('sb-av').style.cssText='width:38px;height:38px;font-size:13px';
+  document.getElementById('sb-av').textContent=l.in;
+  document.getElementById('sb-name').textContent=l.n;
+  document.getElementById('sb-meta').textContent=(l.ow==='INDEFINIDO'?'Sem responsável':l.ow)+' · '+l.ft+' · '+l.d;
+  document.getElementById('sb-badge').className='sp '+SP[l.st];document.getElementById('sb-badge').textContent=SL[l.st];
+  document.getElementById('sb-body').innerHTML=`
+    <div class="sb-row"><div class="sb-lbl">Telefone</div><div class="sb-val" style="color:var(--blue)">${l.ph}</div></div>
+    <div class="sb-row"><div class="sb-lbl">Email</div><div class="sb-val" style="font-size:11px">${l.em}</div></div>
+    <div class="sb-row"><div class="sb-lbl">Observação</div><div class="sb-val">${l.ob||'—'}</div></div>
+    <div class="sb-row"><div class="sb-lbl">Entrada</div><div class="sb-val">${l.d||'—'}</div></div>
+    <div class="sb-row"><div class="sb-lbl">Fonte</div><div class="sb-val"><span class="fonte-tag">${l.ft}</span></div></div>
+    ${l.product?`<div class="sb-row"><div class="sb-lbl">Produto</div><div class="sb-val">${l.product}</div></div>`:''}
+    <div style="margin-top:10px;font-size:11px;color:var(--text3);margin-bottom:4px">Mudar status</div>
+    <div class="ssel">${Object.entries(SL).map(([k,v])=>`<div class="ssopt sp ${SP[k]} ${l.st===k?'sel':''}" onclick="chgSt('${k}',this)">${v}</div>`).join('')}</div>
+  `;
+  document.getElementById('sb-actions').innerHTML=`
+    <button class="btn" style="font-size:11px;padding:7px 8px" onclick="window.open('https://wa.me/${l.ph.replace(/[^\d]/g,'')}?text=Olá+${encodeURIComponent(l.n)}!')">💬 WhatsApp</button>
+    <button class="btn" style="font-size:11px;padding:7px 8px" onclick="window.open('mailto:${l.em}')">✉️ Email</button>
+    <button class="btn" style="font-size:11px;padding:7px 8px" onclick="navigator.clipboard.writeText('${l.ph}');showToast('Copiado!')">📋 Copiar tel.</button>
+    <button class="btn success" style="font-size:11px;padding:7px 8px" onclick="chgSt('venda',null);showToast('🏆 Venda registrada!')">🏆 Venda</button>
+  `;
+  document.getElementById('sb-note').value='';
+  document.getElementById('sidebar').classList.add('open');
+}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.querySelectorAll('tbody tr').forEach(r=>r.classList.remove('selected'));}
+function chgSt(ns,el){
+  if(!curLead)return;curLead.st=ns;
+  if(el){el.closest('.ssel').querySelectorAll('.ssopt').forEach(o=>o.classList.remove('sel'));el.classList.add('sel');}
+  document.getElementById('sb-badge').className='sp '+SP[ns];document.getElementById('sb-badge').textContent=SL[ns];
+  renderTable();updateHeader();showToast('Status atualizado: '+SL[ns]);
+}
+function saveNote(){
+  if(!curLead)return;const ta=document.getElementById('sb-note');const v=ta.value.trim();if(!v)return;
+  curLead.ob=v;ta.value='';ta.placeholder='✓ Nota salva';renderTable();showToast('Nota salva!');
+}
+
+// ===== MODALS =====
+function openModal(id){
+  document.getElementById('modal-'+id).classList.add('open');
+  if(id==='stats') renderStats();
+  if(id==='add'){const d=new Date();document.getElementById('a-date').value=d.toISOString().split('T')[0];}
+}
+function closeModal(id){document.getElementById('modal-'+id).classList.remove('open');}
+
+// ===== ADD LEAD =====
+function addLead(){
+  const name=document.getElementById('a-name').value.trim();if(!name){document.getElementById('a-name').focus();return;}
+  const d=document.getElementById('a-date').value;
+  const df=d?d.split('-').slice(1).reverse().join('/'):new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});
+  const mo=d?d.split('-')[1]:'';
+  const init=name.split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase();
+  const l={id:Date.now(),n:name,in:init,av:AVC[LEADS.length%7],
+    ph:document.getElementById('a-phone').value||'—',em:document.getElementById('a-email').value||'—',
+    ft:document.getElementById('a-fonte').value,ow:document.getElementById('a-owner').value,
+    st:document.getElementById('a-status').value,d:df,mo,
+    ob:document.getElementById('a-obs').value||'',product:document.getElementById('a-product').value||''};
+  LEADS.unshift(l);
+  closeModal('add');applyFilter();showToast('✅ Lead adicionado: '+name);
+  ['a-name','a-phone','a-email','a-obs','a-product'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+}
+
+// ===== IMPORT META =====
+function previewImport(){
+  const txt=document.getElementById('imp-text').value.trim();
+  const wrap=document.getElementById('import-preview-wrap');
+  if(!txt){wrap.style.display='none';document.getElementById('imp-confirm').disabled=true;parsedImport=[];return;}
+  parsedImport=parseMetaData(txt);
+  wrap.style.display='block';
+  document.getElementById('imp-count').textContent=`${parsedImport.length} lead${parsedImport.length!==1?'s':''} detectado${parsedImport.length!==1?'s':''}`;
+  document.getElementById('imp-preview').innerHTML=parsedImport.slice(0,15).map(l=>`
+    <div class="import-row">
+      <div class="iname">${l.n}</div>
+      <div class="iph">${l.ph}</div>
+      <div class="istat sp s-novo" style="font-size:10px">Novo</div>
+    </div>`).join('')+(parsedImport.length>15?`<div style="font-size:11px;color:var(--text3);padding:6px 0">... e mais ${parsedImport.length-15} leads</div>`:'');
+  document.getElementById('imp-confirm').disabled=parsedImport.length===0;
+}
+
+function parseMetaData(txt){
+  const lines=txt.split('\n').map(l=>l.trim()).filter(l=>l&&l.length>3);
+  const result=[];
+  const seen=new Set();
+  const owner=document.getElementById('imp-owner').value;
+  const ft=document.getElementById('imp-fonte').value;
+  const st=document.getElementById('imp-status').value;
+  const defaultDate=document.getElementById('imp-date').value;
+  
+  // Detect separator
+  const sep=txt.includes('\t')?'\t':txt.includes(';')?';':txt.includes('|')?'|':',';
+  
+  // Skip header line
+  const startIdx=(lines[0].toLowerCase().includes('nome')||lines[0].toLowerCase().includes('name')||lines[0].toLowerCase().includes('email')||lines[0].toLowerCase().includes('telefone'))?1:0;
+  
+  for(let i=startIdx;i<lines.length;i++){
+    const line=lines[i];
+    const parts=line.split(sep).map(p=>p.trim().replace(/^["']|["']$/g,''));
+    
+    let name='',phone='',email='',date='';
+    
+    // Extract phone
+    const phoneMatch=line.match(/(\+?[\d\s\-()]{10,20})/g)||[];
+    phone=phoneMatch.find(p=>p.replace(/\D/g,'').length>=9)||'—';
+    
+    // Extract email
+    const emailMatch=line.match(/[\w.+-]+@[\w.-]+\.[a-z]{2,}/i);
+    email=emailMatch?emailMatch[0]:'—';
+    
+    // Extract date
+    const dateMatch=line.match(/(\d{1,2})[\/\-](\d{1,2})(?:[\/\-](\d{2,4}))?/);
+    if(dateMatch){
+      const dd=dateMatch[1].padStart(2,'0'),mm=dateMatch[2].padStart(2,'0');
+      date=dd+'/'+mm;
+    } else if(defaultDate){
+      const d=defaultDate.split('-');date=d[2]+'/'+d[1];
+    }
+    
+    // Extract name: largest part that isn't phone, email or date
+    const candidates=parts.filter(p=>p&&!/^[\d\s\+\-()]{8,}$/.test(p)&&!p.includes('@')&&!/^\d{1,2}[\/\-]\d{1,2}/.test(p)&&p.length>2);
+    name=candidates[0]||parts[0]||'Lead '+result.length;
+    name=name.replace(/^\d+\s*/,'').trim();
+    if(!name||name.length<2) continue;
+    
+    const key=name.toLowerCase()+phone;
+    if(seen.has(key)) continue;
+    seen.add(key);
+    
+    const init=name.split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase();
+    const mo=defaultDate?defaultDate.split('-')[1]:(date?date.split('/')[1]:'');
+    result.push({id:Date.now()+result.length,n:name,in:init,av:AVC[result.length%7],
+      ph:phone,em:email,ft,ow:owner,st,d:date||'—',mo,ob:'Importado do Meta Ads'});
+  }
+  return result;
+}
+
+function confirmImport(){
+  if(!parsedImport.length)return;
+  parsedImport.forEach(l=>LEADS.unshift(l));
+  parsedImport=[];
+  document.getElementById('imp-text').value='';
+  document.getElementById('import-preview-wrap').style.display='none';
+  document.getElementById('imp-confirm').disabled=true;
+  closeModal('import');
+  applyFilter();
+  showToast(`✅ ${parsedImport.length||'Leads'} importados com sucesso!`);
+}
+
+// ===== STATS =====
+function renderStats(){
+  const edu=LEADS.filter(l=>l.ow==='Eduardo').length;
+  const mar=LEADS.filter(l=>l.ow==='Mardila').length;
+  const ind=LEADS.filter(l=>l.ow==='INDEFINIDO').length;
+  const ig=LEADS.filter(l=>l.ft==='IG').length;
+  const fb=LEADS.filter(l=>l.ft==='FB').length;
+  const byMo=[['Jan','01'],['Fev','02'],['Mar','03'],['Abr','04'],['Mai','05']].map(([name,mo])=>({name,cnt:LEADS.filter(l=>l.mo===mo).length}));
+  const maxMo=Math.max(...byMo.map(m=>m.cnt),1);
+  const statusRows=Object.entries(SL).map(([k,v])=>{const cnt=LEADS.filter(l=>l.st===k).length;const pct=Math.round(cnt/LEADS.length*100);
+    return `<div class="bar-row"><div class="bar-lbl"><span class="sp ${SP[k]}" style="font-size:10px">${v}</span></div><div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${SCOLOR[k]}"></div></div><div class="bar-cnt">${cnt}</div></div>`;}).join('');
+  const moRows=byMo.map(m=>`<div class="bar-row"><div class="bar-lbl" style="font-size:12px;color:var(--text2)">${m.name}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(m.cnt/maxMo*100)}%;background:var(--blue)"></div></div><div class="bar-cnt">${m.cnt}</div></div>`).join('');
+  document.getElementById('stats-panel').innerHTML=`
+    <div class="stats-left">
+      <div class="stat-card" style="margin-bottom:10px"><div class="stat-n">${LEADS.length}</div><div class="stat-l">Total de leads</div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+        <div class="stat-card"><div class="stat-n" style="color:var(--teal);font-size:22px">${LEADS.filter(l=>l.st==='venda').length}</div><div class="stat-l">Vendas</div></div>
+        <div class="stat-card"><div class="stat-n" style="color:var(--green);font-size:22px">${LEADS.filter(l=>l.st==='agendado').length}</div><div class="stat-l">Agendados</div></div>
+        <div class="stat-card"><div class="stat-n" style="color:var(--amber);font-size:22px">${LEADS.filter(l=>l.st==='cotacao').length}</div><div class="stat-l">Cotações</div></div>
+        <div class="stat-card"><div class="stat-n" style="color:var(--pink);font-size:22px">${LEADS.filter(l=>l.st==='followup').length}</div><div class="stat-l">Follow-ups</div></div>
+      </div>
+      <div class="stat-card">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:8px;font-weight:600;letter-spacing:.04em;text-transform:uppercase">Por responsável</div>
+        <div class="bar-row"><div class="bar-lbl">Eduardo</div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(edu/LEADS.length*100)}%;background:var(--blue)"></div></div><div class="bar-cnt">${edu}</div></div>
+        <div class="bar-row"><div class="bar-lbl">Mardila</div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(mar/LEADS.length*100)}%;background:var(--green)"></div></div><div class="bar-cnt">${mar}</div></div>
+        <div class="bar-row"><div class="bar-lbl">Sem dono</div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(ind/LEADS.length*100)}%;background:var(--gray)"></div></div><div class="bar-cnt">${ind}</div></div>
+      </div>
+      <div class="stat-card" style="margin-top:8px">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:8px;font-weight:600;letter-spacing:.04em;text-transform:uppercase">Por fonte</div>
+        <div class="bar-row"><div class="bar-lbl">Instagram</div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(ig/LEADS.length*100)}%;background:var(--pink)"></div></div><div class="bar-cnt">${ig}</div></div>
+        <div class="bar-row"><div class="bar-lbl">Facebook</div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(fb/LEADS.length*100)}%;background:var(--blue)"></div></div><div class="bar-cnt">${fb}</div></div>
+      </div>
+    </div>
+    <div class="stats-right">
+      <div class="stat-card" style="margin-bottom:10px">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase">Por status</div>
+        ${statusRows}
+      </div>
+      <div class="stat-card">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase">Leads por mês</div>
+        ${moRows}
+      </div>
+    </div>`;
+}
+
+// ===== EXPORT CSV =====
+function exportCSV(){
+  const header='Data,Nome,Telefone,Email,Status,Responsável,Fonte,Observação';
+  const rows=filtered.map(l=>[l.d,`"${l.n}"`,l.ph,l.em,SL[l.st],l.ow,l.ft,`"${l.ob||''}"`].join(','));
+  const csv=[header,...rows].join('\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='leads-crm-'+new Date().toISOString().split('T')[0]+'.csv';a.click();
+  showToast('⬇ CSV exportado com '+filtered.length+' leads');
+}
+
+// ===== TOAST =====
+function showToast(msg,dur=2500){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),dur);
+}
+
+// ===== KEYBOARD =====
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closeSidebar();closeModal('add');closeModal('import');closeModal('stats');}
+  if((e.metaKey||e.ctrlKey)&&e.key==='f'){e.preventDefault();document.getElementById('srch').focus();}
+});
+
+// ===== INIT =====
+document.getElementById('imp-date').value=new Date().toISOString().split('T')[0];
+applyFilter();
+</script>
+</body>
+</html>
