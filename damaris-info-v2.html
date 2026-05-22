@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Damaris · Informações Importantes · MetLife</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:#0D0F14;--surface:#161920;--surface3:#252A3A;
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.05);
+  --text:#F1F3F9;--text2:#9AA3B2;--text3:#5A6478;
+  --blue:#3B82F6;--blue-dk:#1D4ED8;--blue-lt:rgba(59,130,246,.15);
+  --teal:#10B981;--teal-lt:rgba(16,185,129,.15);
+  --green:#22C55E;--green-lt:rgba(34,197,94,.12);
+  --amber:#F59E0B;--amber-lt:rgba(245,158,11,.12);
+  --red:#EF4444;--red-lt:rgba(239,68,68,.12);
+  --r:12px;--r-lg:18px;
+}
+html{background:var(--bg)}
+body{font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(--bg);max-width:430px;margin:0 auto;min-height:100vh;-webkit-font-smoothing:antialiased;padding-bottom:80px}
+
+/* TOPBAR */
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topbar-brand{display:flex;align-items:center;gap:10px}
+.topbar-logo{width:30px;height:30px;border-radius:8px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff}
+.topbar-title{font-size:14px;font-weight:700;color:var(--text)}
+.topbar-ref{font-size:10px;font-weight:600;color:var(--text3);background:var(--surface3);border:1px solid var(--border);border-radius:100px;padding:4px 10px;letter-spacing:.04em}
+
+/* STATUS BAR */
+.status-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;justify-content:space-between}
+.status-badge{display:flex;align-items:center;gap:7px;background:var(--green-lt);border:1px solid rgba(34,197,94,.25);border-radius:100px;padding:4px 12px;font-size:10px;font-weight:800;color:var(--green);letter-spacing:.06em;text-transform:uppercase}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.status-date{font-size:11px;color:var(--text3);font-weight:500}
+
+/* HERO */
+.hero{margin:16px 16px 0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px 22px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-80px;right:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,.18) 0%,transparent 70%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-60px;left:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.12) 0%,transparent 70%);pointer-events:none}
+.hero-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;position:relative;z-index:1}
+.hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue)}
+.hero-badge{display:flex;align-items:center;gap:5px;background:var(--blue-lt);border:1px solid rgba(59,130,246,.25);border-radius:100px;padding:3px 10px;font-size:10px;font-weight:700;color:var(--blue)}
+.hero-name{font-size:32px;font-weight:900;color:var(--text);line-height:1.1;letter-spacing:-.04em;margin-bottom:8px;position:relative;z-index:1}
+.hero-sub{font-size:13px;color:var(--text2);line-height:1.6;position:relative;z-index:1}
+
+/* APOLICE BAND */
+.apolice-band{margin:10px 16px 0;background:linear-gradient(135deg,var(--blue-dk) 0%,#1e40af 100%);border-radius:var(--r-lg);padding:20px 22px;position:relative;overflow:hidden}
+.apolice-band::before{content:'';position:absolute;top:-40px;right:-30px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.08);pointer-events:none}
+.ab-label{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:6px}
+.ab-number{font-size:34px;font-weight:900;color:#fff;letter-spacing:-.04em;line-height:1}
+.ab-right{text-align:right}
+.ab-note{font-size:11px;color:rgba(255,255,255,.5);margin-bottom:8px}
+.ab-pill{border-radius:100px;padding:4px 12px;font-size:10px;font-weight:800;letter-spacing:.04em;background:rgba(255,255,255,.2);color:#fff;display:inline-block}
+
+/* SECTION PADDING */
+.pad{padding:16px 16px 0}
+.sec-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.sec-num{width:22px;height:22px;border-radius:6px;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--blue-lt);color:var(--blue)}
+.sec-num-grey{background:var(--surface3);color:var(--text2)}
+.sec-title{font-size:12px;font-weight:700;color:var(--text);letter-spacing:-.01em;flex:1}
+
+/* INFO CARD */
+.info-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.info-row{display:flex;align-items:center;padding:14px 16px;gap:12px;border-bottom:1px solid var(--border2)}
+.info-row:last-child{border-bottom:none}
+.info-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.icon-blue{background:var(--blue-lt)}
+.icon-teal{background:var(--teal-lt)}
+.icon-amber{background:var(--amber-lt)}
+.icon-grey{background:var(--surface3)}
+.info-body{flex:1;min-width:0}
+.info-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:3px}
+.info-value{font-size:14px;font-weight:700;color:var(--text);line-height:1.3}
+.info-value a{color:var(--blue);text-decoration:none}
+.info-sub{font-size:11px;color:var(--text3);margin-top:2px}
+.info-badge{flex-shrink:0;font-size:11px;font-weight:800;color:var(--green);background:var(--green-lt);border:1px solid rgba(34,197,94,.2);border-radius:100px;padding:3px 10px}
+
+/* VENCIMENTO HIGHLIGHT */
+.venc-band{margin:10px 16px 0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px 20px;display:flex;justify-content:space-between;align-items:center;position:relative;overflow:hidden}
+.venc-band::before{content:'';position:absolute;top:-30px;right:-20px;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(245,158,11,.15) 0%,transparent 70%);pointer-events:none}
+.vb-left{}
+.vb-label{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--text3);margin-bottom:4px}
+.vb-value{font-size:28px;font-weight:900;color:var(--text);letter-spacing:-.04em;line-height:1}
+.vb-sub{font-size:11px;color:var(--text3);margin-top:4px}
+.vb-pill{background:var(--amber-lt);border:1px solid rgba(245,158,11,.3);border-radius:100px;padding:5px 14px;font-size:11px;font-weight:800;color:var(--amber)}
+
+/* CLAIM SECTION */
+.claim-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.claim-head{background:var(--red-lt);border-bottom:1px solid rgba(239,68,68,.2);padding:12px 16px;display:flex;align-items:center;gap:8px}
+.claim-head-icon{font-size:16px}
+.claim-head-title{font-size:12px;font-weight:800;color:var(--red);text-transform:uppercase;letter-spacing:.07em}
+.claim-row{display:flex;align-items:flex-start;padding:14px 16px;gap:12px;border-bottom:1px solid var(--border2)}
+.claim-row:last-child{border-bottom:none}
+.claim-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;background:var(--surface3)}
+.claim-body{flex:1;min-width:0}
+.claim-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:3px}
+.claim-value{font-size:14px;font-weight:700;color:var(--text)}
+.claim-value a{color:var(--blue);text-decoration:none}
+.claim-note{font-size:11px;color:var(--text3);margin-top:2px}
+
+/* ALERT CARD */
+.alert-card{margin:10px 16px 0;background:var(--surface);border:1px solid rgba(16,185,129,.2);border-radius:var(--r-lg);padding:20px;position:relative;overflow:hidden}
+.alert-card::before{content:'';position:absolute;bottom:-40px;right:-20px;width:130px;height:130px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.1) 0%,transparent 70%);pointer-events:none}
+.alert-headline{font-size:15px;font-weight:800;color:var(--text);margin-bottom:6px;position:relative;z-index:1}
+.alert-text{font-size:13px;color:var(--text2);line-height:1.65;position:relative;z-index:1}
+
+/* ADVISOR */
+.advisor-card{margin:10px 16px 0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px 20px}
+.advisor-row{display:flex;align-items:center;gap:12px}
+.adv-av{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--blue) 0%,var(--teal) 100%);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff;flex-shrink:0;border:2px solid var(--border)}
+.adv-name{font-size:14px;font-weight:800;color:var(--text)}
+.adv-role{font-size:11px;color:var(--text3);margin-top:2px}
+.adv-fca{margin-left:auto;background:var(--green-lt);border:1px solid rgba(34,197,94,.2);border-radius:100px;padding:4px 10px;font-size:10px;font-weight:800;color:var(--green)}
+
+/* LEGAL */
+.legal{padding:20px 20px 48px;font-size:10px;color:var(--text3);line-height:1.9;text-align:center}
+
+/* PRINT BTN */
+#print-btn{position:fixed;bottom:24px;right:50%;transform:translateX(50%);background:var(--blue);color:#fff;border:none;border-radius:50px;padding:13px 26px;font-family:'Inter',sans-serif;font-size:13px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 8px 32px rgba(59,130,246,.4);z-index:999;white-space:nowrap}
+
+/* ANIMATIONS */
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.hero{animation:rise .4s ease both}
+.apolice-band{animation:rise .4s .05s ease both}
+.pad{animation:rise .4s .09s ease both}
+
+/* PRINT */
+@page{size:A4;margin:0}
+@media print{
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  html,body{width:100%!important;max-width:100%!important;margin:0!important;padding:0!important;background:#0D0F14!important}
+  #print-btn{display:none!important}
+  *{animation:none!important}
+}
+</style>
+</head>
+<body>
+
+<button id="print-btn" onclick="window.print()">📄 Guardar como PDF</button>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-logo">M</div>
+    <div class="topbar-title">Informações Importantes</div>
+  </div>
+  <div class="topbar-ref">MPS097753</div>
+</div>
+
+<!-- STATUS BAR -->
+<div class="status-bar">
+  <div class="status-badge"><div class="status-dot"></div>MetLife · Ativa</div>
+  <div class="status-date">Maio de 2026</div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-top">
+    <div class="hero-eyebrow">Proteção Total MetLife</div>
+    <div class="hero-badge">● MetLife · FCA</div>
+  </div>
+  <div class="hero-name">Damaris<br>Souza Dias</div>
+  <div class="hero-sub">Todas as informações importantes da sua apólice reunidas num só lugar.</div>
+</div>
+
+<!-- NÚMERO DA APÓLICE -->
+<div class="apolice-band">
+  <div>
+    <div class="ab-label">Número da apólice</div>
+    <div class="ab-number">MPS097753</div>
+  </div>
+  <div class="ab-right">
+    <div class="ab-note">MetLife Proteção Total</div>
+    <div class="ab-pill">Apólice Ativa</div>
+  </div>
+</div>
+
+<!-- VENCIMENTO -->
+<div class="venc-band">
+  <div class="vb-left">
+    <div class="vb-label">Vencimento do seguro</div>
+    <div class="vb-value">Todo dia 05</div>
+    <div class="vb-sub">Débito automático mensal</div>
+  </div>
+  <div class="vb-pill">⏰ Mensal</div>
+</div>
+
+<!-- SITES E ACESSO -->
+<div class="pad">
+  <div class="sec-header">
+    <div class="sec-num">🌐</div>
+    <div class="sec-title">Sites e Acesso</div>
+  </div>
+  <div class="info-card">
+    <div class="info-row">
+      <div class="info-icon icon-blue">🖥️</div>
+      <div class="info-body">
+        <div class="info-label">Portal do Cliente</div>
+        <div class="info-value"><a href="https://www.metlife.co.uk" target="_blank">www.metlife.co.uk</a></div>
+        <div class="info-sub">Acesse sua apólice online 24h</div>
+      </div>
+    </div>
+    <div class="info-row">
+      <div class="info-icon icon-teal">📱</div>
+      <div class="info-body">
+        <div class="info-label">App MetLife</div>
+        <div class="info-value">App Store &amp; Google Play</div>
+        <div class="info-sub">Pesquise "MetLife UK" para descarregar</div>
+      </div>
+    </div>
+    <div class="info-row">
+      <div class="info-icon icon-blue">📞</div>
+      <div class="info-body">
+        <div class="info-label">Telefone MetLife (UK)</div>
+        <div class="info-value"><a href="tel:08009171333">0800 917 1333</a></div>
+        <div class="info-sub">Ligação gratuita do Reino Unido</div>
+      </div>
+      <div class="info-badge">Gratuito</div>
+    </div>
+    <div class="info-row">
+      <div class="info-icon icon-grey">🌍</div>
+      <div class="info-body">
+        <div class="info-label">No Exterior</div>
+        <div class="info-value"><a href="tel:+442034307681">+44 (0) 203 430 7681</a></div>
+        <div class="info-sub">Fora do Reino Unido</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COMO FAZER UM CLAIM -->
+<div class="pad">
+  <div class="sec-header">
+    <div class="sec-num" style="background:var(--red-lt);color:var(--red);">🚨</div>
+    <div class="sec-title">Como Acionar o Seguro (Claim)</div>
+  </div>
+  <div class="claim-card">
+    <div class="claim-head">
+      <div class="claim-head-icon">🚨</div>
+      <div class="claim-head-title">MetLife Claims — Passo a Passo</div>
+    </div>
+    <div class="claim-row">
+      <div class="claim-icon">📞</div>
+      <div class="claim-body">
+        <div class="claim-label">Telefone Claims</div>
+        <div class="claim-value"><a href="tel:08009170100">0800 917 0100</a> — opção 2</div>
+        <div class="claim-note">Ligação gratuita · Reino Unido</div>
+      </div>
+    </div>
+    <div class="claim-row">
+      <div class="claim-icon">📧</div>
+      <div class="claim-body">
+        <div class="claim-label">E-mail Claims</div>
+        <div class="claim-value"><a href="mailto:claims@metlife.uk.com">claims@metlife.uk.com</a></div>
+        <div class="claim-note">Resposta em até 2 dias úteis</div>
+      </div>
+    </div>
+    <div class="claim-row">
+      <div class="claim-icon">⏰</div>
+      <div class="claim-body">
+        <div class="claim-label">Horário de Atendimento</div>
+        <div class="claim-value">Segunda a Sexta · 9h às 17h</div>
+        <div class="claim-note">Horário do Reino Unido (GMT/BST)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ALERT -->
+<div class="alert-card">
+  <div class="alert-headline">💬 Precisa de ajuda?</div>
+  <div class="alert-text">Qualquer dúvida ou se precisar de ajuda em qualquer etapa do processo, é só me chamar. Estou aqui para orientar você em cada passo. 👍</div>
+</div>
+
+<!-- ADVISOR -->
+<div class="advisor-card">
+  <div class="advisor-row">
+    <div class="adv-av">E</div>
+    <div>
+      <div class="adv-name">Eduardo Santos 🇬🇧</div>
+      <div class="adv-role">Licensed Protection Adviser · Reino Unido</div>
+    </div>
+    <div class="adv-fca">✓ FCA</div>
+  </div>
+</div>
+
+<!-- LEGAL -->
+<div class="legal">
+  Apólice MetLife Proteção Total · Ref. MPS097753<br>
+  Em caso de sinistro, contacte directamente a MetLife com os dados acima.<br>
+  MetLife Europe d.a.c. · Autorizado pela FCA · Escritório Reino Unido
+</div>
+
+</body>
+</html>
