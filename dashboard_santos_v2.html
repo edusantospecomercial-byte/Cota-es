@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>Família Santos · Finanças</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{
+  background:#0a0a0f;
+  color:#eaeaf5;
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',system-ui,sans-serif;
+  min-height:100vh;
+  padding-bottom:48px;
+  overscroll-behavior:none;
+}
+:root{
+  --g:#22c55e; --gd:#16a34a; --gbg:#051a0d;
+  --r:#ef4444; --rbg:#200a0a;
+  --a:#f59e0b; --abg:#201200;
+  --b:#60a5fa; --bbg:#06101e;
+  --s:#141420; --s2:#1a1a28; --s3:#222234; --s4:#2c2c42;
+  --br:#2e2e44; --mu:#6060808; --tx:#eaeaf5; --tx2:#a0a0be;
+  --h:#0e0e18;
+}
+
+/* ─ PAGE ─ */
+.page{max-width:430px;margin:0 auto}
+
+/* ─ HEADER ─ */
+.hd{
+  background:var(--h);
+  padding:52px 20px 20px;
+  border-bottom:1px solid var(--br);
+  position:sticky;top:0;z-index:20;
+}
+.hd-inner{display:flex;justify-content:space-between;align-items:flex-start}
+.hd-lbl{font-size:11px;color:#6060a0;text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px}
+.hd-title{font-size:28px;font-weight:700;letter-spacing:-.6px;color:var(--tx)}
+.hd-pill{
+  background:var(--s3);border:1px solid var(--br);
+  border-radius:12px;padding:8px 14px;text-align:center;
+}
+.hd-pill-lbl{font-size:9px;color:#6060a0;text-transform:uppercase;letter-spacing:.1em}
+.hd-pill-val{font-size:14px;font-weight:600;color:var(--tx);margin-top:2px}
+
+/* ─ CARDS ─ */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:16px}
+.card{
+  background:var(--s);border:1px solid var(--br);
+  border-radius:18px;padding:16px 14px;
+  position:relative;overflow:hidden;
+}
+.card-accent{
+  position:absolute;top:0;left:0;right:0;height:3px;border-radius:18px 18px 0 0;
+}
+.card-lbl{font-size:10px;color:#6060a0;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+.card-val{font-size:20px;font-weight:700;letter-spacing:-.4px;line-height:1}
+.card-sub{font-size:10px;margin-top:6px;color:#6060a0}
+
+/* ─ PROGRESS ─ */
+.prog{
+  margin:0 16px 4px;
+  background:var(--s);border:1px solid var(--br);
+  border-radius:18px;padding:18px;
+}
+.prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.prog-lbl{font-size:12px;color:#6060a0}
+.prog-pct{font-size:14px;font-weight:700;color:var(--g)}
+.prog-track{background:var(--s3);border-radius:99px;height:8px;overflow:hidden}
+.prog-bar{height:100%;border-radius:99px;background:linear-gradient(90deg,#14532d,#22c55e);transition:width .9s cubic-bezier(.4,0,.2,1)}
+.prog-legs{display:flex;justify-content:space-between;margin-top:10px}
+.prog-legs span{font-size:10px}
+
+/* ─ ALERTAS ─ */
+.alertas{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px 16px}
+.alerta{background:var(--s);border:1px solid var(--br);border-radius:14px;padding:12px 8px;text-align:center}
+.alerta-num{font-size:22px;font-weight:700;line-height:1;margin-bottom:4px}
+.alerta-lbl{font-size:9px;color:#6060a0;text-transform:uppercase;letter-spacing:.06em;line-height:1.3}
+
+/* ─ TABS ─ */
+.tabs-wrap{padding:8px 16px 0}
+.tabs{
+  display:flex;background:var(--s);border:1px solid var(--br);
+  border-radius:14px;padding:4px;gap:3px;
+}
+.tab{
+  flex:1;padding:10px 2px;border-radius:10px;border:none;
+  font-size:11px;font-weight:600;cursor:pointer;
+  background:transparent;color:#6060a0;transition:.15s;
+  -webkit-appearance:none;
+}
+.tab.on{background:var(--g);color:#031a08}
+
+/* ─ SEC LABEL ─ */
+.sec-lbl{
+  font-size:10px;color:#6060a0;text-transform:uppercase;
+  letter-spacing:.1em;padding:14px 16px 8px;
+}
+
+/* ─ LISTA ─ */
+.lista{padding:0 16px}
+.item{
+  background:var(--s);border:1px solid var(--br);
+  border-radius:16px;padding:15px 16px;margin-bottom:8px;
+  cursor:pointer;display:flex;align-items:center;gap:12px;
+  transition:transform .12s,border-color .2s,background .2s;
+  -webkit-user-select:none;user-select:none;
+  min-height:70px;
+}
+.item:active{transform:scale(.975);opacity:.9}
+.item.pago{border-color:#22c55e28;background:#051a0d}
+.item.atrasado{border-color:#ef444440;background:#200a0a}
+.item.proximo{border-color:#f59e0b40;background:#201200}
+.item.uk{border-color:#60a5fa28}
+.icon{font-size:26px;min-width:38px;text-align:center}
+.item-body{flex:1;min-width:0}
+.row1{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px}
+.nome{
+  font-size:14px;font-weight:600;color:var(--tx);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  max-width:185px;line-height:1.2;
+}
+.valor{font-size:15px;font-weight:700;white-space:nowrap;line-height:1.2}
+.row2{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.badge{font-size:10px;font-weight:700;padding:3px 10px;border-radius:99px}
+.bpago{background:#051a0d;color:var(--g)}
+.batrasado{background:#200a0a;color:var(--r)}
+.bproximo{background:#201200;color:var(--a)}
+.bhoje{background:#200a0a;color:var(--r)}
+.bpend{background:var(--s3);color:#6060a0}
+.item-meta{font-size:10px;color:#6060a0}
+
+/* ─ SEMANAS ─ */
+.sems{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 16px}
+.sem{background:var(--s);border:1px solid var(--br);border-radius:16px;padding:16px}
+.sem-lbl{font-size:10px;color:#6060a0;margin-bottom:6px;line-height:1.3}
+.sem-val{font-size:19px;font-weight:700;color:var(--tx);letter-spacing:-.4px}
+.sem-sub{font-size:10px;margin-top:5px}
+
+/* ─ EMPTY ─ */
+.empty{text-align:center;padding:36px 20px;color:#6060a0;font-size:13px}
+
+/* ─ TOAST ─ */
+.toast{
+  position:fixed;bottom:32px;left:50%;
+  transform:translateX(-50%) translateY(10px);
+  background:var(--g);color:#031a08;
+  font-size:13px;font-weight:700;
+  padding:12px 26px;border-radius:99px;
+  opacity:0;transition:.22s;
+  pointer-events:none;z-index:99;white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="hd">
+    <div class="hd-inner">
+      <div>
+        <div class="hd-lbl">Família Santos</div>
+        <div class="hd-title" id="mes-label">—</div>
+      </div>
+      <div class="hd-pill">
+        <div class="hd-pill-lbl">Hoje</div>
+        <div class="hd-pill-val" id="today-label">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUMMARY CARDS -->
+  <div class="cards">
+    <div class="card">
+      <div class="card-accent" style="background:var(--s4)"></div>
+      <div class="card-lbl">Total BRL</div>
+      <div class="card-val" id="c-total">—</div>
+      <div class="card-sub" id="c-total-sub"></div>
+    </div>
+    <div class="card">
+      <div class="card-accent" style="background:var(--g)"></div>
+      <div class="card-lbl">Pago</div>
+      <div class="card-val" id="c-pago" style="color:var(--g)">—</div>
+      <div class="card-sub" id="c-pago-pct" style="color:var(--gd)">—</div>
+    </div>
+    <div class="card">
+      <div class="card-accent" style="background:var(--a)"></div>
+      <div class="card-lbl">Pendente BRL</div>
+      <div class="card-val" id="c-pend" style="color:var(--a)">—</div>
+      <div class="card-sub" id="c-pend-sub"></div>
+    </div>
+    <div class="card">
+      <div class="card-accent" style="background:var(--b)"></div>
+      <div class="card-lbl">Contas</div>
+      <div class="card-val" style="color:var(--tx)">
+        <span id="c-pagas">—</span>/<span id="c-tot-ct">—</span>
+      </div>
+      <div class="card-sub" id="c-ct-sub" style="color:#6060a0">pagas</div>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="prog">
+    <div class="prog-top">
+      <span class="prog-lbl">Progresso do mês</span>
+      <span class="prog-pct" id="prog-pct">0%</span>
+    </div>
+    <div class="prog-track">
+      <div class="prog-bar" id="prog-bar" style="width:0%"></div>
+    </div>
+    <div class="prog-legs">
+      <span style="color:var(--g)" id="leg-pago">—</span>
+      <span style="color:var(--a)" id="leg-pend">—</span>
+    </div>
+  </div>
+
+  <!-- ALERTAS -->
+  <div class="alertas">
+    <div class="alerta">
+      <div class="alerta-num" id="al-atrasado" style="color:var(--r)">0</div>
+      <div class="alerta-lbl">Atrasadas</div>
+    </div>
+    <div class="alerta">
+      <div class="alerta-num" id="al-hoje" style="color:var(--a)">0</div>
+      <div class="alerta-lbl">Vencem Hoje</div>
+    </div>
+    <div class="alerta">
+      <div class="alerta-num" id="al-proximo" style="color:var(--b)">0</div>
+      <div class="alerta-lbl">Próx 3 dias</div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs-wrap">
+    <div class="tabs">
+      <button class="tab on" onclick="setTab('todas',this)">Todas</button>
+      <button class="tab"    onclick="setTab('pendente',this)">Pendente</button>
+      <button class="tab"    onclick="setTab('pago',this)">Pago</button>
+      <button class="tab"    onclick="setTab('uk',this)">🇬🇧 UK</button>
+    </div>
+  </div>
+
+  <div class="sec-lbl">Toque para marcar como pago</div>
+  <div class="lista" id="lista"></div>
+
+  <!-- SEMANAS -->
+  <div class="sec-lbl" style="margin-top:8px">Distribuição Semanal</div>
+  <div class="sems" id="sems"></div>
+
+</div><!-- /page -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────────────
+// Edite aqui sempre que precisar atualizar as contas
+// CAMPOS: nome, categoria, valor (número), venc (dia do mês ou null), moeda ('BRL' ou 'GBP'), obs
+const CONTAS_ORIGINAIS = [
+  {nome:"Aluguel Brasil",       cat:"Casa",        valor:8000,  venc:null, moeda:"BRL", obs:""},
+  {nome:"Cartão de Crédito",    cat:"Outros",      valor:0,     venc:4,    moeda:"BRL", obs:""},
+  {nome:"Santa Bárbara",        cat:"Casa",        valor:1400,  venc:5,    moeda:"BRL", obs:""},
+  {nome:"Davi Empréstimo",      cat:"Outros",      valor:1200,  venc:5,    moeda:"BRL", obs:""},
+  {nome:"Carro",                cat:"Transporte",  valor:1800,  venc:5,    moeda:"BRL", obs:""},
+  {nome:"Combustível",          cat:"Transporte",  valor:200,   venc:5,    moeda:"BRL", obs:""},
+  {nome:"Claro Telefones",      cat:"Assinaturas", valor:175,   venc:10,   moeda:"BRL", obs:""},
+  {nome:"Jiu-Jitsu",            cat:"Educação",    valor:0,     venc:10,   moeda:"BRL", obs:""},
+  {nome:"Sabesp",               cat:"Casa",        valor:134,   venc:10,   moeda:"BRL", obs:""},
+  {nome:"Tráfego Luiz",         cat:"Negócios",    valor:1000,  venc:19,   moeda:"BRL", obs:""},
+  {nome:"Internet de Casa",     cat:"Casa",        valor:191,   venc:null, moeda:"BRL", obs:""},
+  {nome:"Energisa",             cat:"Casa",        valor:697,   venc:null, moeda:"BRL", obs:""},
+  {nome:"Tráfego Anúncio",      cat:"Negócios",    valor:1000,  venc:null, moeda:"BRL", obs:""},
+  {nome:"Piscineiro",           cat:"Casa",        valor:350,   venc:null, moeda:"BRL", obs:""},
+  {nome:"Danuza",               cat:"Outros",      valor:260,   venc:null, moeda:"BRL", obs:""},
+  {nome:"Débito Davi",          cat:"Outros",      valor:10000, venc:null, moeda:"BRL", obs:"Pagamos R$1.200"},
+  {nome:"Débito Terreno",       cat:"Outros",      valor:1200,  venc:null, moeda:"BRL", obs:"Pagamos R$2.400"},
+  {nome:"Compra da Semana",     cat:"Alimentação", valor:800,   venc:null, moeda:"BRL", obs:"Toda Sexta"},
+  {nome:"Tráfego Semanal",      cat:"Negócios",    valor:800,   venc:null, moeda:"BRL", obs:"Toda Sexta"},
+  {nome:"Council Tax",          cat:"Casa",        valor:1960,  venc:null, moeda:"GBP", obs:""},
+  {nome:"Cartão CapitalOne",    cat:"Assinaturas", valor:521,   venc:null, moeda:"GBP", obs:""},
+  {nome:"Água UK",              cat:"Casa",        valor:559,   venc:null, moeda:"GBP", obs:""},
+  {nome:"Cartão Amex",          cat:"Assinaturas", valor:150,   venc:null, moeda:"GBP", obs:""},
+  {nome:"Vodafone",             cat:"Assinaturas", valor:200,   venc:null, moeda:"GBP", obs:""},
+  {nome:"Seguro Vida Mardila",  cat:"Saúde",       valor:38,    venc:null, moeda:"GBP", obs:""},
+  {nome:"Skype",                cat:"Assinaturas", valor:18,    venc:null, moeda:"GBP", obs:""},
+  {nome:"Netflix",              cat:"Assinaturas", valor:11,    venc:null, moeda:"GBP", obs:""},
+  {nome:"Amazon Prime",         cat:"Assinaturas", valor:9,     venc:null, moeda:"GBP", obs:""},
+];
+
+// Status inicial de pagamento — TRUE = pago
+// Baseado nos dados que você enviou
+const PAGO_INICIAL = {
+  "Santa Bárbara":true,
+  "Claro Telefones":true,
+  "Jiu-Jitsu":true,
+  "Sabesp":true,
+  "Internet de Casa":true,
+  "Energisa":true,
+  "Tráfego Luiz":true,
+  "Tráfego Anúncio":true,
+  "Piscineiro":true,
+  "Danuza":true,
+  "Débito Davi":true,
+  "Débito Terreno":true,
+};
+
+// ─── ÍCONES ─────────────────────────────────────────────────────────────────
+const ICONS = {
+  Casa:"🏠", Assinaturas:"📱", Educação:"🥋",
+  Outros:"💼", Negócios:"📊", Alimentação:"🛒",
+  Transporte:"🚗", Saúde:"🛡️", Igreja:"⛪",
+};
+
+// ─── ESTADO ──────────────────────────────────────────────────────────────────
+const SK = "santos_v3";
+let CONTAS = [];
+let TAB = "todas";
+
+function init(){
+  // data
+  const today = new Date();
+  const dayNum = today.getDate();
+  document.getElementById("today-label").textContent =
+    today.toLocaleDateString("pt-BR",{day:"2-digit",month:"short"});
+  document.getElementById("mes-label").textContent =
+    today.toLocaleDateString("pt-BR",{month:"long",year:"numeric"})
+      .replace(/^\w/,c=>c.toUpperCase());
+
+  // build contas com estado salvo
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem(SK)||"{}"); } catch(e){}
+
+  CONTAS = CONTAS_ORIGINAIS.map(c=>({
+    ...c,
+    pago: saved[c.nome] !== undefined ? saved[c.nome] : (PAGO_INICIAL[c.nome]||false)
+  }));
+
+  renderAll();
+}
+
+// ─── RENDER ──────────────────────────────────────────────────────────────────
+function renderAll(){
+  const today  = new Date();
+  const dayNum = today.getDate();
+
+  const brl   = CONTAS.filter(c=>c.moeda==="BRL");
+  const gbp   = CONTAS.filter(c=>c.moeda==="GBP");
+  const tBRL  = brl.reduce((s,c)=>s+c.valor,0);
+  const pBRL  = brl.filter(c=>c.pago).reduce((s,c)=>s+c.valor,0);
+  const ndBRL = brl.filter(c=>!c.pago).reduce((s,c)=>s+c.valor,0);
+  const tGBP  = gbp.reduce((s,c)=>s+c.valor,0);
+  const ndGBP = gbp.filter(c=>!c.pago).reduce((s,c)=>s+c.valor,0);
+  const ctP   = CONTAS.filter(c=>c.pago).length;
+  const ctT   = CONTAS.length;
+  const pct   = tBRL>0 ? Math.round(pBRL/tBRL*100) : 0;
+
+  // Cards
+  R("c-total",   fmt(tBRL,"BRL"));
+  R("c-total-sub", tGBP>0?`+ ${fmt(tGBP,"GBP")} UK`:"");
+  R("c-pago",    fmt(pBRL,"BRL"));
+  R("c-pago-pct",`${pct}% quitado`);
+  R("c-pend",    fmt(ndBRL,"BRL"));
+  R("c-pend-sub",ndGBP>0?`+ ${fmt(ndGBP,"GBP")} pendente UK`:"");
+  R("c-pagas",   ctP);
+  R("c-tot-ct",  ctT);
+  R("c-ct-sub",  `${ctP} pagas · ${ctT-ctP} pendentes`);
+
+  // Progress
+  R("prog-pct",  pct+"%");
+  document.getElementById("prog-bar").style.width = pct+"%";
+  R("leg-pago",  fmt(pBRL,"BRL")+" pago");
+  R("leg-pend",  fmt(ndBRL,"BRL")+" pendente");
+
+  // Alertas
+  const atras  = CONTAS.filter(c=>!c.pago&&c.venc&&c.venc<dayNum).length;
+  const hoje   = CONTAS.filter(c=>!c.pago&&c.venc&&c.venc===dayNum).length;
+  const prox   = CONTAS.filter(c=>!c.pago&&c.venc&&c.venc>dayNum&&c.venc-dayNum<=3).length;
+  R("al-atrasado", atras||"0");
+  R("al-hoje",     hoje||"0");
+  R("al-proximo",  prox||"0");
+
+  renderLista();
+  renderSemanas();
+}
+
+function getStatus(c){
+  const d = new Date().getDate();
+  if(c.pago) return "pago";
+  if(!c.venc) return "pendente";
+  const diff = c.venc - d;
+  if(diff<0)  return "atrasado";
+  if(diff===0) return "hoje";
+  if(diff<=3) return "proximo";
+  return "pendente";
+}
+
+function renderLista(){
+  let list = [...CONTAS];
+  if(TAB==="pendente") list = CONTAS.filter(c=>!c.pago&&c.moeda==="BRL");
+  if(TAB==="pago")     list = CONTAS.filter(c=>c.pago);
+  if(TAB==="uk")       list = CONTAS.filter(c=>c.moeda==="GBP");
+
+  if(!list.length){
+    document.getElementById("lista").innerHTML =
+      `<div class="empty">Nenhuma conta nessa categoria</div>`;
+    return;
+  }
+
+  document.getElementById("lista").innerHTML = list.map(c=>{
+    const st  = getStatus(c);
+    const idx = CONTAS.indexOf(c);
+    const vFmt = c.valor>0 ? fmt(c.valor,c.moeda) : "—";
+    const vColor = c.pago?"var(--g)":c.moeda==="GBP"?"var(--b)":"var(--tx)";
+    const icon = ICONS[c.cat]||"📌";
+
+    const bdg = {
+      pago:    `<span class="badge bpago">✓ Pago</span>`,
+      atrasado:`<span class="badge batrasado">Atrasado</span>`,
+      hoje:    `<span class="badge bhoje">Vence Hoje</span>`,
+      proximo: `<span class="badge bproximo">Em breve</span>`,
+      pendente:`<span class="badge bpend">Pendente</span>`,
+    }[st];
+
+    const cls = {
+      pago:"pago", atrasado:"atrasado", hoje:"atrasado",
+      proximo:"proximo", pendente:c.moeda==="GBP"?"uk":""
+    }[st]||"";
+
+    return `
+    <div class="item ${cls}" onclick="toggle(${idx})">
+      <div class="icon">${icon}</div>
+      <div class="item-body">
+        <div class="row1">
+          <span class="nome">${c.nome}</span>
+          <span class="valor" style="color:${vColor}">${vFmt}</span>
+        </div>
+        <div class="row2">
+          ${bdg}
+          ${c.venc?`<span class="item-meta">Dia ${c.venc}</span>`:""}
+          ${c.obs?`<span class="item-meta">${c.obs}</span>`:""}
+        </div>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function renderSemanas(){
+  const semanas = [
+    {lbl:"Sem 1  ·  Dias 1–7",   range:[1,7]},
+    {lbl:"Sem 2  ·  Dias 8–14",  range:[8,14]},
+    {lbl:"Sem 3  ·  Dias 15–21", range:[15,21]},
+    {lbl:"Sem 4  ·  Dias 22–31", range:[22,31]},
+  ];
+  document.getElementById("sems").innerHTML = semanas.map(s=>{
+    const items = CONTAS.filter(c=>
+      c.moeda==="BRL"&&c.venc&&c.venc>=s.range[0]&&c.venc<=s.range[1]
+    );
+    const total = items.reduce((a,c)=>a+c.valor,0);
+    const pagas = items.filter(c=>c.pago).length;
+    const allPago = pagas===items.length&&items.length>0;
+    return `
+    <div class="sem">
+      <div class="sem-lbl">${s.lbl}</div>
+      <div class="sem-val">${total>0?fmt(total,"BRL"):"—"}</div>
+      <div class="sem-sub" style="color:${allPago?"var(--g)":items.length>0?"var(--a)":"#6060a0"}">
+        ${items.length>0?`${pagas}/${items.length} pagas`:"Sem vencimento fixo"}
+      </div>
+    </div>`;
+  }).join("");
+}
+
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+function fmt(n, moeda){
+  const v = Math.round(n).toLocaleString("pt-BR");
+  return moeda==="GBP" ? `£\u202f${v}` : `R$\u202f${v}`;
+}
+function R(id,val){ document.getElementById(id).textContent = val; }
+
+function toggle(idx){
+  CONTAS[idx].pago = !CONTAS[idx].pago;
+  // persist
+  try{
+    const saved = {};
+    CONTAS.forEach(c=>{ saved[c.nome]=c.pago; });
+    localStorage.setItem(SK, JSON.stringify(saved));
+  }catch(e){}
+  toast(CONTAS[idx].pago ? "✓ Marcado como pago" : "Desmarcado");
+  renderAll();
+}
+
+function setTab(tab, btn){
+  TAB = tab;
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("on"));
+  btn.classList.add("on");
+  renderLista();
+}
+
+function toast(msg){
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(t._t);
+  t._t = setTimeout(()=>t.classList.remove("show"), 2000);
+}
+
+// ─── BOOT ────────────────────────────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>
