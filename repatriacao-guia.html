@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Guia de Repatriação UK → Brasil · Eduardo Santos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+
+  <style>
+  /* ─────────────────────────────────────────────
+     DESIGN SYSTEM — MODELO ESTÉTICO COTAÇÃO
+  ───────────────────────────────────────────── */
+  :root {
+    --bg:        #0D0F14;
+    --surface:   #161920;
+    --surface3:  #252A3A;
+    --border:    rgba(255,255,255,.08);
+    --border2:   rgba(255,255,255,.05);
+    --text:      #F1F3F9;
+    --text2:     #9AA3B2;
+    --text3:     #5A6478;
+    --blue:      #3B82F6;
+    --blue-dk:   #1D4ED8;
+    --blue-lt:   rgba(59,130,246,.15);
+    --teal:      #10B981;
+    --teal-lt:   rgba(16,185,129,.15);
+    --green:     #22C55E;
+    --green-lt:  rgba(34,197,94,.12);
+    --red:       #EF4444;
+    --red-lt:    rgba(239,68,68,.12);
+    --amber:     #F59E0B;
+    --amber-lt:  rgba(245,158,11,.12);
+    --r:         12px;
+    --r-lg:      18px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ─────────────────────────────────────────────
+     TOPBAR
+  ───────────────────────────────────────────── */
+  .topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .topbar-logo {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: var(--blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 900;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .topbar-info {}
+  .topbar-title {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .topbar-sub {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text3);
+    margin-top: 1px;
+  }
+
+  .topbar-ref {
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 4px 10px;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text2);
+    letter-spacing: .04em;
+    white-space: nowrap;
+  }
+
+  /* ─────────────────────────────────────────────
+     STATUS BAR
+  ───────────────────────────────────────────── */
+  .status-bar {
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    border-bottom: 1px solid var(--border2);
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--green-lt);
+    border: 1px solid rgba(34,197,94,.25);
+    border-radius: 100px;
+    padding: 4px 12px;
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--green);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+
+  .pulse-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 2s ease infinite;
+  }
+
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+  .status-date {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text3);
+    letter-spacing: .03em;
+  }
+
+  /* ─────────────────────────────────────────────
+     WRAPPER
+  ───────────────────────────────────────────── */
+  .wrap {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 16px 40px;
+  }
+
+  .spacer { height: 20px; }
+  .spacer-sm { height: 10px; }
+  .spacer-lg { height: 28px; }
+
+  /* ─────────────────────────────────────────────
+     HERO CARD
+  ───────────────────────────────────────────── */
+  .hero-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: 24px 22px;
+    position: relative;
+    overflow: hidden;
+    animation: rise .4s ease both;
+  }
+
+  .hero-card::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(59,130,246,.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-card::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(16,185,129,.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 10px;
+  }
+
+  .hero-title {
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: -.04em;
+    color: var(--text);
+    line-height: 1.15;
+    margin-bottom: 6px;
+  }
+
+  .hero-title span { color: var(--blue); }
+
+  .hero-sub {
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.55;
+    margin-bottom: 18px;
+    max-width: 320px;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .chip {
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 4px 11px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text2);
+  }
+
+  /* ─────────────────────────────────────────────
+     TOTAL BAND
+  ───────────────────────────────────────────── */
+  .total-band {
+    background: linear-gradient(135deg, var(--blue-dk) 0%, #1e40af 100%);
+    border-radius: var(--r-lg);
+    padding: 20px 22px;
+    animation: rise .4s .05s ease both;
+  }
+
+  .total-band-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.55);
+    margin-bottom: 4px;
+  }
+
+  .total-band-value {
+    font-size: 36px;
+    font-weight: 900;
+    letter-spacing: -.05em;
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+
+  .total-band-note {
+    font-size: 11px;
+    color: rgba(255,255,255,.5);
+    font-weight: 500;
+  }
+
+  .total-band-row {
+    margin-top: 14px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: rgba(255,255,255,.1);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .tband-stat {
+    background: rgba(0,0,0,.2);
+    padding: 10px 12px;
+  }
+
+  .tband-stat-val {
+    font-size: 14px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: -.02em;
+  }
+
+  .tband-stat-label {
+    font-size: 9px;
+    font-weight: 700;
+    color: rgba(255,255,255,.4);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-top: 2px;
+  }
+
+  /* ─────────────────────────────────────────────
+     SECTION TITLE
+  ───────────────────────────────────────────── */
+  .sec-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    color: var(--text2);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .sec-title::before {
+    content: '';
+    display: block;
+    width: 3px;
+    height: 14px;
+    background: var(--blue);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ─────────────────────────────────────────────
+     LIST CARD (overview)
+  ───────────────────────────────────────────── */
+  .list-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    overflow: hidden;
+  }
+
+  .list-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border2);
+  }
+  .list-row:last-child { border-bottom: none; }
+
+  .list-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    background: var(--blue-lt);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  .list-icon.teal { background: var(--teal-lt); }
+  .list-icon.green { background: var(--green-lt); }
+  .list-icon.amber { background: var(--amber-lt); }
+  .list-icon.red { background: var(--red-lt); }
+
+  .list-body { flex: 1; min-width: 0; }
+
+  .list-label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .list-desc {
+    font-size: 11px;
+    color: var(--text3);
+    line-height: 1.5;
+    margin-top: 1px;
+  }
+
+  .list-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 100px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .badge-blue { background: var(--blue-lt); color: var(--blue); }
+  .badge-amber { background: var(--amber-lt); color: var(--amber); }
+  .badge-red { background: var(--red-lt); color: var(--red); }
+  .badge-green { background: var(--green-lt); color: var(--green); }
+  .badge-teal { background: var(--teal-lt); color: var(--teal); }
+
+  /* ─────────────────────────────────────────────
+     COST TABLE
+  ───────────────────────────────────────────── */
+  .cost-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    overflow: hidden;
+  }
+
+  .cost-header-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    padding: 9px 16px;
+    background: var(--surface3);
+  }
+
+  .cost-header-row span {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text3);
+  }
+
+  .cost-data-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border2);
+    gap: 12px;
+  }
+  .cost-data-row:last-child { border-bottom: none; }
+
+  .cost-item {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text2);
+  }
+
+  .cost-val {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
+    text-align: right;
+  }
+
+  .sum-total-row {
+    background: var(--blue-dk);
+    padding: 14px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .sum-total-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255,255,255,.7);
+  }
+
+  .sum-total-val {
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: -.04em;
+    color: #fff;
+  }
+
+  /* Tier grid */
+  .tier-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .tier-cell {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 12px 14px;
+  }
+
+  .tier-cell-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+
+  .tier-cell.eco .tier-cell-label { color: var(--teal); }
+  .tier-cell.mid .tier-cell-label { color: var(--amber); }
+  .tier-cell.prem .tier-cell-label { color: var(--red); }
+
+  .tier-cell-val {
+    font-size: 15px;
+    font-weight: 900;
+    letter-spacing: -.03em;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  /* Alt note */
+  .alt-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--teal-lt);
+    border: 1px solid rgba(16,185,129,.2);
+    border-radius: var(--r);
+    padding: 12px 14px;
+    margin-top: 10px;
+    font-size: 11.5px;
+    color: var(--teal);
+    font-weight: 600;
+    line-height: 1.45;
+  }
+
+  /* ─────────────────────────────────────────────
+     STEPS — NUMERADOS
+  ───────────────────────────────────────────── */
+  .steps-list {
+    display: grid;
+    gap: 8px;
+  }
+
+  .step-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 14px 16px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    animation: rise .4s .09s ease both;
+  }
+
+  .step-badge {
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    background: var(--blue);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .step-badge.warn { background: var(--red); }
+  .step-badge.done { background: var(--teal); }
+
+  .step-body {}
+
+  .step-title {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 3px;
+    line-height: 1.3;
+  }
+
+  .step-desc {
+    font-size: 11px;
+    color: var(--text3);
+    line-height: 1.5;
+  }
+
+  .step-time {
+    display: inline-block;
+    margin-top: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 100px;
+  }
+
+  /* ─────────────────────────────────────────────
+     COMPANIES
+  ───────────────────────────────────────────── */
+  .company-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    overflow: hidden;
+  }
+
+  .company-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border2);
+    gap: 12px;
+  }
+  .company-row:last-child { border-bottom: none; }
+
+  .company-lft { flex: 1; min-width: 0; }
+
+  .company-name {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .company-loc {
+    font-size: 10px;
+    color: var(--text3);
+    margin-top: 2px;
+  }
+
+  .company-rht {
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  .company-price {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--blue);
+    letter-spacing: -.01em;
+    white-space: nowrap;
+  }
+
+  .company-tel {
+    font-size: 10px;
+    color: var(--text3);
+    margin-top: 2px;
+  }
+  .company-tel a { color: var(--text3); }
+
+  .company-web {
+    font-size: 10px;
+    color: var(--blue);
+    margin-top: 3px;
+    opacity: .8;
+  }
+  .company-web a { color: var(--blue); }
+  .company-web a:hover { opacity: .7; }
+
+  /* ─────────────────────────────────────────────
+     ALERT / ERROS
+  ───────────────────────────────────────────── */
+  .alert-card {
+    background: var(--amber-lt);
+    border: 1px solid rgba(245,158,11,.2);
+    border-radius: var(--r);
+    padding: 14px 16px;
+    font-size: 12px;
+    color: var(--amber);
+    font-weight: 600;
+    line-height: 1.55;
+    margin-bottom: 10px;
+  }
+  .alert-card strong { color: #fbbf24; }
+
+  .error-list { display: grid; gap: 6px; }
+
+  .error-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--red);
+    border-radius: 0 var(--r) var(--r) 0;
+    padding: 12px 14px;
+    font-size: 12px;
+    color: var(--text2);
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .err-x {
+    font-size: 10px;
+    font-weight: 900;
+    color: var(--red);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* ─────────────────────────────────────────────
+     DOCS
+  ───────────────────────────────────────────── */
+  .doc-grid {
+    display: grid;
+    gap: 6px;
+  }
+
+  .doc-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 12px 14px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text2);
+  }
+
+  .doc-ico {
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    background: var(--blue-lt);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+
+  /* ─────────────────────────────────────────────
+     IMPACT GRID
+  ───────────────────────────────────────────── */
+  .impact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  .impact-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 11px 13px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--text2);
+  }
+
+  .impact-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--blue);
+    flex-shrink: 0;
+  }
+
+  /* ─────────────────────────────────────────────
+     FAQ
+  ───────────────────────────────────────────── */
+  .faq-list { display: grid; gap: 6px; }
+
+  .faq-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    overflow: hidden;
+    transition: border-color .15s;
+  }
+  .faq-item.open { border-color: rgba(59,130,246,.3); }
+
+  .faq-btn {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text2);
+    text-align: left;
+    transition: color .15s;
+  }
+  .faq-item.open .faq-btn { color: var(--text); }
+
+  .faq-chevron {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--surface3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: .6rem;
+    color: var(--text3);
+    transition: transform .2s, background .15s, color .15s;
+  }
+  .faq-item.open .faq-chevron {
+    transform: rotate(180deg);
+    background: var(--blue-lt);
+    color: var(--blue);
+  }
+
+  .faq-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .28s ease;
+  }
+  .faq-item.open .faq-body { max-height: 240px; }
+
+  .faq-body-inner {
+    padding: 0 16px 14px;
+    border-top: 1px solid var(--border2);
+    padding-top: 12px;
+    font-size: 12px;
+    color: var(--text3);
+    line-height: 1.65;
+    font-weight: 400;
+  }
+
+  /* ─────────────────────────────────────────────
+     CTA CARD
+  ───────────────────────────────────────────── */
+  .cta-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: 22px 20px;
+  }
+
+  .cta-card-title {
+    font-size: 17px;
+    font-weight: 900;
+    letter-spacing: -.03em;
+    color: var(--text);
+    margin-bottom: 6px;
+    line-height: 1.25;
+  }
+
+  .cta-card-sub {
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.55;
+    margin-bottom: 18px;
+  }
+
+  .cta-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    width: 100%;
+    background: var(--blue);
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    padding: 15px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 14px;
+    letter-spacing: -.01em;
+    transition: opacity .15s;
+    text-decoration: none;
+  }
+  .cta-btn:hover { opacity: .88; }
+
+  .cta-btn.green {
+    background: #16a34a;
+    margin-bottom: 10px;
+  }
+
+  .adviser-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  .adviser-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), var(--teal));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 900;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .adviser-info {}
+  .adviser-name {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -.01em;
+  }
+  .adviser-role {
+    font-size: 10.5px;
+    color: var(--text3);
+    margin-top: 1px;
+  }
+
+  .fca-badge {
+    margin-left: auto;
+    background: var(--green-lt);
+    border: 1px solid rgba(34,197,94,.2);
+    border-radius: 100px;
+    padding: 4px 10px;
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--green);
+    flex-shrink: 0;
+  }
+
+  /* ─────────────────────────────────────────────
+     LEGAL FOOTER
+  ───────────────────────────────────────────── */
+  .legal {
+    border-top: 1px solid var(--border2);
+    padding: 20px 20px 32px;
+    font-size: 10px;
+    color: var(--text3);
+    line-height: 1.7;
+    max-width: 480px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .legal strong { color: var(--text2); }
+
+  /* ─────────────────────────────────────────────
+     ANIMATIONS
+  ───────────────────────────────────────────── */
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .pad { animation: rise .4s .09s ease both; }
+
+  /* Scroll reveal */
+  .sr {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity .45s ease, transform .45s ease;
+  }
+  .sr.vis { opacity: 1; transform: none; }
+
+  /* ─────────────────────────────────────────────
+     PRINT
+  ───────────────────────────────────────────── */
+  @page { size: A4; margin: 0; }
+  @media print {
+    * { -webkit-print-color-adjust: exact !important; }
+    .topbar { position: relative !important; }
+    html, body { background: #0D0F14 !important; }
+    .total-band { background: linear-gradient(135deg,#1D4ED8,#1e40af) !important; }
+    .sum-total-row { background: #1D4ED8 !important; }
+  }
+
+  /* ─────────────────────────────────────────────
+     SCROLLBAR
+  ───────────────────────────────────────────── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 4px; }
+
+  </style>
+</head>
+<body>
+
+  <!-- ══ TOPBAR ══ -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-logo">R</div>
+      <div class="topbar-info">
+        <div class="topbar-title">Guia de Repatriação</div>
+        <div class="topbar-sub">UK → Brasil · Eduardo Santos</div>
+      </div>
+    </div>
+    <div class="topbar-ref">UK → BR 2025</div>
+  </div>
+
+  <!-- ══ STATUS BAR ══ -->
+  <div class="status-bar">
+    <div class="status-badge">
+      <span class="pulse-dot"></span>
+      Emergência · Atendimento em português
+    </div>
+    <div class="status-date">Maio 2025</div>
+  </div>
+
+  <!-- ══ CONTENT ══ -->
+  <div class="wrap">
+
+    <div class="spacer"></div>
+
+    <!-- HERO -->
+    <div class="hero-card">
+      <div class="hero-eyebrow">Guia Completo · Custos Reais · Empresas Verificadas</div>
+      <div class="hero-title">Repatriação de<br/><span>Corpo UK → Brasil</span></div>
+      <div class="hero-sub">Processo completo explicado de forma simples — para você tomar as decisões certas no momento mais difícil.</div>
+      <div class="chips">
+        <span class="chip">🇧🇷 Para brasileiros no UK</span>
+        <span class="chip">📅 7 – 21 dias</span>
+        <span class="chip">💷 £4k – £20k</span>
+        <span class="chip">🚭 6 empresas</span>
+      </div>
+    </div>
+
+    <div class="spacer-sm"></div>
+
+    <!-- TOTAL BAND -->
+    <div class="total-band">
+      <div class="total-band-label">Custo médio de mercado</div>
+      <div class="total-band-value">£5.000 – £10.000</div>
+      <div class="total-band-note">Por repatriação completa UK → Brasil</div>
+      <div class="total-band-row">
+        <div class="tband-stat">
+          <div class="tband-stat-val">£4–6k</div>
+          <div class="tband-stat-label">Econômico</div>
+        </div>
+        <div class="tband-stat">
+          <div class="tband-stat-val">£7–10k</div>
+          <div class="tband-stat-label">Médio</div>
+        </div>
+        <div class="tband-stat">
+          <div class="tband-stat-val">£10k+</div>
+          <div class="tband-stat-label">Premium</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <!-- O QUE É REPATRIAÇÃO -->
+    <div class="sr">
+      <div class="sec-title">O que é repatriação</div>
+      <div class="list-card">
+        <div class="list-row">
+          <div class="list-icon">⚖️</div>
+          <div class="list-body">
+            <div class="list-label">Liberação legal</div>
+            <div class="list-desc">Hospital ou Coroner autoriza a saída do corpo</div>
+          </div>
+        </div>
+        <div class="list-row">
+          <div class="list-icon teal">💉</div>
+          <div class="list-body">
+            <div class="list-label">Embalsamamento</div>
+            <div class="list-desc">Obrigatório para transporte aéreo internacional</div>
+          </div>
+        </div>
+        <div class="list-row">
+          <div class="list-icon">🪦</div>
+          <div class="list-body">
+            <div class="list-label">Caixão internacional selado</div>
+            <div class="list-desc">Padrão exigido pela IATA para voos cargo</div>
+          </div>
+        </div>
+        <div class="list-row">
+          <div class="list-icon amber">🏛️</div>
+          <div class="list-body">
+            <div class="list-label">Documentação consular</div>
+            <div class="list-desc">Consulado Brasileiro em Londres autoriza o traslado</div>
+          </div>
+        </div>
+        <div class="list-row">
+          <div class="list-icon teal">✈️</div>
+          <div class="list-body">
+            <div class="list-label">Voo cargo internacional</div>
+            <div class="list-desc">Heathrow ou Gatwick → São Paulo ou Rio de Janeiro</div>
+          </div>
+        </div>
+        <div class="list-row">
+          <div class="list-icon green">🇧🇷</div>
+          <div class="list-body">
+            <div class="list-label">Recepção no Brasil</div>
+            <div class="list-desc">Funerária local recebe e conduz o funeral</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <!-- CUSTOS DETALHADOS -->
+    <div class="sr">
+      <div class="sec-title">Custo — item por item</div>
+      <div class="cost-card">
+        <div class="cost-header-row">
+          <span>Serviço</span>
+          <span>Custo médio</span>
+        </div>
+        <div class="cost-data-row">
+          <span class="cost-item">Funeral Director Fee</span>
+          <span class="cost-val">£1.000 – £2.500</span>
+        </div>
+        <div class="cost-data-row">
+          <span class="cost-item">Embalsamamento</span>
+          <span class="cost-val">£300 – £900</span>
+        </div>
+        <div class="cost-data-row">
+          <span class="cost-item">Caixão internacional</span>
+          <span class="cost-val">£500 – £2.000</span>
+        </div>
+        <div class="cost-data-row">
+          <span class="cost-item">Documentação consular</span>
+          <span class="cost-val">£200 – £800</span>
+        </div>
+        <div class="cost-data-row">
+          <span class="cost-item">Transporte local</span>
+          <span class="cost-val">£200 – £800</span>
+        </div>
+        <div class="cost-data-row">
+          <span class="cost-item">Voo internacional (cargo)</span>
+          <span class="cost-val">£1.000 – £4.000</span>
+        </div>
+        <div class="cost-data-row">
+          <span class="cost-item">Taxas aeroportuárias</span>
+          <span class="cost-val">£200 – £700</span>
+        </div>
+        <div class="sum-total-row">
+          <span class="sum-total-label">Total estimado</span>
+          <span class="sum-total-val">£4k – £20k+</span>
+        </div>
+      </div>
+
+      <div class="tier-grid">
+        <div class="tier-cell eco">
+          <div class="tier-cell-label">Econômico</div>
+          <div class="tier-cell-val">£4–6k</div>
+        </div>
+        <div class="tier-cell mid">
+          <div class="tier-cell-label">Médio</div>
+          <div class="tier-cell-val">£7–10k</div>
+        </div>
+        <div class="tier-cell prem">
+          <div class="tier-cell-label">Premium</div>
+          <div class="tier-cell-val">£10k+</div>
+        </div>
+      </div>
+
+      <div class="alt-row">
+        <span>💡</span>
+        <span><strong>Alternativa mais barata:</strong> Cremação + envio de cinzas → £2.000 – £4.000 total</span>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <!-- PROCESSO PASSO A PASSO -->
+    <div class="sr">
+      <div class="sec-title">Processo passo a passo</div>
+      <div class="steps-list">
+
+        <div class="step-card">
+          <div class="step-badge">1</div>
+          <div class="step-body">
+            <div class="step-title">Registro do óbito + Death Certificate</div>
+            <div class="step-desc">Emitido pelo hospital ou médico responsável</div>
+            <span class="step-time badge-blue">1 – 3 dias</span>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-badge warn">2</div>
+          <div class="step-body">
+            <div class="step-title">Liberação pelo Coroner</div>
+            <div class="step-desc">Necessário quando a causa da morte não é clara. Pode atrasar todo o processo.</div>
+            <span class="step-time badge-red">3 dias – 4 semanas</span>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-badge">3</div>
+          <div class="step-body">
+            <div class="step-title">Embalsamamento e preparação</div>
+            <div class="step-desc">Obrigatório para transporte aéreo internacional</div>
+            <span class="step-time badge-blue">1 – 2 dias</span>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-badge">4</div>
+          <div class="step-body">
+            <div class="step-title">Documentação consular brasileira</div>
+            <div class="step-desc">Consulado Brasileiro em Londres emite autorização de traslado</div>
+            <span class="step-time badge-blue">2 – 5 dias</span>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-badge">5</div>
+          <div class="step-body">
+            <div class="step-title">Transporte até aeroporto</div>
+            <div class="step-desc">Normalmente Heathrow ou Gatwick</div>
+            <span class="step-time badge-blue">1 dia</span>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-badge">6</div>
+          <div class="step-body">
+            <div class="step-title">Voo internacional cargo</div>
+            <div class="step-desc">Destino: São Paulo (GRU), Rio de Janeiro (GIG) ou outros hubs</div>
+            <span class="step-time badge-blue">1 – 2 dias</span>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-badge done">7</div>
+          <div class="step-body">
+            <div class="step-title">Recepção e funeral no Brasil</div>
+            <div class="step-desc">Funerária local assume o processo final</div>
+            <span class="step-time badge-green">Chegada</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <!-- PRAZOS -->
+    <div class="sr">
+      <div class="sec-title">Prazos médios</div>
+      <div class="list-card">
+        <div class="list-row">
+          <div class="list-icon green">⚡</div>
+          <div class="list-body">
+            <div class="list-label">Caso simples</div>
+            <div class="list-desc">Sem complicações legais ou investigação</div>
+          </div>
+          <span class="list-badge badge-green">7 – 14 dias</span>
+        </div>
+        <div class="list-row">
+          <div class="list-icon amber">⏳</div>
+          <div class="list-body">
+            <div class="list-label">Com Coroner</div>
+            <div class="list-desc">Investigação da causa da morte necessária</div>
+          </div>
+          <span class="list-badge badge-amber">2 – 6 semanas</span>
+        </div>
+        <div class="list-row">
+          <div class="list-icon red">🔴</div>
+          <div class="list-body">
+            <div class="list-label">Casos complexos</div>
+            <div class="list-desc">Investigação criminal ou múltiplas jurisdições</div>
+          </div>
+          <span class="list-badge badge-red">até 60 dias</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <!-- DOCUMENTOS -->
+    <div class="sr">
+      <div class="sec-title">Documentos necessários</div>
+      <div class="doc-grid">
+        <div class="doc-row"><div class="doc-ico">📄</div>Death Certificate (UK)</div>
+        <div class="doc-row"><div class="doc-ico">🏥</div>Certificado sanitário</div>
+        <div class="doc-row"><div class="doc-ico">🏛️</div>Autorização consular brasileira</div>
+        <div class="doc-row"><div class="doc-ico">💉</div>Documentos de embalsamamento</div>
+        <div class="doc-row"><div class="doc-ico">🌐</div>Traduções (quando exigido)</div>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <!-- EMPRESAS -->
+    <div class="sr">
+      <div class="sec-title">6 Empresas especializadas — UK → Brasil</div>
+      <div class="company-card">
+
+        <div class="company-row">
+          <div class="company-lft">
+            <div class="company-name">Slaters International Funeral Directors</div>
+            <div class="company-loc">📍 Isleworth, London TW7 5NP</div>
+            <div class="company-web"><a href="https://www.slatersfunerals.co.uk" target="_blank">slatersfunerals.co.uk ↗</a></div>
+          </div>
+          <div class="company-rht">
+            <div class="company-price">£3.500 – £6.000</div>
+            <div class="company-tel"><a href="tel:+442085604984">+44 208 560 4984</a></div>
+          </div>
+        </div>
+
+        <div class="company-row">
+          <div class="company-lft">
+            <div class="company-name">Homeland International Repatriation</div>
+            <div class="company-loc">📍 Londres</div>
+            <div class="company-web"><a href="https://www.homelandfunerals.co.uk" target="_blank">homelandfunerals.co.uk ↗</a></div>
+          </div>
+          <div class="company-rht">
+            <div class="company-price">£3.700 – £5.000</div>
+            <div class="company-tel"><a href="tel:+443300417265">+44 330 041 7265</a></div>
+          </div>
+        </div>
+
+        <div class="company-row">
+          <div class="company-lft">
+            <div class="company-name">Rowland Brothers International</div>
+            <div class="company-loc">📍 Croydon, London CR0 4AG</div>
+            <div class="company-web"><a href="https://www.rowlandbrothers.com" target="_blank">rowlandbrothers.com ↗</a></div>
+          </div>
+          <div class="company-rht">
+            <div class="company-price">£4.000 – £10.000</div>
+            <div class="company-tel"><a href="tel:+448009173585">+44 800 917 3585</a></div>
+          </div>
+        </div>
+
+        <div class="company-row">
+          <div class="company-lft">
+            <div class="company-name">W. A. Albin &amp; Sons — International</div>
+            <div class="company-loc">📍 Bermondsey, London SE1 5JH</div>
+            <div class="company-web"><a href="https://www.albin.co.uk" target="_blank">albin.co.uk ↗</a></div>
+          </div>
+          <div class="company-rht">
+            <div class="company-price">£4.000 – £8.000</div>
+            <div class="company-tel"><a href="tel:+442073136920">+44 207 313 6920</a></div>
+          </div>
+        </div>
+
+        <div class="company-row">
+          <div class="company-lft">
+            <div class="company-name">Mears Repatriation Services</div>
+            <div class="company-loc">📍 Sidcup, London DA14 6BU</div>
+            <div class="company-web"><a href="https://www.mearsrepatriation.co.uk" target="_blank">mearsrepatriation.co.uk ↗</a></div>
+          </div>
+          <div class="company-rht">
+            <div class="company-price">£4.500 – £9.000</div>
+            <div class="company-tel"><a href="tel:+442034550305">+44 203 455 0305</a></div>
+          </div>
+        </div>
+
+        <div class="company-row">
+          <div class="company-lft">
+            <div class="company-name">Udens Worldwide Repatriation</div>
+            <div class="company-loc">📍 Camberwell, London SE5 0RH</div>
+            <div class="company-web"><a href="https://www.udens.co.uk" target="_blank">udens.co.uk ↗</a></div>
+          </div>
+          <div class="company-rht">
+            <div class="company-price">£3.500 – £7.000</div>
+            <div class="company-tel"><a href="tel:+442077034186">+44 207 703 4186</a></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <!-- O QUE IMPACTA O PREÇO -->
+    <div class="sr">
+      <div class="sec-title">O que impacta o preço</div>
+      <div class="impact-grid">
+        <div class="impact-pill"><span class="impact-dot"></span>Cidade do falecimento</div>
+        <div class="impact-pill"><span class="impact-dot"></span>Necessidade de Coroner</div>
+        <div class="impact-pill"><span class="impact-dot"></span>Urgência do caso</div>
+        <div class="impact-pill"><span class="impact-dot"></span>Peso do caixão</div>
+        <div class="impact-pill"><span class="impact-dot"></span>Destino no Brasil</div>
+        <div class="impact-pill"><span class="impact-dot"></span>Velório no UK</div>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <!-- FAQ -->
+    <div class="sr">
+      <div class="sec-title">Perguntas frequentes</div>
+      <div class="faq-list">
+
+        <div class="faq-item">
+          <button class="faq-btn" onclick="toggleFaq(this)">
+            Quanto tempo demora uma repatriação?
+            <span class="faq-chevron">▼</span>
+          </button>
+          <div class="faq-body">
+            <div class="faq-body-inner">Em casos simples, 7 a 14 dias. Se houver investigação do Coroner, pode levar de 2 a 6 semanas. Casos complexos podem chegar a 60 dias.</div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn" onclick="toggleFaq(this)">
+            Quem paga pela repatriação?
+            <span class="faq-chevron">▼</span>
+          </button>
+          <div class="faq-body">
+            <div class="faq-body-inner">A família — a menos que o falecido tenha seguro de vida com cobertura de repatriação. Nesse caso, a seguradora cobre todos os custos sem adiantamento.</div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn" onclick="toggleFaq(this)">
+            Cremação é permitida antes do envio?
+            <span class="faq-chevron">▼</span>
+          </button>
+          <div class="faq-body">
+            <div class="faq-body-inner">Sim. Cremação + envio de cinzas é a alternativa mais econômica (£2.000 – £4.000), desde que autorizada pela família e pelo consulado.</div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn" onclick="toggleFaq(this)">
+            O que é o Coroner e por que atrasa o processo?
+            <span class="faq-chevron">▼</span>
+          </button>
+          <div class="faq-body">
+            <div class="faq-body-inner">O Coroner é o médico-legista britânico. Atua quando a causa da morte não é clara. A liberação dele é obrigatória e pode levar de dias a semanas.</div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn" onclick="toggleFaq(this)">
+            Tenho seguro de vida — como aciono a repatriação?
+            <span class="faq-chevron">▼</span>
+          </button>
+          <div class="faq-body">
+            <div class="faq-body-inner">Entre em contato imediatamente com a seguradora (número no cartão da apólice). Eles acionam uma empresa parceira — você não paga nada adiantado.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="spacer-lg"></div>
+
+    <!-- CTA — COMO FUNCIONA -->
+    <div class="sr">
+      <div class="sec-title">Como funciona com seguro</div>
+      <div class="steps-list" style="margin-bottom:20px">
+        <div class="step-card">
+          <div class="step-badge">1</div>
+          <div class="step-body">
+            <div class="step-title">Acione a seguradora</div>
+            <div class="step-desc">Ligue para o número de emergências da apólice — disponível 24h</div>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-badge">2</div>
+          <div class="step-body">
+            <div class="step-title">A seguradora coordena tudo</div>
+            <div class="step-desc">Empresa parceira cuida do processo completo — sem custo para a família</div>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-badge done">3</div>
+          <div class="step-body">
+            <div class="step-title">Repatriação coberta</div>
+            <div class="step-desc">Voo, funeral, documentação — tudo incluído na cobertura</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA CARD -->
+    <div class="cta-card sr">
+      <div class="cta-card-title">Quer um seguro que cobre a repatriação?</div>
+      <div class="cta-card-sub">Protecção criada especificamente para você e para quem mais importa. Cobertura de repatriação UK → Brasil incluída.</div>
+
+      <a href="https://wa.me/447000000000" class="cta-btn cta-btn-wa">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.025.507 3.934 1.395 5.608L0 24l6.545-1.371A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.012-1.371l-.36-.214-3.727.978.996-3.638-.234-.374A9.778 9.778 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+        Falar com Eduardo Santos
+      </a>
+
+      <a href="tel:+447000000000" class="cta-btn" style="background:var(--surface3);color:var(--text2);margin-bottom:0">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+        Ligar agora
+      </a>
+
+      <div class="adviser-row">
+        <div class="adviser-avatar">ES</div>
+        <div class="adviser-info">
+          <div class="adviser-name">Eduardo Santos</div>
+          <div class="adviser-role">Financial Adviser · Reino Unido 🇬🇧</div>
+        </div>
+        <div class="fca-badge">✓ FCA</div>
+      </div>
+    </div>
+
+    <div class="spacer-lg"></div>
+
+  </div><!-- /wrap -->
+
+  <!-- LEGAL -->
+  <div class="legal">
+    <strong>Guia de Repatriação UK → Brasil</strong> · Eduardo Santos · Financial Adviser<br/>
+    Custos baseados em médias de mercado à data de publicação. Prémios e valores de seguros garantidos durante a vigência da apólice.<br/>
+    Ref. REPAT-2025 · Maio 2025<br/><br/>
+    Zurich Assurance Ltd · FCA/PRA · N.º 02456671 · Swindon SN1 1AP<br/>
+    MetLife Europe d.a.c. · FCA/PRA · Invicta House, Brighton BN1 4FR
+  </div>
+
+  <script>
+    function toggleFaq(btn) {
+      const item = btn.closest('.faq-item');
+      const open = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+      if (!open) item.classList.add('open');
+    }
+
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('vis'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.06 });
+    document.querySelectorAll('.sr').forEach(el => io.observe(el));
+  </script>
+</body>
+</html>
