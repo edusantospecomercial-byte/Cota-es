@@ -2,6 +2,9 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<!-- updated: 20260601171821 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Carteira — Eduardo Santos</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -293,6 +296,7 @@ let SENT = loadSent();
 // Merge sent status into data
 const DATA = RAW.map(c => ({...c, enviado: !!SENT[c.id]}));
 
+/* v20260601171821 */
 const WA_TPL = `Olá {NOME}, tudo bem com você?`;
 
 let curF='all', curS='', curModal=-1;
