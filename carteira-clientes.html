@@ -293,13 +293,7 @@ let SENT = loadSent();
 // Merge sent status into data
 const DATA = RAW.map(c => ({...c, enviado: !!SENT[c.id]}));
 
-const WA_TPL = `Oi {NOME}, tudo bem? 😊
-Estava revisando algumas proteções e vi algo *importante que muita gente não percebe.* 👀
-Existem planos que podem pagar *£150 por dia em caso de internação,* além de cobertura para *acidentes leves e graves* — e ainda *proteção para os filhos,* inclusive em situações do dia a dia. 🛡️
-Tudo isso dentro de uma proposta da *MetLife* a partir de *£11 por mês.* 💷
-Se quiser, posso verificar rapidamente se isso *faz sentido pra você hoje* — sem compromisso. 🙌
-
-Financial Adviser 🇬🇧`;
+const WA_TPL = `Olá {NOME}, tudo bem com você?`;
 
 let curF='all', curS='', curModal=-1;
 
