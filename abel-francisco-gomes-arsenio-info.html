@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Abel Francisco Gomes Arsenio · Informações Importantes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:#0D0F14;--surface:#161920;--surface3:#252A3A;
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.05);
+  --text:#F1F3F9;--text2:#9AA3B2;--text3:#5A6478;
+  --blue:#3B82F6;--blue-dk:#1D4ED8;--blue-lt:rgba(59,130,246,.15);
+  --teal:#10B981;--teal-lt:rgba(16,185,129,.15);
+  --green:#22C55E;--green-lt:rgba(34,197,94,.12);
+  --r:12px;--r-lg:18px;
+}
+html{background:var(--bg)}
+body{font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(--bg);max-width:430px;margin:0 auto;min-height:100vh;-webkit-font-smoothing:antialiased;padding-bottom:80px}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topbar-brand{display:flex;align-items:center;gap:10px}
+.topbar-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--teal) 0%,var(--blue) 100%);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff}
+.topbar-title{font-size:14px;font-weight:700;color:var(--text)}
+.topbar-ref{font-size:10px;font-weight:600;color:var(--text3);background:var(--surface3);border:1px solid var(--border);border-radius:100px;padding:4px 10px;letter-spacing:.04em}
+.status-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;justify-content:space-between}
+.status-badge{display:flex;align-items:center;gap:7px;background:var(--green-lt);border:1px solid rgba(34,197,94,.25);border-radius:100px;padding:4px 12px;font-size:10px;font-weight:800;color:var(--green);letter-spacing:.06em;text-transform:uppercase}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.status-date{font-size:11px;color:var(--text3);font-weight:500}
+.hero{margin:16px 16px 0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px 22px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-80px;right:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.16) 0%,transparent 70%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-60px;left:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,.12) 0%,transparent 70%);pointer-events:none}
+.hero-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;position:relative;z-index:1}
+.hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal)}
+.hero-badge{display:flex;align-items:center;gap:5px;background:var(--green-lt);border:1px solid rgba(34,197,94,.25);border-radius:100px;padding:3px 10px;font-size:10px;font-weight:700;color:var(--green)}
+.hero-name{font-size:28px;font-weight:900;color:var(--text);line-height:1.15;letter-spacing:-.04em;margin-bottom:8px;position:relative;z-index:1}
+.hero-sub{font-size:13px;color:var(--text2);line-height:1.6;position:relative;z-index:1}
+.pad{padding:16px 16px 0}
+.sec-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.sec-num{width:22px;height:22px;border-radius:6px;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--teal-lt);color:var(--teal)}
+.sec-num-grey{background:var(--surface3);color:var(--text2)}
+.sec-title{font-size:12px;font-weight:700;color:var(--text);letter-spacing:-.01em;flex:1}
+.info-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid var(--border2)}
+.info-row:last-child{border-bottom:none}
+.info-label{font-size:12px;color:var(--text2);font-weight:500}
+.info-value{font-size:15px;font-weight:800;color:var(--text);letter-spacing:-.01em}
+.info-value.hl{color:var(--teal)}
+.link-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.link-row{display:flex;align-items:center;padding:14px 16px;gap:12px;border-bottom:1px solid var(--border2);text-decoration:none}
+.link-row:last-child{border-bottom:none}
+.link-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;background:var(--blue-lt)}
+.link-body{flex:1;min-width:0}
+.link-name{font-size:12.5px;font-weight:600;color:var(--text)}
+.link-desc{font-size:11px;color:var(--text3);margin-top:2px;line-height:1.5}
+.link-arrow{color:var(--text3);font-size:14px;flex-shrink:0}
+.claim-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px 20px;position:relative;overflow:hidden}
+.claim-card::before{content:'';position:absolute;top:-40px;right:-30px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,.12) 0%,transparent 70%);pointer-events:none}
+.claim-flag{display:inline-flex;align-items:center;gap:6px;background:var(--blue-lt);border:1px solid rgba(59,130,246,.25);border-radius:100px;padding:4px 12px;font-size:10px;font-weight:800;color:var(--blue);letter-spacing:.04em;text-transform:uppercase;margin-bottom:14px;position:relative;z-index:1}
+.claim-item{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;position:relative;z-index:1}
+.claim-item:last-child{margin-bottom:0}
+.claim-ico{width:30px;height:30px;border-radius:9px;background:var(--surface3);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.claim-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
+.claim-value{font-size:14px;font-weight:700;color:var(--text)}
+.cta-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:22px 20px;position:relative;overflow:hidden}
+.cta-card::before{content:'';position:absolute;bottom:-50px;right:-30px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.12) 0%,transparent 70%);pointer-events:none}
+.cta-headline{font-size:18px;font-weight:900;color:var(--text);line-height:1.25;letter-spacing:-.03em;margin-bottom:8px;position:relative;z-index:1}
+.cta-sub{font-size:13px;color:var(--text3);line-height:1.65;margin-bottom:20px;position:relative;z-index:1}
+.cta-btn{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--blue);color:#fff;font-family:'Inter',sans-serif;font-size:14px;font-weight:800;padding:15px;border-radius:10px;text-decoration:none;letter-spacing:-.02em;margin-bottom:16px;position:relative;z-index:1}
+.cta-divider{height:1px;background:var(--border);margin:16px 0;position:relative;z-index:1}
+.advisor-row{display:flex;align-items:center;gap:12px;position:relative;z-index:1}
+.adv-av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--blue) 0%,var(--teal) 100%);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0;border:2px solid var(--border)}
+.adv-name{font-size:13px;font-weight:700;color:var(--text)}
+.adv-role{font-size:11px;color:var(--text3);margin-top:1px}
+.legal{padding:20px 20px 48px;font-size:10px;color:var(--text3);line-height:1.9;text-align:center}
+#print-btn{position:fixed;bottom:24px;right:50%;transform:translateX(50%);background:var(--blue);color:#fff;border:none;border-radius:50px;padding:13px 26px;font-family:'Inter',sans-serif;font-size:13px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 8px 32px rgba(59,130,246,.4);z-index:999;white-space:nowrap}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.hero{animation:rise .4s ease both}
+.pad{animation:rise .4s .06s ease both}
+@page{size:A4;margin:0}
+@media print{*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}html,body{width:100%!important;max-width:100%!important;margin:0!important;padding:0!important;background:#0D0F14!important}#print-btn{display:none!important}*{animation:none!important}.info-card,.link-card,.claim-card,.cta-card,.hero{break-inside:avoid!important}.pad{padding:12px 16px 0!important}}
+</style>
+</head>
+<body>
+
+<button id="print-btn" onclick="window.print()">📄 Guardar como PDF</button>
+
+<div class="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-logo">M</div>
+    <div class="topbar-title">Informações Importantes</div>
+  </div>
+  <div class="topbar-ref">MPG000378</div>
+</div>
+
+<div class="status-bar">
+  <div class="status-badge"><div class="status-dot"></div>MetLife</div>
+  <div class="status-date">05 de Julho de 2026</div>
+</div>
+
+<div class="hero">
+  <div class="hero-top">
+    <div class="hero-eyebrow">Proteção Ativa</div>
+    <div class="hero-badge">● MetLife · FCA</div>
+  </div>
+  <div class="hero-name">Abel Francisco<br>Gomes Arsenio</div>
+  <div class="hero-sub">Aqui estão as informações essenciais sobre a sua proteção MetLife. Guarde esta página para consultas futuras.</div>
+</div>
+
+<!-- APÓLICE E VENCIMENTO -->
+<div class="pad">
+  <div class="sec-header">
+    <div class="sec-num">1</div>
+    <div class="sec-title">Sua Apólice</div>
+  </div>
+  <div class="info-card">
+    <div class="info-row">
+      <div class="info-label">Número da apólice</div>
+      <div class="info-value hl">MPG000378</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Número de cotas</div>
+      <div class="info-value">1</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Valor da mensalidade</div>
+      <div class="info-value">£13.00</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Vencimento mensal</div>
+      <div class="info-value">Dia 22</div>
+    </div>
+  </div>
+</div>
+
+<!-- ACESSO -->
+<div class="pad">
+  <div class="sec-header">
+    <div class="sec-num sec-num-grey">2</div>
+    <div class="sec-title">Sites e Acesso</div>
+  </div>
+  <div class="link-card">
+    <a class="link-row" href="https://www.mymetlife.co.uk/customer/s/login/" target="_blank">
+      <div class="link-icon">🔐</div>
+      <div class="link-body">
+        <div class="link-name">Portal MetLife (My MetLife)</div>
+        <div class="link-desc">Acesse sua apólice, faça alterações e acompanhe pagamentos</div>
+      </div>
+      <div class="link-arrow">→</div>
+    </a>
+  </div>
+</div>
+
+<!-- CLAIM -->
+<div class="pad">
+  <div class="sec-header">
+    <div class="sec-num sec-num-grey">3</div>
+    <div class="sec-title">Como Fazer um Claim (Acionar o Seguro)</div>
+  </div>
+  <div class="claim-card">
+    <div class="claim-flag">🚨 Passo a passo</div>
+    <div class="claim-item">
+      <div class="claim-ico">📞</div>
+      <div>
+        <div class="claim-label">Telefone MetLife · Claims</div>
+        <div class="claim-value">0800 917 0100 (opção 2)</div>
+      </div>
+    </div>
+    <div class="claim-item">
+      <div class="claim-ico">📧</div>
+      <div>
+        <div class="claim-label">E-mail</div>
+        <div class="claim-value">claims@metlife.uk.com</div>
+      </div>
+    </div>
+    <div class="claim-item">
+      <div class="claim-ico">⏰</div>
+      <div>
+        <div class="claim-label">Horário de atendimento</div>
+        <div class="claim-value">Seg – Sex · 9h às 17h</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="pad">
+  <div class="cta-card">
+    <div class="cta-headline">Qualquer dúvida, é só me chamar 👍</div>
+    <div class="cta-sub">Estou disponível para ajudar em qualquer etapa — sem pressa, sem pressão.</div>
+    <a class="cta-btn" href="https://wa.me/447700000000" target="_blank">💬 &nbsp;Falar com Eduardo Santos</a>
+    <div class="cta-divider"></div>
+    <div class="advisor-row">
+      <div class="adv-av">E</div>
+      <div>
+        <div class="adv-name">Eduardo Santos</div>
+        <div class="adv-role">Licensed Protection Adviser · Reino Unido 🇬🇧</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="legal">
+  Apólice MetLife MultiProtect · Ref. MPG000378<br>
+  Guarde este link — ele reúne todas as informações importantes da sua proteção.<br><br>
+  MetLife Europe d.a.c. · Regulado pela FCA
+</div>
+
+</body>
+</html>
