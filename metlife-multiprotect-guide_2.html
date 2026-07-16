@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MetLife MultiProtect · Guia de Proteção</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:#0D0F14;--surface:#161920;--surface3:#252A3A;
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.05);
+  --text:#F1F3F9;--text2:#9AA3B2;--text3:#5A6478;
+  --teal:#10B981;--teal-dk:#0d9668;--teal-lt:rgba(16,185,129,.15);
+  --teal2:rgba(16,185,129,.25);
+  --blue:#3B82F6;--blue-lt:rgba(59,130,246,.15);
+  --green:#22C55E;--green-lt:rgba(34,197,94,.12);
+  --purple:#8B5CF6;--purple-lt:rgba(139,92,246,.15);
+  --r:12px;--r-lg:18px;
+}
+html{background:var(--bg)}
+body{font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(--bg);max-width:430px;margin:0 auto;min-height:100vh;-webkit-font-smoothing:antialiased;padding-bottom:80px}
+
+/* TOPBAR */
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topbar-brand{display:flex;align-items:center;gap:10px}
+.topbar-logo{width:30px;height:30px;border-radius:8px;background:var(--teal);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#fff;letter-spacing:-.02em}
+.topbar-title{font-size:14px;font-weight:700;color:var(--text)}
+.topbar-ref{font-size:10px;font-weight:600;color:var(--text3);background:var(--surface3);border:1px solid var(--border);border-radius:100px;padding:4px 10px;letter-spacing:.04em}
+
+/* STATUS */
+.status-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;justify-content:space-between}
+.status-badge{display:flex;align-items:center;gap:7px;background:var(--teal-lt);border:1px solid rgba(16,185,129,.25);border-radius:100px;padding:4px 12px;font-size:10px;font-weight:800;color:var(--teal);letter-spacing:.06em;text-transform:uppercase}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.status-date{font-size:11px;color:var(--text3);font-weight:500}
+
+/* HERO */
+.hero{margin:16px 16px 0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px 22px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-80px;right:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.18) 0%,transparent 70%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-60px;left:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,.12) 0%,transparent 70%);pointer-events:none}
+.hero-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;position:relative;z-index:1}
+.hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal)}
+.hero-badge{display:flex;align-items:center;gap:5px;background:var(--teal-lt);border:1px solid rgba(16,185,129,.25);border-radius:100px;padding:3px 10px;font-size:10px;font-weight:700;color:var(--teal)}
+.hero-name{font-size:26px;font-weight:900;color:var(--text);line-height:1.1;letter-spacing:-.04em;margin-bottom:8px;position:relative;z-index:1}
+.hero-name span{color:var(--teal)}
+.hero-sub{font-size:13px;color:var(--text2);line-height:1.6;position:relative;z-index:1}
+.hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:18px;position:relative;z-index:1}
+.hero-stat{background:var(--surface3);border:1px solid var(--border);border-radius:10px;padding:10px 12px}
+.hs-val{font-size:20px;font-weight:900;color:var(--text);letter-spacing:-.04em}
+.hs-val span{font-size:13px;font-weight:600;color:var(--teal)}
+.hs-label{font-size:10px;color:var(--text3);margin-top:2px;font-weight:500}
+
+/* BAND */
+.total-band{margin:10px 16px 0;background:linear-gradient(135deg,#0d9668 0%,#059669 100%);border-radius:var(--r-lg);padding:20px 22px;display:flex;justify-content:space-between;align-items:center;position:relative;overflow:hidden}
+.total-band::before{content:'';position:absolute;top:-40px;right:-30px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.08);pointer-events:none}
+.tb-label{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:6px}
+.tb-amount{font-size:40px;font-weight:900;color:#fff;letter-spacing:-.05em;line-height:1}
+.tb-amount span{font-size:20px;font-weight:600}
+.tb-right{text-align:right}
+.tb-note{font-size:11px;color:rgba(255,255,255,.5);margin-bottom:8px}
+.tb-pill{border-radius:100px;padding:4px 12px;font-size:10px;font-weight:800;letter-spacing:.04em;background:rgba(255,255,255,.2);color:#fff;display:inline-block}
+.tb-breakdown{font-size:10.5px;color:rgba(255,255,255,.65);margin-top:6px}
+
+/* SECTIONS */
+.pad{padding:16px 16px 0}
+.sec-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.sec-num{width:22px;height:22px;border-radius:6px;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--teal-lt);color:var(--teal)}
+.sec-num-grey{background:var(--surface3);color:var(--text2)}
+.sec-title{font-size:12px;font-weight:700;color:var(--text);letter-spacing:-.01em;flex:1}
+.sec-price{font-size:13px;font-weight:800;color:var(--teal)}
+
+/* CARDS */
+.pol-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.pol-head{padding:14px 16px;border-bottom:1px solid var(--border2);display:flex;justify-content:space-between;align-items:flex-start}
+.pol-type{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin-bottom:4px}
+.pol-name{font-size:15px;font-weight:800;color:var(--text);letter-spacing:-.02em}
+.pol-sub{font-size:11px;color:var(--text3);margin-top:2px}
+.pol-price-block{text-align:right;flex-shrink:0;margin-left:12px}
+.pol-price{font-size:22px;font-weight:900;color:var(--text);letter-spacing:-.04em}
+.pol-period{font-size:11px;color:var(--text3);margin-top:1px}
+
+/* BENEFITS */
+.ben{display:flex;align-items:center;padding:12px 16px;gap:12px;border-bottom:1px solid var(--border2)}
+.ben:last-child{border-bottom:none}
+.ben-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;background:var(--teal-lt)}
+.ben-icon-grey{background:var(--surface3)}
+.ben-body{flex:1;min-width:0}
+.ben-name{font-size:12.5px;font-weight:600;color:var(--text)}
+.ben-desc{font-size:11px;color:var(--text3);margin-top:2px;line-height:1.5}
+.ben-val{font-size:12px;font-weight:800;text-align:right;flex-shrink:0;white-space:nowrap;color:var(--teal)}
+.ben-val-grey{color:var(--text3);font-weight:500}
+
+/* COTAS TABLE */
+.cotas-table{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.ct-header{background:var(--surface3);padding:12px 14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;border-bottom:1px solid var(--border)}
+.cth{font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);text-align:center}
+.cth:first-child{text-align:left}
+.ct-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;padding:10px 14px;border-bottom:1px solid var(--border2);align-items:center}
+.ct-row:last-child{border-bottom:none}
+.ct-row.featured{background:rgba(16,185,129,.06)}
+.ctr-label{font-size:11.5px;font-weight:600;color:var(--text2)}
+.ctr-val{font-size:12px;font-weight:700;color:var(--text);text-align:center}
+.ctr-val.teal{color:var(--teal);font-weight:800}
+.ctr-badge{background:var(--teal-lt);border:1px solid rgba(16,185,129,.3);border-radius:6px;padding:2px 7px;font-size:10px;font-weight:800;color:var(--teal);text-align:center;white-space:nowrap}
+.ctr-sub{font-size:9.5px;color:var(--text3);text-align:right;font-weight:500}
+
+/* FEATURE PILLS */
+.feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.feat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px}
+.feat-icon{font-size:20px;margin-bottom:8px}
+.feat-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px}
+.feat-desc{font-size:10.5px;color:var(--text3);line-height:1.5}
+
+/* SUMMARY */
+.sum-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.sum-head-row{padding:9px 16px;background:var(--surface3);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
+.sh-label{font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--text3)}
+.sum-row{display:flex;justify-content:space-between;align-items:center;padding:11px 16px;border-bottom:1px solid var(--border2)}
+.sum-row:last-child{border-bottom:none}
+.sum-row.alt{background:rgba(255,255,255,.02)}
+.sr-left{display:flex;align-items:center;gap:8px}
+.sr-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;background:var(--teal)}
+.sr-name{font-size:12px;font-weight:500;color:var(--text2)}
+.sr-right{display:flex;align-items:center;gap:14px}
+.sr-cov{font-size:12px;font-weight:800;color:var(--teal)}
+.sr-price{font-size:11px;color:var(--text3);min-width:40px;text-align:right}
+.sum-total-row{background:#059669;padding:16px;display:flex;justify-content:space-between;align-items:center}
+.str-label{font-size:11px;font-weight:600;color:rgba(255,255,255,.55)}
+.str-val{font-size:22px;font-weight:900;color:#fff;letter-spacing:-.04em}
+
+/* STEPS */
+.steps{display:flex;flex-direction:column;gap:8px}
+.step-row{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;display:flex;gap:12px;align-items:flex-start}
+.step-badge{width:26px;height:26px;border-radius:7px;background:var(--teal);color:#fff;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px}
+.step-desc{font-size:11.5px;color:var(--text3);line-height:1.6}
+
+/* CTA */
+.cta-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:22px 20px;position:relative;overflow:hidden}
+.cta-card::before{content:'';position:absolute;bottom:-50px;right:-30px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.12) 0%,transparent 70%);pointer-events:none}
+.cta-headline{font-size:20px;font-weight:900;color:var(--text);line-height:1.2;letter-spacing:-.03em;margin-bottom:8px;position:relative;z-index:1}
+.cta-sub{font-size:13px;color:var(--text3);line-height:1.65;margin-bottom:20px;position:relative;z-index:1}
+.cta-btn{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--teal);color:#fff;font-family:'Inter',sans-serif;font-size:14px;font-weight:800;padding:15px;border-radius:10px;text-decoration:none;letter-spacing:-.02em;margin-bottom:16px;position:relative;z-index:1}
+.cta-divider{height:1px;background:var(--border);margin:16px 0;position:relative;z-index:1}
+.advisor-row{display:flex;align-items:center;gap:12px;position:relative;z-index:1}
+.adv-av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--teal) 0%,var(--blue) 100%);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0;border:2px solid var(--border)}
+.adv-name{font-size:13px;font-weight:700;color:var(--text)}
+.adv-role{font-size:11px;color:var(--text3);margin-top:1px}
+.adv-fca{margin-left:auto;background:var(--green-lt);border:1px solid rgba(34,197,94,.2);border-radius:100px;padding:4px 10px;font-size:10px;font-weight:800;color:var(--green)}
+
+/* INFO BANNER */
+.info-banner{background:var(--surface3);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;display:flex;gap:10px;align-items:flex-start}
+.ib-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.ib-text{font-size:11px;color:var(--text3);line-height:1.6}
+.ib-text strong{color:var(--text2)}
+
+/* METLIFE STAT BAND */
+.stat-band{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px;margin:0}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.stat-item{background:var(--surface3);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.si-val{font-size:22px;font-weight:900;color:var(--teal);letter-spacing:-.04em;line-height:1}
+.si-label{font-size:10px;color:var(--text3);margin-top:4px;line-height:1.4}
+.stat-title{font-size:13px;font-weight:700;color:var(--text2);text-align:center}
+
+/* PRINT */
+#print-btn{position:fixed;bottom:24px;right:50%;transform:translateX(50%);background:var(--teal);color:#fff;border:none;border-radius:50px;padding:13px 26px;font-family:'Inter',sans-serif;font-size:13px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 8px 32px rgba(16,185,129,.4);z-index:999;white-space:nowrap}
+
+/* DIVIDER LABEL */
+.divider-label{display:flex;align-items:center;gap:10px;margin:16px 16px 0}
+.dl-line{flex:1;height:1px;background:var(--border)}
+.dl-text{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3)}
+
+/* ANIMATIONS */
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.hero{animation:rise .4s ease both}
+.total-band{animation:rise .4s .05s ease both}
+.pad{animation:rise .4s .09s ease both}
+
+/* PRINT */
+@page{size:A4;margin:0}
+@media print{
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  html,body{width:100%!important;max-width:100%!important;margin:0!important;padding:0!important;background:#0D0F14!important}
+  #print-btn{display:none!important}
+  *{animation:none!important}
+  .total-band{background:linear-gradient(135deg,#0d9668,#059669)!important}
+  .sum-total-row{background:#059669!important}
+  .cta-btn{background:#10B981!important}
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+<button id="print-btn" onclick="gerarPDF()">📄 Guardar como PDF</button>
+<div id="pdf-loading" style="display:none;position:fixed;bottom:24px;right:50%;transform:translateX(50%);background:#0d9668;color:#fff;border:none;border-radius:50px;padding:13px 26px;font-family:'Inter',sans-serif;font-size:13px;font-weight:800;z-index:1000;white-space:nowrap;box-shadow:0 8px 32px rgba(16,185,129,.4)">⏳ Gerando PDF...</div>
+<script>
+function gerarPDF() {
+  const btn = document.getElementById('print-btn');
+  const loading = document.getElementById('pdf-loading');
+  btn.style.display = 'none';
+  loading.style.display = 'flex';
+
+  const element = document.body;
+  const opt = {
+    margin: 0,
+    filename: 'MetLife-MultiProtect.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: '#0D0F14',
+      scrollY: 0
+    },
+    jsPDF: {
+      unit: 'mm',
+      format: 'a4',
+      orientation: 'portrait'
+    },
+    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+  };
+
+  html2pdf().set(opt).from(element).save().then(function() {
+    btn.style.display = 'flex';
+    loading.style.display = 'none';
+  }).catch(function() {
+    btn.style.display = 'flex';
+    loading.style.display = 'none';
+  });
+}
+</script>
+
+<div class="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-logo">ML</div>
+    <div class="topbar-title">MetLife MultiProtect</div>
+  </div>
+  <div class="topbar-ref">Guia Completo</div>
+</div>
+
+<div class="status-bar">
+  <div class="status-badge"><div class="status-dot"></div>MetLife</div>
+  <div class="status-date">16 de Julho de 2026</div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-top">
+    <div class="hero-eyebrow">Proteção Completa</div>
+    <div class="hero-badge">● MetLife · FCA</div>
+  </div>
+  <div class="hero-name">MetLife<br><span>MultiProtect</span></div>
+  <div class="hero-sub">Proteção criada especificamente para você e para quem mais importa. Simples, acessível e sem perguntas de saúde.</div>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hs-val"><span>£</span>13</div>
+      <div class="hs-label">Cota 1 + Luxações / mês</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hs-val">5</div>
+      <div class="hs-label">Cotas disponíveis</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hs-val">156</div>
+      <div class="hs-label">Anos de história</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hs-val">100M<span>+</span></div>
+      <div class="hs-label">Clientes no mundo</div>
+    </div>
+  </div>
+</div>
+
+<!-- TOTAL BAND -->
+<div class="total-band">
+  <div>
+    <div class="tb-label">Cota 1 · Essencial + Luxações</div>
+    <div class="tb-amount"><span>£</span>13/mês</div>
+    <div class="tb-breakdown">£11 Essencial + £2 Luxações</div>
+  </div>
+  <div class="tb-right">
+    <div class="tb-note">Proteção completa</div>
+    <div class="tb-pill">MetLife · FCA</div>
+  </div>
+</div>
+
+<!-- METLIFE STATS -->
+<div class="pad">
+  <div class="stat-band">
+    <div class="stat-title">No ano passado, a MetLife pagou:</div>
+    <div class="stat-grid">
+      <div class="stat-item">
+        <div class="si-val">23,942</div>
+        <div class="si-label">pedidos de indenização total</div>
+      </div>
+      <div class="stat-item">
+        <div class="si-val">£22.4m</div>
+        <div class="si-label">em indenizações pagas</div>
+      </div>
+      <div class="stat-item">
+        <div class="si-val">12,949</div>
+        <div class="si-label">pedidos por hospitalização</div>
+      </div>
+      <div class="stat-item">
+        <div class="si-val">9,561</div>
+        <div class="si-label">pedidos por ossos quebrados</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- O QUE ESTÁ INCLUÍDO -->
+<div class="pad">
+  <div class="sec-header">
+    <div class="sec-num">1</div>
+    <div class="sec-title">Cobertura Essencial — O que está incluído</div>
+  </div>
+  <div class="pol-card">
+    <div class="pol-head">
+      <div>
+        <div class="pol-type">MetLife MultiProtect</div>
+        <div class="pol-name">Cobertura Essencial</div>
+        <div class="pol-sub">Incluída em todas as cotas · De £11 a £55/mês</div>
+      </div>
+    </div>
+    <div class="ben">
+      <div class="ben-icon">🦴</div>
+      <div class="ben-body">
+        <div class="ben-name">Ossos Fraturados</div>
+        <div class="ben-desc">Cobertura de até £6,000 por osso quebrado. Pode receber por múltiplas fraturas.</div>
+      </div>
+      <div class="ben-val">até £6,000</div>
+    </div>
+    <div class="ben">
+      <div class="ben-icon">💀</div>
+      <div class="ben-body">
+        <div class="ben-name">Morte por Acidente</div>
+        <div class="ben-desc">Indenização de até £200,000 caso o pior aconteça por acidente.</div>
+      </div>
+      <div class="ben-val">até £200,000</div>
+    </div>
+    <div class="ben">
+      <div class="ben-icon">♿</div>
+      <div class="ben-body">
+        <div class="ben-name">Incapacidade Permanente Total</div>
+        <div class="ben-desc">Se ficar impossibilitado de cuidar de si mesmo, cobertura de até £250,000.</div>
+      </div>
+      <div class="ben-val">até £250,000</div>
+    </div>
+    <div class="ben">
+      <div class="ben-icon">🏥</div>
+      <div class="ben-body">
+        <div class="ben-name">Internação Hospitalar</div>
+        <div class="ben-desc">£50 a £250 por cada 24 horas internado no Reino Unido e países europeus.</div>
+      </div>
+      <div class="ben-val">até £250/dia</div>
+    </div>
+    <div class="ben">
+      <div class="ben-icon">🫀</div>
+      <div class="ben-body">
+        <div class="ben-name">Lesões Permanentes por Acidente</div>
+        <div class="ben-desc">Cobre grande variedade de lesões que alteram a vida, como perda de visão, audição, membros.</div>
+      </div>
+      <div class="ben-val">até £125,000</div>
+    </div>
+    <div class="ben">
+      <div class="ben-icon ben-icon-grey">🌙</div>
+      <div class="ben-body">
+        <div class="ben-name">Morte Não Acidental</div>
+        <div class="ben-desc">Até £20,000 por causas naturais, com devolução dos prémios no 1.º ano.</div>
+      </div>
+      <div class="ben-val ben-val-grey">até £20,000</div>
+    </div>
+  </div>
+</div>
+
+<!-- COBERTURAS OPCIONAIS -->
+<div class="pad">
+  <div class="sec-header">
+    <div class="sec-num">2</div>
+    <div class="sec-title">Coberturas Opcionais — Adicione ao plano</div>
+  </div>
+  <div class="pol-card">
+    <div class="ben">
+      <div class="ben-icon">🦵</div>
+      <div class="ben-body">
+        <div class="ben-name">Luxações e Rupturas — Active Lifestyle</div>
+        <div class="ben-desc">Distensões, rupturas de tendão ou ligamento. Ideal para quem tem vida activa.</div>
+      </div>
+      <div class="ben-val">+£2/mês</div>
+    </div>
+    <div class="ben">
+      <div class="ben-icon">👶</div>
+      <div class="ben-body">
+        <div class="ben-name">Cobertura para Crianças</div>
+        <div class="ben-desc">Protege seus filhos do nascimento até 23 anos, incluindo câncer infantil e lesões.</div>
+      </div>
+      <div class="ben-val">+£2/mês</div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVIÇOS INCLUÍDOS -->
+<div class="pad">
+  <div class="sec-header">
+    <div class="sec-num sec-num-grey">+</div>
+    <div class="sec-title">Serviços Gratuitos Incluídos</div>
+  </div>
+  <div class="feature-grid">
+    <div class="feat-card">
+      <div class="feat-icon">👨‍⚕️</div>
+      <div class="feat-title">GP24 — Médico Virtual</div>
+      <div class="feat-desc">Consulta médica 24/7, todos os dias do ano, em qualquer país. Mais de 200 idiomas.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">💚</div>
+      <div class="feat-title">Wellbeing Support</div>
+      <div class="feat-desc">Apoio emocional, gestão de dívidas, problemas familiares e questões fiscais.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🌍</div>
+      <div class="feat-title">Cobertura Europa</div>
+      <div class="feat-desc">Hospitalização coberta em 27 países europeus, incluindo Portugal, França e Espanha.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🔒</div>
+      <div class="feat-title">Sem Perguntas</div>
+      <div class="feat-desc">Não fazemos perguntas de saúde ao contratar. Disponível de 18 a 65 anos.</div>
+    </div>
+  </div>
+</div>
+
+<!-- TABELA DE COTAS -->
+<div class="pad">
+  <div class="sec-header">
+    <div class="sec-num">3</div>
+    <div class="sec-title">Escolha o Seu Nível — 5 Cotas</div>
+  </div>
+  <div style="font-size:11px;color:var(--text3);margin-bottom:10px;line-height:1.5">Valores abaixo já somam Cobertura Essencial + Luxações (Active Lifestyle).</div>
+  <div class="cotas-table">
+    <div class="ct-header" style="grid-template-columns:1fr 1fr">
+      <div class="cth">Cota</div>
+      <div class="cth">Valor mensal</div>
+    </div>
+    <div class="ct-row" style="grid-template-columns:1fr 1fr">
+      <div class="ctr-label">1 Cota<div class="ctr-sub" style="text-align:left">£11 + £2</div></div>
+      <div class="ctr-val teal">£13 / mês</div>
+    </div>
+    <div class="ct-row featured" style="grid-template-columns:1fr 1fr">
+      <div class="ctr-label">2 Cotas<div class="ctr-sub" style="text-align:left">£22 + £4</div></div>
+      <div class="ctr-val teal">£26 / mês</div>
+    </div>
+    <div class="ct-row featured" style="grid-template-columns:1fr 1fr">
+      <div class="ctr-label">3 Cotas<div class="ctr-sub" style="text-align:left">£33 + £6</div></div>
+      <div class="ctr-val teal">£39 / mês</div>
+    </div>
+    <div class="ct-row" style="grid-template-columns:1fr 1fr">
+      <div class="ctr-label">4 Cotas<div class="ctr-sub" style="text-align:left">£44 + £8</div></div>
+      <div class="ctr-val teal">£52 / mês</div>
+    </div>
+    <div class="ct-row" style="grid-template-columns:1fr 1fr">
+      <div class="ctr-label">5 Cotas<div class="ctr-sub" style="text-align:left">£55 + £10</div></div>
+      <div class="ctr-val teal">£65 / mês</div>
+    </div>
+  </div>
+</div>
+
+<!-- BENEFICIOS POR COTA (OSSOS) -->
+<div class="pad">
+  <div class="sec-header">
+    <div class="sec-num sec-num-grey">∑</div>
+    <div class="sec-title">Quanto você recebe — Ossos e Internação</div>
+  </div>
+  <div class="cotas-table">
+    <div class="ct-header">
+      <div class="cth">Cobertura</div>
+      <div class="cth">1 Cota</div>
+      <div class="cth">2 Cotas</div>
+    </div>
+    <div class="ct-row">
+      <div class="ctr-label" style="font-size:10.5px">Osso Principal</div>
+      <div class="ctr-val">£1,000</div>
+      <div class="ctr-val teal">£2,000</div>
+    </div>
+    <div class="ct-row alt">
+      <div class="ctr-label" style="font-size:10.5px">Internação/dia</div>
+      <div class="ctr-val">£50</div>
+      <div class="ctr-val teal">£100</div>
+    </div>
+    <div class="ct-row">
+      <div class="ctr-label" style="font-size:10.5px">Morte Acidente</div>
+      <div class="ctr-val">£40,000</div>
+      <div class="ctr-val teal">£80,000</div>
+    </div>
+    <div class="ct-row alt">
+      <div class="ctr-label" style="font-size:10.5px">Paralisia total</div>
+      <div class="ctr-val">£25,000</div>
+      <div class="ctr-val teal">£50,000</div>
+    </div>
+    <div class="ct-row">
+      <div class="ctr-label" style="font-size:10.5px">Luxação</div>
+      <div class="ctr-val">£1,000</div>
+      <div class="ctr-val teal">£2,000</div>
+    </div>
+  </div>
+</div>
+
+<!-- INFO BANNER -->
+<div class="pad">
+  <div class="info-banner">
+    <div class="ib-icon">ℹ️</div>
+    <div class="ib-text"><strong>Quanto mais cotas, maior a proteção.</strong> O custo não aumenta quando você faz uma reclamação ou com a idade. Disponível de 18 a 75 anos.</div>
+  </div>
+</div>
+
+<!-- COMO FUNCIONA -->
+<div class="pad">
+  <div class="sec-header">
+    <div class="sec-num sec-num-grey">→</div>
+    <div class="sec-title">Como funciona</div>
+  </div>
+
+  <!-- EXPLICAÇÃO PRINCIPAL -->
+  <div class="pol-card" style="margin-bottom:10px">
+    <div style="padding:16px;border-bottom:1px solid var(--border2)">
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px">O conceito é simples</div>
+      <div style="font-size:12.5px;color:var(--text2);line-height:1.7">Você paga uma <strong style="color:var(--text)">mensalidade fixa</strong> e, caso aconteça algum imprevisto, a MetLife paga uma <strong style="color:var(--teal)">indenização em dinheiro</strong> diretamente na sua conta — sem burocracia.</div>
+    </div>
+    <div class="ben">
+      <div class="ben-icon">🤕</div>
+      <div class="ben-body">
+        <div class="ben-name">Sofreu um acidente?</div>
+        <div class="ben-desc">Você recebe uma indenização. Fratura, luxação, lesão permanente — cada situação tem um valor garantido em contrato.</div>
+      </div>
+      <div class="ben-val">✓ Pago</div>
+    </div>
+    <div class="ben">
+      <div class="ben-icon">🏥</div>
+      <div class="ben-body">
+        <div class="ben-name">Ficou hospitalizado?</div>
+        <div class="ben-desc">Você recebe £50 a £250 por cada 24 horas internado no hospital — acidente ou doença (após 12 meses).</div>
+      </div>
+      <div class="ben-val">✓ Pago</div>
+    </div>
+  </div>
+
+  <!-- 9 COBERTURAS -->
+  <div style="font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px">E isso + 9 tipos de cobertura como...</div>
+  <div class="pol-card">
+    <div class="ben">
+      <div class="ben-icon">💀</div>
+      <div class="ben-body">
+        <div class="ben-name">Morte por Acidente</div>
+        <div class="ben-desc">Sua família recebe até £200,000 caso o pior aconteça.</div>
+      </div>
+      <div class="ben-val">até £200k</div>
+    </div>
+    <div class="ben">
+      <div class="ben-icon">🦴</div>
+      <div class="ben-body">
+        <div class="ben-name">Osso Fraturado</div>
+        <div class="ben-desc">Até £6,000 por osso quebrado. Pode receber por múltiplas fraturas.</div>
+      </div>
+      <div class="ben-val">até £6,000</div>
+    </div>
+    <div class="ben">
+      <div class="ben-icon">🦵</div>
+      <div class="ben-body">
+        <div class="ben-name">Luxação ou Ruptura</div>
+        <div class="ben-desc">Distensão, ruptura de tendão ou ligamento. Ideal para vida ativa.</div>
+      </div>
+      <div class="ben-val">até £5,000</div>
+    </div>
+    <div class="ben">
+      <div class="ben-icon">♿</div>
+      <div class="ben-body">
+        <div class="ben-name">Incapacidade Permanente</div>
+        <div class="ben-desc">Se ficar impossibilitado de trabalhar ou cuidar de si mesmo.</div>
+      </div>
+      <div class="ben-val">até £250k</div>
+    </div>
+    <div class="ben">
+      <div class="ben-icon">👁️</div>
+      <div class="ben-body">
+        <div class="ben-name">Perda de Visão ou Audição</div>
+        <div class="ben-desc">Cegueira ou surdez permanente, total ou parcial.</div>
+      </div>
+      <div class="ben-val">até £100k</div>
+    </div>
+    <div class="ben">
+      <div class="ben-icon">✋</div>
+      <div class="ben-body">
+        <div class="ben-name">Perda de Membro</div>
+        <div class="ben-desc">Amputação de mão, pé, dedo ou polegar.</div>
+      </div>
+      <div class="ben-val">até £100k</div>
+    </div>
+    <div class="ben">
+      <div class="ben-icon">🔥</div>
+      <div class="ben-body">
+        <div class="ben-name">Queimaduras Graves</div>
+        <div class="ben-desc">Queimaduras de 3.º grau cobrindo 20% do corpo.</div>
+      </div>
+      <div class="ben-val">até £12,500</div>
+    </div>
+    <div class="ben">
+      <div class="ben-icon">🌙</div>
+      <div class="ben-body">
+        <div class="ben-name">Morte por Causas Naturais</div>
+        <div class="ben-desc">Até £20,000 — com devolução dos prémios no 1.º ano.</div>
+      </div>
+      <div class="ben-val">até £20,000</div>
+    </div>
+    <div class="ben" style="border-bottom:none">
+      <div class="ben-icon">👶</div>
+      <div class="ben-body">
+        <div class="ben-name">Cobertura para Filhos</div>
+        <div class="ben-desc">Protege seus filhos do nascimento até os 23 anos, incluindo câncer infantil.</div>
+      </div>
+      <div class="ben-val">+£2/mês</div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="pad">
+  <div class="cta-card">
+    <div class="cta-headline">Pronto para ativar a sua proteção?</div>
+    <div class="cta-sub">Sem compromisso. Sem pressão. Só clareza sobre o que é melhor para você e para a sua família.</div>
+    <a class="cta-btn" href="https://wa.me/447700000000" target="_blank">💬 &nbsp;Falar com Eduardo Santos</a>
+    <div class="cta-divider"></div>
+    <div class="advisor-row">
+      <div class="adv-av">E</div>
+      <div>
+        <div class="adv-name">Eduardo Santos</div>
+        <div class="adv-role">Financial Adviser · Reino Unido 🇬🇧</div>
+      </div>
+      <div class="adv-fca">✓ FCA</div>
+    </div>
+  </div>
+</div>
+
+<div style="padding:20px 20px 48px;font-size:10px;color:var(--text3);line-height:1.9;text-align:center">
+  MetLife Europe d.a.c. · Autorizada pela FCA e regulada pelo Banco Central da Irlanda.<br>
+  Filial no Reino Unido: Invicta House, Trafalgar Place, Brighton BN1 4FR.<br>
+  Número de Filial: BR008866 · COMP 2826.5.AUG24<br><br>
+  O custo da cobertura não muda quando você faz uma reclamação ou com a idade.<br>
+  Cobertura válida dos 18 aos 75 anos · Sem perguntas de saúde ao contratar.
+</div>
+
+</body>
+</html>
