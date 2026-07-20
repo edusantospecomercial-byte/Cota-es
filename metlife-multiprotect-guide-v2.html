@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MetLife MultiProtect · Guia Completo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:#0D0F14;--surface:#161920;--surface3:#252A3A;
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.05);
+  --text:#F1F3F9;--text2:#9AA3B2;--text3:#5A6478;
+  --teal:#10B981;--teal-dk:#059669;--teal-lt:rgba(16,185,129,.15);
+  --blue:#3B82F6;--blue-lt:rgba(59,130,246,.15);
+  --gold:#F5B942;--gold-lt:rgba(245,185,66,.15);
+  --green:#22C55E;--green-lt:rgba(34,197,94,.12);
+  --r:12px;--r-lg:18px;
+}
+html{background:var(--bg)}
+body{font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(--bg);max-width:430px;margin:0 auto;min-height:100vh;-webkit-font-smoothing:antialiased;padding-bottom:90px}
+
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topbar-brand{display:flex;align-items:center;gap:10px}
+.topbar-logo{width:30px;height:30px;border-radius:8px;background:var(--teal);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff}
+.topbar-title{font-size:14px;font-weight:700;color:var(--text)}
+.topbar-ref{font-size:10px;font-weight:600;color:var(--text3);background:var(--surface3);border:1px solid var(--border);border-radius:100px;padding:4px 10px;letter-spacing:.04em}
+
+.status-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;justify-content:space-between}
+.status-badge{display:flex;align-items:center;gap:7px;background:var(--teal-lt);border:1px solid rgba(16,185,129,.25);border-radius:100px;padding:4px 12px;font-size:10px;font-weight:800;color:var(--teal);letter-spacing:.06em;text-transform:uppercase}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.status-date{font-size:11px;color:var(--text3);font-weight:500}
+
+.hero{margin:16px 16px 0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px 22px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-80px;right:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.20) 0%,transparent 70%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-60px;left:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(245,185,66,.10) 0%,transparent 70%);pointer-events:none}
+.hero-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;position:relative;z-index:1}
+.hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal)}
+.hero-badge{display:flex;align-items:center;gap:5px;background:var(--teal-lt);border:1px solid rgba(16,185,129,.25);border-radius:100px;padding:3px 10px;font-size:10px;font-weight:700;color:var(--teal)}
+.hero-name{font-size:29px;font-weight:900;color:var(--text);line-height:1.12;letter-spacing:-.04em;margin-bottom:10px;position:relative;z-index:1}
+.hero-name span{color:var(--teal)}
+.hero-sub{font-size:13px;color:var(--text2);line-height:1.65;position:relative;z-index:1;max-width:340px}
+.hero-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;position:relative;z-index:1}
+.hero-stat{background:var(--surface3);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;flex:1;min-width:120px}
+.hero-stat-val{font-size:19px;font-weight:900;color:var(--text);letter-spacing:-.03em;line-height:1}
+.hero-stat-val em{color:var(--teal);font-style:normal}
+.hero-stat-label{font-size:10.5px;color:var(--text3);margin-top:4px;font-weight:500;line-height:1.4}
+</style>
+</head>
+<body>
+
+<button id="print-btn" onclick="window.print()">📄 &nbsp;Guardar como PDF</button>
+
+<div class="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-logo">ML</div>
+    <div class="topbar-title">MetLife MultiProtect</div>
+  </div>
+  <div class="topbar-ref">Guia Completo</div>
+</div>
+
+<div class="status-bar">
+  <div class="status-badge"><div class="status-dot"></div>MetLife</div>
+  <div class="status-date">20 de Julho de 2026</div>
+</div>
+
+<div class="hero">
+  <div class="hero-top">
+    <div class="hero-eyebrow">Proteção Completa</div>
+    <div class="hero-badge">● MetLife · FCA</div>
+  </div>
+  <div class="hero-name">MetLife<br><span>MultiProtect</span></div>
+  <div class="hero-sub">Uma proteção pensada para você e para quem mais importa na sua vida — o seu cônjuge e os seus filhos. Simples, acessível, e sem perguntas de saúde.</div>
+  <div class="hero-chips">
+    <div class="hero-stat">
+      <div class="hero-stat-val"><em>£</em>13</div>
+      <div class="hero-stat-label">Cota 1 + Luxações / mês</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-val"><em>£</em>250</div>
+      <div class="hero-stat-label">Por dia internado</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-val"><em>+£</em>2</div>
+      <div class="hero-stat-label">Filhos Inclusos no Plano</div>
+    </div>
+  </div>
+</div>
+
+<!-- BANNER PERSUASIVO PRINCIPAL -->
+<div style="margin:14px 16px 0;background:linear-gradient(135deg,var(--teal-dk) 0%,#047857 100%);border-radius:var(--r-lg);padding:22px;position:relative;overflow:hidden">
+  <div style="position:absolute;top:-40px;right:-30px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.08)"></div>
+  <div style="font-size:10px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:8px;position:relative;z-index:1">A partir de apenas</div>
+  <div style="font-size:42px;font-weight:900;color:#fff;letter-spacing:-.04em;line-height:1;position:relative;z-index:1"><span style="font-size:22px;font-weight:700">£</span>13<span style="font-size:16px;font-weight:600">/mês</span></div>
+  <div style="font-size:13px;color:rgba(255,255,255,.85);margin-top:10px;line-height:1.55;position:relative;z-index:1;max-width:320px">Com uma proteção que pode chegar a <strong style="color:#fff">£200.000</strong> em caso de morte acidental — o preço de um café por dia para proteger o que você mais ama.</div>
+</div>
+
+<!-- OS 3 REFORÇOS PRINCIPAIS -->
+<div class="pad" style="padding:18px 16px 0">
+  <div class="sec-header" style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+    <div style="width:22px;height:22px;border-radius:6px;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--teal-lt);color:var(--teal)">★</div>
+    <div style="font-size:12px;font-weight:700;color:var(--text);letter-spacing:-.01em">Por que o MultiProtect é diferente</div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px;display:flex;gap:14px;align-items:center">
+      <div style="width:44px;height:44px;border-radius:12px;background:var(--teal-lt);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">🏨</div>
+      <div style="flex:1">
+        <div style="font-size:13.5px;font-weight:800;color:var(--text);letter-spacing:-.01em">Até £250 por dia internado</div>
+        <div style="font-size:11.5px;color:var(--text3);margin-top:2px;line-height:1.5">Cada 24 horas de hospitalização gera pagamento direto — no Reino Unido e em toda a Europa.</div>
+      </div>
+    </div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px;display:flex;gap:14px;align-items:center">
+      <div style="width:44px;height:44px;border-radius:12px;background:var(--teal-lt);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">💷</div>
+      <div style="flex:1">
+        <div style="font-size:13.5px;font-weight:800;color:var(--text);letter-spacing:-.01em">Até £200.000 em caso de morte</div>
+        <div style="font-size:11.5px;color:var(--text3);margin-top:2px;line-height:1.5">A sua família recebe o suporte financeiro para continuar a vida com dignidade, sem depender de ninguém.</div>
+      </div>
+    </div>
+
+    <div style="background:linear-gradient(135deg,rgba(245,185,66,.10),rgba(16,185,129,.06));border:1px solid rgba(245,185,66,.25);border-radius:var(--r);padding:16px;display:flex;gap:14px;align-items:center">
+      <div style="width:44px;height:44px;border-radius:12px;background:var(--gold-lt);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">👨‍👩‍👧‍👦</div>
+      <div style="flex:1">
+        <div style="font-size:13.5px;font-weight:800;color:var(--text);letter-spacing:-.01em">Filhos inclusos na proteção</div>
+        <div style="font-size:11.5px;color:var(--text3);margin-top:2px;line-height:1.5">Por poucas libras a mais, os seus filhos ficam cobertos contra acidentes, fraturas e internações — a paz que só um pai entende.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COTA 1 DESTAQUE -->
+<div class="pad" style="padding:18px 16px 0">
+  <div style="background:linear-gradient(135deg,var(--teal) 0%,var(--teal-dk) 100%);border-radius:var(--r-lg);padding:20px 22px;position:relative;overflow:hidden">
+    <div style="position:absolute;bottom:-40px;right:-20px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.10)"></div>
+    <div style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.75);position:relative;z-index:1">Cota 1 · Essencial + Luxações</div>
+    <div style="font-size:32px;font-weight:900;color:#fff;letter-spacing:-.04em;margin-top:6px;position:relative;z-index:1"><span style="font-size:18px;font-weight:700">£</span>13<span style="font-size:15px;font-weight:600">/mês</span></div>
+    <div style="font-size:11.5px;color:rgba(255,255,255,.8);margin-top:6px;position:relative;z-index:1">£11 Cobertura Essencial + £2 Luxações — protege ossos, tendões e ligamentos.</div>
+  </div>
+</div>
+
+<!-- TABELA DE COTAS -->
+<div class="pad" style="padding:18px 16px 0">
+  <div class="sec-header" style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+    <div style="width:22px;height:22px;border-radius:6px;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--surface3);color:var(--text2)">5</div>
+    <div style="font-size:12px;font-weight:700;color:var(--text);letter-spacing:-.01em">Quanto mais cotas, maior a proteção</div>
+  </div>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden">
+    <div style="padding:9px 16px;background:var(--surface3);display:flex;justify-content:space-between;border-bottom:1px solid var(--border)">
+      <div style="font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--text3)">Cota</div>
+      <div style="font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--text3)">Morte por acidente</div>
+      <div style="font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--text3)">Mensal</div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 16px;border-bottom:1px solid var(--border2);background:rgba(16,185,129,.06)">
+      <span style="font-size:12px;font-weight:700;color:var(--teal)">Cota 1</span>
+      <span style="font-size:12px;font-weight:700;color:var(--text2)">£40.000</span>
+      <span style="font-size:12px;font-weight:800;color:var(--text)">£13</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 16px;border-bottom:1px solid var(--border2)">
+      <span style="font-size:12px;font-weight:500;color:var(--text2)">Cota 2</span>
+      <span style="font-size:12px;font-weight:500;color:var(--text2)">£80.000</span>
+      <span style="font-size:12px;font-weight:700;color:var(--text)">£26</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 16px;border-bottom:1px solid var(--border2)">
+      <span style="font-size:12px;font-weight:500;color:var(--text2)">Cota 3</span>
+      <span style="font-size:12px;font-weight:500;color:var(--text2)">£120.000</span>
+      <span style="font-size:12px;font-weight:700;color:var(--text)">£39</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 16px;border-bottom:1px solid var(--border2)">
+      <span style="font-size:12px;font-weight:500;color:var(--text2)">Cota 4</span>
+      <span style="font-size:12px;font-weight:500;color:var(--text2)">£160.000</span>
+      <span style="font-size:12px;font-weight:700;color:var(--text)">£52</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 16px">
+      <span style="font-size:12px;font-weight:500;color:var(--text2)">Cota 5</span>
+      <span style="font-size:12px;font-weight:700;color:var(--gold)">£200.000</span>
+      <span style="font-size:12px;font-weight:700;color:var(--text)">£65</span>
+    </div>
+  </div>
+  <div style="font-size:10.5px;color:var(--text3);margin-top:8px;line-height:1.6;padding:0 2px">Valores com Luxações incluídas. Cobertura essencial + luxações a partir de £13/mês.</div>
+</div>
+
+<!-- PROVA SOCIAL -->
+<div class="pad" style="padding:18px 16px 0">
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px;text-align:center">
+    <div style="font-size:15px;font-weight:800;color:var(--text);letter-spacing:-.02em;margin-bottom:4px">Com o MultiProtect, você pode dizer sim à vida</div>
+    <div style="font-size:11.5px;color:var(--text3);margin-bottom:16px">A MetLife paga, em média, 95 pedidos de indenização por dia.</div>
+    <div style="display:flex;gap:10px">
+      <div style="flex:1;background:var(--surface3);border-radius:var(--r);padding:14px 8px">
+        <div style="font-size:18px;font-weight:900;color:var(--teal);letter-spacing:-.03em">£22.4m</div>
+        <div style="font-size:9.5px;color:var(--text3);margin-top:3px">Pagos em indenizações</div>
+      </div>
+      <div style="flex:1;background:var(--surface3);border-radius:var(--r);padding:14px 8px">
+        <div style="font-size:18px;font-weight:900;color:var(--teal);letter-spacing:-.03em">12.949</div>
+        <div style="font-size:9.5px;color:var(--text3);margin-top:3px">Hospitalizações pagas</div>
+      </div>
+      <div style="flex:1;background:var(--surface3);border-radius:var(--r);padding:14px 8px">
+        <div style="font-size:18px;font-weight:900;color:var(--teal);letter-spacing:-.03em">9.561</div>
+        <div style="font-size:9.5px;color:var(--text3);margin-top:3px">Ossos quebrados pagos</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="pad" style="padding:18px 16px 0">
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:22px 20px;position:relative;overflow:hidden">
+    <div style="position:absolute;bottom:-50px;right:-30px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.14) 0%,transparent 70%)"></div>
+    <div style="font-size:19px;font-weight:900;color:var(--text);line-height:1.25;letter-spacing:-.03em;margin-bottom:8px;position:relative;z-index:1">Proteja quem você ama, a partir de £13/mês</div>
+    <div style="font-size:13px;color:var(--text3);line-height:1.65;margin-bottom:20px;position:relative;z-index:1">Sem perguntas de saúde. Sem burocracia. Ativação simples e rápida.</div>
+    <a href="https://wa.me/447700000000" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:8px;background:var(--teal);color:#fff;font-family:'Inter',sans-serif;font-size:14px;font-weight:800;padding:15px;border-radius:10px;text-decoration:none;letter-spacing:-.02em;margin-bottom:16px;position:relative;z-index:1">💬&nbsp; Falar com Eduardo Santos</a>
+    <div style="height:1px;background:var(--border);margin:16px 0;position:relative;z-index:1"></div>
+    <div style="display:flex;align-items:center;gap:12px;position:relative;z-index:1">
+      <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--teal) 0%,var(--blue) 100%);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0;border:2px solid var(--border)">E</div>
+      <div>
+        <div style="font-size:13px;font-weight:700;color:var(--text)">Eduardo Santos</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:1px">Financial Adviser · Reino Unido 🇬🇧</div>
+      </div>
+      <div style="margin-left:auto;background:var(--green-lt);border:1px solid rgba(34,197,94,.2);border-radius:100px;padding:4px 10px;font-size:10px;font-weight:800;color:var(--green)">✓ FCA</div>
+    </div>
+  </div>
+</div>
+
+<div style="padding:20px 20px 48px;font-size:10px;color:var(--text3);line-height:1.9;text-align:center">
+  Valores de referência da Cobertura Essencial + Luxações, MetLife MultiProtect 2026.<br>
+  Sujeito a análise e termos e condições da apólice. Valores reduzidos em 50% a partir dos 70 anos.<br><br>
+  MetLife Europe d.a.c. · Autorizada e regulada pelo Banco Central da Irlanda · Sujeita a regulação da FCA e regulação limitada da PRA no Reino Unido.
+</div>
+
+<script>
+</script>
+
+<style>
+#print-btn{position:fixed;bottom:24px;right:50%;transform:translateX(50%);background:var(--teal);color:#fff;border:none;border-radius:50px;padding:13px 26px;font-family:'Inter',sans-serif;font-size:13px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 8px 32px rgba(16,185,129,.4);z-index:999;white-space:nowrap}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.hero{animation:rise .4s ease both}
+@page{size:A4;margin:0}
+@media print{*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}html,body{width:100%!important;max-width:100%!important;margin:0!important;padding:0!important;background:#0D0F14!important}#print-btn{display:none!important}*{animation:none!important}}
+</style>
+
+</body>
+</html>
