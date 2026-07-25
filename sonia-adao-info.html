@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Sonia Adão · Informações Importantes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:#0D0F14;--surface:#161920;--surface3:#252A3A;
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.05);
+  --text:#F1F3F9;--text2:#9AA3B2;--text3:#5A6478;
+  --blue:#3B82F6;--blue-dk:#1D4ED8;--blue-lt:rgba(59,130,246,.15);
+  --teal:#10B981;--teal-lt:rgba(16,185,129,.15);
+  --green:#22C55E;--green-lt:rgba(34,197,94,.12);
+  --r:12px;--r-lg:18px;
+}
+html{background:var(--bg)}
+body{font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(--bg);max-width:430px;margin:0 auto;min-height:100vh;-webkit-font-smoothing:antialiased;padding-bottom:48px}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topbar-brand{display:flex;align-items:center;gap:10px}
+.topbar-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--teal) 0%,var(--blue) 100%);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff}
+.topbar-title{font-size:14px;font-weight:700;color:var(--text)}
+.topbar-ref{font-size:10px;font-weight:600;color:var(--text3);background:var(--surface3);border:1px solid var(--border);border-radius:100px;padding:4px 10px;letter-spacing:.04em}
+.status-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;justify-content:space-between}
+.status-badge{display:flex;align-items:center;gap:7px;background:var(--green-lt);border:1px solid rgba(34,197,94,.25);border-radius:100px;padding:4px 12px;font-size:10px;font-weight:800;color:var(--green);letter-spacing:.06em;text-transform:uppercase}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.status-date{font-size:11px;color:var(--text3);font-weight:500}
+.hero{margin:16px 16px 0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px 22px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-80px;right:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,.18) 0%,transparent 70%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-60px;left:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.12) 0%,transparent 70%);pointer-events:none}
+.hero-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;position:relative;z-index:1}
+.hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue)}
+.hero-badge{display:flex;align-items:center;gap:5px;background:var(--blue-lt);border:1px solid rgba(59,130,246,.25);border-radius:100px;padding:3px 10px;font-size:10px;font-weight:700;color:var(--blue)}
+.hero-name{font-size:28px;font-weight:900;color:var(--text);line-height:1.15;letter-spacing:-.04em;margin-bottom:8px;position:relative;z-index:1}
+.hero-sub{font-size:13px;color:var(--text2);line-height:1.6;position:relative;z-index:1}
+.pad{padding:16px 16px 0}
+.sec-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.sec-num{width:22px;height:22px;border-radius:6px;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--blue-lt);color:var(--blue)}
+.sec-title{font-size:12px;font-weight:700;color:var(--text);letter-spacing:-.01em;flex:1}
+.policy-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:10px}
+.policy-card:last-child{margin-bottom:0}
+.policy-head{padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border2)}
+.policy-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.policy-icon.zurich{background:var(--blue-lt)}
+.policy-icon.metlife{background:var(--teal-lt)}
+.policy-name{font-size:13px;font-weight:700;color:var(--text)}
+.data-row{display:flex;justify-content:space-between;align-items:center;padding:11px 16px;border-bottom:1px solid var(--border2)}
+.data-row:last-child{border-bottom:none}
+.data-label{font-size:11.5px;color:var(--text3)}
+.data-value{font-size:13px;font-weight:700;color:var(--text)}
+.data-value.hl{color:var(--blue)}
+.access-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:10px}
+.access-card:last-child{margin-bottom:0}
+.access-head{padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border2)}
+.access-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.access-icon.zurich{background:var(--blue-lt)}
+.access-icon.metlife{background:var(--teal-lt)}
+.access-name{font-size:13px;font-weight:700;color:var(--text)}
+.access-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.access-row{display:flex;justify-content:space-between;align-items:center}
+.access-row-label{font-size:11.5px;color:var(--text3)}
+.access-row-val{font-size:12.5px;font-weight:700;color:var(--text);text-align:right;word-break:break-all}
+.pass-box{background:var(--surface3);border:1px dashed var(--border);border-radius:8px;padding:8px 12px;font-size:12px;font-weight:700;color:var(--text);font-family:monospace;letter-spacing:.02em}
+.access-link{display:block;text-align:center;margin-top:2px;padding:10px;border-radius:8px;background:var(--surface3);color:var(--blue);text-decoration:none;font-size:12.5px;font-weight:700}
+.access-link.metlife{color:var(--teal)}
+.claim-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:10px}
+.claim-card:last-child{margin-bottom:0}
+.claim-head{padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border2)}
+.claim-body{padding:14px 16px;display:flex;flex-direction:column;gap:11px}
+.claim-row{display:flex;align-items:center;gap:12px}
+.claim-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;background:var(--surface3)}
+.claim-info{flex:1;min-width:0}
+.claim-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;font-weight:700}
+.claim-val{font-size:13px;font-weight:700;color:var(--text);margin-top:2px;word-break:break-word}
+.claim-val a{color:inherit;text-decoration:none}
+.cta-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:22px 20px;position:relative;overflow:hidden}
+.cta-card::before{content:'';position:absolute;bottom:-50px;right:-30px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.12) 0%,transparent 70%);pointer-events:none}
+.cta-headline{font-size:19px;font-weight:900;color:var(--text);line-height:1.25;letter-spacing:-.03em;margin-bottom:8px;position:relative;z-index:1}
+.cta-sub{font-size:13px;color:var(--text3);line-height:1.65;margin-bottom:20px;position:relative;z-index:1}
+.cta-btn{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--blue);color:#fff;font-family:'Inter',sans-serif;font-size:14px;font-weight:800;padding:15px;border-radius:10px;text-decoration:none;letter-spacing:-.02em;margin-bottom:16px;position:relative;z-index:1}
+.cta-divider{height:1px;background:var(--border);margin:16px 0;position:relative;z-index:1}
+.advisor-row{display:flex;align-items:center;gap:12px;position:relative;z-index:1}
+.adv-av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--blue) 0%,var(--teal) 100%);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0;border:2px solid var(--border)}
+.adv-name{font-size:13px;font-weight:700;color:var(--text)}
+.adv-role{font-size:11px;color:var(--text3);margin-top:1px}
+.adv-fca{margin-left:auto;background:var(--green-lt);border:1px solid rgba(34,197,94,.2);border-radius:100px;padding:4px 10px;font-size:10px;font-weight:800;color:var(--green)}
+.legal{padding:20px 20px 40px;font-size:10px;color:var(--text3);line-height:1.9;text-align:center}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.hero{animation:rise .4s ease both}
+.pad{animation:rise .4s .07s ease both}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-logo">S</div>
+    <div class="topbar-title">Informações Importantes</div>
+  </div>
+  <div class="topbar-ref">2 apólices</div>
+</div>
+
+<div class="status-bar">
+  <div class="status-badge"><div class="status-dot"></div>Zurich · MetLife</div>
+  <div class="status-date">Apólices ativas</div>
+</div>
+
+<div class="hero">
+  <div class="hero-top">
+    <div class="hero-eyebrow">Proteção Contratada</div>
+    <div class="hero-badge">● FCA</div>
+  </div>
+  <div class="hero-name">Sonia Oliveira<br>Correia Adão</div>
+  <div class="hero-sub">Guarde esta página — ela reúne todas as informações importantes das suas duas proteções: Zurich e MetLife.</div>
+</div>
+
+<!-- DADOS DAS APÓLICES -->
+<div class="pad">
+  <div class="sec-header">
+    <div class="sec-num">1</div>
+    <div class="sec-title">Dados das apólices</div>
+  </div>
+
+  <div class="policy-card">
+    <div class="policy-head">
+      <div class="policy-icon zurich">🔵</div>
+      <div class="policy-name">Zurich — Personal Protection</div>
+    </div>
+    <div class="data-row">
+      <div class="data-label">Número da apólice</div>
+      <div class="data-value hl">PR00002LZ9D</div>
+    </div>
+    <div class="data-row">
+      <div class="data-label">Mensalidade</div>
+      <div class="data-value">£36.56</div>
+    </div>
+    <div class="data-row">
+      <div class="data-label">Vencimento mensal</div>
+      <div class="data-value">dia 24</div>
+    </div>
+  </div>
+
+  <div class="policy-card">
+    <div class="policy-head">
+      <div class="policy-icon metlife">🟢</div>
+      <div class="policy-name">MetLife — MultiProtect</div>
+    </div>
+    <div class="data-row">
+      <div class="data-label">Número da apólice</div>
+      <div class="data-value hl">MPG003799</div>
+    </div>
+    <div class="data-row">
+      <div class="data-label">Mensalidade</div>
+      <div class="data-value">£13.00</div>
+    </div>
+    <div class="data-row">
+      <div class="data-label">Vencimento mensal</div>
+      <div class="data-value">dia 23</div>
+    </div>
+  </div>
+</div>
+
+<!-- ACESSO AOS PORTAIS -->
+<div class="pad">
+  <div class="sec-header">
+    <div class="sec-num">2</div>
+    <div class="sec-title">Acesso aos portais</div>
+  </div>
+
+  <div class="access-card">
+    <div class="access-head">
+      <div class="access-icon zurich">🔵</div>
+      <div class="access-name">Zurich</div>
+    </div>
+    <div class="access-body">
+      <div class="access-row"><span class="access-row-label">Email</span><span class="access-row-val">soniabrazil40@outlook.com</span></div>
+      <div class="access-row"><span class="access-row-label">Senha</span><span class="pass-box">soniaadao123</span></div>
+      <a class="access-link" href="https://www.zurich.co.uk/insurance/manage-account" target="_blank">Acessar portal Zurich →</a>
+    </div>
+  </div>
+
+  <div class="access-card">
+    <div class="access-head">
+      <div class="access-icon metlife">🟢</div>
+      <div class="access-name">MetLife</div>
+    </div>
+    <div class="access-body">
+      <div class="access-row"><span class="access-row-label">Email</span><span class="access-row-val">soniabrazil40@outlook.com</span></div>
+      <div class="access-row"><span class="access-row-label">Senha</span><span class="pass-box">soniaadao123</span></div>
+      <a class="access-link metlife" href="https://www.mymetlife.co.uk/customer/s/login/" target="_blank">Acessar portal MetLife →</a>
+    </div>
+  </div>
+</div>
+
+<!-- COMO ACIONAR O SEGURO -->
+<div class="pad">
+  <div class="sec-header">
+    <div class="sec-num">3</div>
+    <div class="sec-title">Como Acionar o Seguro (Claim)</div>
+  </div>
+
+  <div class="claim-card">
+    <div class="claim-head">
+      <div class="access-icon zurich">🔵</div>
+      <div class="access-name">Zurich — Claims</div>
+    </div>
+    <div class="claim-body">
+      <div class="claim-row">
+        <div class="claim-icon">📞</div>
+        <div class="claim-info">
+          <div class="claim-label">Telefone</div>
+          <div class="claim-val"><a href="tel:03703331500">0370 333 1500</a></div>
+        </div>
+      </div>
+      <div class="claim-row">
+        <div class="claim-icon">🌍</div>
+        <div class="claim-info">
+          <div class="claim-label">Fora do Reino Unido</div>
+          <div class="claim-val"><a href="tel:+441793511227">+44 1793 511 227</a></div>
+        </div>
+      </div>
+      <div class="claim-row">
+        <div class="claim-icon">⏰</div>
+        <div class="claim-info">
+          <div class="claim-label">Horário</div>
+          <div class="claim-val">Segunda a Sexta · 9h às 17h</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim-card">
+    <div class="claim-head">
+      <div class="access-icon metlife">🟢</div>
+      <div class="access-name">MetLife — Claims</div>
+    </div>
+    <div class="claim-body">
+      <div class="claim-row">
+        <div class="claim-icon">📞</div>
+        <div class="claim-info">
+          <div class="claim-label">Telefone</div>
+          <div class="claim-val"><a href="tel:08009170100">0800 917 0100</a> (opção 2)</div>
+        </div>
+      </div>
+      <div class="claim-row">
+        <div class="claim-icon">📧</div>
+        <div class="claim-info">
+          <div class="claim-label">E-mail</div>
+          <div class="claim-val"><a href="mailto:claims@metlife.uk.com">claims@metlife.uk.com</a></div>
+        </div>
+      </div>
+      <div class="claim-row">
+        <div class="claim-icon">⏰</div>
+        <div class="claim-info">
+          <div class="claim-label">Horário</div>
+          <div class="claim-val">Segunda a Sexta · 9h às 17h</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="pad">
+  <div class="cta-card">
+    <div class="cta-headline">Alguma dúvida ou precisa de ajuda?</div>
+    <div class="cta-sub">Estou aqui para você em qualquer etapa — antes, durante ou depois de acionar o seguro.</div>
+    <a class="cta-btn" href="https://wa.me/447700000000" target="_blank">💬 &nbsp;Falar com Eduardo Santos</a>
+    <div class="cta-divider"></div>
+    <div class="advisor-row">
+      <div class="adv-av">E</div>
+      <div>
+        <div class="adv-name">Eduardo Santos</div>
+        <div class="adv-role">Licensed Protection Adviser · Reino Unido 🇬🇧</div>
+      </div>
+      <div class="adv-fca">✓ FCA</div>
+    </div>
+  </div>
+</div>
+
+<div class="legal">
+  Informações válidas para as apólices PR00002LZ9D (Zurich) e MPG003799 (MetLife).<br>
+  Guarde esta página para consulta rápida em caso de necessidade.<br><br>
+  Att. Eduardo Santos · Licensed Protection Adviser 🇬🇧
+</div>
+
+</body>
+</html>
