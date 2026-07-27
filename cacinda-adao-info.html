@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Cacinda Adão · Informações Importantes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:#0D0F14;--surface:#161920;--surface3:#252A3A;
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.05);
+  --text:#F1F3F9;--text2:#9AA3B2;--text3:#5A6478;
+  --blue:#3B82F6;--blue-dk:#1D4ED8;--blue-lt:rgba(59,130,246,.15);
+  --teal:#10B981;--teal-lt:rgba(16,185,129,.15);
+  --green:#22C55E;--green-lt:rgba(34,197,94,.12);
+  --r:12px;--r-lg:18px;
+}
+html{background:var(--bg)}
+body{font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(--bg);max-width:430px;margin:0 auto;min-height:100vh;-webkit-font-smoothing:antialiased;padding-bottom:60px}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topbar-brand{display:flex;align-items:center;gap:10px}
+.topbar-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--teal) 0%,var(--blue) 100%);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff}
+.topbar-title{font-size:14px;font-weight:700;color:var(--text)}
+.topbar-ref{font-size:10px;font-weight:600;color:var(--text3);background:var(--surface3);border:1px solid var(--border);border-radius:100px;padding:4px 10px;letter-spacing:.04em}
+.hero{margin:16px 16px 0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px 22px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-80px;right:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,.18) 0%,transparent 70%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-60px;left:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.12) 0%,transparent 70%);pointer-events:none}
+.hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:10px;position:relative;z-index:1}
+.hero-name{font-size:28px;font-weight:900;color:var(--text);line-height:1.1;letter-spacing:-.04em;margin-bottom:8px;position:relative;z-index:1}
+.hero-sub{font-size:13px;color:var(--text2);line-height:1.6;position:relative;z-index:1}
+.hero-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;position:relative;z-index:1}
+.hero-chip{background:var(--surface3);border:1px solid var(--border);border-radius:100px;padding:4px 11px;font-size:11px;font-weight:500;color:var(--text2)}
+.total-band{margin:10px 16px 0;background:linear-gradient(135deg,var(--teal) 0%,var(--blue-dk) 100%);border-radius:var(--r-lg);padding:20px 22px;display:flex;justify-content:space-between;align-items:center;position:relative;overflow:hidden}
+.total-band::before{content:'';position:absolute;top:-40px;right:-30px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.08);pointer-events:none}
+.tb-label{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:6px}
+.tb-amount{font-size:36px;font-weight:900;color:#fff;letter-spacing:-.05em;line-height:1}
+.tb-amount span{font-size:18px;font-weight:600}
+.tb-right{text-align:right}
+.tb-note{font-size:11px;color:rgba(255,255,255,.55);margin-bottom:8px}
+.tb-pill{border-radius:100px;padding:4px 12px;font-size:10px;font-weight:800;letter-spacing:.04em;background:rgba(255,255,255,.2);color:#fff;display:inline-block}
+.pad{padding:16px 16px 0}
+.sec-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.sec-num{width:22px;height:22px;border-radius:6px;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sec-num-1{background:var(--blue-lt);color:var(--blue)}
+.sec-num-2{background:var(--teal-lt);color:var(--teal)}
+.sec-num-grey{background:var(--surface3);color:var(--text2)}
+.sec-title{font-size:12px;font-weight:700;color:var(--text);letter-spacing:-.01em;flex:1}
+.sec-badge{font-size:9px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:100px}
+.badge-zurich{background:rgba(59,130,246,.15);color:var(--blue)}
+.badge-metlife{background:var(--teal-lt);color:var(--teal)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:13px 16px;border-bottom:1px solid var(--border2)}
+.info-row:last-child{border-bottom:none}
+.info-label{font-size:11.5px;color:var(--text3);font-weight:500}
+.info-value{font-size:13px;font-weight:800;color:var(--text);letter-spacing:-.01em;text-align:right}
+.info-value.mono{font-family:'Inter',monospace;letter-spacing:0}
+.access-row{display:flex;align-items:center;padding:13px 16px;gap:12px;border-bottom:1px solid var(--border2)}
+.access-row:last-child{border-bottom:none}
+.access-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;background:var(--surface3)}
+.access-body{flex:1;min-width:0}
+.access-label{font-size:10px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.access-value{font-size:13px;font-weight:700;color:var(--text);margin-top:2px;word-break:break-all}
+.portal-link{display:block;margin:10px 16px 0;background:var(--surface3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:12px;font-weight:700;color:var(--text);text-decoration:none;text-align:center}
+.claim-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px}
+.claim-insurer{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--teal);margin-bottom:10px}
+.claim-item{display:flex;align-items:center;gap:10px;padding:8px 0}
+.claim-icon{width:28px;height:28px;border-radius:8px;background:var(--surface3);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.claim-text{font-size:12.5px;font-weight:600;color:var(--text)}
+.claim-sub{font-size:10.5px;color:var(--text3);margin-top:1px}
+.claim-divider{height:1px;background:var(--border2);margin:6px 0}
+.cta-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:22px 20px;position:relative;overflow:hidden}
+.cta-card::before{content:'';position:absolute;bottom:-50px;right:-30px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.12) 0%,transparent 70%);pointer-events:none}
+.cta-headline{font-size:19px;font-weight:900;color:var(--text);line-height:1.2;letter-spacing:-.03em;margin-bottom:8px;position:relative;z-index:1}
+.cta-sub{font-size:13px;color:var(--text3);line-height:1.65;margin-bottom:20px;position:relative;z-index:1}
+.cta-btn{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--teal);color:#0D0F14;font-family:'Inter',sans-serif;font-size:14px;font-weight:800;padding:15px;border-radius:10px;text-decoration:none;letter-spacing:-.02em;margin-bottom:16px;position:relative;z-index:1}
+.cta-divider{height:1px;background:var(--border);margin:16px 0;position:relative;z-index:1}
+.advisor-row{display:flex;align-items:center;gap:12px;position:relative;z-index:1}
+.adv-av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--blue) 0%,var(--teal) 100%);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0;border:2px solid var(--border)}
+.adv-name{font-size:13px;font-weight:700;color:var(--text)}
+.adv-role{font-size:11px;color:var(--text3);margin-top:1px}
+.adv-fca{margin-left:auto;background:var(--green-lt);border:1px solid rgba(34,197,94,.2);border-radius:100px;padding:4px 10px;font-size:10px;font-weight:800;color:var(--green)}
+.legal{padding:20px 20px 40px;font-size:10px;color:var(--text3);line-height:1.9;text-align:center}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.hero{animation:rise .4s ease both}
+.total-band{animation:rise .4s .05s ease both}
+.pad{animation:rise .4s .09s ease both}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-logo">C</div>
+    <div class="topbar-title">Informações Importantes</div>
+  </div>
+  <div class="topbar-ref">2 apólices</div>
+</div>
+
+<div class="hero">
+  <div class="hero-eyebrow">Suas Apólices de Proteção</div>
+  <div class="hero-name">Cacinda Adão</div>
+  <div class="hero-sub">Aqui está tudo o que você precisa: números das apólices, acesso aos portais e como acionar cada seguro se precisar.</div>
+  <div class="hero-chips">
+    <div class="hero-chip">🛡️ Zurich</div>
+    <div class="hero-chip">🛡️ MetLife</div>
+  </div>
+</div>
+
+<div class="total-band">
+  <div>
+    <div class="tb-label">Investimento mensal total</div>
+    <div class="tb-amount"><span>£</span>42.38</div>
+  </div>
+  <div class="tb-right">
+    <div class="tb-note">Zurich + MetLife</div>
+    <div class="tb-pill">Ativo</div>
+  </div>
+</div>
+
+<!-- APÓLICE 1 — ZURICH -->
+<div class="pad">
+  <div class="sec-header">
+    <div class="sec-num sec-num-1">1</div>
+    <div class="sec-title">Apólice · Zurich</div>
+    <div class="sec-badge badge-zurich">Zurich</div>
+  </div>
+  <div class="card">
+    <div class="info-row">
+      <div class="info-label">Número da apólice</div>
+      <div class="info-value mono">PR00002LZL3</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Mensalidade</div>
+      <div class="info-value">£29.38</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Início da apólice</div>
+      <div class="info-value">26/07/2026</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Vencimento</div>
+      <div class="info-value">dia 24</div>
+    </div>
+  </div>
+</div>
+
+<!-- APÓLICE 2 — METLIFE -->
+<div class="pad">
+  <div class="sec-header">
+    <div class="sec-num sec-num-2">2</div>
+    <div class="sec-title">Apólice · MetLife MultiProtect</div>
+    <div class="sec-badge badge-metlife">MetLife</div>
+  </div>
+  <div class="card">
+    <div class="info-row">
+      <div class="info-label">Número da apólice</div>
+      <div class="info-value mono">MPG003884</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Cotas</div>
+      <div class="info-value">1</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Mensalidade</div>
+      <div class="info-value">£13.00</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Vencimento</div>
+      <div class="info-value">dia 23</div>
+    </div>
+  </div>
+</div>
+
+<!-- ACESSO AOS PORTAIS -->
+<div class="pad">
+  <div class="sec-header">
+    <div class="sec-num sec-num-grey">→</div>
+    <div class="sec-title">Acesso aos Portais</div>
+  </div>
+  <div class="card">
+    <div class="access-row">
+      <div class="access-icon">👤</div>
+      <div class="access-body">
+        <div class="access-label">Email</div>
+        <div class="access-value">cacindaadao@proton.me</div>
+      </div>
+    </div>
+    <div class="access-row">
+      <div class="access-icon">🔑</div>
+      <div class="access-body">
+        <div class="access-label">Senha</div>
+        <div class="access-value">cacindaadao123</div>
+      </div>
+    </div>
+  </div>
+  <a class="portal-link" href="https://www.zurich.co.uk/insurance/manage-account" target="_blank">🔵 Portal Zurich</a>
+  <a class="portal-link" href="https://www.mymetlife.co.uk" target="_blank">🟢 Portal MetLife</a>
+</div>
+
+<!-- COMO ACIONAR -->
+<div class="pad">
+  <div class="sec-header">
+    <div class="sec-num sec-num-grey">🚨</div>
+    <div class="sec-title">Como Fazer um Claim (Acionar o Seguro)</div>
+  </div>
+  <div class="claim-card">
+    <div class="claim-insurer">Zurich</div>
+    <div class="claim-item">
+      <div class="claim-icon">📞</div>
+      <div><div class="claim-text">0370 333 1500</div><div class="claim-sub">Seg–Sex · 9h às 17h</div></div>
+    </div>
+    <div class="claim-divider"></div>
+    <div class="claim-insurer" style="margin-top:8px">MetLife</div>
+    <div class="claim-item">
+      <div class="claim-icon">📞</div>
+      <div><div class="claim-text">0800 917 0100 (opção 2)</div><div class="claim-sub">Seg–Sex · 9h às 17h</div></div>
+    </div>
+    <div class="claim-item">
+      <div class="claim-icon">📧</div>
+      <div><div class="claim-text">claims@metlife.uk.com</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="pad">
+  <div class="cta-card">
+    <div class="cta-headline">Qualquer dúvida, é só chamar</div>
+    <div class="cta-sub">Guarde esta página — ela reúne todas as informações importantes das suas duas apólices.</div>
+    <a class="cta-btn" href="https://wa.me/447700000000" target="_blank">💬 &nbsp;Falar com Eduardo Santos</a>
+    <div class="cta-divider"></div>
+    <div class="advisor-row">
+      <div class="adv-av">E</div>
+      <div>
+        <div class="adv-name">Eduardo Santos</div>
+        <div class="adv-role">Licensed Protection Adviser · Reino Unido 🇬🇧</div>
+      </div>
+      <div class="adv-fca">✓ FCA</div>
+    </div>
+  </div>
+</div>
+
+<div class="legal">
+  Guarde este link — ele reúne todas as informações importantes da sua proteção.<br>
+  Zurich Assurance Ltd · MetLife Europe d.a.c. · Reguladas pela FCA
+</div>
+
+</body>
+</html>
