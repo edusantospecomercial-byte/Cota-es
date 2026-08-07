@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Antonio · Informações Importantes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:#0D0F14;--surface:#161920;--surface3:#252A3A;
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.05);
+  --text:#F1F3F9;--text2:#9AA3B2;--text3:#5A6478;
+  --teal:#10B981;--teal-dk:#0D9668;--teal-lt:rgba(16,185,129,.15);
+  --blue:#3B82F6;--blue-lt:rgba(59,130,246,.15);
+  --green:#22C55E;--green-lt:rgba(34,197,94,.12);
+  --r:12px;--r-lg:18px;
+}
+html{background:var(--bg)}
+body{font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(--bg);max-width:430px;margin:0 auto;min-height:100vh;-webkit-font-smoothing:antialiased;padding-bottom:60px}
+.topbar{background:linear-gradient(135deg,var(--teal) 0%,var(--blue) 100%);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topbar-brand{display:flex;align-items:center;gap:10px}
+.topbar-logo{width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff}
+.topbar-title{font-size:14px;font-weight:800;color:#fff}
+.topbar-ref{font-size:10px;font-weight:700;color:#fff;background:rgba(255,255,255,.18);border-radius:100px;padding:4px 10px;letter-spacing:.04em}
+.status-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;justify-content:space-between}
+.status-badge{display:flex;align-items:center;gap:7px;background:var(--green-lt);border:1px solid rgba(34,197,94,.25);border-radius:100px;padding:4px 12px;font-size:10px;font-weight:800;color:var(--green);letter-spacing:.06em;text-transform:uppercase}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.status-date{font-size:11px;color:var(--text3);font-weight:500}
+.hero{margin:16px 16px 0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px 22px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-80px;right:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.18) 0%,transparent 70%);pointer-events:none}
+.hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);position:relative;z-index:1}
+.hero-name{font-size:30px;font-weight:900;color:var(--text);line-height:1.1;letter-spacing:-.04em;margin:8px 0;position:relative;z-index:1}
+.hero-sub{font-size:13px;color:var(--text2);line-height:1.6;position:relative;z-index:1}
+.pad{padding:16px 16px 0}
+.sec-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.sec-num{width:22px;height:22px;border-radius:6px;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--teal-lt);color:var(--teal)}
+.sec-title{font-size:12px;font-weight:700;color:var(--text);letter-spacing:-.01em;flex:1}
+.pol-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.pol-row{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--border2)}
+.pol-row:last-child{border-bottom:none}
+.pol-label{font-size:12px;color:var(--text3);font-weight:500}
+.pol-val{font-size:14px;font-weight:800;color:var(--text);text-align:right}
+.pol-val-hl{color:var(--teal)}
+.access-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px}
+.access-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border2)}
+.access-row:last-child{border-bottom:none}
+.access-label{font-size:11.5px;color:var(--text3);font-weight:500}
+.access-val{font-size:13px;font-weight:700;color:var(--text);text-align:right;word-break:break-all}
+.access-val-mono{font-family:monospace;background:var(--surface3);padding:3px 8px;border-radius:6px;font-size:12px}
+.claim-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px}
+.claim-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border2)}
+.claim-row:last-child{border-bottom:none}
+.claim-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;background:var(--teal-lt)}
+.claim-body{flex:1;min-width:0}
+.claim-label{font-size:10.5px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.claim-val{font-size:13px;font-weight:700;color:var(--text);margin-top:2px}
+.cta-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:22px 20px;position:relative;overflow:hidden}
+.cta-card::before{content:'';position:absolute;bottom:-50px;right:-30px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.12) 0%,transparent 70%);pointer-events:none}
+.cta-headline{font-size:19px;font-weight:900;color:var(--text);line-height:1.2;letter-spacing:-.03em;margin-bottom:8px;position:relative;z-index:1}
+.cta-sub{font-size:13px;color:var(--text3);line-height:1.65;margin-bottom:20px;position:relative;z-index:1}
+.cta-btn{display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,var(--teal) 0%,var(--blue) 100%);color:#fff;font-family:'Inter',sans-serif;font-size:14px;font-weight:800;padding:15px;border-radius:10px;text-decoration:none;letter-spacing:-.02em;margin-bottom:16px;position:relative;z-index:1}
+.cta-divider{height:1px;background:var(--border);margin:16px 0;position:relative;z-index:1}
+.advisor-row{display:flex;align-items:center;gap:12px;position:relative;z-index:1}
+.adv-av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--teal) 0%,var(--blue) 100%);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0;border:2px solid var(--border)}
+.adv-name{font-size:13px;font-weight:700;color:var(--text)}
+.adv-role{font-size:11px;color:var(--text3);margin-top:1px}
+.adv-fca{margin-left:auto;background:var(--green-lt);border:1px solid rgba(34,197,94,.2);border-radius:100px;padding:4px 10px;font-size:10px;font-weight:800;color:var(--green)}
+.legal{padding:20px 20px 40px;font-size:10px;color:var(--text3);line-height:1.9;text-align:center}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.hero{animation:rise .4s ease both}
+.pad{animation:rise .4s .06s ease both}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-logo">M</div>
+    <div class="topbar-title">MetLife MultiProtect</div>
+  </div>
+  <div class="topbar-ref">MPG004355</div>
+</div>
+
+<div class="status-bar">
+  <div class="status-badge"><div class="status-dot"></div>Ativo</div>
+  <div class="status-date">Atualizado 30/07/2026</div>
+</div>
+
+<div class="hero">
+  <div class="hero-eyebrow">Informações Importantes</div>
+  <div class="hero-name">Antonio</div>
+  <div class="hero-sub">Aqui está tudo que você precisa sobre a sua proteção MetLife MultiProtect: número da apólice, acesso ao portal e como acionar em caso de sinistro.</div>
+</div>
+
+<!-- DETALHES DA APÓLICE -->
+<div class="pad">
+  <div class="sec-header">
+    <div class="sec-num">1</div>
+    <div class="sec-title">Detalhes da Apólice</div>
+  </div>
+  <div class="pol-card">
+    <div class="pol-row">
+      <div class="pol-label">Número da apólice</div>
+      <div class="pol-val pol-val-hl">MPG004355</div>
+    </div>
+    <div class="pol-row">
+      <div class="pol-label">Unidades (cotas)</div>
+      <div class="pol-val">3</div>
+    </div>
+    <div class="pol-row">
+      <div class="pol-label">Prémio mensal</div>
+      <div class="pol-val">£39.00</div>
+    </div>
+    <div class="pol-row">
+      <div class="pol-label">Vencimento do pagamento</div>
+      <div class="pol-val pol-val-hl">Dia 28</div>
+    </div>
+  </div>
+</div>
+
+<!-- ACESSO AO PORTAL -->
+<div class="pad">
+  <div class="sec-header">
+    <div class="sec-num">2</div>
+    <div class="sec-title">Acesso ao Portal MetLife</div>
+  </div>
+  <div class="access-card">
+    <div class="access-row">
+      <div class="access-label">Portal</div>
+      <div class="access-val">mymetlife.co.uk</div>
+    </div>
+    <div class="access-row">
+      <div class="access-label">E-mail de acesso</div>
+      <div class="access-val">antonioricara04@outlook.com</div>
+    </div>
+    <div class="access-row">
+      <div class="access-label">Senha padrão</div>
+      <div class="access-val access-val-mono">antonioferreira123</div>
+    </div>
+  </div>
+</div>
+
+<!-- COMO FAZER UM CLAIM -->
+<div class="pad">
+  <div class="sec-header">
+    <div class="sec-num">3</div>
+    <div class="sec-title">Como Fazer um Claim (Acionar o Seguro)</div>
+  </div>
+  <div class="claim-card">
+    <div class="claim-row">
+      <div class="claim-icon">📞</div>
+      <div class="claim-body">
+        <div class="claim-label">Telefone</div>
+        <div class="claim-val">0800 917 0100 (opção 2)</div>
+      </div>
+    </div>
+    <div class="claim-row">
+      <div class="claim-icon">📧</div>
+      <div class="claim-body">
+        <div class="claim-label">E-mail</div>
+        <div class="claim-val">claims@metlife.uk.com</div>
+      </div>
+    </div>
+    <div class="claim-row">
+      <div class="claim-icon">⏰</div>
+      <div class="claim-body">
+        <div class="claim-label">Horário</div>
+        <div class="claim-val">Seg–Sex, 9h às 17h</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="pad">
+  <div class="cta-card">
+    <div class="cta-headline">Qualquer dúvida, é só me chamar</div>
+    <div class="cta-sub">Estou disponível para ajudar em qualquer etapa — acesso ao portal, dúvidas sobre a apólice ou processo de claim.</div>
+    <a class="cta-btn" href="https://wa.me/447700000000" target="_blank">💬 &nbsp;Falar com Eduardo Santos</a>
+    <div class="cta-divider"></div>
+    <div class="advisor-row">
+      <div class="adv-av">E</div>
+      <div>
+        <div class="adv-name">Eduardo Santos</div>
+        <div class="adv-role">Licensed Protection Adviser · Reino Unido 🇬🇧</div>
+      </div>
+      <div class="adv-fca">✓ FCA</div>
+    </div>
+  </div>
+</div>
+
+<div class="legal">
+  MetLife Europe d.a.c. · Apólice MPG004355<br>
+  Documento gerado para fins informativos. Guarde estas informações em local seguro.
+</div>
+
+</body>
+</html>
