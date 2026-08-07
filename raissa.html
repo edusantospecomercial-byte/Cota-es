@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Raissa · Proposta de Protecção</title>
+<title>Raissa · Proposta de Proteção</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -12,8 +12,8 @@
   --bg:#0D0F14;--surface:#161920;--surface3:#252A3A;
   --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.05);
   --text:#F1F3F9;--text2:#9AA3B2;--text3:#5A6478;
-  --blue:#22C55E;--blue-dk:#15803D;--blue-lt:rgba(34,197,94,.15);
-  --teal:#10B981;--teal-lt:rgba(16,185,129,.15);
+  --blue:#3B82F6;--blue-dk:#1D4ED8;--blue-lt:rgba(59,130,246,.15);
+  --teal:#10B981;--teal-dk:#0E9670;--teal-lt:rgba(16,185,129,.15);
   --green:#22C55E;--green-lt:rgba(34,197,94,.12);
   --r:12px;--r-lg:18px;
 }
@@ -30,16 +30,16 @@ body{font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(-
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 .status-date{font-size:11px;color:var(--text3);font-weight:500}
 .hero{margin:16px 16px 0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px 22px;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-80px;right:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(34,197,94,.18) 0%,transparent 70%);pointer-events:none}
+.hero::before{content:'';position:absolute;top:-80px;right:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,.18) 0%,transparent 70%);pointer-events:none}
 .hero::after{content:'';position:absolute;bottom:-60px;left:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.12) 0%,transparent 70%);pointer-events:none}
 .hero-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;position:relative;z-index:1}
 .hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue)}
-.hero-badge{display:flex;align-items:center;gap:5px;background:var(--blue-lt);border:1px solid rgba(34,197,94,.25);border-radius:100px;padding:3px 10px;font-size:10px;font-weight:700;color:var(--blue)}
+.hero-badge{display:flex;align-items:center;gap:5px;background:var(--blue-lt);border:1px solid rgba(59,130,246,.25);border-radius:100px;padding:3px 10px;font-size:10px;font-weight:700;color:var(--blue)}
 .hero-name{font-size:30px;font-weight:900;color:var(--text);line-height:1.1;letter-spacing:-.04em;margin-bottom:8px;position:relative;z-index:1}
 .hero-sub{font-size:13px;color:var(--text2);line-height:1.6;position:relative;z-index:1}
 .hero-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;position:relative;z-index:1}
 .hero-chip{background:var(--surface3);border:1px solid var(--border);border-radius:100px;padding:4px 11px;font-size:11px;font-weight:500;color:var(--text2)}
-.total-band{margin:10px 16px 0;background:linear-gradient(135deg,var(--blue-dk) 0%,#166534 100%);border-radius:var(--r-lg);padding:20px 22px;display:flex;justify-content:space-between;align-items:center;position:relative;overflow:hidden}
+.total-band{margin:10px 16px 0;background:linear-gradient(135deg,var(--blue-dk) 0%,#1e40af 100%);border-radius:var(--r-lg);padding:20px 22px;display:flex;justify-content:space-between;align-items:center;position:relative;overflow:hidden}
 .total-band::before{content:'';position:absolute;top:-40px;right:-30px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.08);pointer-events:none}
 .tb-label{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:6px}
 .tb-amount{font-size:40px;font-weight:900;color:#fff;letter-spacing:-.05em;line-height:1}
@@ -50,12 +50,13 @@ body{font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(-
 .pad{padding:16px 16px 0}
 .sec-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
 .sec-num{width:22px;height:22px;border-radius:6px;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--blue-lt);color:var(--blue)}
-.sec-num-grey{background:var(--surface3);color:var(--text2)}
 .sec-num-teal{background:var(--teal-lt);color:var(--teal)}
+.sec-num-grey{background:var(--surface3);color:var(--text2)}
 .sec-title{font-size:12px;font-weight:700;color:var(--text);letter-spacing:-.01em;flex:1}
 .sec-price{font-size:13px;font-weight:800;color:var(--blue)}
 .sec-price-teal{color:var(--teal)}
 .pol-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.pol-card-teal{border-color:rgba(16,185,129,.25)}
 .pol-head{padding:14px 16px;border-bottom:1px solid var(--border2);display:flex;justify-content:space-between;align-items:flex-start}
 .pol-type{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin-bottom:4px}
 .pol-type-teal{color:var(--teal)}
@@ -109,13 +110,13 @@ body{font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(-
 .adv-role{font-size:11px;color:var(--text3);margin-top:1px}
 .adv-fca{margin-left:auto;background:var(--green-lt);border:1px solid rgba(34,197,94,.2);border-radius:100px;padding:4px 10px;font-size:10px;font-weight:800;color:var(--green)}
 .legal{padding:20px 20px 48px;font-size:10px;color:var(--text3);line-height:1.9;text-align:center}
-#print-btn{position:fixed;bottom:24px;right:50%;transform:translateX(50%);background:var(--blue);color:#fff;border:none;border-radius:50px;padding:13px 26px;font-family:'Inter',sans-serif;font-size:13px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 8px 32px rgba(34,197,94,.4);z-index:999;white-space:nowrap}
+#print-btn{position:fixed;bottom:24px;right:50%;transform:translateX(50%);background:var(--blue);color:#fff;border:none;border-radius:50px;padding:13px 26px;font-family:'Inter',sans-serif;font-size:13px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 8px 32px rgba(59,130,246,.4);z-index:999;white-space:nowrap}
 @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 .hero{animation:rise .4s ease both}
 .total-band{animation:rise .4s .05s ease both}
 .pad{animation:rise .4s .09s ease both}
 @page{size:A4;margin:0}
-@media print{*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}html,body{width:100%!important;max-width:100%!important;margin:0!important;padding:0!important;background:#0D0F14!important}#print-btn{display:none!important}*{animation:none!important}.pol-card,.sum-card,.step-row,.cta-card,.hero,.total-band,.pad{break-inside:avoid!important}.hero{background:#161920!important}.total-band{background:linear-gradient(135deg,#15803D,#166534)!important}.sum-total-row{background:#15803D!important}.cta-btn{background:#22C55E!important}.pad{padding:12px 16px 0!important}}
+@media print{*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}html,body{width:100%!important;max-width:100%!important;margin:0!important;padding:0!important;background:#0D0F14!important}#print-btn{display:none!important}*{animation:none!important}.pol-card,.sum-card,.step-row,.cta-card,.hero,.total-band,.pad{break-inside:avoid!important}.hero{background:#161920!important}.total-band{background:linear-gradient(135deg,#1D4ED8,#1e40af)!important}.sum-total-row{background:#1D4ED8!important}.cta-btn{background:#3B82F6!important}.pad{padding:12px 16px 0!important}}
 </style>
 </head>
 <body>
@@ -125,58 +126,59 @@ body{font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(-
 <div class="topbar">
   <div class="topbar-brand">
     <div class="topbar-logo">P</div>
-    <div class="topbar-title">Proposta de Protecção</div>
+    <div class="topbar-title">Proposta de Proteção</div>
   </div>
-  <div class="topbar-ref">0128805476766790</div>
+  <div class="topbar-ref">0000RV9P03</div>
 </div>
 
 <div class="status-bar">
-  <div class="status-badge"><div class="status-dot"></div>L&amp;G + MetLife</div>
-  <div class="status-date">05 de Agosto de 2026</div>
+  <div class="status-badge"><div class="status-dot"></div>Zurich + MetLife</div>
+  <div class="status-date">07 de Agosto de 2026</div>
 </div>
 
 <div class="hero">
   <div class="hero-top">
     <div class="hero-eyebrow">Proposta Personalizada</div>
-    <div class="hero-badge">● L&amp;G · FCA</div>
+    <div class="hero-badge">● Zurich + MetLife</div>
   </div>
   <div class="hero-name">Raissa</div>
-  <div class="hero-sub">Protecção criada especificamente para você e para quem mais importa.</div>
+  <div class="hero-sub">Proteção criada especificamente para você e para quem mais importa.</div>
   <div class="hero-chips">
-    <div class="hero-chip">🎂 16 Jan 1989</div>
+    <div class="hero-chip">🎂 11 Abr 1989</div>
+    <div class="hero-chip">Feminino</div>
     <div class="hero-chip">🚭 Não Fumadora</div>
-    <div class="hero-chip">💼 Occupation Class 4</div>
-    <div class="hero-chip">📅 Prémio garantido 27 anos</div>
+    <div class="hero-chip">💼 Cleaner — Domestic Premises</div>
+    <div class="hero-chip">📅 Até os 65 anos</div>
   </div>
 </div>
 
 <div class="total-band">
   <div>
     <div class="tb-label">Investimento mensal total</div>
-    <div class="tb-amount"><span>£</span>49.59</div>
+    <div class="tb-amount"><span>£</span>56.16</div>
   </div>
   <div class="tb-right">
-    <div class="tb-note">2 apólices · 2 seguradoras</div>
-    <div class="tb-pill">L&amp;G + MetLife</div>
+    <div class="tb-note">2 apólices · Zurich + MetLife</div>
+    <div class="tb-pill">Zurich + MetLife</div>
   </div>
 </div>
 
-<!-- APÓLICE 1 — VIDA + DOENÇAS GRAVES -->
+<!-- APÓLICE 1 — ZURICH VIDA + DOENÇAS GRAVES -->
 <div class="pad">
   <div class="sec-header">
     <div class="sec-num">1</div>
-    <div class="sec-title">Legal &amp; General · Vida + Doenças Graves</div>
-    <div class="sec-price">£16.59/mês</div>
+    <div class="sec-title">Zurich · Vida + Doenças Graves</div>
+    <div class="sec-price">£17.16/mês</div>
   </div>
   <div class="pol-card">
     <div class="pol-head">
       <div>
-        <div class="pol-type">Life Insurance with Critical Illness Cover</div>
+        <div class="pol-type">Level Life Cover &amp; Critical Illness</div>
         <div class="pol-name">Vida + Doenças Graves</div>
-        <div class="pol-sub">Prémio garantido 27 anos · Não aumenta com a idade</div>
+        <div class="pol-sub">Prémio garantido · Não aumenta com a idade</div>
       </div>
       <div class="pol-price-block">
-        <div class="pol-price">£16.59</div>
+        <div class="pol-price">£17.16</div>
         <div class="pol-period">/ mês</div>
       </div>
     </div>
@@ -184,7 +186,7 @@ body{font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(-
       <div class="ben-icon">🛡️</div>
       <div class="ben-body">
         <div class="ben-name">Seguro de Vida</div>
-        <div class="ben-desc">£30,000 pagos imediatamente à família em caso de falecimento.</div>
+        <div class="ben-desc">Falecimento ou doença terminal — £30,000 pagos imediatamente à família.</div>
       </div>
       <div class="ben-val">£30,000</div>
     </div>
@@ -192,47 +194,15 @@ body{font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(-
       <div class="ben-icon">🩺</div>
       <div class="ben-body">
         <div class="ben-name">Doenças Graves — Critical Illness</div>
-        <div class="ben-desc">Câncer, AVC, infarto e outras condições graves. Pago em vida — para tratamento ou compensar renda perdida.</div>
+        <div class="ben-desc">Cobre diagnóstico de câncer, AVC, infarto e outras doenças graves. Pago em vida — para tratamento ou compensar renda perdida.</div>
       </div>
       <div class="ben-val">£30,000</div>
-    </div>
-    <div class="ben">
-      <div class="ben-icon">⚕️</div>
-      <div class="ben-body">
-        <div class="ben-name">Doença Terminal</div>
-        <div class="ben-desc">Antecipação integral do capital em caso de diagnóstico terminal. Sem custo adicional.</div>
-      </div>
-      <div class="ben-val">£30,000</div>
-    </div>
-    <div class="ben">
-      <div class="ben-icon">👶</div>
-      <div class="ben-body">
-        <div class="ben-name">Children's Critical Illness Cover</div>
-        <div class="ben-desc">Protecção incluída sem custo adicional para os filhos.</div>
-      </div>
-      <div class="ben-val ben-val-grey">Incluído</div>
-    </div>
-    <div class="ben">
-      <div class="ben-icon ben-icon-grey">♿</div>
-      <div class="ben-body">
-        <div class="ben-name">Invalidez Total e Permanente</div>
-        <div class="ben-desc">Cobertura por incapacidade permanente (definição Specified Work Tasks), já incluída no prémio.</div>
-      </div>
-      <div class="ben-val ben-val-grey">Incluído</div>
     </div>
     <div class="ben">
       <div class="ben-icon ben-icon-grey">🔒</div>
       <div class="ben-body">
-        <div class="ben-name">Waiver of Premium</div>
-        <div class="ben-desc">Em caso de incapacidade, a Legal &amp; General paga o prémio por você. Cobertura mantida sem custo.</div>
-      </div>
-      <div class="ben-val ben-val-grey">Incluído</div>
-    </div>
-    <div class="ben">
-      <div class="ben-icon ben-icon-grey">➕</div>
-      <div class="ben-body">
-        <div class="ben-name">Guaranteed Insurability Option</div>
-        <div class="ben-desc">Direito de aumentar a cobertura no futuro sem nova avaliação médica.</div>
+        <div class="ben-name">Cobertura garantida</div>
+        <div class="ben-desc">Prémio fixo até aos 65 anos — não muda com reajustes de idade.</div>
       </div>
       <div class="ben-val ben-val-grey">Incluído</div>
     </div>
@@ -244,17 +214,17 @@ body{font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(-
   <div class="sec-header">
     <div class="sec-num sec-num-teal">2</div>
     <div class="sec-title">MetLife · MultiProtect</div>
-    <div class="sec-price sec-price-teal">£33.00/mês</div>
+    <div class="sec-price sec-price-teal">£39.00/mês</div>
   </div>
-  <div class="pol-card">
+  <div class="pol-card pol-card-teal">
     <div class="pol-head">
       <div>
         <div class="pol-type pol-type-teal">MultiProtect · Cota 3 + Luxações</div>
-        <div class="pol-name">MetLife MultiProtect</div>
-        <div class="pol-sub">Acidentes, hospitalização, luxações e médico 24/7</div>
+        <div class="pol-name">Cobertura Essencial + Ativa</div>
+        <div class="pol-sub">Sem perguntas de saúde · Ativa em 24h</div>
       </div>
       <div class="pol-price-block">
-        <div class="pol-price">£33.00</div>
+        <div class="pol-price">£39.00</div>
         <div class="pol-period">/ mês</div>
       </div>
     </div>
@@ -262,31 +232,31 @@ body{font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(-
       <div class="ben-icon ben-icon-teal">💀</div>
       <div class="ben-body">
         <div class="ben-name">Morte por Acidente</div>
-        <div class="ben-desc">Indemnização paga à família em caso de morte acidental.</div>
+        <div class="ben-desc">Indenização paga à família em caso de morte acidental.</div>
       </div>
-      <div class="ben-val ben-val-teal">até £120,000</div>
+      <div class="ben-val ben-val-teal">£120,000</div>
     </div>
     <div class="ben">
       <div class="ben-icon ben-icon-teal">🦴</div>
       <div class="ben-body">
         <div class="ben-name">Ossos Fraturados + Luxações</div>
-        <div class="ben-desc">Cobertura para fracturas, dislocações, rupturas de tendões e ligamentos (Active Lifestyle Cover).</div>
+        <div class="ben-desc">Cobre fraturas e também luxações, rupturas de tendão e ligamento (Active Lifestyle Cover incluída).</div>
       </div>
-      <div class="ben-val ben-val-teal">£3,000 / osso</div>
+      <div class="ben-val ben-val-teal">£3,000/osso</div>
     </div>
     <div class="ben">
       <div class="ben-icon ben-icon-teal">🏨</div>
       <div class="ben-body">
         <div class="ben-name">Hospitalização</div>
-        <div class="ben-desc">Valor diário pago durante o período de internamento hospitalar.</div>
+        <div class="ben-desc">Por cada 24h internada no Reino Unido ou Europa, por acidente ou doença.</div>
       </div>
-      <div class="ben-val ben-val-teal">£150 / dia</div>
+      <div class="ben-val ben-val-teal">£150/dia</div>
     </div>
     <div class="ben">
       <div class="ben-icon ben-icon-teal">👨‍⚕️</div>
       <div class="ben-body">
         <div class="ben-name">GP24 + Wellbeing</div>
-        <div class="ben-desc">Acesso ilimitado a médico 24 horas por dia e apoio ao bem-estar.</div>
+        <div class="ben-desc">Médico particular 24h e apoio de bem-estar, sem limite de uso.</div>
       </div>
       <div class="ben-val ben-val-teal">Ilimitado</div>
     </div>
@@ -297,7 +267,7 @@ body{font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(-
 <div class="pad">
   <div class="sec-header">
     <div class="sec-num sec-num-grey">∑</div>
-    <div class="sec-title">Resumo da Protecção</div>
+    <div class="sec-title">Resumo da Proteção</div>
   </div>
   <div class="sum-card">
     <div class="sum-head-row">
@@ -308,16 +278,16 @@ body{font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(-
       </div>
     </div>
     <div class="sum-row">
-      <div class="sr-left"><span class="sr-dot"></span><span class="sr-name">Vida + Doenças Graves (L&amp;G)</span></div>
-      <div class="sr-right"><span class="sr-cov">£30,000</span><span class="sr-price">£16.59</span></div>
+      <div class="sr-left"><span class="sr-dot"></span><span class="sr-name">Vida + Doenças Graves (Zurich)</span></div>
+      <div class="sr-right"><span class="sr-cov">£30,000</span><span class="sr-price">£17.16</span></div>
     </div>
     <div class="sum-row alt">
-      <div class="sr-left"><span class="sr-dot sr-dot-teal"></span><span class="sr-name">MultiProtect (MetLife)</span></div>
-      <div class="sr-right"><span class="sr-cov sr-cov-teal">Cota 3</span><span class="sr-price">£33.00</span></div>
+      <div class="sr-left"><span class="sr-dot sr-dot-teal"></span><span class="sr-name">MultiProtect Cota 3 + Luxações (MetLife)</span></div>
+      <div class="sr-right"><span class="sr-cov sr-cov-teal">£120,000</span><span class="sr-price">£39.00</span></div>
     </div>
     <div class="sum-total-row">
       <div class="str-label">Total · 2 apólices</div>
-      <div class="str-val">£49.59 / mês</div>
+      <div class="str-val">£56.16 / mês</div>
     </div>
   </div>
 </div>
@@ -329,7 +299,7 @@ body{font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(-
     <div class="sec-title">Como funciona</div>
   </div>
   <div class="steps">
-    <div class="step-row"><div class="step-badge">1</div><div><div class="step-title">Aprovação simples</div><div class="step-desc">Após a sua decisão, tratamos de tudo. Submissão electrónica, sem burocracia.</div></div></div>
+    <div class="step-row"><div class="step-badge">1</div><div><div class="step-title">Aprovação simples</div><div class="step-desc">Após a sua decisão, tratamos de tudo. Sem exames obrigatórios, sem burocracia.</div></div></div>
     <div class="step-row"><div class="step-badge">2</div><div><div class="step-title">Acionamento direto</div><div class="step-desc">Em caso de sinistro, você ou a sua família contacta a seguradora. Orientamos cada passo.</div></div></div>
     <div class="step-row"><div class="step-badge">3</div><div><div class="step-title">Pagamento imediato</div><div class="step-desc">O valor é transferido para a conta indicada — sem intermediários, sem demora.</div></div></div>
   </div>
@@ -338,7 +308,7 @@ body{font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(-
 <!-- CTA -->
 <div class="pad">
   <div class="cta-card">
-    <div class="cta-headline">Pronto para ativar a sua proteção?</div>
+    <div class="cta-headline">Pronta para ativar a sua proteção?</div>
     <div class="cta-sub">Sem compromisso. Sem pressão. Só clareza sobre o que é melhor para você e para a sua família.</div>
     <a class="cta-btn" href="https://wa.me/447700000000" target="_blank">💬 &nbsp;Falar com Eduardo Santos</a>
     <div class="cta-divider"></div>
@@ -354,10 +324,11 @@ body{font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(-
 </div>
 
 <div class="legal">
-  Valores L&amp;G baseados na quotação electrónica à data da proposta. Prémio garantido 27 anos — não aumenta com a idade durante a vigência. Sujeito a confirmação após underwriting.<br>
-  Valor MetLife MultiProtect Cota 3 + Active Lifestyle Cover (Luxações) conforme tabela oficial 2026.<br>
-  Ref. 0128805476766790 · 05 Ago 2026 · Quotação válida por 30 dias<br><br>
-  Legal &amp; General Assurance Society Ltd · FCA/PRA · N.º 166055 · MetLife Europe d.a.c.
+  Valores baseados nas taxas padrão da Zurich e MetLife à data da proposta.<br>
+  Prémio Zurich garantido — não aumenta com a idade durante a vigência.<br>
+  Ref. 0000RV9P03 · 07 Ago 2026<br><br>
+  Zurich Assurance Ltd · FCA/PRA · N.º 02456671 · Swindon SN1 1AP<br>
+  MetLife Europe d.a.c. · Regulada pela FCA no Reino Unido
 </div>
 
 </body>
