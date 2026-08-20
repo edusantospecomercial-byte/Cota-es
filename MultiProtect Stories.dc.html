@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+  html, body { margin:0; padding:0; background:#05070E; }
+  * { box-sizing:border-box; }
+  a { color:#7FD8FF; text-decoration:none; }
+  a:hover { color:#FFFFFF; }
+  #om-scroller::-webkit-scrollbar { display:none; }
+</style>
+</helmet>
+
+<div ref="{{ hostRef }}" style="width: 100%; height: 100dvh; background: #05070E; display: flex; justify-content: center; align-items: flex-start; overflow: hidden; font-family: 'Plus Jakarta Sans',sans-serif; position: absolute; left: -28px; top: -50px">
+<div ref="{{ frameRef }}" style="position:relative;width:430px;height:932px;flex-shrink:0;transform-origin:top center;overflow:hidden;background:#05070E">
+
+  <div style="position:absolute;top:0;left:0;right:0;z-index:30;display:flex;gap:3px;padding:14px 16px 0" ref="{{ barRef }}"></div>
+
+  <div style="position:absolute;top:0;left:0;width:26%;height:100%;z-index:20" onClick="{{ prev }}"></div>
+  <div style="position:absolute;top:0;right:0;width:26%;height:100%;z-index:20" onClick="{{ next }}"></div>
+
+  <div id="om-scroller" ref="{{ scrollRef }}" style="position:absolute;inset:0;overflow-y:scroll;scroll-snap-type:y mandatory;scrollbar-width:none;-ms-overflow-style:none;z-index:10">
+
+    <section style="height:932px;scroll-snap-align:start;flex-shrink:0;padding:76px 28px 40px;display:flex;flex-direction:column;justify-content:space-between;background-color:#05070E;background-image:radial-gradient(120% 70% at 15% 0%,#1B2E68 0%,rgba(5,7,14,0) 60%),radial-gradient(100% 60% at 100% 95%,#2A1A63 0%,rgba(5,7,14,0) 58%)">
+      <div data-anim="" style="font-size:13px;font-weight:700;letter-spacing:0.22em;color:#8FA3C2;text-transform:uppercase">MetLife · Reino Unido</div>
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <div data-anim="" style="font-size:46px;font-weight:800;line-height:0.98;letter-spacing:-0.04em;background:linear-gradient(100deg,#FFFFFF 20%,#A9C4FF 70%,#7FD8FF 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent">MetLife MultiProtect</div>
+        <div data-anim="" style="font-size:19px;font-weight:400;line-height:1.4;color:#AFC0D8">Apoio financeiro quando <strong style="font-weight:700;color:#FFFFFF">um acidente, uma internação ou uma lesão grave</strong> interrompe sua rotina.</div>
+      </div>
+      <div data-anim="" style="display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;align-items:baseline;gap:10px;padding:20px 24px;background:rgba(127,216,255,0.11);border:1px solid rgba(127,216,255,0.32);border-radius:22px;backdrop-filter:blur(16px)">
+          <div style="font-size:46px;font-weight:800;letter-spacing:-0.04em;line-height:1;color:#FFFFFF">£13</div>
+          <div style="font-size:16px;font-weight:500;color:#AFC0D8">/ mês, a partir de</div>
+        </div>
+        <div style="font-size:15px;font-weight:400;line-height:1.45;color:#8B9CB8">Sem perguntas sobre saúde na contratação. Dos 18 aos 65 anos.</div>
+      </div>
+    </section>
+
+    <section style="height:932px;scroll-snap-align:start;flex-shrink:0;padding:76px 28px 40px;display:flex;flex-direction:column;justify-content:center;gap:24px;background-color:#05070E;background-image:radial-gradient(110% 60% at 90% 5%,#1B2E68 0%,rgba(5,7,14,0) 60%)">
+      <div data-anim="" style="font-size:13px;font-weight:700;letter-spacing:0.2em;color:#7FD8FF;text-transform:uppercase">O produto</div>
+      <div data-anim="" style="font-size:38px;font-weight:700;line-height:1.06;letter-spacing:-0.03em;color:#FFFFFF">O que é o MetLife MultiProtect?</div>
+      <div data-anim="" style="font-size:20px;font-weight:400;line-height:1.45;color:#C3D2E6">É um seguro que <strong style="font-weight:700;color:#FFFFFF">paga um valor em dinheiro a você</strong> quando acontece um acidente, uma internação ou determinadas lesões previstas na apólice.</div>
+      <div data-anim="" style="padding:22px 24px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.11);border-radius:22px;backdrop-filter:blur(16px);font-size:19px;font-weight:600;line-height:1.4;color:#FFFFFF">O dinheiro vai direto pra sua conta.</div>
+    </section>
+
+    <section style="height:932px;scroll-snap-align:start;flex-shrink:0;padding:76px 28px 40px;display:flex;flex-direction:column;justify-content:center;gap:16px;background-color:#05070E;background-image:radial-gradient(100% 60% at 10% 100%,#2A1A63 0%,rgba(5,7,14,0) 58%)">
+      <div data-anim="" style="font-size:13px;font-weight:700;letter-spacing:0.2em;color:#7FD8FF;text-transform:uppercase;margin-bottom:8px">Por que é diferente</div>
+      <div data-anim="" style="padding:24px 26px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.11);border-radius:24px;backdrop-filter:blur(16px);display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:22px;font-weight:700;color:#FFFFFF">Sem perguntas de saúde</div>
+        <div style="font-size:17px;font-weight:400;line-height:1.4;color:#A9B9D0">Você contrata <strong style="font-weight:700;color:#FFFFFF">sem exame médico</strong> nem questionário.</div>
+      </div>
+      <div data-anim="" style="padding:24px 26px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.11);border-radius:24px;backdrop-filter:blur(16px);display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:22px;font-weight:700;color:#FFFFFF">Mensalidade estável</div>
+        <div style="font-size:17px;font-weight:400;line-height:1.4;color:#A9B9D0">O valor <strong style="font-weight:700;color:#FFFFFF">não muda</strong> com a sua idade nem com o uso da apólice.</div>
+      </div>
+      <div data-anim="" style="padding:24px 26px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.11);border-radius:24px;backdrop-filter:blur(16px);display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:22px;font-weight:700;color:#FFFFFF">Pode usar mais de uma vez</div>
+        <div style="font-size:17px;font-weight:400;line-height:1.4;color:#A9B9D0">Lesões diferentes podem gerar <strong style="font-weight:700;color:#FFFFFF">pedidos diferentes</strong>.</div>
+      </div>
+    </section>
+
+    <section style="height:932px;scroll-snap-align:start;flex-shrink:0;padding:76px 28px 40px;display:flex;flex-direction:column;justify-content:center;gap:22px;background-color:#05070E;background-image:radial-gradient(110% 60% at 85% 0%,#1B2E68 0%,rgba(5,7,14,0) 60%)">
+      <div data-anim="" style="font-size:13px;font-weight:700;letter-spacing:0.2em;color:#7FD8FF;text-transform:uppercase">Como funciona</div>
+      <div data-anim="" style="font-size:38px;font-weight:700;line-height:1.06;letter-spacing:-0.03em;color:#FFFFFF">5 níveis de proteção</div>
+      <div data-anim="" style="font-size:19px;font-weight:400;line-height:1.45;color:#C3D2E6">São as chamadas <strong style="font-weight:700;color:#FFFFFF">Cotas</strong>. Você escolhe de 1 a 5 — todas protegem das mesmas 6 formas.</div>
+      <div data-anim="" style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;padding:16px 22px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);border-radius:18px;backdrop-filter:blur(14px)"><div style="font-size:17px;font-weight:600;color:#A9B9D0">Plano 1</div><div style="font-size:28px;font-weight:800;letter-spacing:-0.03em;color:#FFFFFF">£13</div></div>
+        <div style="display:flex;align-items:baseline;justify-content:space-between;padding:16px 22px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.11);border-radius:18px;backdrop-filter:blur(14px)"><div style="font-size:17px;font-weight:600;color:#A9B9D0">Plano 2</div><div style="font-size:28px;font-weight:800;letter-spacing:-0.03em;color:#FFFFFF">£26</div></div>
+        <div style="position:relative;overflow:hidden;display:flex;align-items:baseline;justify-content:space-between;padding:16px 22px;background:rgba(127,216,255,0.12);border:1px solid rgba(127,216,255,0.34);border-radius:18px;backdrop-filter:blur(14px)"><div style="position:absolute;top:-60%;left:62%;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle at 32% 30%,rgba(167,139,250,0.30),rgba(127,216,255,0) 70%);pointer-events:none"></div><div style="font-size:17px;font-weight:700;color:#7FD8FF">Plano 3</div><div style="font-size:28px;font-weight:800;letter-spacing:-0.03em;color:#FFFFFF">£39</div></div>
+        <div style="display:flex;align-items:baseline;justify-content:space-between;padding:16px 22px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.13);border-radius:18px;backdrop-filter:blur(14px)"><div style="font-size:17px;font-weight:600;color:#A9B9D0">Plano 4</div><div style="font-size:28px;font-weight:800;letter-spacing:-0.03em;color:#FFFFFF">£52</div></div>
+        <div style="display:flex;align-items:baseline;justify-content:space-between;padding:16px 22px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:18px;backdrop-filter:blur(14px)"><div style="font-size:17px;font-weight:600;color:#A9B9D0">Plano 5</div><div style="font-size:28px;font-weight:800;letter-spacing:-0.03em;color:#FFFFFF">£65</div></div>
+      </div>
+    </section>
+
+    <section style="height:932px;scroll-snap-align:start;flex-shrink:0;padding:76px 28px 40px;display:flex;flex-direction:column;justify-content:center;gap:22px;background-color:#05070E;background-image:radial-gradient(100% 60% at 15% 95%,#2A1A63 0%,rgba(5,7,14,0) 58%)">
+      <div data-anim="" style="font-size:13px;font-weight:700;letter-spacing:0.2em;color:#7FD8FF;text-transform:uppercase">Você escolhe o nível</div>
+      <div data-anim="" style="font-size:36px;font-weight:700;line-height:1.06;letter-spacing:-0.03em;color:#FFFFFF">O mesmo evento, valores diferentes</div>
+      <div data-anim="" style="padding:24px 26px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:24px;backdrop-filter:blur(18px);display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="font-size:17px;font-weight:600;color:#A9B9D0">Morte por acidente</div>
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px"><div style="font-size:19px;font-weight:700;color:#C3D2E6">£40 mil</div><div style="font-size:24px;font-weight:800;letter-spacing:-0.03em;color:#7FD8FF">£120 mil</div><div style="font-size:19px;font-weight:700;color:#FFFFFF">£200 mil</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="font-size:17px;font-weight:600;color:#A9B9D0">Fratura de osso principal</div>
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px"><div style="font-size:19px;font-weight:700;color:#C3D2E6">£1.000</div><div style="font-size:24px;font-weight:800;letter-spacing:-0.03em;color:#7FD8FF">£3.000</div><div style="font-size:19px;font-weight:700;color:#FFFFFF">£5.000</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="font-size:17px;font-weight:600;color:#A9B9D0">Internação, por 24h</div>
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px"><div style="font-size:19px;font-weight:700;color:#C3D2E6">£50</div><div style="font-size:24px;font-weight:800;letter-spacing:-0.03em;color:#7FD8FF">£150</div><div style="font-size:19px;font-weight:700;color:#FFFFFF">£250</div></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#7788A6;border-top:1px solid rgba(255,255,255,0.10);padding-top:14px"><div>Plano 1</div><div style="color:#7FD8FF">Plano 3</div><div>Plano 5</div></div>
+      </div>
+      <div data-anim="" style="font-size:17px;font-weight:400;line-height:1.45;color:#A9B9D0"><strong style="font-weight:700;color:#FFFFFF">As 6 proteções já vêm incluídas</strong> em qualquer plano. Você escolhe o tamanho da indenização.</div>
+    </section>
+
+    <section style="height:932px;scroll-snap-align:start;flex-shrink:0;padding:76px 28px 40px;display:flex;flex-direction:column;justify-content:center;gap:14px;background-color:#05070E;background-image:radial-gradient(110% 60% at 85% 5%,#1B2E68 0%,rgba(5,7,14,0) 60%)">
+      <div data-anim="" style="font-size:13px;font-weight:700;letter-spacing:0.2em;color:#7FD8FF;text-transform:uppercase">Cobertura Essencial</div>
+      <div data-anim="" style="font-size:34px;font-weight:700;line-height:1.06;letter-spacing:-0.03em;color:#FFFFFF;margin-bottom:6px">6 proteções em uma única apólice</div>
+      <div data-anim="" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div style="padding:18px 20px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.11);border-radius:20px;backdrop-filter:blur(14px)"><div style="font-size:14px;font-weight:600;line-height:1.3;color:#A9B9D0;margin-bottom:8px">Morte por acidente</div><div style="font-size:26px;font-weight:800;letter-spacing:-0.035em;color:#FFFFFF">£200 mil</div></div>
+        <div style="padding:18px 20px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.11);border-radius:20px;backdrop-filter:blur(14px)"><div style="font-size:14px;font-weight:600;line-height:1.3;color:#A9B9D0;margin-bottom:8px">Incapacidade permanente</div><div style="font-size:26px;font-weight:800;letter-spacing:-0.035em;color:#FFFFFF">£250 mil</div></div>
+        <div style="padding:18px 20px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.11);border-radius:20px;backdrop-filter:blur(14px)"><div style="font-size:14px;font-weight:600;line-height:1.3;color:#A9B9D0;margin-bottom:8px">Lesões permanentes</div><div style="font-size:26px;font-weight:800;letter-spacing:-0.035em;color:#FFFFFF">£125 mil</div></div>
+        <div style="padding:18px 20px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.11);border-radius:20px;backdrop-filter:blur(14px)"><div style="font-size:14px;font-weight:600;line-height:1.3;color:#A9B9D0;margin-bottom:8px">Internação, por 24h</div><div style="font-size:26px;font-weight:800;letter-spacing:-0.035em;color:#FFFFFF">£250</div></div>
+        <div style="padding:18px 20px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.11);border-radius:20px;backdrop-filter:blur(14px)"><div style="font-size:14px;font-weight:600;line-height:1.3;color:#A9B9D0;margin-bottom:8px">Fraturas</div><div style="font-size:26px;font-weight:800;letter-spacing:-0.035em;color:#FFFFFF">£5.000</div></div>
+        <div style="padding:18px 20px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.11);border-radius:20px;backdrop-filter:blur(14px)"><div style="font-size:14px;font-weight:600;line-height:1.3;color:#A9B9D0;margin-bottom:8px">Morte não acidental</div><div style="font-size:26px;font-weight:800;letter-spacing:-0.035em;color:#FFFFFF">£20 mil</div></div>
+      </div>
+      <div data-anim="" style="font-size:15px;font-weight:500;line-height:1.4;color:#8B9CB8;margin-top:4px">Valores máximos, no Plano 5.</div>
+    </section>
+
+    <section style="height:932px;scroll-snap-align:start;flex-shrink:0;padding:76px 28px 40px;display:flex;flex-direction:column;justify-content:center;gap:20px;background-color:#05070E;background-image:radial-gradient(100% 60% at 10% 100%,#2A1A63 0%,rgba(5,7,14,0) 58%)">
+      <div data-anim="" style="font-size:13px;font-weight:700;letter-spacing:0.2em;color:#7FD8FF;text-transform:uppercase">Evento coberto</div>
+      <div data-anim="" style="font-size:38px;font-weight:700;line-height:1.06;letter-spacing:-0.03em;color:#FFFFFF">Morte por acidente</div>
+      <div data-anim="" style="position:relative;overflow:hidden;padding:26px 28px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:24px;backdrop-filter:blur(18px);display:flex;flex-direction:column;gap:8px">
+        <div style="position:absolute;top:-40%;left:60%;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle at 32% 30%,rgba(167,139,250,0.24),rgba(127,216,255,0) 70%);pointer-events:none"></div>
+        <div style="font-size:13px;font-weight:700;letter-spacing:0.18em;color:#7FD8FF;text-transform:uppercase">Pagamento</div>
+        <div style="font-size:48px;font-weight:800;letter-spacing:-0.04em;line-height:1;color:#FFFFFF">£200.000</div>
+        <div style="font-size:16px;font-weight:500;color:#A9B9D0">no Plano 5 · £120.000 no Plano 3</div>
+      </div>
+      <div data-anim="" style="padding:24px 26px;background:rgba(255,255,255,0.045);border:1px solid rgba(255,255,255,0.10);border-radius:24px;backdrop-filter:blur(16px);display:flex;flex-direction:column;gap:10px">
+        <div style="font-size:13px;font-weight:700;letter-spacing:0.18em;color:#7788A6;text-transform:uppercase">Como funciona</div>
+        <div style="font-size:18px;font-weight:400;line-height:1.45;color:#C3D2E6">O valor é pago <strong style="font-weight:700;color:#FFFFFF">aos seus beneficiários</strong>, em casa ou no exterior. Morte não acidental paga até £20.000 — e no 1º ano, <strong style="font-weight:700;color:#FFFFFF">os prêmios são devolvidos</strong>.</div>
+      </div>
+    </section>
+
+    <section style="height:932px;scroll-snap-align:start;flex-shrink:0;padding:76px 28px 40px;display:flex;flex-direction:column;justify-content:center;gap:20px;background-color:#05070E;background-image:radial-gradient(110% 60% at 85% 5%,#1B2E68 0%,rgba(5,7,14,0) 60%)">
+      <div data-anim="" style="font-size:13px;font-weight:700;letter-spacing:0.2em;color:#7FD8FF;text-transform:uppercase">Evento coberto</div>
+      <div data-anim="" style="font-size:38px;font-weight:700;line-height:1.06;letter-spacing:-0.03em;color:#FFFFFF">Internação hospitalar</div>
+      <div data-anim="" style="position:relative;overflow:hidden;padding:26px 28px;background:rgba(127,216,255,0.12);border:1px solid rgba(127,216,255,0.32);border-radius:24px;backdrop-filter:blur(18px);display:flex;flex-direction:column;gap:8px">
+        <div style="position:absolute;top:-40%;left:60%;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle at 32% 30%,rgba(167,139,250,0.24),rgba(127,216,255,0) 70%);pointer-events:none"></div>
+        <div style="font-size:13px;font-weight:700;letter-spacing:0.18em;color:#7FD8FF;text-transform:uppercase">Pagamento</div>
+        <div style="font-size:44px;font-weight:800;letter-spacing:-0.04em;line-height:1;color:#FFFFFF">£250 / 24h</div>
+        <div style="font-size:16px;font-weight:500;color:#C3D2E6">no Plano 5 · £150 no Plano 3</div>
+      </div>
+      <div data-anim="" style="display:flex;flex-direction:column;gap:10px">
+        <div style="padding:18px 22px;background:rgba(255,255,255,0.045);border:1px solid rgba(255,255,255,0.10);border-radius:20px;backdrop-filter:blur(14px);font-size:17px;font-weight:400;line-height:1.4;color:#C3D2E6"><strong style="font-weight:700;color:#FFFFFF">Reino Unido</strong> e 27 países europeus selecionados.</div>
+        <div style="padding:18px 22px;background:rgba(255,255,255,0.045);border:1px solid rgba(255,255,255,0.10);border-radius:20px;backdrop-filter:blur(14px);font-size:17px;font-weight:400;line-height:1.4;color:#C3D2E6">Por acidente — coberto <strong style="font-weight:700;color:#FFFFFF">desde o início</strong> da apólice.</div>
+        <div style="padding:18px 22px;background:rgba(255,255,255,0.045);border:1px solid rgba(255,255,255,0.10);border-radius:20px;backdrop-filter:blur(14px);font-size:17px;font-weight:400;line-height:1.4;color:#C3D2E6">Por doença — coberto <strong style="font-weight:700;color:#FFFFFF">depois de 12 meses</strong>.</div>
+      </div>
+    </section>
+
+    <section style="height:932px;scroll-snap-align:start;flex-shrink:0;padding:76px 28px 40px;display:flex;flex-direction:column;justify-content:center;gap:18px;background-color:#05070E;background-image:radial-gradient(100% 60% at 15% 95%,#2A1A63 0%,rgba(5,7,14,0) 58%)">
+      <div data-anim="" style="font-size:13px;font-weight:700;letter-spacing:0.2em;color:#7FD8FF;text-transform:uppercase">Evento coberto</div>
+      <div data-anim="" style="font-size:38px;font-weight:700;line-height:1.06;letter-spacing:-0.03em;color:#FFFFFF">Fraturas e luxações</div>
+      <div data-anim="" style="padding:24px 26px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:24px;backdrop-filter:blur(18px);display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:17px;font-weight:600;color:#A9B9D0">Fratura de osso principal</div>
+        <div style="font-size:40px;font-weight:800;letter-spacing:-0.04em;line-height:1;color:#FFFFFF">£5.000</div>
+        <div style="font-size:16px;font-weight:400;line-height:1.4;color:#A9B9D0"><strong style="font-weight:700;color:#FFFFFF">Por osso quebrado</strong>, mesmo com mais de uma fratura no mesmo acidente. Osso secundário paga até £250.</div>
+      </div>
+      <div data-anim="" style="position:relative;overflow:hidden;padding:24px 26px;background:rgba(127,216,255,0.12);border:1px solid rgba(127,216,255,0.32);border-radius:24px;backdrop-filter:blur(18px);display:flex;flex-direction:column;gap:8px">
+        <div style="position:absolute;top:-50%;left:62%;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle at 32% 30%,rgba(167,139,250,0.26),rgba(127,216,255,0) 70%);pointer-events:none"></div>
+        <div style="font-size:13px;font-weight:700;letter-spacing:0.16em;color:#7FD8FF;text-transform:uppercase">Incluído na mensalidade</div>
+        <div style="font-size:22px;font-weight:700;color:#FFFFFF">Luxações e rupturas</div>
+        <div style="font-size:40px;font-weight:800;letter-spacing:-0.04em;line-height:1;color:#FFFFFF">£5.000</div>
+        <div style="font-size:16px;font-weight:400;line-height:1.4;color:#DCE8F5">Luxações precisam de <strong style="font-weight:700;color:#FFFFFF">exame de imagem e cirurgia</strong>. Cobre ruptura de ligamento e de tendão.</div>
+      </div>
+    </section>
+
+    <section style="height:932px;scroll-snap-align:start;flex-shrink:0;padding:76px 28px 40px;display:flex;flex-direction:column;justify-content:center;gap:18px;background-color:#05070E;background-image:radial-gradient(110% 60% at 85% 5%,#1B2E68 0%,rgba(5,7,14,0) 60%)">
+      <div data-anim="" style="font-size:13px;font-weight:700;letter-spacing:0.2em;color:#7FD8FF;text-transform:uppercase">Evento coberto</div>
+      <div data-anim="" style="font-size:36px;font-weight:700;line-height:1.06;letter-spacing:-0.03em;color:#FFFFFF">Invalidez e lesões permanentes</div>
+      <div data-anim="" style="padding:24px 26px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:24px;backdrop-filter:blur(18px);display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:17px;font-weight:600;color:#A9B9D0">Incapacidade permanente total</div>
+        <div style="font-size:44px;font-weight:800;letter-spacing:-0.04em;line-height:1;color:#FFFFFF">£250.000</div>
+        <div style="font-size:16px;font-weight:400;line-height:1.4;color:#A9B9D0">no Plano 5, quando você fica impossibilitado de cuidar de si mesmo.</div>
+      </div>
+      <div data-anim="" style="padding:24px 26px;background:rgba(255,255,255,0.045);border:1px solid rgba(255,255,255,0.10);border-radius:24px;backdrop-filter:blur(16px);display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:17px;font-weight:600;color:#A9B9D0">Lesões permanentes específicas</div>
+        <div style="font-size:34px;font-weight:800;letter-spacing:-0.035em;line-height:1.05;color:#FFFFFF">£12.500 a £125.000</div>
+        <div style="font-size:16px;font-weight:400;line-height:1.4;color:#A9B9D0">Paralisia dos membros — <strong style="font-weight:700;color:#FFFFFF">£125.000</strong>. Cegueira nos dois olhos ou perda das duas mãos ou pés — <strong style="font-weight:700;color:#FFFFFF">£100.000</strong>.</div>
+      </div>
+    </section>
+
+    <section style="height:932px;scroll-snap-align:start;flex-shrink:0;padding:76px 28px 40px;display:flex;flex-direction:column;justify-content:center;gap:18px;background-color:#05070E;background-image:radial-gradient(100% 60% at 10% 100%,#2A1A63 0%,rgba(5,7,14,0) 58%)">
+      <div data-anim="" style="font-size:13px;font-weight:700;letter-spacing:0.2em;color:#7FD8FF;text-transform:uppercase">Incluído em qualquer nível</div>
+      <div data-anim="" style="font-size:36px;font-weight:700;line-height:1.06;letter-spacing:-0.03em;color:#FFFFFF">Médico 24h, sem esperar um acidente</div>
+      <div data-anim="" style="font-size:18px;font-weight:400;line-height:1.45;color:#C3D2E6">Consulta com médico registrado, <strong style="font-weight:700;color:#FFFFFF">a qualquer hora, em qualquer lugar do mundo</strong>. Para você e sua família.</div>
+      <div data-anim="" style="display:flex;flex-direction:column;gap:10px">
+        <div style="padding:20px 22px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.11);border-radius:20px;backdrop-filter:blur(14px)"><div style="font-size:19px;font-weight:700;color:#FFFFFF;margin-bottom:6px">GP24 · Médico particular</div><div style="font-size:16px;font-weight:400;line-height:1.4;color:#A9B9D0"><strong style="font-weight:700;color:#FFFFFF">24 horas por dia</strong>, em mais de <strong style="font-weight:700;color:#FFFFFF">200 idiomas</strong> com intérprete.</div></div>
+        <div style="padding:20px 22px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.11);border-radius:20px;backdrop-filter:blur(14px)"><div style="font-size:19px;font-weight:700;color:#FFFFFF;margin-bottom:6px">Fisioterapia online</div><div style="font-size:16px;font-weight:400;line-height:1.4;color:#A9B9D0"><strong style="font-weight:700;color:#FFFFFF">6 sessões</strong> de 30 minutos por ano, com o mesmo fisioterapeuta.</div></div>
+        <div style="padding:20px 22px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.11);border-radius:20px;backdrop-filter:blur(14px)"><div style="font-size:19px;font-weight:700;color:#FFFFFF;margin-bottom:6px">Wellbeing Support Centre</div><div style="font-size:16px;font-weight:400;line-height:1.4;color:#A9B9D0">Apoio <strong style="font-weight:700;color:#FFFFFF">ilimitado</strong> por telefone, vídeo ou app.</div></div>
+      </div>
+    </section>
+
+    <section style="height:932px;scroll-snap-align:start;flex-shrink:0;padding:76px 28px 40px;display:flex;flex-direction:column;justify-content:center;gap:18px;background-color:#05070E;background-image:radial-gradient(110% 60% at 85% 5%,#1B2E68 0%,rgba(5,7,14,0) 60%)">
+      <div data-anim="" style="font-size:13px;font-weight:700;letter-spacing:0.2em;color:#7FD8FF;text-transform:uppercase">Na prática</div>
+      <div data-anim="" style="font-size:36px;font-weight:700;line-height:1.06;letter-spacing:-0.03em;color:#FFFFFF">Imagine que isso aconteça amanhã</div>
+      <div data-anim="" style="padding:22px 24px;background:rgba(255,255,255,0.045);border:1px solid rgba(255,255,255,0.10);border-radius:22px;backdrop-filter:blur(16px);display:flex;flex-direction:column;gap:6px">
+        <div style="font-size:20px;font-weight:700;color:#FFFFFF">Acidente no trabalho.</div>
+        <div style="font-size:17px;font-weight:400;line-height:1.4;color:#C3D2E6">Você sofre uma queda, <strong style="font-weight:700;color:#FFFFFF">fratura o pulso</strong> e fica <strong style="font-weight:700;color:#FFFFFF">4 dias internado</strong>.</div>
+      </div>
+      <div data-anim="" style="padding:8px 24px 22px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:24px;backdrop-filter:blur(18px);display:flex;flex-direction:column">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.10)"><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:17px;font-weight:700;color:#FFFFFF">Internação</div><div style="font-size:14px;font-weight:400;color:#A9B9D0">4 dias × £150</div></div><div style="font-size:26px;font-weight:800;letter-spacing:-0.03em;color:#FFFFFF">£600</div></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.10)"><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:17px;font-weight:700;color:#FFFFFF">Fratura de pulso</div><div style="font-size:14px;font-weight:400;color:#A9B9D0">osso principal</div></div><div style="font-size:26px;font-weight:800;letter-spacing:-0.03em;color:#FFFFFF">£3.000</div></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.10)"><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:17px;font-weight:700;color:#FFFFFF">Luxação de ombro</div><div style="font-size:14px;font-weight:400;color:#A9B9D0">com cirurgia</div></div><div style="font-size:26px;font-weight:800;letter-spacing:-0.03em;color:#FFFFFF">£3.000</div></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0 0"><div style="font-size:18px;font-weight:700;color:#7FD8FF">Total potencial</div><div style="font-size:38px;font-weight:800;letter-spacing:-0.04em;line-height:1;color:#7FD8FF">£6.600</div></div>
+      </div>
+      <div data-anim="" style="font-size:14px;font-weight:400;line-height:1.4;color:#7788A6">Exemplo no Plano 3 (£39/mês), calculado com as tabelas oficiais da apólice.</div>
+    </section>
+
+    <section style="height:932px;scroll-snap-align:start;flex-shrink:0;padding:76px 28px 40px;display:flex;flex-direction:column;justify-content:center;gap:20px;background-color:#05070E;background-image:radial-gradient(100% 60% at 15% 95%,#2A1A63 0%,rgba(5,7,14,0) 58%)">
+      <div data-anim="" style="font-size:13px;font-weight:700;letter-spacing:0.2em;color:#7FD8FF;text-transform:uppercase">Quanto custa</div>
+      <div data-anim="" style="font-size:38px;font-weight:700;line-height:1.06;letter-spacing:-0.03em;color:#FFFFFF">Qual plano faz sentido pra você?</div>
+      <div data-anim="" style="display:flex;flex-direction:column;gap:10px">
+        <div style="padding:20px 22px;background:rgba(255,255,255,0.045);border:1px solid rgba(255,255,255,0.10);border-radius:20px;backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:space-between;gap:16px"><div style="font-size:17px;font-weight:500;line-height:1.35;color:#DCE8F5">Quero começar com uma proteção básica</div><div style="font-size:26px;font-weight:800;letter-spacing:-0.03em;color:#FFFFFF;flex-shrink:0">£13</div></div>
+        <div style="position:relative;overflow:hidden;padding:20px 22px;background:rgba(127,216,255,0.12);border:1px solid rgba(127,216,255,0.34);border-radius:20px;backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:space-between;gap:16px"><div style="position:absolute;top:-70%;left:64%;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle at 32% 30%,rgba(167,139,250,0.28),rgba(127,216,255,0) 70%);pointer-events:none"></div><div style="font-size:17px;font-weight:600;line-height:1.35;color:#FFFFFF">Quero equilíbrio entre preço e indenização</div><div style="font-size:26px;font-weight:800;letter-spacing:-0.03em;color:#FFFFFF;flex-shrink:0">£39</div></div>
+        <div style="padding:20px 22px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.13);border-radius:20px;backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:space-between;gap:16px"><div style="font-size:17px;font-weight:500;line-height:1.35;color:#DCE8F5">Quero os maiores valores de proteção</div><div style="font-size:26px;font-weight:800;letter-spacing:-0.03em;color:#FFFFFF;flex-shrink:0">£65</div></div>
+      </div>
+      <div data-anim="" style="font-size:16px;font-weight:400;line-height:1.45;color:#A9B9D0"><strong style="font-weight:700;color:#FFFFFF">Sem perguntas sobre saúde.</strong> A mensalidade <strong style="font-weight:700;color:#FFFFFF">não muda com a sua idade</strong>. Cobertura para Crianças é opcional, a partir de £2 por cota.</div>
+    </section>
+
+    <section style="height:932px;scroll-snap-align:start;flex-shrink:0;padding:76px 28px 40px;display:flex;flex-direction:column;justify-content:space-between;background-color:#05070E;background-image:radial-gradient(120% 70% at 15% 0%,#1B2E68 0%,rgba(5,7,14,0) 60%),radial-gradient(100% 60% at 100% 95%,#2A1A63 0%,rgba(5,7,14,0) 58%)">
+      <div data-anim="" style="font-size:13px;font-weight:700;letter-spacing:0.2em;color:#7FD8FF;text-transform:uppercase">Próximo passo</div>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div data-anim="" style="font-size:44px;font-weight:800;line-height:1.02;letter-spacing:-0.04em;background:linear-gradient(100deg,#FFFFFF 25%,#A9C4FF 75%,#7FD8FF 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Escolha o nível e comece sua proteção</div>
+        <div data-anim="" style="padding:22px 24px;background:rgba(127,216,255,0.12);border:1px solid rgba(127,216,255,0.34);border-radius:22px;backdrop-filter:blur(16px);display:flex;flex-direction:column;gap:6px">
+          <div style="font-size:20px;font-weight:700;line-height:1.3;color:#FFFFFF">Me chame no WhatsApp e eu simulo o plano ideal pra você</div>
+          <div style="font-size:16px;font-weight:600;color:#7FD8FF">Resposta no mesmo dia</div>
+        </div>
+        <div data-anim="" style="padding:18px 22px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:20px;backdrop-filter:blur(14px);font-size:16px;font-weight:600;line-height:1.4;color:#DCE8F5">£22,4m pagos em indenizações em 2023 · 23.942 pedidos pagos · no Reino Unido desde 2007</div>
+      </div>
+      <div data-anim="" style="display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:13px;font-weight:400;line-height:1.45;color:#7788A6">Contratação dos 18 aos 65 anos, com cobertura até os 75, se residente no Reino Unido. Benefícios reduzidos pela metade a partir dos 70 anos. Limite de £50.000 por evento, por cota.</div>
+        <div style="font-size:13px;font-weight:400;line-height:1.45;color:#5F708A">MetLife Europe d.a.c., regulada pelo Banco Central da Irlanda e sujeita à regulamentação da FCA e da PRA no Reino Unido. Síntese — os Termos e Condições da apólice trazem definições, limites e exclusões.</div>
+      </div>
+    </section>
+
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:932}}">
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.scrollRef = React.createRef();
+    this.barRef = React.createRef();
+    this.hostRef = React.createRef();
+    this.frameRef = React.createRef();
+    this.i = 0;
+  }
+  fit() {
+    const host = this.hostRef.current, fr = this.frameRef.current;
+    if (!host || !fr) return;
+    const k = Math.min(host.clientWidth / 430, host.clientHeight / 932);
+    fr.style.transform = 'scale(' + k + ')';
+    fr.style.marginBottom = (932 * (k - 1)) + 'px';
+  }
+  componentDidMount() {
+    const sc = this.scrollRef.current, bar = this.barRef.current;
+    if (!sc) return;
+    this.secs = [...sc.children];
+    if (bar) {
+      this.segs = this.secs.map(() => {
+        const d = document.createElement('div');
+        d.style.cssText = 'flex:1;height:2px;border-radius:2px;background:rgba(255,255,255,0.18);transition:background .3s ease';
+        bar.appendChild(d);
+        return d;
+      });
+    }
+    this.secs.forEach(s => [...s.querySelectorAll('[data-anim]')].forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(14px)';
+      el.style.transition = 'opacity .55s cubic-bezier(.22,1,.36,1), transform .55s cubic-bezier(.22,1,.36,1)';
+    }));
+    this.io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const idx = this.secs.indexOf(e.target);
+        if (idx > -1) { this.i = idx; this.paint(); }
+        [...e.target.querySelectorAll('[data-anim]')].forEach((el, k) => {
+          el.style.transitionDelay = (k * 70) + 'ms';
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+        });
+      });
+    }, { root: sc, threshold: 0.55 });
+    this.secs.forEach(s => this.io.observe(s));
+    this.target = 0;
+    this.onScroll = () => {
+      clearTimeout(this.idle);
+      this.idle = setTimeout(() => {
+        if (this.animating) return;
+        const h = this.secs[0].clientHeight || 1;
+        this.target = Math.max(0, Math.min(this.secs.length - 1, Math.round(sc.scrollTop / h)));
+      }, 140);
+    };
+    sc.addEventListener('scroll', this.onScroll, { passive: true });
+    this.paint();
+    this.onKey = e => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault(); this.go(1); }
+      if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); this.go(-1); }
+    };
+    window.addEventListener('keydown', this.onKey);
+    this.fit();
+    this.onResize = () => this.fit();
+    window.addEventListener('resize', this.onResize);
+  }
+  componentWillUnmount() {
+    if (this.io) this.io.disconnect();
+    if (this.scrollRef.current && this.onScroll) this.scrollRef.current.removeEventListener('scroll', this.onScroll);
+    clearTimeout(this.idle);
+    clearTimeout(this.animTimer);
+    window.removeEventListener('keydown', this.onKey);
+    window.removeEventListener('resize', this.onResize);
+  }
+  paint() {
+    if (!this.segs) return;
+    this.segs.forEach((d, k) => {
+      d.style.background = k <= this.i ? '#7FD8FF' : 'rgba(255,255,255,0.18)';
+    });
+  }
+  go(dir) {
+    const sc = this.scrollRef.current;
+    if (!sc || !this.secs) return;
+    if (this.target == null) this.target = this.i;
+    const n = Math.max(0, Math.min(this.secs.length - 1, this.target + dir));
+    this.target = n;
+    this.i = n;
+    this.paint();
+    this.animating = true;
+    clearTimeout(this.animTimer);
+    this.animTimer = setTimeout(() => { this.animating = false; }, 700);
+    sc.scrollTo({ top: this.secs[n].offsetTop, behavior: 'auto' });
+  }
+  renderVals() {
+    return {
+      scrollRef: this.scrollRef,
+      barRef: this.barRef,
+      hostRef: this.hostRef,
+      frameRef: this.frameRef,
+      next: () => this.go(1),
+      prev: () => this.go(-1),
+    };
+  }
+}
+</script>
+</body>
+</html>
