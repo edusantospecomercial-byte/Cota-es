@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>MultiProtect Stories — MetLife</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#060911">
+<meta name="description" content="Conheça o MetLife MultiProtect: proteção financeira em caso de acidentes, internações e lesões graves no Reino Unido.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="MetLife MultiProtect — proteção que acompanha sua rotina">
+<meta property="og:description" content="Veja coberturas, valores e planos em uma experiência rápida criada para celular.">
+<meta property="og:image" content="./img/mp15-capa.webp">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=Fraunces:ital,wght@0,500;0,600;0,700;1,500;1,600&amp;display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:#060911; --surface:#0d1420; --text:#f6f8fb; --muted:#b9c4d6; --muted-2:#8592a8; --muted-3:#5b6780;
+    --accent:#7fd8ff; --accent-dim:rgba(127,216,255,.14); --accent-border:rgba(127,216,255,.36);
+    --warm:#ffc98a; --warm-dim:rgba(255,201,138,.14); --warm-border:rgba(255,201,138,.38);
+    --line:rgba(255,255,255,.12); --line-soft:rgba(255,255,255,.08);
+    --radius:22px; --radius-lg:24px;
+    --safe-top:max(14px, env(safe-area-inset-top));
+    --safe-bottom:max(12px, env(safe-area-inset-bottom));
+  }
+  html, body { margin:0; padding:0; background:var(--ink); color:var(--text); overscroll-behavior:none; }
+  * { box-sizing:border-box; }
+  a { color:var(--accent); text-decoration:none; }
+  a:hover { color:#fff; }
+  button, a { -webkit-tap-highlight-color:transparent; }
+  button:focus-visible, a:focus-visible { outline:3px solid #fff; outline-offset:3px; }
+  #om-scroller::-webkit-scrollbar { display:none; }
+  .story-host { min-height:100vh; min-height:100dvh; font-family:'Plus Jakarta Sans',sans-serif; }
+  .story-frame { width:min(100%,430px)!important; height:100vh!important; height:100dvh!important; }
+  #om-scroller { overscroll-behavior-y:contain; touch-action:pan-y; }
+  #om-scroller > section {
+    height:100vh!important; height:100dvh!important; min-height:560px;
+    padding-top:calc(var(--safe-top) + 54px)!important;
+    padding-bottom:calc(var(--safe-bottom) + 82px)!important;
+    scroll-snap-stop:always; position:relative; overflow:hidden;
+    display:flex; flex-direction:column; background:var(--ink);
+  }
+  #om-scroller > section:first-child { padding-top:0!important; padding-bottom:0!important; }
+
+  .eyebrow { font-size:13px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); }
+  .eyebrow--onphoto { color:#fff; text-shadow:0 2px 16px rgba(0,0,0,.55); }
+  .h-hero { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; letter-spacing:-.04em; line-height:.98; color:var(--text); }
+  .h-hero--ital { font-style:italic; font-weight:700; }
+  .h-display { font-weight:700; letter-spacing:-.03em; line-height:1.07; color:var(--text); }
+  .h-row { font-size:19px; font-weight:700; letter-spacing:-.01em; color:var(--text); }
+  .body-lg { font-size:19px; line-height:1.5; color:var(--muted); font-weight:400; }
+  .body { font-size:17px; line-height:1.48; color:var(--muted); font-weight:400; }
+  .small { font-size:14px; line-height:1.45; color:var(--muted-2); }
+  .b { color:var(--text); font-weight:700; }
+  .accent-text { color:var(--accent); }
+
+  .metric { font-weight:800; letter-spacing:-.04em; line-height:1; color:var(--text); font-variant-numeric:tabular-nums; }
+  .metric-unit { font-size:15px; font-weight:500; color:var(--muted); letter-spacing:0; }
+  .metric-label { font-size:14px; font-weight:600; color:var(--muted-2); }
+
+  .surface-flat { background:var(--surface); border:1px solid var(--line-soft); border-radius:var(--radius-lg); }
+  .surface-glass, .surface-accent, .surface-warm {
+    border-radius:var(--radius-lg); backdrop-filter:blur(18px) saturate(150%); -webkit-backdrop-filter:blur(18px) saturate(150%);
+    position:relative; overflow:hidden;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.14), inset 0 0 0 1px rgba(255,255,255,.02);
+  }
+  .surface-glass { background:rgba(255,255,255,.05); border:1px solid var(--line); }
+  .surface-accent { background:var(--accent-dim); border:1px solid var(--accent-border); }
+  .surface-warm { background:var(--warm-dim); border:1px solid var(--warm-border); }
+
+  [data-sheen]::after {
+    content:''; position:absolute; inset:-60% -20%; width:30%;
+    background:linear-gradient(100deg, transparent, rgba(255,255,255,.32), transparent);
+    transform:translateX(-160%) rotate(8deg); pointer-events:none;
+  }
+  [data-sheen].sheen-play::after { animation:sheen 1.15s cubic-bezier(.4,0,.2,1) both; }
+  @keyframes sheen { to { transform:translateX(360%) rotate(8deg); } }
+
+  .list-editorial { display:flex; flex-direction:column; }
+  .list-editorial > div { padding:22px 0; border-top:1px solid var(--line-soft); display:flex; flex-direction:column; gap:6px; }
+  .list-editorial > div:first-child { border-top:none; padding-top:0; }
+
+  .photo-card { border-radius:var(--radius-lg); overflow:hidden; border:1px solid var(--line); position:relative; flex-shrink:0; }
+  .photo-card img { width:100%; display:block; object-fit:cover; }
+
+  .glow { position:absolute; border-radius:50%; pointer-events:none; }
+  .grain { position:absolute; inset:0; z-index:2; pointer-events:none; opacity:.035; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+  .story-progress { padding-top:var(--safe-top)!important; }
+  .story-controls {
+    position:absolute; z-index:40; left:16px; right:16px;
+    bottom:var(--safe-bottom); display:grid; grid-template-columns:52px 1fr 52px;
+    align-items:center; gap:10px; pointer-events:none;
+  }
+  .story-nav {
+    width:52px; height:52px; border:1px solid rgba(255,255,255,.2); border-radius:50%;
+    background:rgba(8,13,24,.82); color:#fff; backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px); font:700 22px/1 sans-serif; cursor:pointer;
+    pointer-events:auto; box-shadow:0 10px 32px rgba(0,0,0,.25);
+  }
+  .story-nav[disabled] { opacity:.35; cursor:default; }
+  .story-status { color:#dce8f5; text-align:center; font-size:12px; font-weight:700; letter-spacing:.08em; }
+  .story-hint { display:block; margin-top:3px; color:#8b9cb8; font-size:11px; font-weight:500; letter-spacing:0; }
+  .whatsapp-cta {
+    display:flex; min-height:56px; align-items:center; justify-content:center; text-align:center;
+    padding:16px 20px; border-radius:18px; color:#04131a!important; background:var(--accent);
+    font-size:17px; font-weight:800; box-shadow:0 12px 30px rgba(127,216,255,.2);
+  }
+  .legal-details { color:#8b9cb8; font-size:13px; line-height:1.45; }
+  .legal-details summary {
+    min-height:44px; display:flex; align-items:center; justify-content:space-between;
+    color:var(--muted); font-weight:700; cursor:pointer; list-style:none;
+  }
+  .legal-details summary::-webkit-details-marker { display:none; }
+  .legal-details summary::after { content:'+'; color:var(--accent); font-size:20px; font-weight:400; }
+  .legal-details[open] summary::after { content:'–'; }
+  .legal-details p { margin:8px 0 0; }
+
+  @media (max-height:740px) {
+    #om-scroller > section {
+      padding-left:22px!important; padding-right:22px!important; gap:10px!important;
+      padding-top:calc(var(--safe-top) + 40px)!important;
+      padding-bottom:calc(var(--safe-bottom) + 74px)!important;
+    }
+    .h-display { font-size:clamp(24px,4.6vh,34px)!important; }
+    .h-hero { font-size:clamp(30px,6vh,44px)!important; }
+    .photo-card img { height:clamp(70px,14vh,150px)!important; }
+    .surface-flat, .surface-glass, .surface-accent, .surface-warm { padding:14px 18px!important; }
+    .metric { font-size:clamp(20px,4.2vh,40px)!important; }
+    .body, .body-lg { font-size:14px!important; line-height:1.4!important; }
+    .list-editorial > div { padding:14px 0!important; }
+    .eyebrow { margin-bottom:4px!important; }
+  }
+  @media (max-height:620px) {
+    .photo-card { display:none!important; }
+  }
+  @media (min-width:700px) {
+    .story-frame { border-inline:1px solid var(--line); box-shadow:0 0 80px rgba(0,0,0,.55); }
+  }
+  @media (prefers-reduced-motion:reduce) {
+    *, *::before, *::after { scroll-behavior:auto!important; transition-duration:.01ms!important; animation-duration:.01ms!important; }
+    [data-sheen].sheen-play::after { animation:none!important; }
+  }
+</style>
+</helmet>
+
+<div ref="{{ hostRef }}" class="story-host" style="width:100%;height:100dvh;background:#060911;display:flex;justify-content:center;align-items:flex-start;overflow:hidden;position:absolute;left:0;top:0">
+<div ref="{{ frameRef }}" class="story-frame" style="position:relative;width:430px;height:932px;flex-shrink:0;overflow:hidden;background:#060911">
+
+  <div class="grain"></div>
+
+  <div class="story-progress" role="progressbar" aria-label="Progresso da apresentação" aria-valuemin="1" aria-valuemax="14" aria-valuenow="1" style="position:absolute;top:0;left:0;right:0;z-index:30;display:flex;gap:3px;padding:14px 16px 0" ref="{{ barRef }}"></div>
+
+  <nav class="story-controls" aria-label="Navegação entre telas">
+    <button class="story-nav" type="button" onClick="{{ prev }}" ref="{{ prevRef }}" aria-label="Tela anterior">↑</button>
+    <div class="story-status" aria-live="polite" ref="{{ statusRef }}">1 de 14<span class="story-hint">Deslize para continuar</span></div>
+    <button class="story-nav" type="button" onClick="{{ next }}" ref="{{ nextRef }}" aria-label="Próxima tela">↓</button>
+  </nav>
+
+  <div id="om-scroller" ref="{{ scrollRef }}" style="position:absolute;inset:0;overflow-y:scroll;scroll-snap-type:y mandatory;scrollbar-width:none;-ms-overflow-style:none;z-index:10">
+
+    <section style="padding:0">
+      <img src="./img/mp15-capa.webp" alt="Motoboy brasileiro entregando por aplicativo em rua residencial no Reino Unido" width="1200" height="675" fetchpriority="high" decoding="async" style="position:absolute;top:0;left:0;width:100%;height:540px;object-fit:cover;object-position:center 30%;z-index:0">
+      <div style="position:absolute;top:0;left:0;right:0;height:540px;background:linear-gradient(180deg,rgba(6,9,17,0) 0%,rgba(6,9,17,.08) 42%,rgba(6,9,17,.86) 84%,#060911 100%);z-index:1"></div>
+      <div style="position:relative;z-index:2;height:100%;padding:calc(var(--safe-top) + 54px) 32px calc(var(--safe-bottom) + 82px);display:flex;flex-direction:column;justify-content:space-between">
+        <div data-anim="" class="eyebrow eyebrow--onphoto">MetLife · Reino Unido</div>
+        <div style="display:flex;flex-direction:column;gap:20px;margin-top:280px">
+          <div data-anim="" class="h-hero" style="font-size:46px">MetLife MultiProtect</div>
+          <div data-anim="" class="body-lg">Apoio financeiro quando <span class="b">um acidente, uma internação ou uma lesão grave</span> interrompe sua rotina.</div>
+        </div>
+        <div data-anim="" style="display:flex;flex-direction:column;gap:14px">
+          <div class="surface-accent" data-sheen="" style="display:flex;align-items:baseline;gap:10px;padding:20px 24px">
+            <div class="metric" style="font-size:46px">£13</div>
+            <div class="metric-unit">/ mês, a partir de</div>
+          </div>
+          <div class="small">Sem perguntas sobre saúde na contratação. Dos 18 aos 65 anos.</div>
+        </div>
+      </div>
+    </section>
+
+    <section style="justify-content:flex-end;gap:24px;background-image:radial-gradient(110% 60% at 90% 5%,#123246 0%,rgba(6,9,17,0) 60%)">
+      <div data-anim="" class="eyebrow">O produto</div>
+      <div data-anim="" class="photo-card"><img src="./img/mp15-trabalho.webp" alt="Brasileira trabalhando como faxineira em casa no Reino Unido" width="1024" height="576" loading="lazy" decoding="async" style="height:190px;object-position:56% 28%"></div>
+      <div data-anim="" class="h-display" style="font-size:36px">O que é o MetLife MultiProtect?</div>
+      <div data-anim="" class="body-lg">É um seguro que <span class="b">paga um valor em dinheiro a você</span> quando acontece um acidente, uma internação ou determinadas lesões previstas na apólice.</div>
+      <div data-anim="" class="surface-flat" style="padding:22px 24px;font-size:19px;font-weight:600;line-height:1.4;color:var(--text)">O dinheiro vai direto pra sua conta.</div>
+    </section>
+
+    <section style="justify-content:flex-start;gap:8px;background-image:radial-gradient(100% 60% at 10% 100%,#1a2440 0%,rgba(6,9,17,0) 58%)">
+      <div data-anim="" class="eyebrow" style="margin-top:clamp(24px,13vh,140px);margin-bottom:16px">Por que é diferente</div>
+      <div class="list-editorial">
+        <div data-anim="">
+          <div class="h-row">Sem perguntas de saúde</div>
+          <div class="body">Você contrata <span class="b">sem exame médico</span> nem questionário.</div>
+        </div>
+        <div data-anim="">
+          <div class="h-row">Mensalidade estável</div>
+          <div class="body">O valor <span class="b">não muda</span> com a sua idade nem com o uso da apólice.</div>
+        </div>
+        <div data-anim="">
+          <div class="h-row">Pode usar mais de uma vez</div>
+          <div class="body">Lesões diferentes podem gerar <span class="b">pedidos diferentes</span>.</div>
+        </div>
+      </div>
+    </section>
+
+    <section style="justify-content:center;gap:22px;background-image:radial-gradient(110% 60% at 85% 0%,#17264a 0%,rgba(6,9,17,0) 60%)">
+      <div data-anim="" class="eyebrow">Como funciona</div>
+      <div data-anim="" class="h-display" style="font-size:38px">5 níveis de proteção</div>
+      <div data-anim="" class="body-lg">São as chamadas <span class="b">Cotas</span>. Você escolhe de 1 a 5 — todas protegem das mesmas 6 formas.</div>
+      <div data-anim="" style="display:flex;flex-direction:column;gap:8px">
+        <div class="surface-flat" style="display:flex;align-items:baseline;justify-content:space-between;padding:16px 22px"><div class="metric-label">Plano 1</div><div class="metric" style="font-size:26px">£13</div></div>
+        <div class="surface-flat" style="display:flex;align-items:baseline;justify-content:space-between;padding:16px 22px"><div class="metric-label">Plano 2</div><div class="metric" style="font-size:26px">£26</div></div>
+        <div class="surface-accent" data-sheen="" style="display:flex;align-items:baseline;justify-content:space-between;padding:16px 22px"><div class="metric-label accent-text" style="font-weight:700">Plano 3</div><div class="metric" style="font-size:26px">£39</div></div>
+        <div class="surface-flat" style="display:flex;align-items:baseline;justify-content:space-between;padding:16px 22px"><div class="metric-label">Plano 4</div><div class="metric" style="font-size:26px">£52</div></div>
+        <div class="surface-flat" style="display:flex;align-items:baseline;justify-content:space-between;padding:16px 22px"><div class="metric-label">Plano 5</div><div class="metric" style="font-size:26px">£65</div></div>
+      </div>
+    </section>
+
+    <section style="justify-content:center;gap:22px;background-image:radial-gradient(100% 60% at 15% 95%,#1a2440 0%,rgba(6,9,17,0) 58%)">
+      <div data-anim="" class="eyebrow">Você escolhe o nível</div>
+      <div data-anim="" class="h-display" style="font-size:34px">O mesmo evento, valores diferentes</div>
+      <div data-anim="" class="surface-flat" style="padding:24px 26px;display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div class="metric-label">Morte por acidente</div>
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px"><div class="body" style="font-weight:700">£40 mil</div><div class="metric accent-text" style="font-size:23px">£120 mil</div><div class="h-row">£200 mil</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div class="metric-label">Fratura de osso principal</div>
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px"><div class="body" style="font-weight:700">£1.000</div><div class="metric accent-text" style="font-size:23px">£3.000</div><div class="h-row">£5.000</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div class="metric-label">Internação, por 24h</div>
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px"><div class="body" style="font-weight:700">£50</div><div class="metric accent-text" style="font-size:23px">£150</div><div class="h-row">£250</div></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted-3);border-top:1px solid var(--line-soft);padding-top:14px"><div>Plano 1</div><div class="accent-text">Plano 3</div><div>Plano 5</div></div>
+      </div>
+      <div data-anim="" class="body"><span class="b">As 6 proteções já vêm incluídas</span> em qualquer plano. Você escolhe o tamanho da indenização.</div>
+    </section>
+
+    <section style="justify-content:center;gap:16px;background-image:radial-gradient(110% 60% at 85% 4%,#182545 0%,rgba(6,9,17,0) 60%)">
+      <div data-anim="" class="eyebrow">Cobertura Essencial</div>
+      <div data-anim="" class="h-display" style="font-size:32px;margin-bottom:4px">6 proteções em uma única apólice</div>
+      <div data-anim="" class="surface-flat" style="padding:22px 24px;display:flex;justify-content:space-between;gap:12px">
+        <div><div class="metric-label" style="margin-bottom:6px">Morte por acidente</div><div class="metric" style="font-size:28px">£200 mil</div></div>
+        <div style="width:1px;background:var(--line-soft)"></div>
+        <div><div class="metric-label" style="margin-bottom:6px">Incapacidade permanente</div><div class="metric" style="font-size:28px">£250 mil</div></div>
+      </div>
+      <div data-anim="" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div class="surface-flat" style="padding:16px 18px"><div class="metric-label" style="margin-bottom:6px">Lesões permanentes</div><div class="metric" style="font-size:22px">£125 mil</div></div>
+        <div class="surface-flat" style="padding:16px 18px"><div class="metric-label" style="margin-bottom:6px">Internação, 24h</div><div class="metric" style="font-size:22px">£250</div></div>
+        <div class="surface-flat" style="padding:16px 18px"><div class="metric-label" style="margin-bottom:6px">Fraturas</div><div class="metric" style="font-size:22px">£5.000</div></div>
+        <div class="surface-flat" style="padding:16px 18px"><div class="metric-label" style="margin-bottom:6px">Morte não acidental</div><div class="metric" style="font-size:22px">£20 mil</div></div>
+      </div>
+      <div data-anim="" class="small">Valores máximos, no Plano 5.</div>
+    </section>
+
+    <section style="justify-content:flex-end;gap:20px;background-image:radial-gradient(100% 60% at 10% 100%,#1a2440 0%,rgba(6,9,17,0) 58%)">
+      <div data-anim="" class="eyebrow">Evento coberto</div>
+      <div data-anim="" class="h-display" style="font-size:38px">Morte por acidente</div>
+      <div data-anim="" class="photo-card"><img src="./img/mp15-capa.webp" alt="Motoboy brasileiro entregando por aplicativo, uma das ocupações com maior risco de acidente" width="1200" height="675" loading="lazy" decoding="async" style="height:140px;object-position:center 32%"></div>
+      <div data-anim="" class="surface-flat" style="padding:26px 28px;display:flex;flex-direction:column;gap:8px">
+        <div class="eyebrow" style="font-size:13px">Pagamento</div>
+        <div class="metric" style="font-size:48px">£200.000</div>
+        <div class="body">no Plano 5 · £120.000 no Plano 3</div>
+      </div>
+      <div data-anim="" class="surface-flat" style="padding:24px 26px;display:flex;flex-direction:column;gap:10px">
+        <div class="eyebrow" style="color:var(--muted-3);font-size:13px">Como funciona</div>
+        <div class="body">O valor é pago <span class="b">aos seus beneficiários</span>, em casa ou no exterior. Morte não acidental paga até £20.000 — e no 1º ano, <span class="b">os prêmios são devolvidos</span>.</div>
+      </div>
+    </section>
+
+    <section style="justify-content:flex-end;gap:18px;background-image:radial-gradient(110% 60% at 85% 4%,#123246 0%,rgba(6,9,17,0) 60%)">
+      <div data-anim="" class="eyebrow">Evento coberto</div>
+      <div data-anim="" class="photo-card"><img src="./img/mp15-hospital.webp" alt="Enfermaria do NHS com leito vazio junto à janela" width="1000" height="671" loading="lazy" decoding="async" style="height:170px"></div>
+      <div data-anim="" class="h-display" style="font-size:36px">Internação hospitalar</div>
+      <div data-anim="" class="surface-accent" data-sheen="" style="padding:26px 28px;display:flex;flex-direction:column;gap:8px">
+        <div class="eyebrow" style="font-size:13px">Pagamento</div>
+        <div class="metric" style="font-size:42px">£250 / 24h</div>
+        <div class="body">no Plano 5 · £150 no Plano 3</div>
+      </div>
+      <div data-anim="" class="list-editorial">
+        <div><div class="body"><span class="b">Reino Unido</span> e 27 países europeus selecionados.</div></div>
+        <div><div class="body">Por acidente — coberto <span class="b">desde o início</span> da apólice.</div></div>
+        <div><div class="body">Por doença — coberto <span class="b">depois de 12 meses</span>.</div></div>
+      </div>
+    </section>
+
+    <section style="justify-content:flex-end;gap:16px;background-image:radial-gradient(100% 60% at 12% 96%,#241c3a 0%,rgba(6,9,17,0) 58%)">
+      <div data-anim="" class="eyebrow">Evento coberto</div>
+      <div data-anim="" class="photo-card"><img src="./img/mp15-obra.webp" alt="Homem amarrando o cadarço do tênis em rua de paralelepípedo, momento de possível entorse" width="1000" height="671" loading="lazy" decoding="async" style="height:160px"></div>
+      <div data-anim="" class="h-display" style="font-size:36px">Fraturas e luxações</div>
+      <div data-anim="" class="surface-flat" style="padding:24px 26px;display:flex;flex-direction:column;gap:6px">
+        <div class="metric-label">Fratura de osso principal</div>
+        <div class="metric" style="font-size:38px">£5.000</div>
+        <div class="body"><span class="b">Por osso quebrado</span>, mesmo com mais de uma fratura no mesmo acidente. Osso secundário paga até £250.</div>
+      </div>
+      <div data-anim="" class="surface-accent" data-sheen="" style="padding:24px 26px;display:flex;flex-direction:column;gap:6px">
+        <div class="eyebrow" style="font-size:12px">Incluído na mensalidade</div>
+        <div class="h-row">Luxações e rupturas</div>
+        <div class="metric" style="font-size:38px">£5.000</div>
+        <div class="body" style="color:#dce8f5">Luxações precisam de <span class="b">exame de imagem e cirurgia</span>. Cobre ruptura de ligamento e de tendão.</div>
+      </div>
+    </section>
+
+    <section style="justify-content:flex-start;gap:16px;background-image:radial-gradient(110% 60% at 85% 4%,#182545 0%,rgba(6,9,17,0) 60%)">
+      <div data-anim="" class="eyebrow" style="margin-top:clamp(24px,13vh,140px)">Evento coberto</div>
+      <div data-anim="" class="h-display" style="font-size:34px">Invalidez e lesões permanentes</div>
+      <div data-anim="" class="surface-flat" style="padding:24px 26px;display:flex;flex-direction:column;gap:6px">
+        <div class="metric-label">Incapacidade permanente total</div>
+        <div class="metric" style="font-size:42px">£250.000</div>
+        <div class="body">no Plano 5, quando você fica impossibilitado de cuidar de si mesmo.</div>
+      </div>
+      <div data-anim="" class="surface-flat" style="padding:24px 26px;display:flex;flex-direction:column;gap:6px">
+        <div class="metric-label">Lesões permanentes específicas</div>
+        <div class="metric" style="font-size:32px">£12.500 a £125.000</div>
+        <div class="body">Paralisia dos membros — <span class="b">£125.000</span>. Cegueira nos dois olhos ou perda das duas mãos ou pés — <span class="b">£100.000</span>.</div>
+      </div>
+    </section>
+
+    <section style="justify-content:flex-start;gap:18px;background-image:radial-gradient(100% 60% at 10% 100%,#123246 0%,rgba(6,9,17,0) 58%)">
+      <div data-anim="" class="eyebrow" style="margin-top:clamp(24px,13vh,140px)">Incluído em qualquer nível</div>
+      <div data-anim="" class="h-display" style="font-size:34px">Médico 24h, sem esperar um acidente</div>
+      <div data-anim="" class="body-lg">Consulta com médico registrado, <span class="b">a qualquer hora, em qualquer lugar do mundo</span>. Para você e sua família.</div>
+      <div data-anim="" class="list-editorial">
+        <div><div class="h-row" style="font-size:18px">GP24 · Médico particular</div><div class="body"><span class="b">24 horas por dia</span>, em mais de <span class="b">200 idiomas</span> com intérprete.</div></div>
+        <div><div class="h-row" style="font-size:18px">Fisioterapia online</div><div class="body"><span class="b">6 sessões</span> de 30 minutos por ano, com o mesmo fisioterapeuta.</div></div>
+        <div><div class="h-row" style="font-size:18px">Wellbeing Support Centre</div><div class="body">Apoio <span class="b">ilimitado</span> por telefone, vídeo ou app.</div></div>
+      </div>
+    </section>
+
+    <section style="justify-content:flex-end;gap:12px;background-image:radial-gradient(110% 60% at 85% 4%,#1a2440 0%,rgba(6,9,17,0) 60%)">
+      <div data-anim="" class="eyebrow">Na prática</div>
+      <div data-anim="" class="h-display" style="font-size:32px">Imagine que isso aconteça amanhã</div>
+      <div data-anim="" class="photo-card"><img src="./img/mp15-cleaner.webp" alt="Brasileiro fazendo jardinagem no Reino Unido, sentindo dor após um esforço" width="1146" height="645" loading="lazy" decoding="async" style="height:100px;object-position:66% 18%"></div>
+      <div data-anim="" class="surface-flat" style="padding:16px 22px;display:flex;flex-direction:column;gap:4px">
+        <div class="h-row" style="font-size:17px">Acidente no trabalho.</div>
+        <div class="body" style="font-size:15px">Você sofre uma queda, <span class="b">fratura o pulso</span> e fica <span class="b">4 dias internado</span>.</div>
+      </div>
+      <div data-anim="" class="surface-flat" style="padding:4px 22px 16px;display:flex;flex-direction:column">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--line-soft)"><div><div class="h-row" style="font-size:15px">Internação</div><div class="small" style="font-size:13px">4 dias × £150</div></div><div class="metric" style="font-size:21px">£600</div></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--line-soft)"><div><div class="h-row" style="font-size:15px">Fratura de pulso</div><div class="small" style="font-size:13px">osso principal</div></div><div class="metric" style="font-size:21px">£3.000</div></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--line-soft)"><div><div class="h-row" style="font-size:15px">Luxação de ombro</div><div class="small" style="font-size:13px">com cirurgia</div></div><div class="metric" style="font-size:21px">£3.000</div></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0 0"><div class="h-row accent-text" style="font-size:16px">Total potencial</div><div class="metric accent-text" style="font-size:30px">£6.600</div></div>
+      </div>
+      <div data-anim="" class="small">Exemplo no Plano 3 (£39/mês), calculado com as tabelas oficiais da apólice.</div>
+    </section>
+
+    <section style="justify-content:flex-start;gap:18px;background-image:radial-gradient(100% 60% at 12% 96%,#182545 0%,rgba(6,9,17,0) 58%)">
+      <div data-anim="" class="eyebrow" style="margin-top:clamp(24px,13vh,140px)">Quanto custa</div>
+      <div data-anim="" class="h-display" style="font-size:36px">Qual plano faz sentido pra você?</div>
+      <div data-anim="" style="display:flex;flex-direction:column;gap:8px">
+        <div class="surface-flat" style="padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px"><div class="body" style="color:#dce8f5">Quero começar com uma proteção básica</div><div class="metric" style="font-size:24px;flex-shrink:0">£13</div></div>
+        <div class="surface-accent" data-sheen="" style="padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px"><div class="body" style="color:var(--text);font-weight:600">Quero equilíbrio entre preço e indenização</div><div class="metric" style="font-size:24px;flex-shrink:0">£39</div></div>
+        <div class="surface-flat" style="padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px"><div class="body" style="color:#dce8f5">Quero os maiores valores de proteção</div><div class="metric" style="font-size:24px;flex-shrink:0">£65</div></div>
+      </div>
+      <div data-anim="" class="body"><span class="b">Sem perguntas sobre saúde.</span> A mensalidade <span class="b">não muda com a sua idade</span>. Cobertura para Crianças é opcional, a partir de £2 por cota.</div>
+    </section>
+
+    <section class="story-final" style="justify-content:space-between;background-image:radial-gradient(120% 70% at 15% 0%,#1a2440 0%,rgba(6,9,17,0) 60%),radial-gradient(100% 60% at 100% 95%,#3a2a1a 0%,rgba(6,9,17,0) 58%)">
+      <div data-anim="" class="eyebrow">Próximo passo</div>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div data-anim="" class="h-hero h-hero--ital" style="font-size:42px">Escolha o nível e comece sua proteção</div>
+        <div data-anim="" style="display:flex;flex-direction:column;gap:10px">
+          <div class="h-row" style="font-weight:700">Quer descobrir qual plano combina com você?</div>
+          <a class="whatsapp-cta" href="https://wa.me/?text=Olá%2C%20quero%20uma%20simulação%20do%20MetLife%20MultiProtect." target="_blank" rel="noopener" aria-label="Pedir simulação do MultiProtect pelo WhatsApp">Pedir simulação no WhatsApp</a>
+          <div style="font-size:15px;font-weight:600;color:var(--accent);text-align:center">Resposta no mesmo dia</div>
+        </div>
+        <div data-anim="" class="surface-flat" style="padding:18px 22px;font-size:16px;font-weight:600;line-height:1.4;color:#dce8f5">£22,4m pagos em indenizações em 2023 · 23.942 pedidos pagos · no Reino Unido desde 2007</div>
+      </div>
+      <details data-anim="" class="legal-details">
+        <summary>Informações importantes</summary>
+        <p>Contratação dos 18 aos 65 anos, com cobertura até os 75, se residente no Reino Unido. Benefícios reduzidos pela metade a partir dos 70 anos. Limite de £50.000 por evento, por cota.</p>
+        <p>MetLife Europe d.a.c., regulada pelo Banco Central da Irlanda e sujeita à regulamentação da FCA e da PRA no Reino Unido. Síntese — os Termos e Condições da apólice trazem definições, limites e exclusões.</p>
+      </details>
+    </section>
+
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:932}}">
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.scrollRef = React.createRef();
+    this.barRef = React.createRef();
+    this.hostRef = React.createRef();
+    this.frameRef = React.createRef();
+    this.prevRef = React.createRef();
+    this.nextRef = React.createRef();
+    this.statusRef = React.createRef();
+    this.i = 0;
+    this.reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+  fit() {
+    const fr = this.frameRef.current;
+    if (!fr) return;
+    fr.style.height = (window.visualViewport?.height || window.innerHeight) + 'px';
+  }
+  componentDidMount() {
+    const sc = this.scrollRef.current, bar = this.barRef.current;
+    if (!sc) return;
+    this.secs = [...sc.children];
+    this.secs.forEach((section, index) => {
+      section.setAttribute('role', 'group');
+      section.setAttribute('aria-roledescription', 'tela');
+      section.setAttribute('aria-label', (index + 1) + ' de ' + this.secs.length);
+    });
+    bar?.setAttribute('aria-valuemax', String(this.secs.length));
+    if (bar) {
+      this.segs = this.secs.map(() => {
+        const d = document.createElement('div');
+        d.style.cssText = 'flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,0.22);transition:background .3s ease';
+        bar.appendChild(d);
+        return d;
+      });
+    }
+    if (!this.reduceMotion) {
+      this.secs.forEach(s => [...s.querySelectorAll('[data-anim]')].forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(12px)';
+        el.style.transition = 'opacity .42s cubic-bezier(.22,1,.36,1), transform .42s cubic-bezier(.22,1,.36,1)';
+      }));
+    }
+    this.io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const idx = this.secs.indexOf(e.target);
+        if (idx > -1) { this.i = idx; this.target = idx; this.paint(); }
+        [...e.target.querySelectorAll('[data-anim]')].forEach((el, k) => {
+          if (this.reduceMotion) return;
+          el.style.transitionDelay = (k * 55) + 'ms';
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+        });
+        if (!this.reduceMotion) {
+          [...e.target.querySelectorAll('[data-sheen]')].forEach(el => {
+            el.classList.remove('sheen-play');
+            void el.offsetWidth;
+            el.classList.add('sheen-play');
+          });
+        }
+      });
+    }, { root: sc, threshold: 0.55 });
+    this.secs.forEach(s => this.io.observe(s));
+    this.target = 0;
+    this.onScroll = () => {
+      clearTimeout(this.idle);
+      this.idle = setTimeout(() => {
+        if (this.animating) return;
+        const h = this.secs[0].clientHeight || 1;
+        this.target = Math.max(0, Math.min(this.secs.length - 1, Math.round(sc.scrollTop / h)));
+      }, 140);
+    };
+    sc.addEventListener('scroll', this.onScroll, { passive: true });
+    this.paint();
+    this.onKey = e => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault(); this.go(1); }
+      if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); this.go(-1); }
+    };
+    window.addEventListener('keydown', this.onKey);
+    this.fit();
+    this.onResize = () => this.fit();
+    window.addEventListener('resize', this.onResize);
+  }
+  componentWillUnmount() {
+    if (this.io) this.io.disconnect();
+    if (this.scrollRef.current && this.onScroll) this.scrollRef.current.removeEventListener('scroll', this.onScroll);
+    clearTimeout(this.idle);
+    clearTimeout(this.animTimer);
+    window.removeEventListener('keydown', this.onKey);
+    window.removeEventListener('resize', this.onResize);
+  }
+  paint() {
+    if (!this.segs) return;
+    this.segs.forEach((d, k) => {
+      d.style.background = k <= this.i ? '#7fd8ff' : 'rgba(255,255,255,0.22)';
+    });
+    this.barRef.current?.setAttribute('aria-valuenow', String(this.i + 1));
+    if (this.statusRef.current) {
+      this.statusRef.current.innerHTML = (this.i + 1) + ' de ' + this.secs.length + (this.i === 0 ? '<span class="story-hint">Deslize para continuar</span>' : '');
+    }
+    if (this.prevRef.current) this.prevRef.current.disabled = this.i === 0;
+    if (this.nextRef.current) {
+      this.nextRef.current.disabled = this.i === this.secs.length - 1;
+      this.nextRef.current.setAttribute('aria-label', this.i === this.secs.length - 2 ? 'Ir para a última tela' : 'Próxima tela');
+    }
+  }
+  go(dir) {
+    const sc = this.scrollRef.current;
+    if (!sc || !this.secs) return;
+    if (this.target == null) this.target = this.i;
+    const n = Math.max(0, Math.min(this.secs.length - 1, this.target + dir));
+    this.target = n;
+    this.i = n;
+    this.paint();
+    this.animating = true;
+    clearTimeout(this.animTimer);
+    this.animTimer = setTimeout(() => { this.animating = false; }, 700);
+    sc.scrollTo({ top: this.secs[n].offsetTop, behavior: this.reduceMotion ? 'auto' : 'smooth' });
+  }
+  renderVals() {
+    return {
+      scrollRef: this.scrollRef,
+      barRef: this.barRef,
+      hostRef: this.hostRef,
+      frameRef: this.frameRef,
+      prevRef: this.prevRef,
+      nextRef: this.nextRef,
+      statusRef: this.statusRef,
+      next: () => this.go(1),
+      prev: () => this.go(-1),
+    };
+  }
+}
+</script>
+</body>
+</html>
