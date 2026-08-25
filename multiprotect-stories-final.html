@@ -90,6 +90,15 @@
   [data-sheen].sheen-play::after { animation:sheen 1.15s cubic-bezier(.4,0,.2,1) both; }
   @keyframes sheen { to { transform:translateX(360%) rotate(8deg); } }
 
+  /* Modern highlight: soft ambient glow pulse on featured cards once revealed */
+  [data-sheen].glow-active { animation: glowPulse 3.2s ease-in-out .6s infinite; }
+  @keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 0 rgba(127,216,255,0), inset 0 1px 0 rgba(255,255,255,.14); }
+    50% { box-shadow: 0 0 28px rgba(127,216,255,.22), inset 0 1px 0 rgba(255,255,255,.18); }
+  }
+  .bento-cell, .cota-chip { transition: transform .28s cubic-bezier(.34,1.56,.64,1), border-color .2s ease, box-shadow .2s ease; }
+  .bento-cell:active { box-shadow: 0 8px 20px rgba(0,0,0,.25); }
+
   /* Ken Burns micro-parallax on full-bleed photos: scroll/entry-driven motion */
   [data-kb] { transform:scale(1.09); transition:transform 5.5s cubic-bezier(.16,1,.3,1); will-change:transform; }
   [data-kb].kb-play { transform:scale(1); }
@@ -186,6 +195,7 @@
   @media (prefers-reduced-motion:reduce) {
     *, *::before, *::after { scroll-behavior:auto!important; transition-duration:.01ms!important; animation-duration:.01ms!important; }
     [data-sheen].sheen-play::after { animation:none!important; }
+    [data-sheen].glow-active { animation:none!important; }
     [data-kb] { transform:none!important; transition:none!important; }
   }
 </style>
@@ -216,12 +226,12 @@
           <div data-anim="" class="h-hero" style="font-size:46px">MetLife MultiProtect</div>
           <div data-anim="" class="body-lg" style="font-size:19px">Proteção financeira quando <span class="b">um acidente, uma internação ou uma lesão</span> interrompe sua rotina.</div>
         </div>
-        <div data-anim="" style="display:flex;flex-direction:column;gap:16px;margin-top:36px">
+        <div data-anim="" style="display:flex;flex-direction:column;gap:16px;margin-top:36px;margin-bottom:10px">
           <div class="surface-accent" data-sheen="" style="display:flex;flex-direction:column;gap:2px;padding:20px 24px">
             <div class="metric" style="font-size:56px">£13</div>
             <div class="metric-unit">a partir de, por mês</div>
           </div>
-          <div class="small">Receba dinheiro em casos de fraturas, luxações, lesões, internação e outros eventos cobertos pelo plano.</div>
+          <div class="small">Receba dinheiro em casos de <span class="b">fraturas, luxações, lesões</span> e <span class="b">internação</span> e outros eventos cobertos pelo plano.</div>
           <div class="small" style="color:var(--muted-3)">Contratação disponível dos 18 aos 65 anos.</div>
         </div>
       </div>
@@ -338,28 +348,28 @@
           </thead>
           <tbody>
             <tr style="border-bottom:1px solid var(--line-soft)">
-              <td style="padding:11px 4px;font-size:13px;font-weight:600;color:var(--text);line-height:1.25">🦴 Fratura de osso</td>
-              <td style="padding:11px 4px;text-align:right;font-size:14px;font-weight:700;color:var(--muted)">£1.000</td>
-              <td style="padding:11px 4px;text-align:right;font-size:15px;font-weight:800;color:var(--accent)">£3.000</td>
-              <td style="padding:11px 4px;text-align:right;font-size:14px;font-weight:700;color:var(--text)">£5.000</td>
+              <td style="padding:12px 4px;font-size:13.5px;font-weight:600;color:var(--text);line-height:1.25">Fratura de osso</td>
+              <td style="padding:12px 4px;text-align:right;font-size:14px;font-weight:700;color:var(--muted)">£1.000</td>
+              <td style="padding:12px 4px;text-align:right;font-size:15px;font-weight:800;color:var(--accent)">£3.000</td>
+              <td style="padding:12px 4px;text-align:right;font-size:14px;font-weight:700;color:var(--text)">£5.000</td>
             </tr>
             <tr style="border-bottom:1px solid var(--line-soft)">
-              <td style="padding:11px 4px;font-size:13px;font-weight:600;color:var(--text);line-height:1.25">🏥 Internação /24h</td>
-              <td style="padding:11px 4px;text-align:right;font-size:14px;font-weight:700;color:var(--muted)">£50</td>
-              <td style="padding:11px 4px;text-align:right;font-size:15px;font-weight:800;color:var(--accent)">£150</td>
-              <td style="padding:11px 4px;text-align:right;font-size:14px;font-weight:700;color:var(--text)">£250</td>
+              <td style="padding:12px 4px;font-size:13.5px;font-weight:600;color:var(--text);line-height:1.25">Internação /24h</td>
+              <td style="padding:12px 4px;text-align:right;font-size:14px;font-weight:700;color:var(--muted)">£50</td>
+              <td style="padding:12px 4px;text-align:right;font-size:15px;font-weight:800;color:var(--accent)">£150</td>
+              <td style="padding:12px 4px;text-align:right;font-size:14px;font-weight:700;color:var(--text)">£250</td>
             </tr>
             <tr style="border-bottom:1px solid var(--line-soft)">
-              <td style="padding:11px 4px;font-size:13px;font-weight:600;color:var(--text);line-height:1.25">❤️ Morte acidental</td>
-              <td style="padding:11px 4px;text-align:right;font-size:14px;font-weight:700;color:var(--muted)">£40 mil</td>
-              <td style="padding:11px 4px;text-align:right;font-size:15px;font-weight:800;color:var(--accent)">£120 mil</td>
-              <td style="padding:11px 4px;text-align:right;font-size:14px;font-weight:700;color:var(--text)">£200 mil</td>
+              <td style="padding:12px 4px;font-size:13.5px;font-weight:600;color:var(--text);line-height:1.25">Morte acidental</td>
+              <td style="padding:12px 4px;text-align:right;font-size:14px;font-weight:700;color:var(--muted)">£40 mil</td>
+              <td style="padding:12px 4px;text-align:right;font-size:15px;font-weight:800;color:var(--accent)">£120 mil</td>
+              <td style="padding:12px 4px;text-align:right;font-size:14px;font-weight:700;color:var(--text)">£200 mil</td>
             </tr>
             <tr>
-              <td style="padding:11px 4px 0;font-size:13px;font-weight:600;color:var(--text);line-height:1.25">🦿 Incapacidade</td>
-              <td style="padding:11px 4px 0;text-align:right;font-size:14px;font-weight:700;color:var(--muted)">£50 mil</td>
-              <td style="padding:11px 4px 0;text-align:right;font-size:15px;font-weight:800;color:var(--accent)">£150 mil</td>
-              <td style="padding:11px 4px 0;text-align:right;font-size:14px;font-weight:700;color:var(--text)">£250 mil</td>
+              <td style="padding:12px 4px 0;font-size:13.5px;font-weight:600;color:var(--text);line-height:1.25">Invalidez permanente</td>
+              <td style="padding:12px 4px 0;text-align:right;font-size:14px;font-weight:700;color:var(--muted)">£50 mil</td>
+              <td style="padding:12px 4px 0;text-align:right;font-size:15px;font-weight:800;color:var(--accent)">£150 mil</td>
+              <td style="padding:12px 4px 0;text-align:right;font-size:14px;font-weight:700;color:var(--text)">£250 mil</td>
             </tr>
           </tbody>
         </table>
@@ -369,7 +379,7 @@
 
     <!-- 06 FRATURAS — full-bleed photo hero -->
     <section class="has-photo">
-      <img data-kb="" src="./img/mp15-obra.webp" alt="Homem amarrando o cadarço do tênis em rua de paralelepípedo, momento de possível entorse" width="1000" height="671" loading="lazy" decoding="async" style="position:absolute;top:0;left:0;width:100%;height:400px;object-fit:cover;z-index:0">
+      <img data-kb="" src="./img/mp15-fraturas.webp" alt="Homem podando cerca viva em frente a uma casa no Reino Unido, momento de esforço físico com ferramentas" width="1200" height="1600" loading="lazy" decoding="async" style="position:absolute;top:0;left:0;width:100%;height:400px;object-fit:cover;object-position:center 22%;z-index:0">
       <div style="position:absolute;top:0;left:0;right:0;height:400px;background:linear-gradient(180deg,rgba(6,9,17,0) 0%,rgba(6,9,17,.10) 45%,rgba(6,9,17,.92) 88%,#060911 100%);z-index:1"></div>
       <div style="position:relative;z-index:2;height:100%;padding:calc(var(--safe-top) + 54px) 32px calc(var(--safe-bottom) + 82px);display:flex;flex-direction:column">
         <div data-anim="" class="eyebrow eyebrow--onphoto">Fraturas e luxações</div>
@@ -465,14 +475,27 @@
     <!-- 11 RESUMO / CTA -->
     <section class="story-final" style="justify-content:space-between;background-image:radial-gradient(120% 70% at 15% 0%,#1a2440 0%,rgba(6,9,17,0) 60%),radial-gradient(100% 60% at 100% 95%,#3a2a1a 0%,rgba(6,9,17,0) 58%)">
       <div data-anim="" class="eyebrow">Próximo passo</div>
-      <div style="display:flex;flex-direction:column;gap:18px">
-        <div data-anim="" class="h-hero h-hero--ital" style="font-size:42px">Escolha o nível e comece sua proteção</div>
+      <div style="display:flex;flex-direction:column;gap:22px">
+        <div data-anim="" class="h-display" style="font-size:32px">Escolha o nível e comece sua proteção</div>
+        <div data-anim="" class="bento" style="grid-template-columns:1fr 1fr 1fr;gap:8px">
+          <div class="surface-flat bento-cell" style="text-align:center;align-items:center;padding:16px 8px;min-height:88px">
+            <div class="metric" style="font-size:19px">£22,4m</div>
+            <div class="small" style="font-size:11px;text-align:center;line-height:1.3">pagos em indenizações em 2023</div>
+          </div>
+          <div class="surface-flat bento-cell" style="text-align:center;align-items:center;padding:16px 8px;min-height:88px">
+            <div class="metric" style="font-size:19px">23.942</div>
+            <div class="small" style="font-size:11px;text-align:center;line-height:1.3">pedidos pagos</div>
+          </div>
+          <div class="surface-flat bento-cell" style="text-align:center;align-items:center;padding:16px 8px;min-height:88px">
+            <div class="metric" style="font-size:19px">2007</div>
+            <div class="small" style="font-size:11px;text-align:center;line-height:1.3">no Reino Unido desde</div>
+          </div>
+        </div>
         <div data-anim="" style="display:flex;flex-direction:column;gap:10px">
           <div class="h-row" style="font-weight:700;font-size:16px;color:var(--text)">Quer descobrir qual plano combina com você?</div>
           <a class="whatsapp-cta" href="https://wa.me/?text=Olá%2C%20quero%20uma%20simulação%20do%20MetLife%20MultiProtect." target="_blank" rel="noopener" aria-label="Pedir simulação do MultiProtect pelo WhatsApp">Pedir simulação no WhatsApp</a>
           <div style="font-size:14px;font-weight:600;color:var(--accent);text-align:center">Resposta no mesmo dia</div>
         </div>
-        <div data-anim="" class="surface-flat" style="padding:18px 22px;font-size:15px;font-weight:600;line-height:1.4;color:#dce8f5">£22,4m pagos em indenizações em 2023 · 23.942 pedidos pagos · no Reino Unido desde 2007</div>
       </div>
       <details data-anim="" class="legal-details">
         <summary>Informações importantes</summary>
@@ -526,7 +549,7 @@ class Component extends DCLogic {
       this.secs.forEach(s => [...s.querySelectorAll('[data-anim]')].forEach(el => {
         el.style.opacity = '0';
         el.style.transform = 'translateY(12px) scale(.97)';
-        el.style.transition = 'opacity .42s cubic-bezier(.22,1,.36,1), transform .42s cubic-bezier(.22,1,.36,1)';
+        el.style.transition = 'opacity .48s cubic-bezier(.16,1,.3,1), transform .48s cubic-bezier(.16,1,.3,1)';
       }));
     }
     this.io = new IntersectionObserver(entries => {
@@ -545,6 +568,7 @@ class Component extends DCLogic {
             el.classList.remove('sheen-play');
             void el.offsetWidth;
             el.classList.add('sheen-play');
+            el.classList.add('glow-active');
           });
           [...e.target.querySelectorAll('[data-kb]')].forEach(el => {
             el.classList.add('kb-play');
