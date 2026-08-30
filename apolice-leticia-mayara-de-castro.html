@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apólice · Leticia Mayara de Castro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0B0F14;
+  --surface:#131A22;
+  --surface-2:#18212B;
+  --line:rgba(255,255,255,.07);
+  --txt:#E8EDF3;
+  --txt-2:#93A2B4;
+  --blue:#2E6BFF;
+  --teal:#17C3B2;
+  --green:#22C55E;
+  --amber:#F5A524;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{
+  background:var(--bg);
+  color:var(--txt);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  font-size:15px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  padding-bottom:96px;
+}
+.wrap{max-width:430px;margin:0 auto;padding:0 18px}
+
+.topbar{
+  display:flex;align-items:center;gap:11px;
+  padding:20px 18px 16px;max-width:430px;margin:0 auto;
+}
+.logo{
+  width:38px;height:38px;border-radius:11px;flex:none;
+  background:linear-gradient(135deg,var(--blue),var(--teal));
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:17px;color:#fff;letter-spacing:-.5px;
+}
+.topbar h1{font-size:15px;font-weight:700;letter-spacing:-.2px}
+.topbar span{font-size:11px;color:var(--txt-2);font-weight:500}
+.ref{
+  margin-left:auto;font-size:10px;font-weight:600;color:var(--txt-2);
+  border:1px solid var(--line);border-radius:7px;padding:5px 8px;letter-spacing:.5px;
+}
+
+.status-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:13px;padding:12px 14px;margin-bottom:18px;
+}
+.badge{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:12.5px;font-weight:700;color:var(--green);
+}
+.dot{
+  width:8px;height:8px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 0 4px rgba(34,197,94,.15);
+}
+.status-bar time{font-size:11.5px;color:var(--txt-2);font-weight:500}
+
+.hero{margin-bottom:18px}
+.hero .eyebrow{font-size:11px;font-weight:600;color:var(--txt-2);letter-spacing:.8px;text-transform:uppercase;margin-bottom:7px}
+.hero h2{font-size:27px;font-weight:800;letter-spacing:-.9px;line-height:1.15;margin-bottom:13px}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{
+  font-size:11.5px;font-weight:600;padding:6px 11px;border-radius:999px;
+  background:rgba(46,107,255,.12);color:#8FB0FF;border:1px solid rgba(46,107,255,.22);
+}
+.chip.due{background:rgba(245,165,36,.1);color:#F5C46A;border-color:rgba(245,165,36,.2)}
+
+.total-band{
+  background:linear-gradient(135deg,#1E4FD8,#2E6BFF 55%,#17C3B2);
+  border-radius:17px;padding:19px 20px;margin-bottom:12px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.total-band p{font-size:11.5px;font-weight:600;color:rgba(255,255,255,.78);letter-spacing:.4px;text-transform:uppercase}
+.total-band strong{display:block;font-size:31px;font-weight:800;letter-spacing:-1.2px;color:#fff;line-height:1.2}
+.total-band .per{font-size:12px;color:rgba(255,255,255,.75);font-weight:600}
+
+.due-band{
+  background:rgba(245,165,36,.09);border:1px solid rgba(245,165,36,.22);
+  border-radius:14px;padding:14px 16px;margin-bottom:24px;
+  display:flex;align-items:center;gap:12px;
+}
+.due-band .ic{font-size:19px;line-height:1}
+.due-band b{display:block;font-size:14px;font-weight:700;color:#F5C46A}
+.due-band small{font-size:12px;color:var(--txt-2)}
+
+.sec-title{
+  font-size:11px;font-weight:700;color:var(--txt-2);
+  letter-spacing:1.1px;text-transform:uppercase;margin-bottom:11px;
+}
+
+.pol-card{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:18px;padding:20px;margin-bottom:14px;
+}
+.pol-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px}
+.pol-ic{
+  width:42px;height:42px;border-radius:12px;flex:none;
+  background:rgba(23,195,178,.12);border:1px solid rgba(23,195,178,.2);
+  display:flex;align-items:center;justify-content:center;font-size:19px;
+}
+.pol-head h3{font-size:16.5px;font-weight:700;letter-spacing:-.3px;line-height:1.25}
+.pol-head p{font-size:12px;color:var(--txt-2);font-weight:500;margin-top:2px}
+.rows{border-top:1px solid var(--line)}
+.row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:11px 0;border-bottom:1px solid var(--line);
+}
+.row span{font-size:13px;color:var(--txt-2);font-weight:500}
+.row b{font-size:14px;font-weight:700;letter-spacing:-.2px}
+.row b.price{color:var(--teal);font-size:16px}
+.due-pill{
+  display:inline-block;margin-top:14px;
+  background:rgba(245,165,36,.1);border:1px solid rgba(245,165,36,.22);
+  color:#F5C46A;font-size:12.5px;font-weight:700;
+  padding:8px 13px;border-radius:10px;
+}
+.compo{
+  margin-top:14px;background:var(--surface-2);border:1px solid var(--line);
+  border-radius:12px;padding:13px 14px;
+}
+.compo p{font-size:11px;font-weight:700;color:var(--txt-2);letter-spacing:.6px;text-transform:uppercase;margin-bottom:9px}
+.compo li{list-style:none;font-size:13px;color:var(--txt);padding:4px 0;display:flex;justify-content:space-between}
+.compo li i{font-style:normal;color:var(--txt-2)}
+
+.block{
+  margin-top:14px;background:var(--surface-2);
+  border:1px solid var(--line);border-radius:13px;padding:15px;
+}
+.block h4{font-size:13px;font-weight:700;margin-bottom:8px}
+.block p{font-size:13px;color:var(--txt-2);line-height:1.6}
+.block a{color:#8FB0FF;text-decoration:none;font-weight:600;word-break:break-all}
+.block .kv{display:flex;justify-content:space-between;gap:10px;padding:6px 0;font-size:13px}
+.block .kv span{color:var(--txt-2)}
+.block .kv b{font-weight:700}
+
+.sum-card{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:18px;padding:20px;margin-bottom:14px;
+}
+.sum-card h3{font-size:15px;font-weight:700;margin-bottom:14px;letter-spacing:-.2px}
+.sum-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:11px 0;border-bottom:1px solid var(--line);
+}
+.sum-row div p{font-size:14px;font-weight:600}
+.sum-row div small{font-size:11.5px;color:var(--txt-2)}
+.sum-row b{font-size:15px;font-weight:700;color:var(--teal)}
+.sum-total{
+  display:flex;justify-content:space-between;align-items:center;
+  padding-top:15px;margin-top:4px;
+}
+.sum-total p{font-size:14px;font-weight:700}
+.sum-total b{font-size:22px;font-weight:800;letter-spacing:-.8px;color:#fff}
+
+.cta-card{
+  background:linear-gradient(160deg,var(--surface-2),var(--surface));
+  border:1px solid var(--line);border-radius:18px;
+  padding:24px 20px;text-align:center;margin-bottom:18px;
+}
+.cta-card h3{font-size:17px;font-weight:700;letter-spacing:-.3px;margin-bottom:7px}
+.cta-card p{font-size:13.5px;color:var(--txt-2);line-height:1.6;margin-bottom:17px}
+.btn{
+  display:block;width:100%;padding:15px;border-radius:13px;
+  background:var(--green);color:#04140A;font-weight:700;font-size:15px;
+  text-decoration:none;letter-spacing:-.2px;
+}
+.sign{margin-top:18px;padding-top:17px;border-top:1px solid var(--line)}
+.sign b{display:block;font-size:14.5px;font-weight:700}
+.sign small{font-size:11.5px;color:var(--txt-2)}
+.fca{
+  display:inline-flex;align-items:center;gap:5px;margin-top:9px;
+  font-size:10.5px;font-weight:700;color:var(--teal);
+  border:1px solid rgba(23,195,178,.25);background:rgba(23,195,178,.08);
+  padding:4px 9px;border-radius:7px;letter-spacing:.4px;
+}
+
+.legal{
+  font-size:10.5px;color:#5E6D7E;line-height:1.65;
+  text-align:center;padding:6px 4px 28px;
+}
+
+.print-fab{
+  position:fixed;bottom:16px;left:50%;transform:translateX(-50%);
+  z-index:50;background:var(--surface);border:1px solid rgba(255,255,255,.12);
+  color:var(--txt);font-family:inherit;font-size:13px;font-weight:600;
+  padding:12px 20px;border-radius:999px;cursor:pointer;
+  box-shadow:0 8px 28px rgba(0,0,0,.5);
+}
+@media print{
+  .print-fab{display:none}
+  body{background:#fff;color:#111;padding-bottom:0}
+  .pol-card,.sum-card,.cta-card,.status-bar{background:#fff;border-color:#ddd}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="logo">E</div>
+  <div>
+    <h1>Confirmação de Apólices</h1>
+    <span>Seguro UK · Documento do cliente</span>
+  </div>
+  <div class="ref">LMC-2609</div>
+</header>
+
+<div class="wrap">
+
+  <div class="status-bar">
+    <span class="badge"><i class="dot"></i> Apólice activa</span>
+    <time>30 de Agosto de 2026</time>
+  </div>
+
+  <section class="hero">
+    <p class="eyebrow">Segurada</p>
+    <h2>Leticia Mayara<br>de Castro</h2>
+    <div class="chips">
+      <span class="chip">Legal &amp; General</span>
+      <span class="chip">Vida + Doenças Graves · £15.000</span>
+      <span class="chip due">Débito todo dia 26</span>
+    </div>
+  </section>
+
+  <div class="total-band">
+    <div>
+      <p>Total mensal</p>
+      <strong>£15,75</strong>
+    </div>
+    <span class="per">por mês</span>
+  </div>
+
+  <div class="due-band">
+    <div class="ic">📅</div>
+    <div>
+      <b>Todo dia 26 do mês</b>
+      <small>Débito automático na conta cadastrada</small>
+    </div>
+  </div>
+
+  <p class="sec-title">Sua apólice</p>
+
+  <article class="pol-card">
+    <div class="pol-head">
+      <div class="pol-ic">🛡️</div>
+      <div>
+        <h3>Vida + Doenças Graves</h3>
+        <p>Legal &amp; General · Cobertura de £15.000</p>
+      </div>
+    </div>
+
+    <div class="rows">
+      <div class="row"><span>Número da apólice</span><b>0273249730</b></div>
+      <div class="row"><span>Mensalidade</span><b class="price">£15,75</b></div>
+      <div class="row"><span>Valor da cobertura</span><b>£15.000</b></div>
+      <div class="row"><span>Prazo</span><b>27 anos</b></div>
+      <div class="row"><span>Início da cobertura</span><b>27/08/2026</b></div>
+      <div class="row"><span>Seguradora</span><b>Legal &amp; General</b></div>
+    </div>
+
+    <span class="due-pill">📅 Débito todo dia 26</span>
+
+    <div class="compo">
+      <p>Composição do valor</p>
+      <ul>
+        <li><i>Seguro de Vida</i> <b>£5,56</b></li>
+        <li><i>Doenças Graves · Critical Illness Extra</i> <b>£10,19</b></li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h4>🔐 Acesso ao Portal</h4>
+      <p>Você recebeu um email da Legal &amp; General com um link de registro. Clique no link e cadastre a sua senha para criar o seu acesso ao portal. Se não encontrar, verifique a caixa de spam.</p>
+      <p style="margin-top:10px"><a href="https://www.legalandgeneral.com/existing-customers/">https://www.legalandgeneral.com/existing-customers/</a></p>
+    </div>
+
+    <div class="block">
+      <h4>📞 Como fazer um claim</h4>
+      <div class="kv"><span>Telefone</span><b>0800 137 101</b></div>
+      <div class="kv"><span>Email</span><b>life.claims@landg.com</b></div>
+      <div class="kv"><span>Horário</span><b>Seg–Sex · 9h às 17h30</b></div>
+      <p style="margin-top:10px">Antes de concluir que não está coberta, fale conosco. Ajudamos você em cada etapa do processo.</p>
+    </div>
+  </article>
+
+  <div class="sum-card">
+    <h3>Resumo da proteção</h3>
+    <div class="sum-row">
+      <div>
+        <p>Legal &amp; General · Vida + Doenças Graves</p>
+        <small>£15.000 · 27 anos · 0273249730</small>
+      </div>
+      <b>£15,75</b>
+    </div>
+    <div class="sum-total">
+      <p>Total mensal</p>
+      <b>£15,75</b>
+    </div>
+  </div>
+
+  <div class="cta-card">
+    <h3>Precisa de ajuda?</h3>
+    <p>Nosso suporte não termina quando a apólice é activada. Se acontecer algo, fale conosco antes de qualquer coisa.</p>
+    <a class="btn" href="https://wa.me/447719215856">💬 Falar no WhatsApp</a>
+    <div class="sign">
+      <b>Equipe Seguro UK</b>
+      <small>Proteção para brasileiros no Reino Unido</small><br>
+      <span class="fca">✓ FCA</span>
+    </div>
+  </div>
+
+  <p class="legal">
+    Documento informativo de resumo. Não substitui os termos e condições oficiais da apólice emitida pela seguradora.
+    Em caso de divergência, prevalecem os documentos contratuais da Legal &amp; General.
+    Serviço prestado por consultor autorizado e regulado pela Financial Conduct Authority (FCA).
+  </p>
+
+</div>
+
+<button class="print-fab" onclick="window.print()">📄 Guardar como PDF</button>
+
+</body>
+</html>
