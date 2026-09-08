@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Apólice · Carla Moniz</title>
+<title>Apólice · Carlos Eduardo Pereira</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -90,9 +90,10 @@ body{
 /* DUE */
 .due-band{
   background:rgba(245,165,36,.09);border:1px solid rgba(245,165,36,.22);
-  border-radius:14px;padding:14px 16px;margin-bottom:24px;
+  border-radius:14px;padding:14px 16px;margin-bottom:12px;
   display:flex;align-items:center;gap:12px;
 }
+.due-band:last-of-type{margin-bottom:24px}
 .due-band .ic{font-size:19px;line-height:1}
 .due-band b{display:block;font-size:14px;font-weight:700;color:#F5C46A}
 .due-band small{font-size:12px;color:var(--txt-2)}
@@ -221,30 +222,31 @@ body{
     <h1>Confirmação de Apólices</h1>
     <span>Seguro UK · Documento do cliente</span>
   </div>
-  <div class="ref">CM-2609</div>
+  <div class="ref">CEP-2830</div>
 </header>
 
 <div class="wrap">
 
   <div class="status-bar">
-    <span class="badge"><i class="dot"></i> Apólice activa</span>
+    <span class="badge"><i class="dot"></i> Apólices activas</span>
     <time>08 de Setembro de 2026</time>
   </div>
 
   <section class="hero">
     <p class="eyebrow">Segurado</p>
-    <h2>Carla Moniz</h2>
+    <h2>Carlos Eduardo<br>Pereira</h2>
     <div class="chips">
+      <span class="chip">Legal &amp; General</span>
       <span class="chip">MetLife</span>
-      <span class="chip">MultiProtect · 1 Cota + Luxações</span>
-      <span class="chip due">Débito todo dia 26</span>
+      <span class="chip due">Débito dia 30 (L&amp;G)</span>
+      <span class="chip due">Débito dia 28 (MetLife)</span>
     </div>
   </section>
 
   <div class="total-band">
     <div>
       <p>Total mensal</p>
-      <strong>£13</strong>
+      <strong>£29,59</strong>
     </div>
     <span class="per">por mês</span>
   </div>
@@ -252,41 +254,77 @@ body{
   <div class="due-band">
     <div class="ic">📅</div>
     <div>
-      <b>Todo dia 26 do mês</b>
+      <b>Legal &amp; General · todo dia 30</b>
       <small>Débito automático na conta cadastrada</small>
     </div>
   </div>
 
-  <p class="sec-title">Sua apólice</p>
+  <div class="due-band">
+    <div class="ic">📅</div>
+    <div>
+      <b>MetLife · todo dia 28</b>
+      <small>Débito automático na conta cadastrada</small>
+    </div>
+  </div>
+
+  <p class="sec-title">Suas apólices</p>
 
   <article class="pol-card">
     <div class="pol-head">
       <div class="pol-ic">🛡️</div>
       <div>
-        <h3>MultiProtect — 1 Cota + Luxações</h3>
-        <p>MetLife · Cobertura Essencial + Luxações/Rupturas/Rompimentos</p>
+        <h3>Seguro de Vida + Doenças Graves</h3>
+        <p>Legal &amp; General · Life + CIC</p>
       </div>
     </div>
 
     <div class="rows">
-      <div class="row"><span>Número da apólice</span><b>MPG007240</b></div>
+      <div class="row"><span>Número da apólice</span><b>0273289959</b></div>
+      <div class="row"><span>Mensalidade</span><b class="price">£16,59</b></div>
+      <div class="row"><span>Seguradora</span><b>Legal &amp; General</b></div>
+    </div>
+
+    <span class="due-pill">📅 Débito todo dia 30</span>
+
+    <div class="compo">
+      <p>Composição do valor</p>
+      <ul>
+        <li><i>Seguro de Vida (Life)</i> <b>£8,05</b></li>
+        <li><i>Doenças Graves (CIC)</i> <b>£8,54</b></li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h4>🔐 Acesso ao Portal</h4>
+      <p>Você recebeu um email da Legal &amp; General com um link de registro. Clique no link e cadastre a sua senha para criar o seu acesso ao portal. Se não encontrar, verifique a caixa de spam.</p>
+      <p style="margin-top:10px"><a href="https://www.legalandgeneral.com/existing-customers/">https://www.legalandgeneral.com/existing-customers/</a></p>
+    </div>
+
+    <div class="block">
+      <h4>📞 Como fazer um claim</h4>
+      <div class="kv"><span>Telefone</span><b>0800 137 101</b></div>
+      <div class="kv"><span>Email</span><b>life.claims@landg.com</b></div>
+      <div class="kv"><span>Horário</span><b>Seg–Sex · 9h às 17h30</b></div>
+      <p style="margin-top:10px">Antes de concluir que não está coberto, fale conosco. Ajudamos você em cada etapa do processo.</p>
+    </div>
+  </article>
+
+  <article class="pol-card">
+    <div class="pol-head">
+      <div class="pol-ic">🛡️</div>
+      <div>
+        <h3>MultiProtect</h3>
+        <p>MetLife · 1 Cota</p>
+      </div>
+    </div>
+
+    <div class="rows">
+      <div class="row"><span>Número da apólice</span><b>MPG007714</b></div>
       <div class="row"><span>Mensalidade</span><b class="price">£13</b></div>
-      <div class="row"><span>Composição</span><b>£11 Essencial + £2 Luxações</b></div>
       <div class="row"><span>Seguradora</span><b>MetLife</b></div>
     </div>
 
-    <span class="due-pill">📅 Débito todo dia 26</span>
-
-    <div class="compo">
-      <p>O que está protegido</p>
-      <ul>
-        <li><i>Morte por acidente</i> <b>£40.000</b></li>
-        <li><i>Incapacidade permanente total</i> <b>£50.000</b></li>
-        <li><i>Fraturas — ossos principais</i> <b>£1.000</b></li>
-        <li><i>Internação hospitalar (24h)</i> <b>£50</b></li>
-        <li><i>Luxações / Rupturas / Rompimentos</i> <b>Incluído</b></li>
-      </ul>
-    </div>
+    <span class="due-pill">📅 Débito todo dia 28</span>
 
     <div class="block">
       <h4>🔐 Acesso ao Portal</h4>
@@ -307,14 +345,21 @@ body{
     <h3>Resumo da proteção</h3>
     <div class="sum-row">
       <div>
-        <p>MetLife · MultiProtect — 1 Cota + Luxações</p>
-        <small>MPG007240</small>
+        <p>Legal &amp; General · Vida + CIC</p>
+        <small>0273289959 · débito dia 30</small>
+      </div>
+      <b>£16,59</b>
+    </div>
+    <div class="sum-row">
+      <div>
+        <p>MetLife · MultiProtect · 1 Cota</p>
+        <small>MPG007714 · débito dia 28</small>
       </div>
       <b>£13</b>
     </div>
     <div class="sum-total">
       <p>Total mensal</p>
-      <b>£13</b>
+      <b>£29,59</b>
     </div>
   </div>
 
@@ -330,8 +375,8 @@ body{
   </div>
 
   <p class="legal">
-    Documento informativo de resumo. Não substitui os termos e condições oficiais da apólice emitida pela seguradora.
-    Em caso de divergência, prevalecem os documentos contratuais da MetLife.
+    Documento informativo de resumo. Não substitui os termos e condições oficiais das apólices emitidas pelas seguradoras.
+    Em caso de divergência, prevalecem os documentos contratuais da Legal &amp; General e da MetLife.
     Serviço prestado por consultor autorizado e regulado pela Financial Conduct Authority (FCA).
   </p>
 
