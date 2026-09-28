@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-27T16:52:25",
+  "generatedAt": "2026-09-28T10:52:44",
   "metlifeVerified": "2026-09-23",
   "seed": 20260923,
   "models": {
@@ -54,14 +54,14 @@
     "life_only": {
       "modelType": "knn",
       "coefficients": [
-        -0.35923704369645343,
-        -0.07227709452367181,
-        0.10015628450896492,
-        0.0021251622947201,
-        0.40071354086863126,
+        -0.45103254077087473,
+        -0.06982771935430401,
+        0.0978186883366464,
+        0.0029246007465718506,
+        0.4017565456206794,
         0.0,
         0.0,
-        0.309135730625951,
+        0.31195225473990074,
         0.0,
         0.0
       ],
@@ -587,6 +587,15 @@
           0.0,
           0,
           43.43
+        ],
+        [
+          6.0,
+          1.0,
+          10.819798284210286,
+          0.0,
+          0.0,
+          0,
+          20.56
         ]
       ],
       "k": 7,
@@ -602,9 +611,9 @@
         "waiver",
         "child"
       ],
-      "records": 58,
+      "records": 59,
       "dateMin": "2025-11-10",
-      "dateMax": "2026-07-03",
+      "dateMax": "2026-09-28",
       "ageMin": 20,
       "ageMax": 65,
       "termMin": 5,
@@ -615,12 +624,12 @@
       "ciMax": 0,
       "earlierMin": 0.0,
       "earlierMax": 0.0,
-      "residualQ90": 5.953336239999565,
-      "medianAPE": 0.0817809275378821,
-      "within20": 0.75,
+      "residualQ90": 5.3862456632517794,
+      "medianAPE": 0.08426289851159316,
+      "within20": 0.8333333333333334,
       "confidence": "low",
       "strictlyValidated": false,
-      "monotonicViolations": 5
+      "monotonicViolations": 6
     },
     "life_plus_standalone_ci:standard_core_ci": {
       "modelType": "monotonic_hist_gb",
