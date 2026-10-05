@@ -6,8 +6,8 @@ Estimador indicativo, non-underwritten, calibrado com illustrations históricos 
 - 184 arquivos candidatos a illustration/cotação
 - 181 documentos únicos extraídos
 - 161 registros completos e aprovados para testes por família
-- 166 registros completos distribuídos entre três famílias indicativas
-- Vida: 63 casos, erro mediano de 8,6%; 76,9% dentro de ±20% (baixa confiança por monotonicidade)
+- 167 registros completos distribuídos entre três famílias indicativas
+- Vida: 64 casos, erro mediano de 6,3%; 100% do holdout atual dentro de ±20% (baixa confiança por monotonicidade e amostra limitada)
 - Vida + CI Standard/Core: 43 casos, erro mediano de 10,2%
 - Vida + CI Enhanced: 60 casos, erro mediano de 22,7% (baixa confiança)
 
