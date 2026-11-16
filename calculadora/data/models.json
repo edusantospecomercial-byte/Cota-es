@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-11T00:00:00-03:00",
+  "generatedAt": "2026-11-16T14:30:00-03:00",
   "metlifeVerified": "2026-09-23",
-  "seed": 20261111,
+  "seed": 20261116,
   "models": {
     "life_plus_standalone_ci:enhanced_ci": {
       "modelType": "knn",
@@ -596,14 +596,14 @@
     "life_only": {
       "modelType": "knn",
       "coefficients": [
-        -7.213647478552748,
-        0.0873062302242239,
-        -0.02242207604707703,
-        0.030925931922775214,
-        0.5162241764933505,
+        -7.286696235983151,
+        0.08873051920309764,
+        -0.02334404394224063,
+        0.03161689667000887,
+        0.51744626218124,
         0.0,
         0.0,
-        0.5835580240173841,
+        0.5841212719510379,
         0.0,
         0.0
       ],
@@ -1606,6 +1606,51 @@
           0.0,
           0,
           6.0
+        ],
+        [
+          5.4,
+          2.0,
+          10.819798284210286,
+          0.0,
+          0.0,
+          0,
+          17.52
+        ],
+        [
+          5.4,
+          2.1,
+          10.819798284210286,
+          0.0,
+          0.0,
+          0,
+          26.69
+        ],
+        [
+          6.1,
+          2.4,
+          10.819798284210286,
+          0.0,
+          0.0,
+          0,
+          40.68
+        ],
+        [
+          6.1,
+          2.4,
+          10.308985993422082,
+          0.0,
+          0.0,
+          0,
+          25.52
+        ],
+        [
+          6.3,
+          2.2,
+          10.308985993422082,
+          0.0,
+          0.0,
+          0,
+          29.03
         ]
       ],
       "k": 7,
@@ -1621,9 +1666,9 @@
         "waiver",
         "child"
       ],
-      "records": 111,
+      "records": 116,
       "dateMin": "2025-11-10",
-      "dateMax": "2026-11-11",
+      "dateMax": "2026-11-16",
       "ageMin": 20,
       "ageMax": 65,
       "termMin": 5,
@@ -1634,14 +1679,14 @@
       "ciMax": 0,
       "earlierMin": 0.0,
       "earlierMax": 0.0,
-      "residualQ90": 9.216664264114247,
-      "medianAPE": 0.1106578276389598,
-      "within20": 0.6306306306306306,
+      "residualQ90": 9.826351865904181,
+      "medianAPE": 0.10724536278538535,
+      "within20": 0.6206896551724138,
       "confidence": "low",
       "strictlyValidated": false,
       "monotonicViolations": 6,
       "validationMethod": "5-fold grouped cross-validation",
-      "updateNote": "Recalibrated with all reliable life-only illustrations found on this Mac."
+      "updateNote": "Recalibrated through 2026-11-16; includes Zurich £30,000 to age 85 at £29.03."
     },
     "life_plus_standalone_ci:standard_core_ci": {
       "modelType": "monotonic_hist_gb",
@@ -13353,13 +13398,13 @@
       "retainedReason": "Previous validated model retained because the expanded extraction did not improve out-of-sample accuracy."
     }
   },
-  "calibratedRecords": 202,
+  "calibratedRecords": 207,
   "audit": {
     "pdfsScanned": 1763,
     "candidateFiles": 918,
     "uniqueIllustrations": 400,
-    "approvedUniqueRecords": 202,
-    "manualReviewRecords": 185,
+    "approvedUniqueRecords": 207,
+    "manualReviewRecords": 187,
     "newUniqueVsLegacyArchive": 211,
     "exactDuplicatesRemoved": 518,
     "logicalDuplicatesRemoved": 13

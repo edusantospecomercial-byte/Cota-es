@@ -11,19 +11,21 @@
 
 ## Controles de qualidade
 
-- 202 registros completos e consistentes aprovados.
-- 185 registros ambíguos encaminhados para revisão e excluídos do cálculo.
+- 207 registros completos e consistentes aprovados até 16/11/2026.
+- 187 registros ambíguos encaminhados para revisão e excluídos do cálculo.
 - Nomes, datas de nascimento e caminhos dos clientes não são publicados no modelo.
 
 ## Modelos publicados
 
 | Família | Casos | Validação | Decisão |
 |---|---:|---|---|
-| Vida | 111 | Erro mediano de 11,1% em validação cruzada agrupada; 63,1% dentro de +/-20% | Recalibrado |
+| Vida | 116 | Erro mediano de 10,7% em validação cruzada agrupada; 62,1% dentro de +/-20% | Recalibrado em 16/11/2026 |
 | Vida + CI Standard/Core | 43 | Erro mediano anterior de 10,2% | Modelo anterior preservado |
 | Vida + CI Enhanced | 60 | Erro mediano anterior de 22,7% | Modelo anterior preservado |
 
 Os modelos de doenças graves não foram substituídos porque a extração ampliada piorou a precisão fora da amostra. Os novos documentos continuam no inventário de revisão para classificação manual futura.
+
+Em 16/11/2026, foi incorporado um illustration Zurich de vida com idade 63, prazo de 22 anos, capital de £30.000 e prêmio mensal de £29,03. O valor anterior estimado era £25,46, uma diferença de £3,57 ou aproximadamente 12,3%.
 
 ## Uso correto
 
