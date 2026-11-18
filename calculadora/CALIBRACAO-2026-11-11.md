@@ -38,6 +38,17 @@ Em 16/11/2026, foi incorporado um illustration Zurich de vida com idade 63, praz
 
 Isso mede ajuste nos próprios pontos de calibração, não precisão para outras idades, prazos ou capitais. A validação fora da amostra continua dependente da bateria planejada de 25 a 63 anos.
 
+## Bateria Amaro de 18/11/2026
+
+- 173 novos preços oficiais coletados no Solution Builder sem underwriting.
+- 12 cenários padronizados: 50 anos, mulher, não fumante, vida de £20.000, £30.000, £50.000 e £100.000, até 65, 70 e 75 anos.
+- Prêmio garantido, level, low-start permitido, sem waiver, TPD, fracture cover ou doença grave.
+- Antes da calibração, o erro percentual absoluto médio nesses 12 cenários era 69,8%; apenas 2 de 12 ficavam dentro de ±20%.
+- Após a incorporação, os 12 pontos oficiais são reproduzidos com erro de 0%; 12 de 12 ficam dentro de ±20%.
+- Duas cotações históricas com waiver e uma com doença grave foram auditadas, mas excluídas do modelo de vida puro para evitar contaminação.
+
+Os mínimos oficiais da bateria estão preservados em `data/solutionbuilder-amaro-minimos-2026-11-18.csv`.
+
 ## Uso correto
 
 A calculadora fornece uma estimativa indicativa, sem underwriting. Peso, altura, profissão e histórico médico podem alterar a cotação oficial. Sempre confirme o valor final no SolutionBuilder e na seguradora.

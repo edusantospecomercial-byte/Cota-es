@@ -1,0 +1,13 @@
+quote_date,age,smoker,gender,cover,expiry_age,premium_type,indexation,exclude_low_start,waiver,tpd,fracture,minimum_product,monthly_premium,provider_prices_reviewed,source_client
+2026-11-18,50,no,Female,20000,65,Guaranteed,Level,no,no,None,no,Aviva Life Insurance+,5.19,12,Amaro Cotacao
+2026-11-18,50,no,Female,30000,65,Guaranteed,Level,no,no,None,no,Legal & General Life,6.85,15,Amaro Cotacao
+2026-11-18,50,no,Female,50000,65,Guaranteed,Level,no,no,None,no,VitalityLife Optimised Life,9.81,15,Amaro Cotacao
+2026-11-18,50,no,Female,100000,65,Guaranteed,Level,no,no,None,no,LV= FPP Life Cover,16.19,15,Amaro Cotacao
+2026-11-18,50,no,Female,20000,70,Guaranteed,Level,no,no,None,no,VitalityLife Optimised Life,5.65,13,Amaro Cotacao
+2026-11-18,50,no,Female,30000,70,Guaranteed,Level,no,no,None,no,Legal & General Life,7.50,15,Amaro Cotacao
+2026-11-18,50,no,Female,50000,70,Guaranteed,Level,no,no,None,no,VitalityLife Optimised Life,10.08,15,Amaro Cotacao
+2026-11-18,50,no,Female,100000,70,Guaranteed,Level,no,no,None,no,VitalityLife Optimised Life,17.84,15,Amaro Cotacao
+2026-11-18,50,no,Female,20000,75,Guaranteed,Level,no,no,None,no,VitalityLife Optimised Life,5.85,13,Amaro Cotacao
+2026-11-18,50,no,Female,30000,75,Guaranteed,Level,no,no,None,no,VitalityLife Optimised Life,7.94,15,Amaro Cotacao
+2026-11-18,50,no,Female,50000,75,Guaranteed,Level,no,no,None,no,VitalityLife Optimised Life,10.58,15,Amaro Cotacao
+2026-11-18,50,no,Female,100000,75,Guaranteed,Level,no,no,None,no,VitalityLife Optimised Life,19.54,15,Amaro Cotacao
