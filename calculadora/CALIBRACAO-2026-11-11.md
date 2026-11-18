@@ -27,6 +27,17 @@ Os modelos de doenças graves não foram substituídos porque a extração ampli
 
 Em 16/11/2026, foi incorporado um illustration Zurich de vida com idade 63, prazo de 22 anos, capital de £30.000 e prêmio mensal de £29,03. O valor anterior estimado era £25,46, uma diferença de £3,57 ou aproximadamente 12,3%.
 
+## Calibração oficial de 18/11/2026
+
+- 76 preços de provedores coletados diretamente no Solution Builder.
+- Perfil-piloto: mulher de 35 anos, cobertura até 65 anos, prêmio garantido e level.
+- Oito combinações: fumante e não fumante, com £20.000, £30.000, £50.000 e £100.000 de vida.
+- O motor usa o menor prêmio oficial disponível como âncora exata somente nessas oito combinações.
+- Antes da incorporação, nenhuma das oito estimativas ficava dentro de ±20% do preço oficial e o erro percentual absoluto médio era 216,4%.
+- Depois da incorporação, as oito âncoras reproduzem o preço oficial com erro de 0%.
+
+Isso mede ajuste nos próprios pontos de calibração, não precisão para outras idades, prazos ou capitais. A validação fora da amostra continua dependente da bateria planejada de 25 a 63 anos.
+
 ## Uso correto
 
 A calculadora fornece uma estimativa indicativa, sem underwriting. Peso, altura, profissão e histórico médico podem alterar a cotação oficial. Sempre confirme o valor final no SolutionBuilder e na seguradora.

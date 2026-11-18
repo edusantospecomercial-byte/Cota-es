@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-16T14:30:00-03:00",
+  "generatedAt": "2026-11-18T18:00:00-03:00",
   "metlifeVerified": "2026-09-23",
   "seed": 20261116,
   "models": {
@@ -595,6 +595,16 @@
     },
     "life_only": {
       "modelType": "knn",
+      "lookup": {
+        "35|65|20000|0|0": 3.48,
+        "35|65|30000|0|0": 3.95,
+        "35|65|50000|0|0": 5.01,
+        "35|65|100000|0|0": 5.48,
+        "35|65|20000|0|1": 5.00,
+        "35|65|30000|0|1": 5.56,
+        "35|65|50000|0|1": 6.50,
+        "35|65|100000|0|1": 10.54
+      },
       "coefficients": [
         -7.286696235983151,
         0.08873051920309764,
@@ -1666,9 +1676,9 @@
         "waiver",
         "child"
       ],
-      "records": 116,
+      "records": 192,
       "dateMin": "2025-11-10",
-      "dateMax": "2026-11-16",
+      "dateMax": "2026-11-18",
       "ageMin": 20,
       "ageMax": 65,
       "termMin": 5,
@@ -1686,7 +1696,7 @@
       "strictlyValidated": false,
       "monotonicViolations": 6,
       "validationMethod": "5-fold grouped cross-validation",
-      "updateNote": "Recalibrated through 2026-11-16; includes Zurich £30,000 to age 85 at £29.03."
+      "updateNote": "Recalibrated through 2026-11-18; includes 76 official Solution Builder provider prices and 8 exact minimum-premium anchors for age 35 to age 65, smoker and non-smoker."
     },
     "life_plus_standalone_ci:standard_core_ci": {
       "modelType": "monotonic_hist_gb",
@@ -13398,12 +13408,14 @@
       "retainedReason": "Previous validated model retained because the expanded extraction did not improve out-of-sample accuracy."
     }
   },
-  "calibratedRecords": 207,
+  "calibratedRecords": 283,
   "audit": {
     "pdfsScanned": 1763,
     "candidateFiles": 918,
     "uniqueIllustrations": 400,
     "approvedUniqueRecords": 207,
+    "officialSolutionBuilderPrices": 76,
+    "officialMinimumAnchors": 8,
     "manualReviewRecords": 187,
     "newUniqueVsLegacyArchive": 211,
     "exactDuplicatesRemoved": 518,

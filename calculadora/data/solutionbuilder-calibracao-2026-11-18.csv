@@ -1,0 +1,77 @@
+quote_date,age,smoker,gender,cover,expiry_age,premium_type,indexation,provider,product,monthly_premium,underwriting,source_client,engagement
+2026-11-18,35,no,Female,20000,65,Guaranteed,Level,Guardian,Life Essentials without Child CI Protection,3.48,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,20000,65,Guaranteed,Level,Guardian,Life Protection without Child CI Protection,4.26,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,20000,65,Guaranteed,Level,Aviva,Life Insurance+,5.00,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,20000,65,Guaranteed,Level,Royal London,Menu - Life Cover,5.00,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,20000,65,Guaranteed,Level,The Exeter,Real Life,5.00,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,20000,65,Guaranteed,Level,Zurich,Life,5.00,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,20000,65,Guaranteed,Level,VitalityLife,Life,5.01,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,20000,65,Guaranteed,Level,VitalityLife,Optimised Life,5.01,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,20000,65,Guaranteed,Level,Legal & General,Life,6.00,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,30000,65,Guaranteed,Level,Guardian,Life Essentials without Child CI Protection,3.95,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,30000,65,Guaranteed,Level,Guardian,Life Protection without Child CI Protection,4.88,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,30000,65,Guaranteed,Level,Aviva,Life Insurance+,5.00,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,30000,65,Guaranteed,Level,Zurich,Life,5.00,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,30000,65,Guaranteed,Level,VitalityLife,Life,5.01,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,30000,65,Guaranteed,Level,VitalityLife,Optimised Life,5.01,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,30000,65,Guaranteed,Level,The Exeter,Real Life,5.43,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,30000,65,Guaranteed,Level,Royal London,Menu - Life Cover,5.55,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,30000,65,Guaranteed,Level,Legal & General,Life,6.00,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,50000,65,Guaranteed,Level,VitalityLife,Life,5.01,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,50000,65,Guaranteed,Level,VitalityLife,Optimised Life,5.01,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,50000,65,Guaranteed,Level,Aviva,Life Insurance+,5.56,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,50000,65,Guaranteed,Level,Zurich,Life,5.66,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,50000,65,Guaranteed,Level,Guardian,Life Essentials without Child CI Protection,5.84,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,50000,65,Guaranteed,Level,Legal & General,Life,6.00,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,50000,65,Guaranteed,Level,The Exeter,Real Life,6.80,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,50000,65,Guaranteed,Level,Royal London,Menu - Life Cover,7.01,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,50000,65,Guaranteed,Level,Guardian,Life Protection without Child CI Protection,7.38,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,100000,65,Guaranteed,Level,VitalityLife,Optimised Life,5.48,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,100000,65,Guaranteed,Level,VitalityLife,Life,6.82,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,100000,65,Guaranteed,Level,Legal & General,Life,6.92,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,100000,65,Guaranteed,Level,Zurich,Life,7.91,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,100000,65,Guaranteed,Level,Guardian,Life Essentials without Child CI Protection,8.39,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,100000,65,Guaranteed,Level,Aviva,Life Insurance+,8.40,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,100000,65,Guaranteed,Level,Royal London,Menu - Life Cover,8.87,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,100000,65,Guaranteed,Level,LV=,FPP Life Cover,8.98,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,100000,65,Guaranteed,Level,The Exeter,Real Life,9.98,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,no,Female,100000,65,Guaranteed,Level,Guardian,Life Protection without Child CI Protection,10.74,Not requested,Wendel Cotacao,CE-01461132
+2026-11-18,35,yes,Female,20000,65,Guaranteed,Level,Aviva,Life Insurance+,5.00,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,20000,65,Guaranteed,Level,VitalityLife,Optimised Life,5.01,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,20000,65,Guaranteed,Level,Guardian,Life Essentials without Child CI Protection,5.25,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,20000,65,Guaranteed,Level,Zurich,Life,5.30,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,20000,65,Guaranteed,Level,VitalityLife,Life,5.43,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,20000,65,Guaranteed,Level,Legal & General,Life,6.00,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,20000,65,Guaranteed,Level,Royal London,Menu - Life Cover,6.22,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,20000,65,Guaranteed,Level,The Exeter,Real Life,6.49,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,20000,65,Guaranteed,Level,Guardian,Life Protection without Child CI Protection,7.20,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,30000,65,Guaranteed,Level,VitalityLife,Optimised Life,5.56,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,30000,65,Guaranteed,Level,Legal & General,Life,6.00,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,30000,65,Guaranteed,Level,Guardian,Life Essentials without Child CI Protection,6.07,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,30000,65,Guaranteed,Level,Aviva,Life Insurance+,6.15,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,30000,65,Guaranteed,Level,Zurich,Life,6.54,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,30000,65,Guaranteed,Level,VitalityLife,Life,7.04,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,30000,65,Guaranteed,Level,Royal London,Menu - Life Cover,7.85,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,30000,65,Guaranteed,Level,The Exeter,Real Life,8.14,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,30000,65,Guaranteed,Level,Guardian,Life Protection without Child CI Protection,8.41,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,30000,65,Guaranteed,Level,LV=,FPP Life Cover,9.15,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,50000,65,Guaranteed,Level,VitalityLife,Optimised Life,6.50,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,50000,65,Guaranteed,Level,VitalityLife,Life,8.09,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,50000,65,Guaranteed,Level,Legal & General,Life,8.32,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,50000,65,Guaranteed,Level,Aviva,Life Insurance+,9.02,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,50000,65,Guaranteed,Level,Zurich,Life,9.03,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,50000,65,Guaranteed,Level,Guardian,Life Essentials without Child CI Protection,9.37,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,50000,65,Guaranteed,Level,LV=,FPP Life Cover,10.37,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,50000,65,Guaranteed,Level,Royal London,Menu - Life Cover,10.75,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,50000,65,Guaranteed,Level,The Exeter,Real Life,11.24,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,50000,65,Guaranteed,Level,Guardian,Life Protection without Child CI Protection,13.28,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,100000,65,Guaranteed,Level,VitalityLife,Optimised Life,10.54,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,100000,65,Guaranteed,Level,Legal & General,Life,13.18,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,100000,65,Guaranteed,Level,VitalityLife,Life,13.19,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,100000,65,Guaranteed,Level,Aviva,Life Insurance+,14.66,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,100000,65,Guaranteed,Level,Zurich,Life,14.91,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,100000,65,Guaranteed,Level,Guardian,Life Essentials without Child CI Protection,15.44,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,100000,65,Guaranteed,Level,Royal London,Menu - Life Cover,15.91,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,100000,65,Guaranteed,Level,LV=,FPP Life Cover,16.02,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,100000,65,Guaranteed,Level,The Exeter,Real Life,18.22,Not requested,Wendel Cotacao,CE-01461157
+2026-11-18,35,yes,Female,100000,65,Guaranteed,Level,Guardian,Life Protection without Child CI Protection,22.66,Not requested,Wendel Cotacao,CE-01461157
