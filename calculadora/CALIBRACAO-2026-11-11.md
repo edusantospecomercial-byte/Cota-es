@@ -49,6 +49,16 @@ Isso mede ajuste nos próprios pontos de calibração, não precisão para outra
 
 Os mínimos oficiais da bateria estão preservados em `data/solutionbuilder-amaro-minimos-2026-11-18.csv`.
 
+## Extensão estratégica de 19/11/2026
+
+- 90 novos preços oficiais coletados no Solution Builder, distribuídos por seis cenários com 15 provedores cada.
+- Perfil-piloto preservado: 50 anos, mulher, não fumante, prêmio garantido, level, low-start permitido e sem coberturas adicionais.
+- Novos capitais: £150.000 e £200.000, com cobertura até 65, 70 e 75 anos.
+- Menores prêmios oficiais: £11,33 e £14,30 até 65; £12,06 e £15,51 até 70; £13,08 e £16,67 até 75.
+- Os seis mínimos foram incorporados como âncoras exatas; a coleta não clicou em Apply e não submeteu proposta.
+
+Os mínimos oficiais desta extensão estão preservados em `data/solutionbuilder-amaro-minimos-2026-11-19.csv`.
+
 ## Uso correto
 
 A calculadora fornece uma estimativa indicativa, sem underwriting. Peso, altura, profissão e histórico médico podem alterar a cotação oficial. Sempre confirme o valor final no SolutionBuilder e na seguradora.

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-18T23:55:00-03:00",
+  "generatedAt": "2026-11-19T07:58:00-03:00",
   "metlifeVerified": "2026-09-23",
   "seed": 20261116,
   "models": {
@@ -615,7 +615,13 @@
         "50|75|20000|0|0": 5.85,
         "50|75|30000|0|0": 7.94,
         "50|75|50000|0|0": 10.58,
-        "50|75|100000|0|0": 19.54
+        "50|75|100000|0|0": 19.54,
+        "50|65|150000|0|0": 11.33,
+        "50|65|200000|0|0": 14.30,
+        "50|70|150000|0|0": 12.06,
+        "50|70|200000|0|0": 15.51,
+        "50|75|150000|0|0": 13.08,
+        "50|75|200000|0|0": 16.67
       },
       "coefficients": [
         -7.286696235983151,
@@ -1688,7 +1694,7 @@
         "waiver",
         "child"
       ],
-      "records": 365,
+      "records": 455,
       "dateMin": "2025-11-10",
       "dateMax": "2026-11-18",
       "ageMin": 20,
@@ -1708,7 +1714,7 @@
       "strictlyValidated": false,
       "monotonicViolations": 6,
       "validationMethod": "5-fold grouped cross-validation",
-      "updateNote": "Recalibrated through 2026-11-18; includes 249 official Solution Builder provider prices and 20 exact minimum-premium anchors. The overnight Amaro batch added age 50, non-smoker, four capitals and terms to ages 65, 70 and 75."
+      "updateNote": "Recalibrated through 2026-11-19; includes 339 official Solution Builder provider prices and 26 exact minimum-premium anchors. The latest Amaro batch extends age 50 non-smoker coverage to £150,000 and £200,000 for terms to ages 65, 70 and 75."
     },
     "life_plus_standalone_ci:standard_core_ci": {
       "modelType": "monotonic_hist_gb",
@@ -13420,14 +13426,14 @@
       "retainedReason": "Previous validated model retained because the expanded extraction did not improve out-of-sample accuracy."
     }
   },
-  "calibratedRecords": 456,
+  "calibratedRecords": 546,
   "audit": {
     "pdfsScanned": 1763,
     "candidateFiles": 918,
     "uniqueIllustrations": 400,
     "approvedUniqueRecords": 207,
-    "officialSolutionBuilderPrices": 249,
-    "officialMinimumAnchors": 20,
+    "officialSolutionBuilderPrices": 339,
+    "officialMinimumAnchors": 26,
     "manualReviewRecords": 187,
     "newUniqueVsLegacyArchive": 211,
     "exactDuplicatesRemoved": 518,

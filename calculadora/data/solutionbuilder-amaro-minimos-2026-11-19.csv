@@ -1,0 +1,7 @@
+age,gender,smoker,to_age,life_cover,minimum_monthly_premium,provider_prices_reviewed,premium_type,indexation,low_start_allowed,waiver,tpd,fracture_cover,critical_illness
+50,female,false,65,150000,11.33,15,guaranteed,level,true,false,false,false,0
+50,female,false,65,200000,14.30,15,guaranteed,level,true,false,false,false,0
+50,female,false,70,150000,12.06,15,guaranteed,level,true,false,false,false,0
+50,female,false,70,200000,15.51,15,guaranteed,level,true,false,false,false,0
+50,female,false,75,150000,13.08,15,guaranteed,level,true,false,false,false,0
+50,female,false,75,200000,16.67,15,guaranteed,level,true,false,false,false,0
