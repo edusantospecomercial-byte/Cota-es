@@ -1764,7 +1764,7 @@
         "waiver",
         "child"
       ],
-      "records": 249,
+      "records": 352,
       "dateMin": "2025-12-03",
       "dateMax": "2026-11-19",
       "ageMin": 28,
@@ -3573,7 +3573,7 @@
         "34|65|90000|30000|0": 19.5351,
         "34|65|90000|30000|1": 19.5351,
         "34|65|100000|10000|0": 12.4217,
-        "34|65|100000|10000|1": 12.4217,
+        "34|65|100000|10000|1": 15.78,
         "34|65|100000|20000|0": 19.5351,
         "34|65|100000|20000|1": 21.23,
         "34|65|100000|30000|0": 19.5351,
@@ -3747,10 +3747,11 @@
         "34|70|90000|30000|0": 20.2111,
         "34|70|90000|30000|1": 20.2111,
         "34|70|100000|10000|0": 13.0977,
-        "34|70|100000|10000|1": 13.0977,
+        "34|70|100000|10000|1": 17.72,
         "34|70|100000|20000|0": 20.2111,
         "34|70|100000|20000|1": 23.44,
         "34|75|50000|10000|1": 14.22,
+        "34|75|100000|10000|1": 18.57,
         "34|75|100000|20000|1": 24.67,
         "34|70|100000|30000|0": 20.2111,
         "34|70|100000|30000|1": 20.2111,
@@ -13446,17 +13447,17 @@
         "64|70|300000|30000|1": 44.2007
       },
       "retainedReason": "Previous validated model retained because the expanded extraction did not improve out-of-sample accuracy.",
-      "updateNote": "Calibrated through 2026-11-19 with six Isamara Cotacao smoker anchors at age 34. Added £50k life + £10k CI and £100k life + £20k CI to ages 65, 70 and 75. The six minimums are £12.42, £21.23, £13.32, £23.44, £14.22 and £24.67; 206 official provider prices support them."
+      "updateNote": "Calibrated through 2026-11-19 with nine Isamara Cotacao smoker anchors at age 34. Added £50k life + £10k CI, £100k life + £10k CI and £100k life + £20k CI to ages 65, 70 and 75. The new £100k + £10k minimums are £15.78, £17.72 and £18.57; 309 official provider prices support the nine anchors."
     }
   },
-  "calibratedRecords": 1046,
+  "calibratedRecords": 1149,
   "audit": {
     "pdfsScanned": 1763,
     "candidateFiles": 918,
     "uniqueIllustrations": 400,
     "approvedUniqueRecords": 207,
-    "officialSolutionBuilderPrices": 839,
-    "officialMinimumAnchors": 52,
+    "officialSolutionBuilderPrices": 942,
+    "officialMinimumAnchors": 55,
     "manualReviewRecords": 187,
     "newUniqueVsLegacyArchive": 211,
     "exactDuplicatesRemoved": 518,
