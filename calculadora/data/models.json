@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-19T23:55:00-03:00",
+  "generatedAt": "2026-11-20T00:10:00-03:00",
   "metlifeVerified": "2026-09-23",
   "seed": 20261116,
   "models": {
@@ -636,6 +636,10 @@
         "45|75|30000|0|0": 6.38,
         "45|75|50000|0|0": 7.46,
         "45|75|100000|0|0": 12.11,
+        "45|85|20000|0|0": 5.29,
+        "45|85|30000|0|0": 6.86,
+        "45|85|50000|0|0": 8.07,
+        "45|85|100000|0|0": 14.61,
         "50|65|20000|0|0": 5.19,
         "50|65|30000|0|0": 6.85,
         "50|65|50000|0|0": 9.81,
@@ -1728,7 +1732,7 @@
         "waiver",
         "child"
       ],
-      "records": 763,
+      "records": 767,
       "dateMin": "2025-11-10",
       "dateMax": "2026-11-19",
       "ageMin": 20,
@@ -1748,7 +1752,7 @@
       "strictlyValidated": false,
       "monotonicViolations": 6,
       "validationMethod": "5-fold grouped cross-validation",
-      "updateNote": "Recalibrated through 2026-11-19; includes exact Solution Builder minimums for non-smokers aged 35, 45, 50, 51 and 54. The age-45 live battery now covers £20,000, £30,000, £50,000 and £100,000 of life-only protection to ages 65, 70 and 75."
+      "updateNote": "Recalibrated through 2026-11-19; includes exact Solution Builder minimums for non-smokers aged 35, 45, 50, 51 and 54. The age-45 live battery now covers £20,000, £30,000, £50,000 and £100,000 of life-only protection to ages 65, 70, 75 and 85."
     },
     "life_plus_standalone_ci:standard_core_ci": {
       "modelType": "monotonic_hist_gb",
@@ -13465,17 +13469,17 @@
       "updateNote": "Calibrated through 2026-11-19 with exact non-smoker life-or-earlier critical illness anchors at ages 34 and 51. The latest history audit adds £21.36 for £50,000 life plus £10,000 critical illness to age 75."
     }
   },
-  "calibratedRecords": 1240,
+  "calibratedRecords": 1244,
   "audit": {
     "pdfsScanned": 1763,
     "candidateFiles": 918,
     "uniqueIllustrations": 400,
     "approvedUniqueRecords": 207,
-    "officialSolutionBuilderPrices": 1035,
-    "officialMinimumAnchors": 73,
+    "officialSolutionBuilderPrices": 1039,
+    "officialMinimumAnchors": 77,
     "illustrationValidationRecords": 7,
-    "solutionBuilderHistoryValidationRecords": 27,
-    "solutionBuilderHistoryUniqueRecords": 26,
+    "solutionBuilderHistoryValidationRecords": 31,
+    "solutionBuilderHistoryUniqueRecords": 30,
     "manualReviewRecords": 187,
     "newUniqueVsLegacyArchive": 211,
     "exactDuplicatesRemoved": 518,
