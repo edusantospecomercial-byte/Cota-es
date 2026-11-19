@@ -17,3 +17,5 @@ age,gender,smoker,to_age,life_cover,minimum_monthly_premium,provider_prices_revi
 35,female,true,85,30000,8.71,15,guaranteed,level,true,false,false,false,0
 35,female,true,85,50000,12.30,15,guaranteed,level,true,false,false,false,0
 35,female,true,85,100000,21.56,15,guaranteed,level,true,false,false,false,0
+35,female,true,85,150000,31.77,15,guaranteed,level,true,false,false,false,0
+35,female,true,85,200000,41.59,15,guaranteed,level,true,false,false,false,0

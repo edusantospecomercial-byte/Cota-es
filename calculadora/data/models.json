@@ -622,6 +622,8 @@
         "35|85|30000|0|1": 8.71,
         "35|85|50000|0|1": 12.30,
         "35|85|100000|0|1": 21.56,
+        "35|85|150000|0|1": 31.77,
+        "35|85|200000|0|1": 41.59,
         "50|65|20000|0|0": 5.19,
         "50|65|30000|0|0": 6.85,
         "50|65|50000|0|0": 9.81,
@@ -1712,7 +1714,7 @@
         "waiver",
         "child"
       ],
-      "records": 719,
+      "records": 749,
       "dateMin": "2025-11-10",
       "dateMax": "2026-11-19",
       "ageMin": 20,
@@ -1732,7 +1734,7 @@
       "strictlyValidated": false,
       "monotonicViolations": 6,
       "validationMethod": "5-fold grouped cross-validation",
-      "updateNote": "Recalibrated through 2026-11-19; includes 603 official Solution Builder provider prices and 44 exact minimum-premium anchors. The latest Amaro batch adds 18 smoker anchors at age 35 across cover to ages 65, 70, 75 and 85, with life cover from £20,000 to £200,000."
+      "updateNote": "Recalibrated through 2026-11-19; includes 633 official Solution Builder provider prices and 46 exact minimum-premium anchors. The latest Amaro batch adds 20 smoker anchors at age 35 across cover to ages 65, 70, 75 and 85, with life cover from £20,000 to £200,000."
     },
     "life_plus_standalone_ci:standard_core_ci": {
       "modelType": "monotonic_hist_gb",
@@ -13444,14 +13446,14 @@
       "retainedReason": "Previous validated model retained because the expanded extraction did not improve out-of-sample accuracy."
     }
   },
-  "calibratedRecords": 810,
+  "calibratedRecords": 840,
   "audit": {
     "pdfsScanned": 1763,
     "candidateFiles": 918,
     "uniqueIllustrations": 400,
     "approvedUniqueRecords": 207,
-    "officialSolutionBuilderPrices": 603,
-    "officialMinimumAnchors": 44,
+    "officialSolutionBuilderPrices": 633,
+    "officialMinimumAnchors": 46,
     "manualReviewRecords": 187,
     "newUniqueVsLegacyArchive": 211,
     "exactDuplicatesRemoved": 518,

@@ -66,7 +66,7 @@ A calculadora fornece uma estimativa indicativa, sem underwriting. Peso, altura,
 # Atualização de 19/11/2026 — bateria fumante
 
 - Perfil de teste: mulher, 35 anos, fumante, prêmio garantido, capital nivelado e sem coberturas adicionais.
-- 18 cenários oficiais adicionados, cobrindo idades finais 65, 70, 75 e 85 e capitais de £20.000 a £200.000.
-- 264 preços de produtos/seguradoras revisados no Solution Builder.
-- A base passou a ter 603 preços oficiais e 44 âncoras mínimas exatas.
+- 20 cenários oficiais adicionados, cobrindo idades finais 65, 70, 75 e 85 e capitais de £20.000 a £200.000.
+- 294 preços de produtos/seguradoras revisados no Solution Builder.
+- A base passou a ter 633 preços oficiais e 46 âncoras mínimas exatas.
 - Nenhuma proposta foi aplicada ou submetida; os resultados continuam sendo estimativas não subscritas.
