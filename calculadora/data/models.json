@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-19T20:45:00-03:00",
+  "generatedAt": "2026-11-19T21:10:00-03:00",
   "metlifeVerified": "2026-09-23",
   "seed": 20261116,
   "models": {
@@ -642,7 +642,8 @@
         "50|70|200000|0|0": 15.51,
         "50|75|150000|0|0": 13.08,
         "50|75|200000|0|0": 16.67,
-        "54|65|100000|0|0": 19.59
+        "54|65|100000|0|0": 19.59,
+        "51|75|100000|0|0": 20.24
       },
       "coefficients": [
         -7.286696235983151,
@@ -1715,7 +1716,7 @@
         "waiver",
         "child"
       ],
-      "records": 750,
+      "records": 751,
       "dateMin": "2025-11-10",
       "dateMax": "2026-11-19",
       "ageMin": 20,
@@ -1735,7 +1736,7 @@
       "strictlyValidated": false,
       "monotonicViolations": 6,
       "validationMethod": "5-fold grouped cross-validation",
-      "updateNote": "Recalibrated through 2026-11-19; includes 634 official Solution Builder provider prices and 47 exact minimum-premium anchors. The latest history audit adds the exact £19.59 minimum for a 54-year-old female non-smoker with £100,000 life cover to age 65."
+      "updateNote": "Recalibrated through 2026-11-19; includes 635 official Solution Builder provider prices and 48 exact minimum-premium anchors. The latest history audit adds exact non-smoker £100,000 life-only minimums of £19.59 at age 54 to 65 and £20.24 at age 51 to 75."
     },
     "life_plus_standalone_ci:standard_core_ci": {
       "modelType": "monotonic_hist_gb",
@@ -1765,7 +1766,7 @@
         "waiver",
         "child"
       ],
-      "records": 428,
+      "records": 429,
       "dateMin": "2025-12-03",
       "dateMax": "2026-11-19",
       "ageMin": 28,
@@ -13445,23 +13446,24 @@
         "64|70|300000|20000|0": 44.2007,
         "64|70|300000|20000|1": 44.2007,
         "64|70|300000|30000|0": 44.2007,
-        "64|70|300000|30000|1": 44.2007
+        "64|70|300000|30000|1": 44.2007,
+        "51|75|50000|10000|0": 21.36
       },
       "retainedReason": "Previous validated model retained because the expanded extraction did not improve out-of-sample accuracy.",
-      "updateNote": "Calibrated through 2026-11-19 with twelve Isamara Cotacao anchors at age 34. Added the exact non-smoker market minimum of £7.32 for £50,000 life plus £10,000 life-or-earlier critical illness to age 65. Across all Isamara anchors, 385 official provider prices support the model."
+      "updateNote": "Calibrated through 2026-11-19 with exact non-smoker life-or-earlier critical illness anchors at ages 34 and 51. The latest history audit adds £21.36 for £50,000 life plus £10,000 critical illness to age 75."
     }
   },
-  "calibratedRecords": 1226,
+  "calibratedRecords": 1228,
   "audit": {
     "pdfsScanned": 1763,
     "candidateFiles": 918,
     "uniqueIllustrations": 400,
     "approvedUniqueRecords": 207,
-    "officialSolutionBuilderPrices": 1020,
-    "officialMinimumAnchors": 59,
+    "officialSolutionBuilderPrices": 1023,
+    "officialMinimumAnchors": 61,
     "illustrationValidationRecords": 7,
-    "solutionBuilderHistoryValidationRecords": 8,
-    "solutionBuilderHistoryUniqueRecords": 7,
+    "solutionBuilderHistoryValidationRecords": 11,
+    "solutionBuilderHistoryUniqueRecords": 10,
     "manualReviewRecords": 187,
     "newUniqueVsLegacyArchive": 211,
     "exactDuplicatesRemoved": 518,

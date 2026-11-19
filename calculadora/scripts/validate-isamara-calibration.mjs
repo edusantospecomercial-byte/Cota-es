@@ -51,9 +51,9 @@ if (rows.length !== 11) {
   failures.push({ expectedRows: 11, actualRows: rows.length });
 }
 
-if (catalog.calibratedRecords !== 1226 || model.records !== 428 || catalog.models?.life_only?.records !== 750) {
+if (catalog.calibratedRecords !== 1228 || model.records !== 429 || catalog.models?.life_only?.records !== 751) {
   failures.push({
-    expectedCounts: { calibratedRecords: 1226, lifeRecords: 750, combinedRecords: 428 },
+    expectedCounts: { calibratedRecords: 1228, lifeRecords: 751, combinedRecords: 429 },
     actualCounts: {
       calibratedRecords: catalog.calibratedRecords,
       lifeRecords: catalog.models?.life_only?.records,
@@ -82,14 +82,14 @@ if (
 const historyRecordIds = historyRows.map((row) => row.record_id);
 const uniqueHistoryRows = historyRows.filter((row) => !row.logical_duplicate_of);
 if (
-  historyRows.length !== 8
-  || uniqueHistoryRows.length !== 7
-  || new Set(historyRecordIds).size !== 8
-  || catalog.audit?.solutionBuilderHistoryValidationRecords !== 8
-  || catalog.audit?.solutionBuilderHistoryUniqueRecords !== 7
+  historyRows.length !== 11
+  || uniqueHistoryRows.length !== 10
+  || new Set(historyRecordIds).size !== 11
+  || catalog.audit?.solutionBuilderHistoryValidationRecords !== 11
+  || catalog.audit?.solutionBuilderHistoryUniqueRecords !== 10
 ) {
   failures.push({
-    expectedHistoryValidation: { rows: 8, uniqueRows: 7, uniqueRecordIds: 8 },
+    expectedHistoryValidation: { rows: 11, uniqueRows: 10, uniqueRecordIds: 11 },
     actualHistoryValidation: {
       rows: historyRows.length,
       uniqueRows: uniqueHistoryRows.length,
@@ -104,6 +104,8 @@ const lifeModel = catalog.models?.life_only;
 const exactHistoryAnchors = [
   { key: '34|65|50000|10000|0', expected: 7.32, actual: model.lookup['34|65|50000|10000|0'] },
   { key: '54|65|100000|0|0', expected: 19.59, actual: lifeModel?.lookup?.['54|65|100000|0|0'] },
+  { key: '51|75|50000|10000|0', expected: 21.36, actual: model.lookup['51|75|50000|10000|0'] },
+  { key: '51|75|100000|0|0', expected: 20.24, actual: lifeModel?.lookup?.['51|75|100000|0|0'] },
 ];
 for (const anchor of exactHistoryAnchors) {
   if (!Number.isFinite(anchor.actual) || Math.abs(anchor.actual - anchor.expected) > 0.0001) {

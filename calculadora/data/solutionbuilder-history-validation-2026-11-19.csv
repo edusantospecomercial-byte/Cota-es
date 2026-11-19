@@ -7,3 +7,6 @@ source_date,record_id,profile,age,smoker,occupation,to_age,life_cover,critical_i
 2026-11-19,history-20261119-1125-0732,Isamara Cotao,34,false,Welder - Never Above 40 Feet,65,50000,10000,life_or_earlier_ci,true,false,false,7.32,Official market minimum,
 2026-11-19,history-20261119-1109-1959,Jaqueline Gomes Cotao,54,false,Welder - Never Above 40 Feet,65,100000,0,life_only,false,false,false,19.59,Official market minimum,
 2026-11-19,history-20261119-1106-0900,Jaqueline Gomes Cotao,54,false,Welder - Never Above 40 Feet,65,10000,0,life_only,false,false,true,9.00,Selected result with fracture cover,
+2026-11-18,history-20261118-1207-2136,Wendel Cotao,51,false,Welder - Never Above 40 Feet,75,50000,10000,life_or_earlier_ci,true,false,false,21.36,Official market minimum,
+2026-11-18,history-20261118-1208-2024,Wendel Cotao,51,false,Welder - Never Above 40 Feet,75,100000,0,life_only,false,false,false,20.24,Official market minimum,
+2026-11-18,history-20261118-1513-1292,Amaro Cotao,50,false,Welder - Never Above 40 Feet,65,70000,0,life_only,false,true,false,12.92,Selected result with Waiver of Premium,
