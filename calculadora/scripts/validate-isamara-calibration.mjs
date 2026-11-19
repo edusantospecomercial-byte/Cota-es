@@ -82,14 +82,14 @@ if (
 const historyRecordIds = historyRows.map((row) => row.record_id);
 const uniqueHistoryRows = historyRows.filter((row) => !row.logical_duplicate_of);
 if (
-  historyRows.length !== 11
-  || uniqueHistoryRows.length !== 10
-  || new Set(historyRecordIds).size !== 11
-  || catalog.audit?.solutionBuilderHistoryValidationRecords !== 11
-  || catalog.audit?.solutionBuilderHistoryUniqueRecords !== 10
+  historyRows.length !== 15
+  || uniqueHistoryRows.length !== 14
+  || new Set(historyRecordIds).size !== 15
+  || catalog.audit?.solutionBuilderHistoryValidationRecords !== 15
+  || catalog.audit?.solutionBuilderHistoryUniqueRecords !== 14
 ) {
   failures.push({
-    expectedHistoryValidation: { rows: 11, uniqueRows: 10, uniqueRecordIds: 11 },
+    expectedHistoryValidation: { rows: 15, uniqueRows: 14, uniqueRecordIds: 15 },
     actualHistoryValidation: {
       rows: historyRows.length,
       uniqueRows: uniqueHistoryRows.length,
@@ -106,6 +106,10 @@ const exactHistoryAnchors = [
   { key: '54|65|100000|0|0', expected: 19.59, actual: lifeModel?.lookup?.['54|65|100000|0|0'] },
   { key: '51|75|50000|10000|0', expected: 21.36, actual: model.lookup['51|75|50000|10000|0'] },
   { key: '51|75|100000|0|0', expected: 20.24, actual: lifeModel?.lookup?.['51|75|100000|0|0'] },
+  { key: '50|70|20000|0|0', expected: 5.65, actual: lifeModel?.lookup?.['50|70|20000|0|0'] },
+  { key: '50|70|30000|0|0', expected: 7.50, actual: lifeModel?.lookup?.['50|70|30000|0|0'] },
+  { key: '50|70|50000|0|0', expected: 10.08, actual: lifeModel?.lookup?.['50|70|50000|0|0'] },
+  { key: '50|70|100000|0|0', expected: 17.84, actual: lifeModel?.lookup?.['50|70|100000|0|0'] },
 ];
 for (const anchor of exactHistoryAnchors) {
   if (!Number.isFinite(anchor.actual) || Math.abs(anchor.actual - anchor.expected) > 0.0001) {

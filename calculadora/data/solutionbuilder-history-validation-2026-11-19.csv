@@ -10,3 +10,7 @@ source_date,record_id,profile,age,smoker,occupation,to_age,life_cover,critical_i
 2026-11-18,history-20261118-1207-2136,Wendel Cotao,51,false,Welder - Never Above 40 Feet,75,50000,10000,life_or_earlier_ci,true,false,false,21.36,Official market minimum,
 2026-11-18,history-20261118-1208-2024,Wendel Cotao,51,false,Welder - Never Above 40 Feet,75,100000,0,life_only,false,false,false,20.24,Official market minimum,
 2026-11-18,history-20261118-1513-1292,Amaro Cotao,50,false,Welder - Never Above 40 Feet,65,70000,0,life_only,false,true,false,12.92,Selected result with Waiver of Premium,
+2026-11-18,history-20261118-2036-0565,Amaro Cotao,50,false,Welder - Never Above 40 Feet,70,20000,0,life_only,false,false,false,5.65,Official market minimum,
+2026-11-18,history-20261118-2036-0750,Amaro Cotao,50,false,Welder - Never Above 40 Feet,70,30000,0,life_only,false,false,false,7.50,Official market minimum,
+2026-11-18,history-20261118-2037-1008,Amaro Cotao,50,false,Welder - Never Above 40 Feet,70,50000,0,life_only,false,false,false,10.08,Official market minimum,
+2026-11-18,history-20261118-2037-1784,Amaro Cotao,50,false,Welder - Never Above 40 Feet,70,100000,0,life_only,false,false,false,17.84,Official market minimum,
