@@ -1764,7 +1764,7 @@
         "waiver",
         "child"
       ],
-      "records": 43,
+      "records": 157,
       "dateMin": "2025-12-03",
       "dateMax": "2026-07-03",
       "ageMin": 28,
@@ -3543,7 +3543,7 @@
         "34|65|40000|30000|0": 17.3839,
         "34|65|40000|30000|1": 17.3839,
         "34|65|50000|10000|0": 10.2705,
-        "34|65|50000|10000|1": 10.2705,
+        "34|65|50000|10000|1": 12.42,
         "34|65|50000|20000|0": 17.3839,
         "34|65|50000|20000|1": 17.3839,
         "34|65|50000|30000|0": 17.3839,
@@ -3575,7 +3575,7 @@
         "34|65|100000|10000|0": 12.4217,
         "34|65|100000|10000|1": 12.4217,
         "34|65|100000|20000|0": 19.5351,
-        "34|65|100000|20000|1": 19.5351,
+        "34|65|100000|20000|1": 21.23,
         "34|65|100000|30000|0": 19.5351,
         "34|65|100000|30000|1": 19.5351,
         "34|65|110000|10000|0": 12.4217,
@@ -3717,7 +3717,7 @@
         "34|70|40000|30000|0": 18.0599,
         "34|70|40000|30000|1": 18.0599,
         "34|70|50000|10000|0": 10.9465,
-        "34|70|50000|10000|1": 10.9465,
+        "34|70|50000|10000|1": 13.32,
         "34|70|50000|20000|0": 18.0599,
         "34|70|50000|20000|1": 18.0599,
         "34|70|50000|30000|0": 18.0599,
@@ -13443,17 +13443,18 @@
         "64|70|300000|30000|0": 44.2007,
         "64|70|300000|30000|1": 44.2007
       },
-      "retainedReason": "Previous validated model retained because the expanded extraction did not improve out-of-sample accuracy."
+      "retainedReason": "Previous validated model retained because the expanded extraction did not improve out-of-sample accuracy.",
+      "updateNote": "Calibrated through 2026-11-19 with Isamara Cotacao smoker anchors: age 34, £50k life + £10k CI to 65 (£12.42), £100k life + £20k CI to 65 (£21.23), and £50k life + £10k CI to 70 (£13.32). Each scenario returned 38 official Solution Builder prices."
     }
   },
-  "calibratedRecords": 840,
+  "calibratedRecords": 954,
   "audit": {
     "pdfsScanned": 1763,
     "candidateFiles": 918,
     "uniqueIllustrations": 400,
     "approvedUniqueRecords": 207,
-    "officialSolutionBuilderPrices": 633,
-    "officialMinimumAnchors": 46,
+    "officialSolutionBuilderPrices": 747,
+    "officialMinimumAnchors": 49,
     "manualReviewRecords": 187,
     "newUniqueVsLegacyArchive": 211,
     "exactDuplicatesRemoved": 518,

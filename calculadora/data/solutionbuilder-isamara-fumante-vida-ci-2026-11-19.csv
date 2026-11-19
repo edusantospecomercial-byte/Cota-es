@@ -1,0 +1,4 @@
+profile,age,smoker,to_age,life_cover,critical_illness_cover,minimum_monthly,minimum_product,quoting_products,not_quoting_products,model_id,source_date
+Isamara Cotacao,34,true,65,50000,10000,12.42,VitalityLife Optimised Life & SIC 1X,38,80,34969377,2026-11-19
+Isamara Cotacao,34,true,65,100000,20000,21.23,VitalityLife Optimised Life & SIC 1X,38,80,34969381,2026-11-19
+Isamara Cotacao,34,true,70,50000,10000,13.32,VitalityLife Optimised Life & SIC 1X,38,80,34969382,2026-11-19
