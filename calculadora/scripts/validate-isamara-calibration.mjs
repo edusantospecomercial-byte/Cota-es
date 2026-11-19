@@ -51,9 +51,9 @@ if (rows.length !== 11) {
   failures.push({ expectedRows: 11, actualRows: rows.length });
 }
 
-if (catalog.calibratedRecords !== 1236 || model.records !== 429 || catalog.models?.life_only?.records !== 759) {
+if (catalog.calibratedRecords !== 1240 || model.records !== 429 || catalog.models?.life_only?.records !== 763) {
   failures.push({
-    expectedCounts: { calibratedRecords: 1236, lifeRecords: 759, combinedRecords: 429 },
+    expectedCounts: { calibratedRecords: 1240, lifeRecords: 763, combinedRecords: 429 },
     actualCounts: {
       calibratedRecords: catalog.calibratedRecords,
       lifeRecords: catalog.models?.life_only?.records,
@@ -82,14 +82,14 @@ if (
 const historyRecordIds = historyRows.map((row) => row.record_id);
 const uniqueHistoryRows = historyRows.filter((row) => !row.logical_duplicate_of);
 if (
-  historyRows.length !== 23
-  || uniqueHistoryRows.length !== 22
-  || new Set(historyRecordIds).size !== 23
-  || catalog.audit?.solutionBuilderHistoryValidationRecords !== 23
-  || catalog.audit?.solutionBuilderHistoryUniqueRecords !== 22
+  historyRows.length !== 27
+  || uniqueHistoryRows.length !== 26
+  || new Set(historyRecordIds).size !== 27
+  || catalog.audit?.solutionBuilderHistoryValidationRecords !== 27
+  || catalog.audit?.solutionBuilderHistoryUniqueRecords !== 26
 ) {
   failures.push({
-    expectedHistoryValidation: { rows: 23, uniqueRows: 22, uniqueRecordIds: 23 },
+    expectedHistoryValidation: { rows: 27, uniqueRows: 26, uniqueRecordIds: 27 },
     actualHistoryValidation: {
       rows: historyRows.length,
       uniqueRows: uniqueHistoryRows.length,
@@ -118,6 +118,10 @@ const exactHistoryAnchors = [
   { key: '45|70|30000|0|0', expected: 6.00, actual: lifeModel?.lookup?.['45|70|30000|0|0'] },
   { key: '45|70|50000|0|0', expected: 6.83, actual: lifeModel?.lookup?.['45|70|50000|0|0'] },
   { key: '45|70|100000|0|0', expected: 11.97, actual: lifeModel?.lookup?.['45|70|100000|0|0'] },
+  { key: '45|75|20000|0|0', expected: 5.12, actual: lifeModel?.lookup?.['45|75|20000|0|0'] },
+  { key: '45|75|30000|0|0', expected: 6.38, actual: lifeModel?.lookup?.['45|75|30000|0|0'] },
+  { key: '45|75|50000|0|0', expected: 7.46, actual: lifeModel?.lookup?.['45|75|50000|0|0'] },
+  { key: '45|75|100000|0|0', expected: 12.11, actual: lifeModel?.lookup?.['45|75|100000|0|0'] },
 ];
 for (const anchor of exactHistoryAnchors) {
   if (!Number.isFinite(anchor.actual) || Math.abs(anchor.actual - anchor.expected) > 0.0001) {
