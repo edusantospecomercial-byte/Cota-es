@@ -6,6 +6,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 const dataDir = join(here, '..', 'data');
 const csvPath = join(dataDir, 'solutionbuilder-isamara-fumante-vida-ci-2026-11-19.csv');
 const illustrationPath = join(dataDir, 'illustration-validation-2026-11-19.csv');
+const historyPath = join(dataDir, 'solutionbuilder-history-validation-2026-11-19.csv');
 const modelsPath = join(dataDir, 'models.json');
 
 const [header, ...lines] = readFileSync(csvPath, 'utf8').trim().split(/\r?\n/);
@@ -18,6 +19,12 @@ const [illustrationHeader, ...illustrationLines] = readFileSync(illustrationPath
 const illustrationColumns = illustrationHeader.split(',');
 const illustrationRows = illustrationLines.map((line) => Object.fromEntries(
   line.split(',').map((value, index) => [illustrationColumns[index], value]),
+));
+
+const [historyHeader, ...historyLines] = readFileSync(historyPath, 'utf8').trim().split(/\r?\n/);
+const historyColumns = historyHeader.split(',');
+const historyRows = historyLines.map((line) => Object.fromEntries(
+  line.split(',').map((value, index) => [historyColumns[index], value]),
 ));
 
 const catalog = JSON.parse(readFileSync(modelsPath, 'utf8'));
@@ -71,6 +78,27 @@ if (
   });
 }
 
+const historyModelIds = historyRows.map((row) => row.model_id);
+const uniqueHistoryRows = historyRows.filter((row) => !row.logical_duplicate_of);
+if (
+  historyRows.length !== 5
+  || uniqueHistoryRows.length !== 4
+  || new Set(historyModelIds).size !== 5
+  || catalog.audit?.solutionBuilderHistoryValidationRecords !== 5
+  || catalog.audit?.solutionBuilderHistoryUniqueRecords !== 4
+) {
+  failures.push({
+    expectedHistoryValidation: { rows: 5, uniqueRows: 4, uniqueModelIds: 5 },
+    actualHistoryValidation: {
+      rows: historyRows.length,
+      uniqueRows: uniqueHistoryRows.length,
+      uniqueModelIds: new Set(historyModelIds).size,
+      auditRows: catalog.audit?.solutionBuilderHistoryValidationRecords,
+      auditUniqueRows: catalog.audit?.solutionBuilderHistoryUniqueRecords,
+    },
+  });
+}
+
 if (failures.length) {
   console.error(JSON.stringify({ ok: false, failures }, null, 2));
   process.exit(1);
@@ -81,6 +109,8 @@ console.log(JSON.stringify({
   profile: 'Isamara Cotacao',
   exactAnchorsChecked: rows.length,
   illustrationValidationRecords: illustrationRows.length,
+  solutionBuilderHistoryValidationRecords: historyRows.length,
+  solutionBuilderHistoryUniqueRecords: uniqueHistoryRows.length,
   calibratedRecords: catalog.calibratedRecords,
   combinedRecords: model.records,
 }, null, 2));
