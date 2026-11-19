@@ -62,3 +62,11 @@ Os mínimos oficiais desta extensão estão preservados em `data/solutionbuilder
 ## Uso correto
 
 A calculadora fornece uma estimativa indicativa, sem underwriting. Peso, altura, profissão e histórico médico podem alterar a cotação oficial. Sempre confirme o valor final no SolutionBuilder e na seguradora.
+
+# Atualização de 19/11/2026 — bateria fumante
+
+- Perfil de teste: mulher, 35 anos, fumante, prêmio garantido, capital nivelado e sem coberturas adicionais.
+- 18 cenários oficiais adicionados, cobrindo idades finais 65, 70, 75 e 85 e capitais de £20.000 a £200.000.
+- 264 preços de produtos/seguradoras revisados no Solution Builder.
+- A base passou a ter 603 preços oficiais e 44 âncoras mínimas exatas.
+- Nenhuma proposta foi aplicada ou submetida; os resultados continuam sendo estimativas não subscritas.
