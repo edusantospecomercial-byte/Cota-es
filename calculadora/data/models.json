@@ -1764,7 +1764,7 @@
         "waiver",
         "child"
       ],
-      "records": 352,
+      "records": 427,
       "dateMin": "2025-12-03",
       "dateMax": "2026-11-19",
       "ageMin": 28,
@@ -3545,7 +3545,7 @@
         "34|65|50000|10000|0": 10.2705,
         "34|65|50000|10000|1": 12.42,
         "34|65|50000|20000|0": 17.3839,
-        "34|65|50000|20000|1": 17.3839,
+        "34|65|50000|20000|1": 17.87,
         "34|65|50000|30000|0": 17.3839,
         "34|65|50000|30000|1": 17.3839,
         "34|65|60000|10000|0": 10.2705,
@@ -3719,7 +3719,7 @@
         "34|70|50000|10000|0": 10.9465,
         "34|70|50000|10000|1": 13.32,
         "34|70|50000|20000|0": 18.0599,
-        "34|70|50000|20000|1": 18.0599,
+        "34|70|50000|20000|1": 19.04,
         "34|70|50000|30000|0": 18.0599,
         "34|70|50000|30000|1": 18.0599,
         "34|70|60000|10000|0": 10.9465,
@@ -13447,17 +13447,17 @@
         "64|70|300000|30000|1": 44.2007
       },
       "retainedReason": "Previous validated model retained because the expanded extraction did not improve out-of-sample accuracy.",
-      "updateNote": "Calibrated through 2026-11-19 with nine Isamara Cotacao smoker anchors at age 34. Added £50k life + £10k CI, £100k life + £10k CI and £100k life + £20k CI to ages 65, 70 and 75. The new £100k + £10k minimums are £15.78, £17.72 and £18.57; 309 official provider prices support the nine anchors."
+      "updateNote": "Calibrated through 2026-11-19 with eleven Isamara Cotacao smoker anchors at age 34. Added exact £50k life + £20k CI minimums of £17.87 to age 65 and £19.04 to age 70. Across all Isamara anchors, 384 official provider prices support the model."
     }
   },
-  "calibratedRecords": 1149,
+  "calibratedRecords": 1224,
   "audit": {
     "pdfsScanned": 1763,
     "candidateFiles": 918,
     "uniqueIllustrations": 400,
     "approvedUniqueRecords": 207,
-    "officialSolutionBuilderPrices": 942,
-    "officialMinimumAnchors": 55,
+    "officialSolutionBuilderPrices": 1017,
+    "officialMinimumAnchors": 57,
     "manualReviewRecords": 187,
     "newUniqueVsLegacyArchive": 211,
     "exactDuplicatesRemoved": 518,
