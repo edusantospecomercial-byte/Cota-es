@@ -51,11 +51,12 @@ if (rows.length !== 11) {
   failures.push({ expectedRows: 11, actualRows: rows.length });
 }
 
-if (catalog.calibratedRecords !== 1224 || model.records !== 427) {
+if (catalog.calibratedRecords !== 1226 || model.records !== 428 || catalog.models?.life_only?.records !== 750) {
   failures.push({
-    expectedCounts: { calibratedRecords: 1224, combinedRecords: 427 },
+    expectedCounts: { calibratedRecords: 1226, lifeRecords: 750, combinedRecords: 428 },
     actualCounts: {
       calibratedRecords: catalog.calibratedRecords,
+      lifeRecords: catalog.models?.life_only?.records,
       combinedRecords: model.records,
     },
   });
@@ -78,25 +79,36 @@ if (
   });
 }
 
-const historyModelIds = historyRows.map((row) => row.model_id);
+const historyRecordIds = historyRows.map((row) => row.record_id);
 const uniqueHistoryRows = historyRows.filter((row) => !row.logical_duplicate_of);
 if (
-  historyRows.length !== 5
-  || uniqueHistoryRows.length !== 4
-  || new Set(historyModelIds).size !== 5
-  || catalog.audit?.solutionBuilderHistoryValidationRecords !== 5
-  || catalog.audit?.solutionBuilderHistoryUniqueRecords !== 4
+  historyRows.length !== 8
+  || uniqueHistoryRows.length !== 7
+  || new Set(historyRecordIds).size !== 8
+  || catalog.audit?.solutionBuilderHistoryValidationRecords !== 8
+  || catalog.audit?.solutionBuilderHistoryUniqueRecords !== 7
 ) {
   failures.push({
-    expectedHistoryValidation: { rows: 5, uniqueRows: 4, uniqueModelIds: 5 },
+    expectedHistoryValidation: { rows: 8, uniqueRows: 7, uniqueRecordIds: 8 },
     actualHistoryValidation: {
       rows: historyRows.length,
       uniqueRows: uniqueHistoryRows.length,
-      uniqueModelIds: new Set(historyModelIds).size,
+      uniqueRecordIds: new Set(historyRecordIds).size,
       auditRows: catalog.audit?.solutionBuilderHistoryValidationRecords,
       auditUniqueRows: catalog.audit?.solutionBuilderHistoryUniqueRecords,
     },
   });
+}
+
+const lifeModel = catalog.models?.life_only;
+const exactHistoryAnchors = [
+  { key: '34|65|50000|10000|0', expected: 7.32, actual: model.lookup['34|65|50000|10000|0'] },
+  { key: '54|65|100000|0|0', expected: 19.59, actual: lifeModel?.lookup?.['54|65|100000|0|0'] },
+];
+for (const anchor of exactHistoryAnchors) {
+  if (!Number.isFinite(anchor.actual) || Math.abs(anchor.actual - anchor.expected) > 0.0001) {
+    failures.push(anchor);
+  }
 }
 
 if (failures.length) {
@@ -111,6 +123,8 @@ console.log(JSON.stringify({
   illustrationValidationRecords: illustrationRows.length,
   solutionBuilderHistoryValidationRecords: historyRows.length,
   solutionBuilderHistoryUniqueRecords: uniqueHistoryRows.length,
+  exactHistoryAnchors: exactHistoryAnchors.length,
   calibratedRecords: catalog.calibratedRecords,
+  lifeRecords: lifeModel.records,
   combinedRecords: model.records,
 }, null, 2));

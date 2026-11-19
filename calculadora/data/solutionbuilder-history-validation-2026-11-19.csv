@@ -1,6 +1,9 @@
-source_date,model_id,profile,age,smoker,occupation,to_age,life_cover,critical_illness_cover,cover_structure,tpd,waiver,fracture,minimum_monthly,product,logical_duplicate_of
+source_date,record_id,profile,age,smoker,occupation,to_age,life_cover,critical_illness_cover,cover_structure,tpd,waiver,fracture,minimum_monthly,product,logical_duplicate_of
 2026-11-19,34968397,Isamara Cotao,34,false,Welder - Never Above 40 Feet,65,20000,20000,life_or_earlier_ci,true,true,false,10.66,VitalityLife Optimised Life & SIC 1X,
 2026-11-19,34968040,Lucas Cotao,34,false,Welder - Never Above 40 Feet,65,100000,10000,life_or_earlier_ci,true,true,true,17.20,Aviva Multi-Product with Core CI,
 2026-11-19,34968050,Lucas Cotao,34,false,Welder - Never Above 40 Feet,65,100000,10000,life_or_earlier_ci,true,true,true,17.20,Aviva Multi-Product with Core CI,34968040
 2026-11-19,34968060,Lucas Cotao,34,false,Welder - Never Above 40 Feet,65,50000,10000,life_or_earlier_ci,true,true,true,14.26,Aviva Multi-Product with Core CI,
 2026-11-19,34968235,Jhonathan Cotao,38,false,Welder - Never Above 40 Feet,65,50000,10000,life_or_earlier_ci,true,true,false,9.26,VitalityLife Optimised Life & SIC 1X,
+2026-11-19,history-20261119-1125-0732,Isamara Cotao,34,false,Welder - Never Above 40 Feet,65,50000,10000,life_or_earlier_ci,true,false,false,7.32,Official market minimum,
+2026-11-19,history-20261119-1109-1959,Jaqueline Gomes Cotao,54,false,Welder - Never Above 40 Feet,65,100000,0,life_only,false,false,false,19.59,Official market minimum,
+2026-11-19,history-20261119-1106-0900,Jaqueline Gomes Cotao,54,false,Welder - Never Above 40 Feet,65,10000,0,life_only,false,false,true,9.00,Selected result with fracture cover,
