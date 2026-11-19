@@ -1,0 +1,8 @@
+source_date,profile,age,smoker,provider,product,to_age,term_years,life_component,critical_illness_component,total_monthly,base_life_monthly,base_ci_monthly,optional_monthly,optional_features,sha256
+2026-11-19,Jaqueline Gomes Cotao,54,false,Aviva,Life Insurance+,65,11,20000,0,10.36,6.36,0,4.00,Fracture cover,83f509542a96efe389d841efdf09a10373ce462a447f5d3efb1988a56511b12a
+2026-11-19,Isamara Cotao,34,false,Zurich,Life & CI,65,31,50000,10000,10.43,4.32,6.11,0,TPD included in CI,f37e0c3ed0666742382999cde2191f136a9a6c72ceef2926a689b80b0e51a165
+2026-11-19,Lucas Cotao,34,false,Aviva,Life Insurance+,65,31,50000,0,9.09,5.07,0,4.02,Fracture cover and Waiver of Premium,f3bbc9f115da15c44706a0d89a53dd64dc283b70347fc0cc762c0b3d017d309c
+2026-11-19,Jhonathan Cotao,38,false,Legal & General,Life + CI Standard,64,26,50000,10000,11.88,5.48,6.40,0,Waiver of Premium included,10db95907937b9e0452fd276b12860db1a21fac92bcc9833f6f9870521e1fd5a
+2026-11-19,Isamara Cotao,34,false,Zurich,Life & CI,65,31,37681,20000,13.98,3.75,10.23,0,TPD and Waiver of Premium included,29b63292aa60d607929b31d5c12aee4b6528e0a5a0cebe95639a25f0faf0cff4
+2026-11-19,Isamara Cotao,34,false,Legal & General,Life + CI Standard,64,30,33858,20000,13.42,4.00,9.42,0,Waiver of Premium included,9d541424b2703c5b0d4e607e3d28bf5c37bd50ff91541cbd6b24d250441fbe7d
+2026-11-19,Isamara Cotao,34,false,Royal London,Menu Enhanced CI no Child CI,65,31,20000,20000,14.16,2.07,9.35,2.74,Plan charge and Waiver of Premium,54be76cc256fda164653cb9f08e489f58e39e126625a7b40a0a8201ffeb6b773
