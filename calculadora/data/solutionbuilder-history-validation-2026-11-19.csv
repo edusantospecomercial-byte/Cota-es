@@ -18,3 +18,7 @@ source_date,record_id,profile,age,smoker,occupation,to_age,life_cover,critical_i
 2026-11-19,live-20261119-age45-30000,Isamara Cotao,45,false,Welder - Never Above 40 Feet,65,30000,0,life_only,false,false,false,5.43,Aviva Life Insurance+,
 2026-11-19,live-20261119-age45-50000,Isamara Cotao,45,false,Welder - Never Above 40 Feet,65,50000,0,life_only,false,false,false,6.38,VitalityLife Optimised Life,
 2026-11-19,live-20261119-age45-100000,Isamara Cotao,45,false,Welder - Never Above 40 Feet,65,100000,0,life_only,false,false,false,10.65,VitalityLife Optimised Life,
+2026-11-19,live-20261119-age45-to70-20000,Isamara Cotao,45,false,Welder - Never Above 40 Feet,70,20000,0,life_only,false,false,false,5.00,Aviva Life Insurance+,
+2026-11-19,live-20261119-age45-to70-30000,Isamara Cotao,45,false,Welder - Never Above 40 Feet,70,30000,0,life_only,false,false,false,6.00,Legal & General Life,
+2026-11-19,live-20261119-age45-to70-50000,Isamara Cotao,45,false,Welder - Never Above 40 Feet,70,50000,0,life_only,false,false,false,6.83,VitalityLife Optimised Life,
+2026-11-19,live-20261119-age45-to70-100000,Isamara Cotao,45,false,Welder - Never Above 40 Feet,70,100000,0,life_only,false,false,false,11.97,VitalityLife Optimised Life,
