@@ -54,3 +54,7 @@ source_date,record_id,profile,age,smoker,occupation,to_age,life_cover,critical_i
 2026-11-20,live-20261120-age60-to70-30000,Isamara Cotao,60,false,Welder - Never Above 40 Feet,70,30000,0,life_only,false,false,false,13.05,Legal & General Life,
 2026-11-20,live-20261120-age60-to70-50000,Isamara Cotao,60,false,Welder - Never Above 40 Feet,70,50000,0,life_only,false,false,false,20.00,LV= FPP Life Cover,
 2026-11-20,live-20261120-age60-to70-100000,Isamara Cotao,60,false,Welder - Never Above 40 Feet,70,100000,0,life_only,false,false,false,34.40,VitalityLife Optimised Life,
+2026-11-20,live-20261120-age60-to75-20000,Isamara Cotao,60,false,Welder - Never Above 40 Feet,75,20000,0,life_only,false,false,false,14.81,LV= FPP Life Cover,
+2026-11-20,live-20261120-age60-to75-30000,Isamara Cotao,60,false,Welder - Never Above 40 Feet,75,30000,0,life_only,false,false,false,14.82,Legal & General Life,
+2026-11-20,live-20261120-age60-to75-50000,Isamara Cotao,60,false,Welder - Never Above 40 Feet,75,50000,0,life_only,false,false,false,23.37,Legal & General Life,
+2026-11-20,live-20261120-age60-to75-100000,Isamara Cotao,60,false,Welder - Never Above 40 Feet,75,100000,0,life_only,false,false,false,40.24,VitalityLife Optimised Life,
