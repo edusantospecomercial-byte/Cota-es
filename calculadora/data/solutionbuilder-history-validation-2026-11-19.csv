@@ -122,3 +122,6 @@ source_date,record_id,profile,age,smoker,occupation,to_age,life_cover,critical_i
 2026-11-20,live-20261120-age45-to65-life150000-ci0,Isamara Cotao,45,false,Welder - Never Above 40 Feet,65,150000,0,life_only,false,false,false,15.27,VitalityLife Optimised Life,
 2026-11-20,live-20261120-age45-to75-life150000-ci0,Isamara Cotao,45,false,Welder - Never Above 40 Feet,75,150000,0,life_only,false,false,false,17.82,VitalityLife Optimised Life,
 2026-11-20,live-20261120-age45-to85-life150000-ci0,Isamara Cotao,45,false,Welder - Never Above 40 Feet,85,150000,0,life_only,false,false,false,21.17,VitalityLife Optimised Life,
+2026-11-20,live-20261120-age45-to65-life200000-ci0,Isamara Cotao,45,false,Welder - Never Above 40 Feet,65,200000,0,life_only,false,false,false,19.40,VitalityLife Optimised Life,
+2026-11-20,live-20261120-age45-to75-life200000-ci0,Isamara Cotao,45,false,Welder - Never Above 40 Feet,75,200000,0,life_only,false,false,false,23.28,VitalityLife Optimised Life,
+2026-11-20,live-20261120-age45-to85-life200000-ci0,Isamara Cotao,45,false,Welder - Never Above 40 Feet,85,200000,0,life_only,false,false,false,27.21,VitalityLife Optimised Life,
