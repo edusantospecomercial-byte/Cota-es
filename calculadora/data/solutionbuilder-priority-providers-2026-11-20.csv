@@ -164,3 +164,21 @@ source_date,model_id,profile,age,sex,smoker,to_age,life_cover,critical_illness_c
 2026-11-19,34969620,Isamara Cotacao,60,F,No,75,30000,0,Legal & General,Legal & General Life,14.82,true,Recovered from SolutionBuilder client history
 2026-11-19,34969620,Isamara Cotacao,60,F,No,75,30000,0,Zurich,Zurich Life,15.93,true,Recovered from SolutionBuilder client history
 2026-11-19,34969620,Isamara Cotacao,60,F,No,75,30000,0,Aviva,Aviva Life Insurance+,16.18,true,Recovered from SolutionBuilder client history
+2026-11-19,34969548,Isamara Cotacao,45,F,No,85,20000,0,Legal & General,Legal & General Life,6.40,true,Recovered from SolutionBuilder client history
+2026-11-19,34969548,Isamara Cotacao,45,F,No,85,20000,0,Zurich,Zurich Life,7.13,true,Recovered from SolutionBuilder client history
+2026-11-19,34969548,Isamara Cotacao,45,F,No,85,20000,0,Aviva,Aviva Life Insurance+,6.63,true,Recovered from SolutionBuilder client history
+2026-11-19,34969549,Isamara Cotacao,45,F,No,85,30000,0,Legal & General,Legal & General Life,7.34,true,Recovered from SolutionBuilder client history
+2026-11-19,34969549,Isamara Cotacao,45,F,No,85,30000,0,Zurich,Zurich Life,9.30,true,Recovered from SolutionBuilder client history
+2026-11-19,34969549,Isamara Cotacao,45,F,No,85,30000,0,Aviva,Aviva Life Insurance+,9.51,true,Recovered from SolutionBuilder client history
+2026-11-19,34969586,Isamara Cotacao,55,F,No,85,20000,0,Legal & General,Legal & General Life,10.02,true,Recovered from SolutionBuilder client history
+2026-11-19,34969586,Isamara Cotacao,55,F,No,85,20000,0,Zurich,Zurich Life,12.00,true,Recovered from SolutionBuilder client history
+2026-11-19,34969586,Isamara Cotacao,55,F,No,85,20000,0,Aviva,Aviva Life Insurance+,12.06,true,Recovered from SolutionBuilder client history
+2026-11-19,34969587,Isamara Cotacao,55,F,No,85,30000,0,Legal & General,Legal & General Life,15.31,true,Recovered from SolutionBuilder client history
+2026-11-19,34969587,Isamara Cotacao,55,F,No,85,30000,0,Zurich,Zurich Life,16.60,true,Recovered from SolutionBuilder client history
+2026-11-19,34969587,Isamara Cotacao,55,F,No,85,30000,0,Aviva,Aviva Life Insurance+,17.13,true,Recovered from SolutionBuilder client history
+2026-11-19,34969632,Isamara Cotacao,60,F,No,85,20000,0,Legal & General,Legal & General Life,15.10,true,Recovered from SolutionBuilder client history
+2026-11-19,34969632,Isamara Cotacao,60,F,No,85,20000,0,Zurich,Zurich Life,15.96,true,Recovered from SolutionBuilder client history
+2026-11-19,34969632,Isamara Cotacao,60,F,No,85,20000,0,Aviva,Aviva Life Insurance+,16.82,true,Recovered from SolutionBuilder client history
+2026-11-19,34969633,Isamara Cotacao,60,F,No,85,30000,0,Legal & General,Legal & General Life,20.87,true,Recovered from SolutionBuilder client history
+2026-11-19,34969633,Isamara Cotacao,60,F,No,85,30000,0,Zurich,Zurich Life,22.55,true,Recovered from SolutionBuilder client history
+2026-11-19,34969633,Isamara Cotacao,60,F,No,85,30000,0,Aviva,Aviva Life Insurance+,22.77,true,Recovered from SolutionBuilder client history
