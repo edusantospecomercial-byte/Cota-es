@@ -1814,7 +1814,7 @@
         "waiver",
         "child"
       ],
-      "records": 445,
+      "records": 449,
       "dateMin": "2025-12-03",
       "dateMax": "2026-11-20",
       "ageMin": 28,
@@ -13507,23 +13507,27 @@
         "60|85|50000|10000|0": 77.61,
         "60|85|100000|10000|0": 109.98,
         "60|85|50000|20000|0": 110.6,
-        "60|85|100000|20000|0": 142.97
+        "60|85|100000|20000|0": 142.97,
+        "45|65|50000|10000|0": 13.6,
+        "45|70|50000|10000|0": 14.33,
+        "45|75|50000|10000|0": 16.41,
+        "45|85|50000|10000|0": 31.18
       },
       "retainedReason": "Previous validated model retained because the expanded extraction did not improve out-of-sample accuracy.",
-      "updateNote": "Calibrated through 2026-11-20 with exact non-smoker combined life and standalone critical illness anchors at ages 34, 51 and 60. The live age-60 battery covers terms to ages 65, 70, 75 and 85 for £50,000/£100,000 life with £10,000/£20,000 critical illness."
+      "updateNote": "Calibrated through 2026-11-20 with exact non-smoker combined life and standalone critical illness anchors at ages 34, 45, 51 and 60. Live term batteries cover ages 45 and 60 through ages 65, 70, 75 and 85."
     }
   },
-  "calibratedRecords": 1292,
+  "calibratedRecords": 1296,
   "audit": {
     "pdfsScanned": 1763,
     "candidateFiles": 918,
     "uniqueIllustrations": 400,
     "approvedUniqueRecords": 207,
-    "officialSolutionBuilderPrices": 1087,
-    "officialMinimumAnchors": 125,
+    "officialSolutionBuilderPrices": 1091,
+    "officialMinimumAnchors": 129,
     "illustrationValidationRecords": 7,
-    "solutionBuilderHistoryValidationRecords": 79,
-    "solutionBuilderHistoryUniqueRecords": 78,
+    "solutionBuilderHistoryValidationRecords": 83,
+    "solutionBuilderHistoryUniqueRecords": 82,
     "manualReviewRecords": 187,
     "newUniqueVsLegacyArchive": 211,
     "exactDuplicatesRemoved": 518,
