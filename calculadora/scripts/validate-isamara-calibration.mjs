@@ -51,9 +51,9 @@ if (rows.length !== 11) {
   failures.push({ expectedRows: 11, actualRows: rows.length });
 }
 
-if (catalog.calibratedRecords !== 1380 || model.records !== 521 || catalog.models?.life_only?.records !== 811) {
+if (catalog.calibratedRecords !== 1384 || model.records !== 521 || catalog.models?.life_only?.records !== 815) {
   failures.push({
-    expectedCounts: { calibratedRecords: 1380, lifeRecords: 811, combinedRecords: 521 },
+    expectedCounts: { calibratedRecords: 1384, lifeRecords: 815, combinedRecords: 521 },
     actualCounts: {
       calibratedRecords: catalog.calibratedRecords,
       lifeRecords: catalog.models?.life_only?.records,
@@ -82,14 +82,14 @@ if (
 const historyRecordIds = historyRows.map((row) => row.record_id);
 const uniqueHistoryRows = historyRows.filter((row) => !row.logical_duplicate_of);
 if (
-  historyRows.length !== 167
-  || uniqueHistoryRows.length !== 166
-  || new Set(historyRecordIds).size !== 167
-  || catalog.audit?.solutionBuilderHistoryValidationRecords !== 167
-  || catalog.audit?.solutionBuilderHistoryUniqueRecords !== 166
+  historyRows.length !== 171
+  || uniqueHistoryRows.length !== 170
+  || new Set(historyRecordIds).size !== 171
+  || catalog.audit?.solutionBuilderHistoryValidationRecords !== 171
+  || catalog.audit?.solutionBuilderHistoryUniqueRecords !== 170
 ) {
   failures.push({
-    expectedHistoryValidation: { rows: 167, uniqueRows: 166, uniqueRecordIds: 167 },
+    expectedHistoryValidation: { rows: 171, uniqueRows: 170, uniqueRecordIds: 171 },
     actualHistoryValidation: {
       rows: historyRows.length,
       uniqueRows: uniqueHistoryRows.length,

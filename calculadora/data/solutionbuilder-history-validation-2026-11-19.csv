@@ -166,3 +166,7 @@ source_date,record_id,profile,age,smoker,occupation,to_age,life_cover,critical_i
 2026-11-20,live-20261120-age45-to70-life250000-ci30000,Isamara Cotao,45,false,Welder - Never Above 40 Feet,70,250000,30000,life_plus_standalone_ci:standard_core_ci,false,false,false,50.68,VitalityLife Optimised Life & SIC 1X with Vitality Plus,
 2026-11-20,live-20261120-age45-to75-life250000-ci30000,Isamara Cotao,45,false,Welder - Never Above 40 Feet,75,250000,30000,life_plus_standalone_ci:standard_core_ci,false,false,false,55.08,VitalityLife Optimised Life & SIC 1X with Vitality Plus,
 2026-11-20,live-20261120-age45-to85-life250000-ci30000,Isamara Cotao,45,false,Welder - Never Above 40 Feet,85,250000,30000,life_plus_standalone_ci:standard_core_ci,false,false,false,98.97,Royal London Menu Enhanced CI - No Child CI,
+2026-11-20,live-20261120-age55-to65-life50000-ci0,Isamara Cotao,55,false,Welder - Never Above 40 Feet,65,50000,0,life_only,false,false,false,12.69,LV= FPP Life Cover,
+2026-11-20,live-20261120-age55-to65-life100000-ci0,Isamara Cotao,55,false,Welder - Never Above 40 Feet,65,100000,0,life_only,false,false,false,20.57,LV= FPP Life Cover,
+2026-11-20,live-20261120-age55-to75-life50000-ci0,Isamara Cotao,55,false,Welder - Never Above 40 Feet,75,50000,0,life_only,false,false,false,15.97,VitalityLife Optimised Life,
+2026-11-20,live-20261120-age55-to75-life100000-ci0,Isamara Cotao,55,false,Welder - Never Above 40 Feet,75,100000,0,life_only,false,false,false,27.49,VitalityLife Optimised Life,
