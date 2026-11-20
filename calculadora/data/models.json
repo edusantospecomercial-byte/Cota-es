@@ -1826,7 +1826,7 @@
         "waiver",
         "child"
       ],
-      "records": 517,
+      "records": 521,
       "dateMin": "2025-12-03",
       "dateMax": "2026-11-20",
       "ageMin": 28,
@@ -13583,6 +13583,10 @@
         "45|70|200000|30000|0": 41.89,
         "45|75|200000|30000|0": 51.13,
         "45|85|200000|30000|0": 88.96,
+        "45|65|250000|30000|0": 40.27,
+        "45|70|250000|30000|0": 50.68,
+        "45|75|250000|30000|0": 55.08,
+        "45|85|250000|30000|0": 98.97,
         "45|65|150000|10000|0": 21.94,
         "45|75|150000|10000|0": 26.22,
         "45|85|150000|10000|0": 51.88,
@@ -13594,20 +13598,20 @@
         "45|85|250000|10000|0": 72.94
       },
       "retainedReason": "Previous validated model retained because the expanded extraction did not improve out-of-sample accuracy.",
-      "updateNote": "Calibrated through 2026-11-20 with exact non-smoker combined life and standalone critical illness anchors at ages 34, 45, 51 and 60. Live term batteries cover ages 45 and 60 through ages 65, 70, 75 and 85, including complete age-45 £50k, £100k, £150k and £200k life plus £30k CI term curves."
+      "updateNote": "Calibrated through 2026-11-20 with exact non-smoker combined life and standalone critical illness anchors at ages 34, 45, 51 and 60. Live term batteries cover ages 45 and 60 through ages 65, 70, 75 and 85, including complete age-45 £50k through £250k life plus £30k CI term curves."
     }
   },
-  "calibratedRecords": 1376,
+  "calibratedRecords": 1380,
   "audit": {
     "pdfsScanned": 1763,
     "candidateFiles": 918,
     "uniqueIllustrations": 400,
     "approvedUniqueRecords": 207,
-    "officialSolutionBuilderPrices": 1171,
-    "officialMinimumAnchors": 209,
+    "officialSolutionBuilderPrices": 1175,
+    "officialMinimumAnchors": 213,
     "illustrationValidationRecords": 7,
-    "solutionBuilderHistoryValidationRecords": 163,
-    "solutionBuilderHistoryUniqueRecords": 162,
+    "solutionBuilderHistoryValidationRecords": 167,
+    "solutionBuilderHistoryUniqueRecords": 166,
     "manualReviewRecords": 187,
     "newUniqueVsLegacyArchive": 211,
     "exactDuplicatesRemoved": 518,

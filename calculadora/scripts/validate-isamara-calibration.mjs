@@ -51,9 +51,9 @@ if (rows.length !== 11) {
   failures.push({ expectedRows: 11, actualRows: rows.length });
 }
 
-if (catalog.calibratedRecords !== 1376 || model.records !== 517 || catalog.models?.life_only?.records !== 811) {
+if (catalog.calibratedRecords !== 1380 || model.records !== 521 || catalog.models?.life_only?.records !== 811) {
   failures.push({
-    expectedCounts: { calibratedRecords: 1376, lifeRecords: 811, combinedRecords: 517 },
+    expectedCounts: { calibratedRecords: 1380, lifeRecords: 811, combinedRecords: 521 },
     actualCounts: {
       calibratedRecords: catalog.calibratedRecords,
       lifeRecords: catalog.models?.life_only?.records,
@@ -82,14 +82,14 @@ if (
 const historyRecordIds = historyRows.map((row) => row.record_id);
 const uniqueHistoryRows = historyRows.filter((row) => !row.logical_duplicate_of);
 if (
-  historyRows.length !== 163
-  || uniqueHistoryRows.length !== 162
-  || new Set(historyRecordIds).size !== 163
-  || catalog.audit?.solutionBuilderHistoryValidationRecords !== 163
-  || catalog.audit?.solutionBuilderHistoryUniqueRecords !== 162
+  historyRows.length !== 167
+  || uniqueHistoryRows.length !== 166
+  || new Set(historyRecordIds).size !== 167
+  || catalog.audit?.solutionBuilderHistoryValidationRecords !== 167
+  || catalog.audit?.solutionBuilderHistoryUniqueRecords !== 166
 ) {
   failures.push({
-    expectedHistoryValidation: { rows: 163, uniqueRows: 162, uniqueRecordIds: 163 },
+    expectedHistoryValidation: { rows: 167, uniqueRows: 166, uniqueRecordIds: 167 },
     actualHistoryValidation: {
       rows: historyRows.length,
       uniqueRows: uniqueHistoryRows.length,
@@ -240,6 +240,10 @@ const exactHistoryAnchors = [
   { key: '45|70|200000|30000|0', expected: 41.89, actual: model.lookup['45|70|200000|30000|0'] },
   { key: '45|75|200000|30000|0', expected: 51.13, actual: model.lookup['45|75|200000|30000|0'] },
   { key: '45|85|200000|30000|0', expected: 88.96, actual: model.lookup['45|85|200000|30000|0'] },
+  { key: '45|65|250000|30000|0', expected: 40.27, actual: model.lookup['45|65|250000|30000|0'] },
+  { key: '45|70|250000|30000|0', expected: 50.68, actual: model.lookup['45|70|250000|30000|0'] },
+  { key: '45|75|250000|30000|0', expected: 55.08, actual: model.lookup['45|75|250000|30000|0'] },
+  { key: '45|85|250000|30000|0', expected: 98.97, actual: model.lookup['45|85|250000|30000|0'] },
   { key: '45|65|150000|0|0', expected: 15.27, actual: lifeModel?.lookup?.['45|65|150000|0|0'] },
   { key: '45|75|150000|0|0', expected: 17.82, actual: lifeModel?.lookup?.['45|75|150000|0|0'] },
   { key: '45|85|150000|0|0', expected: 21.17, actual: lifeModel?.lookup?.['45|85|150000|0|0'] },
