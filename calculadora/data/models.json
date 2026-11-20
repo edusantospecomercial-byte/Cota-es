@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-20T02:12:00-03:00",
+  "generatedAt": "2026-11-20T02:36:00-03:00",
   "metlifeVerified": "2026-09-23",
   "seed": 20261116,
   "models": {
@@ -680,6 +680,10 @@
         "60|75|30000|0|0": 14.82,
         "60|75|50000|0|0": 23.37,
         "60|75|100000|0|0": 40.24,
+        "60|85|20000|0|0": 14.53,
+        "60|85|30000|0|0": 20.58,
+        "60|85|50000|0|0": 30.26,
+        "60|85|100000|0|0": 57.74,
         "50|65|150000|0|0": 11.33,
         "50|65|200000|0|0": 14.30,
         "50|70|150000|0|0": 12.06,
@@ -1760,7 +1764,7 @@
         "waiver",
         "child"
       ],
-      "records": 795,
+      "records": 799,
       "dateMin": "2025-11-10",
       "dateMax": "2026-11-19",
       "ageMin": 20,
@@ -1780,7 +1784,7 @@
       "strictlyValidated": false,
       "monotonicViolations": 6,
       "validationMethod": "5-fold grouped cross-validation",
-      "updateNote": "Recalibrated through 2026-11-20; includes exact Solution Builder minimums for non-smokers aged 35, 45, 50, 51, 54, 55 and 60. The live battery covers four standard life-only capitals across age 45 and 55 terms plus age 60 to ages 65, 70 and 75."
+      "updateNote": "Recalibrated through 2026-11-20; includes exact Solution Builder minimums for non-smokers aged 35, 45, 50, 51, 54, 55 and 60. The live battery covers four standard life-only capitals across age 45 and 55 terms plus age 60 to ages 65, 70, 75 and 85."
     },
     "life_plus_standalone_ci:standard_core_ci": {
       "modelType": "monotonic_hist_gb",
@@ -13497,17 +13501,17 @@
       "updateNote": "Calibrated through 2026-11-19 with exact non-smoker life-or-earlier critical illness anchors at ages 34 and 51. The latest history audit adds £21.36 for £50,000 life plus £10,000 critical illness to age 75."
     }
   },
-  "calibratedRecords": 1272,
+  "calibratedRecords": 1276,
   "audit": {
     "pdfsScanned": 1763,
     "candidateFiles": 918,
     "uniqueIllustrations": 400,
     "approvedUniqueRecords": 207,
-    "officialSolutionBuilderPrices": 1067,
-    "officialMinimumAnchors": 105,
+    "officialSolutionBuilderPrices": 1071,
+    "officialMinimumAnchors": 109,
     "illustrationValidationRecords": 7,
-    "solutionBuilderHistoryValidationRecords": 59,
-    "solutionBuilderHistoryUniqueRecords": 58,
+    "solutionBuilderHistoryValidationRecords": 63,
+    "solutionBuilderHistoryUniqueRecords": 62,
     "manualReviewRecords": 187,
     "newUniqueVsLegacyArchive": 211,
     "exactDuplicatesRemoved": 518,
