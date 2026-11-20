@@ -16,6 +16,14 @@ Atualização de 11/11/2026: o modelo de Vida foi recalibrado com todos os regis
 
 Atualização de 16/11/2026: incorporado o caso Zurich de 63 anos, não fumante, £30.000 de vida até os 85 anos por £29,03/mês. Esse perfil agora retorna o valor histórico exato.
 
+## Prioridade de provedores a partir de 20/11/2026
+
+As próximas coletas no Solution Builder devem priorizar **Zurich, Legal & General e Aviva**. O resultado mais barato do mercado deixa de ser o critério principal: os preços dessas três seguradoras devem ser registrados mesmo quando forem superiores ao `Quick Quote Solution` ou ao preço de outro provedor.
+
+Para cada cenário, registrar separadamente o preço disponível de cada uma das três seguradoras, o nome do produto e as coberturas relevantes. Não substituir um preço ausente por produto de outra seguradora. Resultados de outros provedores podem ser guardados apenas para auditoria, mas não devem orientar as novas âncoras prioritárias.
+
+A base histórica existente permanece publicada até que haja volume suficiente dessas três seguradoras para uma recalibração validada. Não remover ou reinterpretar retroativamente os registros antigos como se fossem preços de Zurich, Legal & General ou Aviva.
+
 A calculadora sempre retorna uma estimativa. Fora das faixas validadas ela usa extrapolação, amplia o intervalo e sinaliza baixa confiança. Os valores não constituem cotação ou garantia de aceitação. Confirme sempre o resultado final no SolutionBuilder e com a seguradora.
 
 Os dados preenchidos não são enviados a servidor. As simulações salvas ficam no `localStorage` do navegador utilizado.

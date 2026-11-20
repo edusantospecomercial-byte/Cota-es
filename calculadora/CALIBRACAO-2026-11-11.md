@@ -59,6 +59,17 @@ Os mínimos oficiais da bateria estão preservados em `data/solutionbuilder-amar
 
 Os mínimos oficiais desta extensão estão preservados em `data/solutionbuilder-amaro-minimos-2026-11-19.csv`.
 
+## Política de coleta vigente — 20/11/2026
+
+- Provedores prioritários: **Zurich, Legal & General e Aviva**.
+- A prioridade é determinada pelo provedor, não pelo menor prêmio do mercado.
+- Em cada execução, abrir a lista completa de resultados e registrar separadamente o preço de cada provedor prioritário disponível.
+- Guardar também o produto, capital, prazo, condição de fumante, estrutura de cobertura e opcionais que afetem o prêmio.
+- Não usar automaticamente o `Quick Quote Solution` quando ele pertencer a outro provedor.
+- Não clicar em `Apply`, não criar recomendação e não submeter proposta durante a coleta.
+- Resultados de outros provedores podem permanecer como evidência histórica, mas não entram nas próximas âncoras prioritárias.
+- A migração do modelo publicado será feita somente depois de uma validação comparativa, evitando reduzir a precisão atual antes de existir cobertura suficiente das três seguradoras.
+
 ## Uso correto
 
 A calculadora fornece uma estimativa indicativa, sem underwriting. Peso, altura, profissão e histórico médico podem alterar a cotação oficial. Sempre confirme o valor final no SolutionBuilder e na seguradora.
