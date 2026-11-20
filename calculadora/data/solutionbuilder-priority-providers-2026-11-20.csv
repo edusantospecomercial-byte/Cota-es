@@ -1,0 +1,16 @@
+source_date,model_id,profile,age,sex,smoker,to_age,life_cover,critical_illness_cover,provider,product,monthly_premium,available,notes
+2026-11-20,34984386,Jana Cotacao,46,F,No,65,50000,0,Legal & General,Legal & General Life,8.06,true,Indicative non-underwritten result
+2026-11-20,34984386,Jana Cotacao,46,F,No,65,50000,0,Zurich,Zurich Life,8.47,true,Indicative non-underwritten result
+2026-11-20,34984386,Jana Cotacao,46,F,No,65,50000,0,Aviva,Aviva Life Insurance+,9.25,true,Indicative non-underwritten result
+2026-11-20,34984390,Jana Cotacao,46,F,No,65,100000,0,Legal & General,Legal & General Life,13.28,true,Indicative non-underwritten result
+2026-11-20,34984390,Jana Cotacao,46,F,No,65,100000,0,Zurich,Zurich Life,14.12,true,Indicative non-underwritten result
+2026-11-20,34984390,Jana Cotacao,46,F,No,65,100000,0,Aviva,Aviva Life Insurance+,15.80,true,Indicative non-underwritten result
+2026-11-20,34984393,Jana Cotacao,46,F,No,75,50000,0,Legal & General,Legal & General Life,9.93,true,Indicative non-underwritten result
+2026-11-20,34984393,Jana Cotacao,46,F,No,75,50000,0,Zurich,Zurich Life,10.46,true,Indicative non-underwritten result
+2026-11-20,34984393,Jana Cotacao,46,F,No,75,50000,0,Aviva,Aviva Life Insurance+,11.11,true,Indicative non-underwritten result
+2026-11-20,34984394,Jana Cotacao,46,F,No,75,100000,0,Legal & General,Legal & General Life,16.90,true,Indicative non-underwritten result
+2026-11-20,34984394,Jana Cotacao,46,F,No,75,100000,0,Zurich,Zurich Life,18.04,true,Indicative non-underwritten result
+2026-11-20,34984394,Jana Cotacao,46,F,No,75,100000,0,Aviva,Aviva Life Insurance+,20.42,true,Indicative non-underwritten result
+2026-11-20,34984397,Jana Cotacao,46,F,No,65,50000,10000,Legal & General,Legal & General Life + CI (Standard),16.61,true,Indicative non-underwritten result
+2026-11-20,34984397,Jana Cotacao,46,F,No,65,50000,10000,Zurich,Zurich Life & CI,17.11,true,Indicative non-underwritten result
+2026-11-20,34984397,Jana Cotacao,46,F,No,65,50000,10000,Aviva,Aviva Multi-Product with Core CI,17.45,true,Indicative non-underwritten result

@@ -13609,6 +13609,8 @@
     "approvedUniqueRecords": 207,
     "officialSolutionBuilderPrices": 1179,
     "officialMinimumAnchors": 217,
+    "priorityProviderPrices": 15,
+    "priorityProviderScenarios": 5,
     "illustrationValidationRecords": 7,
     "solutionBuilderHistoryValidationRecords": 171,
     "solutionBuilderHistoryUniqueRecords": 170,
