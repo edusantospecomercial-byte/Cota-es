@@ -1814,7 +1814,7 @@
         "waiver",
         "child"
       ],
-      "records": 455,
+      "records": 458,
       "dateMin": "2025-12-03",
       "dateMax": "2026-11-20",
       "ageMin": 28,
@@ -13517,23 +13517,26 @@
         "45|70|100000|20000|0": 25.98,
         "45|65|100000|10000|0": 17.57,
         "45|75|100000|10000|0": 20.76,
-        "45|85|100000|10000|0": 43.63
+        "45|85|100000|10000|0": 43.63,
+        "45|65|50000|20000|0": 19.85,
+        "45|75|50000|20000|0": 23.62,
+        "45|85|50000|20000|0": 44.23
       },
       "retainedReason": "Previous validated model retained because the expanded extraction did not improve out-of-sample accuracy.",
       "updateNote": "Calibrated through 2026-11-20 with exact non-smoker combined life and standalone critical illness anchors at ages 34, 45, 51 and 60. Live term batteries cover ages 45 and 60 through ages 65, 70, 75 and 85, including the complete age-45 £100k life plus £10k CI term curve."
     }
   },
-  "calibratedRecords": 1302,
+  "calibratedRecords": 1305,
   "audit": {
     "pdfsScanned": 1763,
     "candidateFiles": 918,
     "uniqueIllustrations": 400,
     "approvedUniqueRecords": 207,
-    "officialSolutionBuilderPrices": 1097,
-    "officialMinimumAnchors": 135,
+    "officialSolutionBuilderPrices": 1100,
+    "officialMinimumAnchors": 138,
     "illustrationValidationRecords": 7,
-    "solutionBuilderHistoryValidationRecords": 89,
-    "solutionBuilderHistoryUniqueRecords": 88,
+    "solutionBuilderHistoryValidationRecords": 92,
+    "solutionBuilderHistoryUniqueRecords": 91,
     "manualReviewRecords": 187,
     "newUniqueVsLegacyArchive": 211,
     "exactDuplicatesRemoved": 518,
