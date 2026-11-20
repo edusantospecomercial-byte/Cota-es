@@ -35,3 +35,15 @@ source_date,model_id,profile,age,sex,smoker,to_age,life_cover,critical_illness_c
 2026-11-20,34984405,Jana Cotacao,46,F,No,75,100000,20000,Legal & General,Legal & General Life + CI (Standard),37.15,true,Indicative non-underwritten result
 2026-11-20,34984405,Jana Cotacao,46,F,No,75,100000,20000,Zurich,Zurich Life & CI,39.84,true,Indicative non-underwritten result
 2026-11-20,34984405,Jana Cotacao,46,F,No,75,100000,20000,Aviva,Aviva Multi-Product with Core CI,41.88,true,Indicative non-underwritten result
+2026-11-19,34962032,Isamara Cotacao,34,F,No,65,50000,10000,Legal & General,Legal & General Life + CI (Standard),10.67,true,Recovered from SolutionBuilder client history
+2026-11-19,34962032,Isamara Cotacao,34,F,No,65,50000,10000,Zurich,Zurich Life & CI,10.43,true,Recovered from SolutionBuilder client history
+2026-11-19,34962032,Isamara Cotacao,34,F,No,65,50000,10000,Aviva,Aviva Multi-Product with Core CI,10.23,true,Recovered from SolutionBuilder client history
+2026-11-19,34961508,Jaqueline Gomes Cotacao,54,F,No,65,100000,0,Legal & General,Legal & General Life,20.66,true,Recovered from SolutionBuilder client history
+2026-11-19,34961508,Jaqueline Gomes Cotacao,54,F,No,65,100000,0,Zurich,Zurich Life,22.57,true,Recovered from SolutionBuilder client history
+2026-11-19,34961508,Jaqueline Gomes Cotacao,54,F,No,65,100000,0,Aviva,Aviva Life Insurance+,26.62,true,Recovered from SolutionBuilder client history
+2026-11-19,34969602,Isamara Cotacao,60,F,No,65,100000,0,Legal & General,Legal & General Life,26.12,true,Recovered from SolutionBuilder client history
+2026-11-19,34969602,Isamara Cotacao,60,F,No,65,100000,0,Zurich,Zurich Life,26.49,true,Recovered from SolutionBuilder client history
+2026-11-19,34969602,Isamara Cotacao,60,F,No,65,100000,0,Aviva,Aviva Life Insurance+,29.14,true,Recovered from SolutionBuilder client history
+2026-11-19,34969601,Isamara Cotacao,60,F,No,65,50000,0,Legal & General,Legal & General Life,16.72,true,Recovered from SolutionBuilder client history
+2026-11-19,34969601,Isamara Cotacao,60,F,No,65,50000,0,Zurich,Zurich Life,15.29,true,Recovered from SolutionBuilder client history
+2026-11-19,34969601,Isamara Cotacao,60,F,No,65,50000,0,Aviva,Aviva Life Insurance+,14.57,true,Recovered from SolutionBuilder client history
