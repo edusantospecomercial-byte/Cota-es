@@ -62,3 +62,7 @@ source_date,record_id,profile,age,smoker,occupation,to_age,life_cover,critical_i
 2026-11-20,live-20261120-age60-to85-30000,Isamara Cotao,60,false,Welder - Never Above 40 Feet,85,30000,0,life_only,false,false,false,20.58,VitalityLife Optimised Life,
 2026-11-20,live-20261120-age60-to85-50000,Isamara Cotao,60,false,Welder - Never Above 40 Feet,85,50000,0,life_only,false,false,false,30.26,VitalityLife Optimised Life,
 2026-11-20,live-20261120-age60-to85-100000,Isamara Cotao,60,false,Welder - Never Above 40 Feet,85,100000,0,life_only,false,false,false,57.74,VitalityLife Optimised Life with Vitality Plus,
+2026-11-20,live-20261120-age60-to70-life50000-ci10000,Isamara Cotao,60,false,Welder - Never Above 40 Feet,70,50000,10000,life_plus_standalone_ci:standard_core_ci,false,false,false,33.55,VitalityLife Optimised Life & SIC 1X,
+2026-11-20,live-20261120-age60-to70-life100000-ci10000,Isamara Cotao,60,false,Welder - Never Above 40 Feet,70,100000,10000,life_plus_standalone_ci:standard_core_ci,false,false,false,51.82,VitalityLife Optimised Life & SIC 1X with Vitality Plus,
+2026-11-20,live-20261120-age60-to70-life50000-ci20000,Isamara Cotao,60,false,Welder - Never Above 40 Feet,70,50000,20000,life_plus_standalone_ci:standard_core_ci,false,false,false,52.11,VitalityLife Optimised Life & SIC 1X with Vitality Plus,
+2026-11-20,live-20261120-age60-to70-life100000-ci20000,Isamara Cotao,60,false,Welder - Never Above 40 Feet,70,100000,20000,life_plus_standalone_ci:standard_core_ci,false,false,false,64.13,VitalityLife Optimised Life & SIC 1X with Vitality Plus,
