@@ -14,3 +14,24 @@ source_date,model_id,profile,age,sex,smoker,to_age,life_cover,critical_illness_c
 2026-11-20,34984397,Jana Cotacao,46,F,No,65,50000,10000,Legal & General,Legal & General Life + CI (Standard),16.61,true,Indicative non-underwritten result
 2026-11-20,34984397,Jana Cotacao,46,F,No,65,50000,10000,Zurich,Zurich Life & CI,17.11,true,Indicative non-underwritten result
 2026-11-20,34984397,Jana Cotacao,46,F,No,65,50000,10000,Aviva,Aviva Multi-Product with Core CI,17.45,true,Indicative non-underwritten result
+2026-11-20,34984399,Jana Cotacao,46,F,No,65,50000,20000,Legal & General,Legal & General Life + CI (Standard),23.51,true,Indicative non-underwritten result
+2026-11-20,34984399,Jana Cotacao,46,F,No,65,50000,20000,Zurich,Zurich Life & CI,24.09,true,Indicative non-underwritten result
+2026-11-20,34984399,Jana Cotacao,46,F,No,65,50000,20000,Aviva,Aviva Multi-Product with Core CI,25.63,true,Indicative non-underwritten result
+2026-11-20,34984400,Jana Cotacao,46,F,No,65,100000,10000,Legal & General,Legal & General Life + CI (Standard),21.83,true,Indicative non-underwritten result
+2026-11-20,34984400,Jana Cotacao,46,F,No,65,100000,10000,Zurich,Zurich Life & CI,22.76,true,Indicative non-underwritten result
+2026-11-20,34984400,Jana Cotacao,46,F,No,65,100000,10000,Aviva,Aviva Multi-Product with Core CI,24.00,true,Indicative non-underwritten result
+2026-11-20,34984401,Jana Cotacao,46,F,No,65,100000,20000,Legal & General,Legal & General Life + CI (Standard),28.73,true,Indicative non-underwritten result
+2026-11-20,34984401,Jana Cotacao,46,F,No,65,100000,20000,Zurich,Zurich Life & CI,29.74,true,Indicative non-underwritten result
+2026-11-20,34984401,Jana Cotacao,46,F,No,65,100000,20000,Aviva,Aviva Multi-Product with Core CI,32.18,true,Indicative non-underwritten result
+2026-11-20,34984402,Jana Cotacao,46,F,No,75,50000,10000,Legal & General,Legal & General Life + CI (Standard),20.88,true,Indicative non-underwritten result
+2026-11-20,34984402,Jana Cotacao,46,F,No,75,50000,10000,Zurich,Zurich Life & CI,22.48,true,Indicative non-underwritten result
+2026-11-20,34984402,Jana Cotacao,46,F,No,75,50000,10000,Aviva,Aviva Multi-Product with Core CI,21.84,true,Indicative non-underwritten result
+2026-11-20,34984403,Jana Cotacao,46,F,No,75,50000,20000,Legal & General,Legal & General Life + CI (Standard),30.18,true,Indicative non-underwritten result
+2026-11-20,34984403,Jana Cotacao,46,F,No,75,50000,20000,Zurich,Zurich Life & CI,32.26,true,Indicative non-underwritten result
+2026-11-20,34984403,Jana Cotacao,46,F,No,75,50000,20000,Aviva,Aviva Multi-Product with Core CI,32.57,true,Indicative non-underwritten result
+2026-11-20,34984404,Jana Cotacao,46,F,No,75,100000,10000,Legal & General,Legal & General Life + CI (Standard),27.85,true,Indicative non-underwritten result
+2026-11-20,34984404,Jana Cotacao,46,F,No,75,100000,10000,Zurich,Zurich Life & CI,30.06,true,Indicative non-underwritten result
+2026-11-20,34984404,Jana Cotacao,46,F,No,75,100000,10000,Aviva,Aviva Multi-Product with Core CI,31.15,true,Indicative non-underwritten result
+2026-11-20,34984405,Jana Cotacao,46,F,No,75,100000,20000,Legal & General,Legal & General Life + CI (Standard),37.15,true,Indicative non-underwritten result
+2026-11-20,34984405,Jana Cotacao,46,F,No,75,100000,20000,Zurich,Zurich Life & CI,39.84,true,Indicative non-underwritten result
+2026-11-20,34984405,Jana Cotacao,46,F,No,75,100000,20000,Aviva,Aviva Multi-Product with Core CI,41.88,true,Indicative non-underwritten result
