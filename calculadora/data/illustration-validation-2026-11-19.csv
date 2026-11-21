@@ -112,3 +112,15 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-09-28,Local Cotao 44,44,false,Zurich,Life,70,26,150000,0,20.08,19.40,0,0.68,Waiver of Premium,9b4d4bed3e0c85b6673f602176fa16a60cd7200d5bbfb5403e024f16f5d83ccf
 2026-09-29,Local Cotao 36,36,false,Zurich,Life,65,29,150000,0,11.03,10.76,0,0.27,Waiver of Premium,2233e0d2e72e6cdc805fa0b498e22975e6d2d6d32350c7a69ccaac05ece77c56
 2026-09-25,Inacio Cotao,53,true,Legal & General,Life,64,11,30000,0,18.94,18.57,0,0.37,Waiver of Premium,b1dce3684bde9f6074f686f347328e920b95e299edc1cd30580d66b91ec300d3
+2026-10-21,Rosangela Goncalves Cotao,56,false,Aviva,Life Insurance+ with Core CI,70,14,10000,10000,16.69,0,16.38,0.31,TPD and Waiver of Premium,fa0bfa564e23e2018b5981246da49a9f7f2dadb9bcd4652e33dda010a09a1ca2
+2026-10-21,Rosangela Goncalves Cotao,56,false,Aviva,Life Insurance+,70,14,20000,0,8.05,7.97,0,0.08,Waiver of Premium,fa0bfa564e23e2018b5981246da49a9f7f2dadb9bcd4652e33dda010a09a1ca2
+2026-10-19,Isabel Espirito Santo Cotao,54,false,Legal & General,Life,69,15,50000,0,14.24,13.96,0,0.28,Waiver of Premium,773313cefb11124bccf4bd37c87326ec294eaae6d0a73cc5f6c49ef61d89b1db
+2026-10-27,Luiz Cotao,61,false,Zurich,Life,85,24,30000,0,25.64,25.64,0,0,None,e9a099e6b70af9644c631c0f1ce4ae92f74ae442b5378ea699916d77b0bc539f
+2026-10-13,Angela Rackel Cotao,48,false,Aviva,Life Insurance+ with Core CI,65,17,10000,10000,13.31,0,9.17,4.14,Fracture Cover; TPD; Waiver of Premium,bf81fcc231580da043a25d73be8f7fddd555446a797512775c3a68369623d262
+2026-10-13,Angela Rackel Cotao,48,false,Aviva,Life Insurance+,65,17,21859,0,5.00,4.96,0,0.04,Waiver of Premium,bf81fcc231580da043a25d73be8f7fddd555446a797512775c3a68369623d262
+2026-10-09,Joseane Cotao,47,true,Aviva,Life Insurance+ with Core CI,70,23,20000,20000,32.74,0,32.22,0.52,TPD and Waiver of Premium,7cb169dfe776e9cf6876c69edd0f62c425a7a6c1809d49302e0d38ccdff442c9
+2026-10-19,James Cotao,48,false,Legal & General,Life,64,16,50000,0,9.28,9.10,0,0.18,Waiver of Premium,04133c43c7105a0c0106bc7448e68fb3b524fbcc36729be8afa278ee2ad79137
+2026-10-09,Joseane Cotao,47,true,Aviva,Life Insurance+ with Core CI,65,18,20000,20000,29.45,0,28.98,0.47,TPD and Waiver of Premium,abf9241ff41788f103877ecf64a86b0460c5b7c166065da95280bc53c9d96e9f
+2026-10-26,Luiz Cotao,61,false,Zurich,Life,70,9,70000,0,28.38,28.38,0,0,None,74a7ba97104ea582b076b69e895a208e85de33d0488fc531017241ef94847c46
+2026-09-29,Local Cotao 36 B,36,false,Zurich,Life,65,29,100000,0,8.48,8.27,0,0.21,Waiver of Premium,02c17e23a7c4839e606327267f43aa9c55e188eea7626987b50e62ad68744a2c
+2026-09-01,Flavio Cotao,36,false,Legal & General,Life,56,20,100000,0,6.89,6.82,0,0.07,Waiver of Premium,35ae68a863b8c6aa78f53aad6c98fcdb4a4fc57717e2f64a5c04a61be42cc223
