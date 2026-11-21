@@ -2,6 +2,8 @@
 
 Objetivo: preencher `data/next-priority-collection-2026-11-21.csv` com preços oficiais indicativos de **Legal & General, Zurich e Aviva**, sem aplicar, recomendar ou submeter proposta.
 
+Registrar cada resultado em `data/next-priority-results-2026-11-21.csv`. O arquivo já contém as 111 linhas esperadas, em ordem de cenário e seguradora, para impedir troca de preço entre perfis.
+
 ## Caminho de acesso
 
 1. Entrar no Portal Openwork e abrir o aplicativo **ConcertHub** pelo atalho oficial.
@@ -38,6 +40,9 @@ Objetivo: preencher `data/next-priority-collection-2026-11-21.csv` com preços o
    - indisponibilidade e motivo, quando houver.
 4. Não substituir um provedor ausente por outra seguradora e não inventar preço.
 5. Não misturar Standard/Core com Enhanced, Enhanced Plus, Upgraded ou Child CI.
+6. No arquivo de resultados:
+   - disponível: preencher `product`, `monthly_premium`, `source_model_id`, `available=true` e `status=captured`;
+   - indisponível: preencher `available=false`, `status=unavailable` e explicar em `notes`; não preencher prêmio.
 
 ## Limites de segurança
 
@@ -67,6 +72,8 @@ Os 37 cenários podem produzir até 111 preços oficiais.
 3. Executar:
 
 ```bash
+node calculadora/scripts/validate-collection-capture-template.mjs
+node calculadora/scripts/validate-collection-queue.mjs
 node calculadora/scripts/validate-all.mjs
 ```
 
