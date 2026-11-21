@@ -203,3 +203,6 @@ source_date,model_id,profile,age,sex,smoker,to_age,life_cover,critical_illness_c
 2026-11-19,34968235,Isamara Cotacao,38,F,No,65,50000,10000,Legal & General,Legal & General Life + CI (Standard),11.88,true,Recovered from SolutionBuilder client history
 2026-11-19,34968235,Isamara Cotacao,38,F,No,65,50000,10000,Zurich,Zurich Life & CI,12.24,true,Recovered from SolutionBuilder client history
 2026-11-19,34968235,Isamara Cotacao,38,F,No,65,50000,10000,Aviva,Aviva Multi-Product with Core CI,12.06,true,Recovered from SolutionBuilder client history
+2026-11-18,34945722,Isamara Cotacao,51,F,No,75,50000,10000,Legal & General,Legal & General Life + CI (Standard),29.01,true,Recovered from SolutionBuilder client history
+2026-11-18,34945722,Isamara Cotacao,51,F,No,75,50000,10000,Zurich,Zurich Life & CI,33.04,true,Recovered from SolutionBuilder client history
+2026-11-18,34945722,Isamara Cotacao,51,F,No,75,50000,10000,Aviva,Aviva Multi-Product with Core CI,28.80,true,Recovered from SolutionBuilder client history
