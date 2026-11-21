@@ -290,3 +290,16 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-05-18,Patricia Cotao,43,false,Zurich,Life discounted multipolicy,70,27,100000,0,12.63,12.16,0,0.47,Waiver; multi-policy discount reflected,323b4a835c41d4db248b17c6c5c6ad56ef160eb4bc52c129ffdf59e35c4439c8
 2026-05-18,Patricia Batista Cotao,43,false,Zurich,Life & CI discounted multipolicy,70,27,10000,10000,10.94,0,10.33,0.61,TPD Own Occupation and Waiver; multi-policy discount reflected,00b537c238f3b097d3ce37422f99b231f4f3ad3d1944fa2b3f52d7840cbc3cdd
 2026-05-18,Patricia Batista Cotao,43,false,Zurich,Life discounted multipolicy,70,27,50000,0,7.09,6.81,0,0.28,Waiver; multi-policy discount reflected,00b537c238f3b097d3ce37422f99b231f4f3ad3d1944fa2b3f52d7840cbc3cdd
+2026-05-21,Gisele Cotao,50,false,Legal & General,Life,69,19,80000,0,16.62,16.29,0,0.33,Waiver of Premium,0313b7e57bb9a83b997092322d012689c45a9a320ab555c1b7400aee79026334
+2026-05-21,Gisele Cotao,50,false,Legal & General,Life + CI Standard,69,19,10000,10000,13.58,0,13.13,0.45,TPD and Waiver of Premium,0313b7e57bb9a83b997092322d012689c45a9a320ab555c1b7400aee79026334
+2026-05-21,Gisele Cotao,50,false,Legal & General,Life,69,19,100000,0,20.57,20.17,0,0.40,Waiver of Premium,65217e032959bcac190fd0f3cad5ea86234649b7cc3a2f234307855e7221f499
+2026-05-18,Auxiliadora Cotao,53,false,Legal & General,Life,69,16,50000,0,13.68,13.41,0,0.27,Waiver of Premium,6634b624f0f9cca71c7e651e22ceb634c97e9b0c7e082a5c5acfaf6bb62b711a
+2026-05-18,Auxiliadora Cotao,53,false,Legal & General,Life + CI Extra,69,16,10000,10000,18.66,0,18.15,0.51,TPD and Waiver of Premium,6634b624f0f9cca71c7e651e22ceb634c97e9b0c7e082a5c5acfaf6bb62b711a
+2026-05-18,Auxiliadora Cotao,53,false,Legal & General,Life,69,16,100000,0,24.97,24.48,0,0.49,Waiver of Premium,afd0c51de99979b2a7d2a3a06504e6942b2d860f83469edfe990cb47c2f678f0
+2026-07-03,Juliana Vargas Cotao,53,false,Aviva,Life Insurance+ with Core CI,70,17,10000,10000,13.48,0,13.24,0.24,TPD and Waiver of Premium,a3a63f0117546c6657682f082fd5d7f709b04aa72db630ada81568b3edf9e758
+2026-07-03,Juliana Vargas Cotao,53,false,Aviva,Life Insurance+,70,17,50000,0,14.38,14.23,0,0.15,Waiver of Premium,a3a63f0117546c6657682f082fd5d7f709b04aa72db630ada81568b3edf9e758
+2026-07-03,Juliana Vargas Cotao,53,false,Legal & General,Life,69,16,100000,0,24.62,24.14,0,0.48,Waiver of Premium,48a093ed03a47e7f84e72d6ca8442aaff3915bb654654d852f02d0a971d7ce24
+2026-06-10,Janaina Cotao,38,false,Legal & General,Life,69,31,100000,0,9.79,9.69,0,0.10,Waiver of Premium,ff193dba13a8d2ee514d47facdaaaf9b296d5641c5be5d59e110299ba87b7902
+2026-06-10,Janaina Cotao,38,false,Legal & General,Life + CI Standard,69,31,10000,10000,7.35,0,7.17,0.18,TPD and Waiver of Premium,ff193dba13a8d2ee514d47facdaaaf9b296d5641c5be5d59e110299ba87b7902
+2026-06-10,Janaina Cotao,43,true,Aviva,Life Insurance+ with Core CI,70,27,10000,10000,13.01,0,12.80,0.21,TPD and Waiver of Premium,ccc89b596c42b37649af7ae921939e18fc6d5c53919fa6049063da2a5291e772
+2026-06-10,Janaina Cotao,43,true,Aviva,Life Insurance+,70,27,50000,0,17.40,17.27,0,0.13,Waiver of Premium,ccc89b596c42b37649af7ae921939e18fc6d5c53919fa6049063da2a5291e772
