@@ -42,3 +42,9 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-10-28,Manduca Cotao,36,false,Zurich,Life,65,29,100000,0,8.65,8.44,0,0.21,Waiver of Premium,592341982bac52652a0581c485cafa93394b14638c5f28b78bccb59dfb42bd00
 2026-10-27,Everaldo Cotao,42,false,Zurich,Life,65,23,100000,0,11.97,11.57,0,0.40,Waiver of Premium,17a579608d1e981eaa6d4ba30ff1e5ddc72788c16e87099cc8680dfbdcfc3859
 2026-10-27,Local Illustration 2026-10-27 Aviva,61,false,Aviva,Life Insurance+,85,24,80000,0,60.40,59.77,0,0.63,Waiver of Premium,e8aac52396c3019dd904888853113c5436cf6c03786883b94252719246dd71bf
+2026-09-28,George Cotao,44,false,Zurich,Life,70,26,60000,0,9.98,9.64,0,0.34,Waiver of Premium,d47de5b387fc98c012ba6e0510384b5ccfd23c28f318336a725362d67c1252a5
+2026-09-28,George Cotao,44,false,Zurich,Life,70,26,100000,0,14.74,14.24,0,0.50,Waiver of Premium,cf0547afe2661b1680e29723bfad16cf77716e599b26c00bd92c7062c189a8e6
+2026-09-18,Julio Cotao,60,false,Legal & General,Life,79,19,30000,0,18.46,17.92,0,0.54,Waiver of Premium,49b42b037cd30514d1c909e337415697709ffdb1d30c6b723d5938652b6f3865
+2026-10-07,Amaro Cotao,50,false,Legal & General,Life,69,19,80000,0,16.26,16.26,0,0,None,57981461d24c1889cc41daee100250eabced08912ab2f3bbac897fa1b8ab7247
+2026-10-07,Carla Cotao,45,false,Legal & General,Life,64,19,200000,0,21.48,21.06,0,0.42,Waiver of Premium,c38f46e74fbfd635377c8a32d4933748e9bcdb46e7810ff719dc82de1ec146de
+2026-09-10,Marcio Vinicius Cotao,30,true,Aviva,Life Insurance+,65,35,50000,0,6.74,6.72,0,0.02,Waiver of Premium,1fbc7f8aa46b6093ec91d389b33328985ddf4a6c0967e1782340fe52be9b2fc1
