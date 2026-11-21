@@ -124,16 +124,45 @@ const parsed = files.map((file) => {
     return { status: "unreadable", file };
   }
 });
+const referenceGroups = new Map();
+for (const row of parsed) {
+  if (!row.reference) continue;
+  const group = referenceGroups.get(row.reference) || [];
+  group.push(row);
+  referenceGroups.set(row.reference, group);
+}
+const statusRank = { complete: 3, partial: 2, "no-prices": 1 };
+function preferCandidate(candidate, previous) {
+  const rankDifference =
+    (statusRank[candidate.status] || 0) - (statusRank[previous.status] || 0);
+  if (rankDifference) return rankDifference > 0;
+  if ((candidate.sourceDate || "") !== (previous.sourceDate || ""))
+    return (candidate.sourceDate || "") > (previous.sourceDate || "");
+  return (candidate.sha256 || "") < (previous.sha256 || "");
+}
 const byReference = new Map();
 for (const row of parsed) {
   if (!row.reference) continue;
   const previous = byReference.get(row.reference);
-  if (!previous || row.status === "complete") byReference.set(row.reference, row);
+  if (!previous || preferCandidate(row, previous))
+    byReference.set(row.reference, row);
 }
 const unique = [...byReference.values()];
+const duplicateGroups = [...referenceGroups.values()].filter(
+  (group) => group.length > 1,
+);
 const summary = {
   files: files.length,
   uniqueReferences: unique.length,
+  duplicateFiles: files.length - referenceGroups.size,
+  duplicateReferences: duplicateGroups.length,
+  duplicateReferencesWithDifferentHashes: duplicateGroups.filter(
+    (group) => new Set(group.map((row) => row.sha256).filter(Boolean)).size > 1,
+  ).length,
+  duplicateReferencesWithDifferentDates: duplicateGroups.filter(
+    (group) =>
+      new Set(group.map((row) => row.sourceDate).filter(Boolean)).size > 1,
+  ).length,
   complete: unique.filter((row) => row.status === "complete").length,
   partial: unique.filter((row) => row.status === "partial").length,
   noPrices: unique.filter((row) => row.status === "no-prices").length,
