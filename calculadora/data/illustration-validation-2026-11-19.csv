@@ -199,3 +199,13 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-08-17,Fernanda Cotao,46,false,Zurich,Life discounted multipolicy,70,24,20000,0,4.46,4.27,0,0.19,Waiver; multi-policy discount reflected,ecef829d3532379c5ac624f27357f436230fb0a3e5a5242dd7ae8f7eeaf485de
 2026-08-17,Fernanda Cotao,46,false,Zurich,Life & CI discounted multipolicy,70,24,20000,20000,21.48,0,20.24,1.24,TPD and Waiver; multi-policy discount reflected,cdc3e336cc147b594ba713ee6e3a5f7974205b2f087bd3e2fe6cf29c92617b4c
 2026-08-17,Fernanda Cotao,46,false,Zurich,Life discounted multipolicy,70,24,30000,0,5.87,5.63,0,0.24,Waiver; multi-policy discount reflected,cdc3e336cc147b594ba713ee6e3a5f7974205b2f087bd3e2fe6cf29c92617b4c
+2026-07-24,Ueden Cotao,41,false,Aviva,Life Insurance+,65,24,50000,0,7.15,7.15,0,0,None,571dbefa8f2343cf9aefd1b2944029995191db35d1e58b4bad1ff375ceb22697
+2026-07-25,Wesley Cotao,42,false,Aviva,Life Insurance+ with Core CI,65,23,10000,10000,7.24,0,7.13,0.11,TPD and Waiver of Premium,5ab4f83322b66d634df4d5f5899db5518c3116ee4194720e08fafeb13cfe65fc
+2026-08-03,Osley Cotao,35,false,Aviva,Life Insurance+ with Core CI,65,30,10000,10000,5.41,0,5.35,0.06,TPD and Waiver of Premium,6429d2cf2eb8a8d6e6ecb522b317892515ba49df15848129775c397ec071fe61
+2026-08-03,Osley Cotao,35,false,Aviva,Life Insurance+,65,30,50000,0,5.69,5.67,0,0.02,Waiver of Premium,6429d2cf2eb8a8d6e6ecb522b317892515ba49df15848129775c397ec071fe61
+2026-08-04,Aurea Cotao,57,true,Aviva,Life Insurance+,70,13,20000,0,23.06,22.82,0,0.24,Waiver of Premium,615fc29a3d0e8f7f418af821403e2218ff3e489c01d4671d4da4ee1b03fbfddb
+2026-08-06,Manuel Cotao,63,false,Aviva,Life Insurance+ with Core CI,70,7,10000,10000,23.07,0,22.65,0.42,TPD and Waiver of Premium,8348b3f87561cdf9488debc1fabbda40a938a074efb1cb1343f9fcc96f613436
+2026-08-06,Manuel Cotao,63,false,Aviva,Life Insurance+,70,7,50000,0,26.95,26.67,0,0.28,Waiver of Premium,8348b3f87561cdf9488debc1fabbda40a938a074efb1cb1343f9fcc96f613436
+2026-08-14,Josiane Cotao,55,false,Aviva,Life Insurance+ with Core CI,70,15,20000,20000,30.57,0,30.03,0.54,TPD and Waiver of Premium,330cd36c1e578438e331c695dd475bd51d9a31fc4365ce349abe027265604f40
+2026-08-20,Fernanda Cotao,46,false,Aviva,Life Insurance+ with Core CI,70,24,10000,10000,9.77,0,9.61,0.16,TPD and Waiver of Premium,42ce3847429741c5bfd8e47257088fbff672b4859273bb2ff78e7e15a2c9d752
+2026-08-20,Fernanda Cotao,46,false,Aviva,Life Insurance+,70,24,30000,0,6.77,6.72,0,0.05,Waiver of Premium,42ce3847429741c5bfd8e47257088fbff672b4859273bb2ff78e7e15a2c9d752
