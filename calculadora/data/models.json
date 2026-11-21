@@ -13906,6 +13906,11 @@
         "under10": { "tested": 105, "mape": 0.034, "within20": 1, "p90": 0.0753, "p95": 0.1075, "maximum": 0.1935, "bias": 0.0136 },
         "from10To25": { "tested": 385, "mape": 0.0282, "within20": 1, "p90": 0.0627, "p95": 0.0802, "maximum": 0.1536, "bias": -0.0043 },
         "atLeast25": { "tested": 125, "mape": 0.0317, "within20": 1, "p90": 0.0737, "p95": 0.0938, "maximum": 0.1901, "bias": -0.0058 }
+      },
+      "byAgeBand": {
+        "under40": { "tested": 117, "mape": 0.0262, "within20": 1, "p90": 0.0562, "p95": 0.0726, "maximum": 0.1335, "bias": 0.0056 },
+        "from40To54": { "tested": 339, "mape": 0.0294, "within20": 1, "p90": 0.0662, "p95": 0.0806, "maximum": 0.1901, "bias": 0 },
+        "atLeast55": { "tested": 159, "mape": 0.0337, "within20": 1, "p90": 0.0845, "p95": 0.0953, "maximum": 0.1935, "bias": -0.0101 }
       }
     },
     "priorityProviderTemporalStability": {
