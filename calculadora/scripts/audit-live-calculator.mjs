@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -8,6 +9,16 @@ const baseUrl = "https://edusantospecomercial-byte.github.io/Cota-es/calculadora
 const localIndex = readFileSync(join(calculatorDir, "index.html"), "utf8");
 const localCatalog = JSON.parse(readFileSync(join(calculatorDir, "data/models.json"), "utf8"));
 const expectedAppVersion = localIndex.match(/app\.js\?v=([a-f0-9]+)/)?.[1];
+const criticalAssets = [
+  "app.js",
+  "calibration.js",
+  "data/models.json",
+  "data/solutionbuilder-priority-providers-2026-11-20.csv",
+  "data/solutionbuilder-priority-provider-archive-2026-11-21.csv",
+  "data/solutionbuilder-priority-provider-gaps-2026-11-20.csv",
+  "data/solutionbuilder-priority-provider-gap-archive-2026-11-21.csv",
+];
+const sha256 = (value) => createHash("sha256").update(value).digest("hex");
 
 const [pageResponse, catalogResponse] = await Promise.all([
   fetch(baseUrl, { cache: "no-store" }),
@@ -32,8 +43,18 @@ const actual = {
   temporalPredictions: liveCatalog.audit?.priorityProviderTemporalHoldout?.predicted,
 };
 
-if (JSON.stringify(actual) !== JSON.stringify(expected)) {
-  console.error(JSON.stringify({ ok: false, issue: "live deployment differs from local release", expected, actual }, null, 2));
+const assetChecks = await Promise.all(criticalAssets.map(async (asset) => {
+  const local = readFileSync(join(calculatorDir, asset));
+  const response = await fetch(`${baseUrl}${asset}`, { cache: "no-store" });
+  if (!response.ok) return { asset, status: response.status, match: false };
+  const live = Buffer.from(await response.arrayBuffer());
+  const localHash = sha256(local);
+  const liveHash = sha256(live);
+  return { asset, status: response.status, bytes: live.length, localHash, liveHash, match: localHash === liveHash };
+}));
+
+if (JSON.stringify(actual) !== JSON.stringify(expected) || assetChecks.some((asset) => !asset.match)) {
+  console.error(JSON.stringify({ ok: false, issue: "live deployment differs from local release", expected, actual, assetChecks }, null, 2));
   process.exit(1);
 }
-console.log(JSON.stringify({ ok: true, url: baseUrl, ...actual }, null, 2));
+console.log(JSON.stringify({ ok: true, url: baseUrl, ...actual, verifiedAssets: assetChecks.length, assetChecks }, null, 2));
