@@ -13891,6 +13891,11 @@
         "underestimates": 0.5245,
         "overestimates": 0.469
       },
+      "byProvider": {
+        "Legal & General": { "tested": 204, "mape": 0.0332, "within20": 1, "p90": 0.0768, "p95": 0.0917, "maximum": 0.1935, "bias": -0.0012 },
+        "Zurich": { "tested": 204, "mape": 0.0249, "within20": 1, "p90": 0.0581, "p95": 0.0687, "maximum": 0.1901, "bias": -0.001 },
+        "Aviva": { "tested": 204, "mape": 0.0315, "within20": 1, "p90": 0.0648, "p95": 0.0938, "maximum": 0.1536, "bias": -0.0026 }
+      },
       "bySegment": {
         "nonSmokerLife": { "tested": 378, "mape": 0.0335, "within20": 1, "p90": 0.0757, "p95": 0.0941, "maximum": 0.1935, "bias": -0.0048 },
         "nonSmokerCI": { "tested": 192, "mape": 0.0227, "within20": 1, "p90": 0.0519, "p95": 0.0663, "maximum": 0.0998, "bias": 0.0034 },

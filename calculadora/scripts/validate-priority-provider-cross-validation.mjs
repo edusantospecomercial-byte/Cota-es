@@ -106,14 +106,6 @@ for (let index = 0; index < anchors.length; index += 1) {
   results.push({ ...actual, predicted, ape });
 }
 
-const byProvider = Object.fromEntries(
-  ["Legal & General", "Zurich", "Aviva"].map((provider) => {
-    const values = results.filter((row) => row.provider === provider);
-    const mape = values.reduce((sum, row) => sum + row.ape, 0) / values.length;
-    const within20 = values.filter((row) => row.ape <= 0.2).length / values.length;
-    return [provider, { tested: values.length, mape, within20 }];
-  }),
-);
 function quantile(values, probability) {
   const sorted = [...values].sort((left, right) => left - right);
   const index = (sorted.length - 1) * probability;
@@ -156,6 +148,12 @@ const bySegment = Object.fromEntries(
     ["smokerLife", (row) => row.smoker === "Yes" && row.ci === 0],
     ["smokerCI", (row) => row.smoker === "Yes" && row.ci > 0],
   ].map(([name, predicate]) => [name, summarize(results.filter(predicate))]),
+);
+const byProvider = Object.fromEntries(
+  ["Legal & General", "Zurich", "Aviva"].map((provider) => [
+    provider,
+    summarize(results.filter((row) => row.provider === provider)),
+  ]),
 );
 const overallMape = results.reduce((sum, row) => sum + row.ape, 0) / results.length;
 const overallWithin20 = results.filter((row) => row.ape <= 0.2).length / results.length;
@@ -237,6 +235,20 @@ if (!reportOnly && (
         return saved?.[metric] !== calculated;
       },
     );
+  }) ||
+  Object.entries(byProvider).some(([provider, metrics]) => {
+    const saved = published?.byProvider?.[provider];
+    return ["tested", "mape", "within20", "p90", "p95", "maximum", "bias"].some(
+      (metric) => {
+        const calculated =
+          metric === "tested"
+            ? metrics[metric]
+            : metrics[metric] == null
+              ? null
+              : Number(metrics[metric].toFixed(4));
+        return saved?.[metric] !== calculated;
+      },
+    );
   })
 )) {
   throw new Error(JSON.stringify({
@@ -265,6 +277,10 @@ console.log(JSON.stringify({
     tested: metrics.tested,
     mape: Number(metrics.mape.toFixed(4)),
     within20: Number(metrics.within20.toFixed(4)),
+    p90: Number(metrics.p90.toFixed(4)),
+    p95: Number(metrics.p95.toFixed(4)),
+    maximum: Number(metrics.maximum.toFixed(4)),
+    bias: Number(metrics.bias.toFixed(4)),
   }])),
   bySegment: Object.fromEntries(Object.entries(bySegment).map(([segment, metrics]) => [segment, {
     tested: metrics.tested,
