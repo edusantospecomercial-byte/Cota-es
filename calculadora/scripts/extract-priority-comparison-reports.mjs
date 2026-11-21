@@ -44,6 +44,32 @@ function amount(value) {
   return value == null ? NaN : Number(value.replaceAll(",", ""));
 }
 
+function benefitAmounts(text) {
+  const combined = text.match(
+    /£\s*([\d,]+)\s+life\s*&\s*£\s*([\d,]+)\s+(?:life or earlier )?critical illness cover/i,
+  );
+  const lifeOnly = text.match(/£\s*([\d,]+)\s+life cover/i);
+  return {
+    life: amount(combined?.[1] || lifeOnly?.[1]),
+    ci: combined ? amount(combined[2]) : 0,
+  };
+}
+
+if (process.argv.includes("--self-test")) {
+  const cases = [
+    ["£100,000 life cover", 100000, 0],
+    ["£100000 life & £10000 critical illness cover", 100000, 10000],
+    ["£200,000 life & £20,000 life or earlier critical illness cover", 200000, 20000],
+  ];
+  for (const [text, life, ci] of cases) {
+    const parsed = benefitAmounts(text);
+    if (parsed.life !== life || parsed.ci !== ci)
+      throw new Error(JSON.stringify({ text, expected: { life, ci }, parsed }));
+  }
+  console.log(JSON.stringify({ ok: true, benefitSummaryCases: cases.length }));
+  process.exit(0);
+}
+
 function parseReport(file) {
   const text = pdfText(file);
   const reference = text.match(/Your Reference:\s*(\d+)/)?.[1];
@@ -60,12 +86,7 @@ function parseReport(file) {
       ? "Yes"
       : null;
   const toAge = Number(text.match(/policy duration is to age\s*(\d+)/i)?.[1]);
-  const combined = text.match(
-    /£\s*([\d,]+)\s+life\s*&\s*£\s*([\d,]+)\s+(?:life or earlier )?critical illness cover/i,
-  );
-  const lifeOnly = text.match(/£\s*([\d,]+)\s+life cover/i);
-  const life = amount(combined?.[1] || lifeOnly?.[1]);
-  const ci = combined ? amount(combined[2]) : 0;
+  const { life, ci } = benefitAmounts(text);
   const missing = [
     ["reference", reference],
     ["requested", requested],
