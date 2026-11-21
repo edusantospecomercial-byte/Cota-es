@@ -400,3 +400,25 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-03-19,Owl Esposo Evanise £29.29,50,false,Zurich,Life & CI Standard,70,20,10000,10000,22.30,0,15.50,6.80,Additional benefits,b5b9b1f57d6cef87057de881a5c91c171b63ed325aed0f13cbf2bc3ad6df69b7
 2026-01-13,Cotao DAIANA £18.59,40,false,Zurich,Life & CI Standard,65,25,20000,20000,13.40,0,13.40,0.00,Multi-policy discount reflected,5241b79f0c08f0d2d247b12ef226e26509352c1b68232f267aa712def5983494
 2026-03-10,Cotao WILLIAM £26.90,32,false,Zurich,Life & CI Standard,65,33,20000,20000,17.11,0,10.43,6.68,Additional benefits,566dd78f27b94b73db666723a455f04fb1a8fec1a64ffcc35cb539839f32ae03
+2026-06-10,Aviva Historical Quote,20,false,Aviva,Life Insurance+ with Core CI,70,50,10000,10000,11.10,0,3.61,7.49,Optional benefits,c7e747e659e156396555a5cad7a3b4bd2d80ce48a26c7fa86c0f0e02f8e69300
+2026-06-10,Aviva Historical Quote,20,false,Aviva,Life Insurance+,70,50,100000,0,5.37,5.37,0,0.00,None,c7e747e659e156396555a5cad7a3b4bd2d80ce48a26c7fa86c0f0e02f8e69300
+2026-07-04,Aviva Historical Quote,53,false,Aviva,Life Insurance+ with Core CI,70,17,10000,10000,13.48,0,13.24,0.24,Optional benefits,6eea1ee501080a575a35995118aacf94f23a0366251194fefb14ed73c5783d31
+2026-06-10,Aviva Historical Quote,43,true,Aviva,Life Insurance+ with Core CI,70,27,10000,10000,13.01,0,12.80,0.21,Optional benefits,1672133ea28e315373ca478112c70dcfbc623ee9ef49ce3a8ad6de065996a32b
+2026-06-10,Aviva Historical Quote,43,true,Aviva,Life Insurance+,70,27,50000,0,17.40,17.27,0,0.13,Optional benefits,1672133ea28e315373ca478112c70dcfbc623ee9ef49ce3a8ad6de065996a32b
+2026-05-27,Aviva Historical Quote,56,false,Aviva,Life Insurance+ with Core CI,70,14,10000,10000,16.14,0,15.85,0.29,Optional benefits,448fd481edaadabaa37ac6baaad0716750319f14eb7e10e8fc44812e4ad246cc
+2026-05-27,Aviva Historical Quote,56,false,Aviva,Life Insurance+,70,14,30000,0,11.79,11.67,0,0.12,Optional benefits,448fd481edaadabaa37ac6baaad0716750319f14eb7e10e8fc44812e4ad246cc
+2026-06-09,Aviva Historical Quote,49,false,Aviva,Life Insurance+ with Core CI,70,21,10000,10000,10.95,0,10.78,0.17,Optional benefits,01431992514671e4e8f288df466d79c4f0495bfd7336a87fdbffbf52dbc9311e
+2026-06-09,Aviva Historical Quote,49,false,Aviva,Life Insurance+,70,21,20000,0,5.62,5.58,0,0.04,Optional benefits,01431992514671e4e8f288df466d79c4f0495bfd7336a87fdbffbf52dbc9311e
+2026-05-26,Aviva Historical Quote,50,false,Aviva,Life Insurance+ with Core CI,70,20,10000,10000,11.48,0,11.29,0.19,Optional benefits,57f652dab54dca490ad11667b37d88c218b79d26da9b8e4e4ac7139277f734b1
+2026-05-26,Aviva Historical Quote,50,false,Aviva,Life Insurance+,70,20,20000,0,6.02,5.97,0,0.05,Optional benefits,57f652dab54dca490ad11667b37d88c218b79d26da9b8e4e4ac7139277f734b1
+2026-07-03,Aviva Historical Quote,53,false,Aviva,Life Insurance+ with Core CI,70,17,20000,20000,26.97,0,26.48,0.49,Optional benefits,b80b2c3b42e50713a0270cafb8f243c777c7d2fd6ec3c5f3d1ee57bbff3858dc
+2026-07-03,Aviva Historical Quote,53,false,Aviva,Life Insurance+,70,17,14092,0,5.00,4.95,0,0.05,Optional benefits,b80b2c3b42e50713a0270cafb8f243c777c7d2fd6ec3c5f3d1ee57bbff3858dc
+2026-06-09,Aviva Historical Quote,49,false,Aviva,Life Insurance+ with Core CI,70,21,10000,10000,10.95,0,10.78,0.17,Optional benefits,216b5a065819f1c45f106d42e0ea40bb63197e1c05202e00295e733b0d86b84a
+2026-06-09,Aviva Historical Quote,49,false,Aviva,Life Insurance+,70,21,17560,0,5.00,4.96,0,0.04,Optional benefits,216b5a065819f1c45f106d42e0ea40bb63197e1c05202e00295e733b0d86b84a
+2026-05-26,Aviva Historical Quote,54,false,Aviva,Life Insurance+ with Core CI,70,16,10000,10000,14.33,0,14.07,0.26,Optional benefits,6d2c4c471f3b8eff251297afdd9abc0b51ab43f2bbaef7b9e9058e9dd268b59b
+2026-05-26,Aviva Historical Quote,54,false,Aviva,Life Insurance+,70,16,20000,0,7.17,7.10,0,0.07,Optional benefits,6d2c4c471f3b8eff251297afdd9abc0b51ab43f2bbaef7b9e9058e9dd268b59b
+2026-06-25,Aviva Historical Quote,54,false,Aviva,Life Insurance+ with Core CI,70,16,10000,10000,14.26,0,14.00,0.26,Optional benefits,532f4e021c56b62ea81256285e75cf43a8c10217fc71063d07f02e291955e405
+2026-06-25,Aviva Historical Quote,54,false,Aviva,Life Insurance+,70,16,50000,0,15.37,15.21,0,0.16,Optional benefits,532f4e021c56b62ea81256285e75cf43a8c10217fc71063d07f02e291955e405
+2026-05-26,Aviva Historical Quote,30,false,Aviva,Life Insurance+,70,40,400000,0,17.76,17.72,0,0.04,Optional benefits,d49ef2ae043e120202647cdb57717c15e6aac4dd435e6f380c23156ae6042bb9
+2026-05-25,Aviva Historical Quote,50,false,Aviva,Life Insurance+ with Core CI,70,20,30000,30000,34.38,0,33.80,0.58,Optional benefits,602fcae7b9ac1a54fa72ff766c056ddd5e9df08b92adbe8e197d0a1889b24c84
+2026-05-25,Aviva Historical Quote,50,false,Aviva,Life Insurance+,70,20,40000,0,10.52,10.43,0,0.09,Optional benefits,602fcae7b9ac1a54fa72ff766c056ddd5e9df08b92adbe8e197d0a1889b24c84
