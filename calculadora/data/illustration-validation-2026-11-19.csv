@@ -170,3 +170,13 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-10-06,Maiara Cotao,39,false,Zurich,Life discounted multipolicy,65,26,50000,0,5.00,4.85,0,0.15,Waiver; multi-policy discount reflected,b9910410c42bf209b74e8832e8c8fcffd6d54cdb34ea936a7b3a846005b1beea
 2026-09-14,Gisele Cotao,30,false,Zurich,Life & CI discounted multipolicy,65,35,20000,20000,8.86,0,8.45,0.41,TPD and Waiver; multi-policy discount reflected,8a7d67f14ab127f38ba15a7fbbcd7c20abd763292145d66c7550f7779dc43d33
 2026-09-14,Gisele Cotao,30,false,Zurich,Life discounted multipolicy,65,35,100000,0,5.31,5.15,0,0.16,Waiver; multi-policy discount reflected,8a7d67f14ab127f38ba15a7fbbcd7c20abd763292145d66c7550f7779dc43d33
+2026-10-12,Floriano Cotao,33,false,Zurich,Life,65,32,50000,0,5.68,5.54,0,0.14,Waiver of Premium,8e0ca8281a1293064c328b00c70220e9b255c45cf30126c6496d8f5cb09b4dce
+2026-10-06,Lu Cotao,30,false,Zurich,Life & CI discounted multipolicy,65,35,10000,10000,5.51,0,5.26,0.25,TPD and Waiver; multi-policy discount reflected,dd36e60c5d09f92e7335b8f6872a9ccdd741ce975328fb3588d8e27954d397b2
+2026-10-06,Lu Cotao,30,false,Zurich,Life discounted multipolicy,65,35,100000,0,5.25,5.09,0,0.16,Waiver; multi-policy discount reflected,dd36e60c5d09f92e7335b8f6872a9ccdd741ce975328fb3588d8e27954d397b2
+2026-09-29,Maia Cotao,36,false,Zurich,Life,65,29,150000,0,18.97,10.76,0,8.21,Children's Cover and Waiver of Premium,6a5acb96b7639d66ccf199e13ab08e29f459758483bfa4e5ee5e1ba53172474f
+2026-08-26,Antonia Cotao,56,false,Aviva,Life Insurance+ with Core CI,70,14,10000,10000,15.84,0,15.55,0.29,TPD and Waiver of Premium,36046789cd619ca20e5cae6f2dcc4dc7b0a773445fa627934a7348ce6825b4d2
+2026-10-05,Rosilene Cotao,54,true,Legal & General,Life,69,15,50000,0,37.70,36.96,0,0.74,Waiver of Premium,2538cbb3045f1d085a139917d6325ff0e58fa0c9770866ce926abe4e71fdb372
+2026-10-14,Brenda Cotao,27,false,Zurich,Life & CI discounted multipolicy,65,38,10000,10000,5.06,0,4.83,0.23,TPD and Waiver; multi-policy discount reflected,013ae16690753a983607247c8b5d9ef6552414a50de59610a1589c2236e60cc7
+2026-10-14,Brenda Cotao,27,false,Zurich,Life discounted multipolicy,65,38,100000,0,4.96,4.81,0,0.15,Waiver; multi-policy discount reflected,013ae16690753a983607247c8b5d9ef6552414a50de59610a1589c2236e60cc7
+2026-10-21,Ana Paula Cotao,31,false,Zurich,Life & CI discounted multipolicy,65,34,10000,10000,5.81,0,5.55,0.26,TPD and Waiver; multi-policy discount reflected,7c570a9437d11b68d1800b265f5e1b8821c49d5c5d34263a5611b45a2883ac68
+2026-10-21,Ana Paula Cotao,31,false,Zurich,Life discounted multipolicy,65,34,100000,0,5.76,5.59,0,0.17,Waiver; multi-policy discount reflected,7c570a9437d11b68d1800b265f5e1b8821c49d5c5d34263a5611b45a2883ac68
