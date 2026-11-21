@@ -417,7 +417,9 @@ function render(p) {
     m.total = 0;
   }
   if (model) {
-    let outside =
+    let lookupKey = `${p.age}|${p.toAge}|${p.life}|${p.ci}|${p.smoker === "smoker" ? 1 : 0}`,
+      directLookup = model.lookup?.[lookupKey] != null,
+      outside =
         p.age < model.ageMin ||
         p.age > model.ageMax ||
         p.term < model.termMin ||
@@ -430,10 +432,12 @@ function render(p) {
     if (Number.isFinite(estimate)) {
       r.supported = true;
       r.main = estimate;
-      let spread = Math.max(
-        model.residualQ90 || 0,
-        r.main * (outside || !model.strictlyValidated ? 0.35 : 0.2),
-      );
+      let spread = directLookup
+        ? r.main * (model.strictlyValidated ? 0.2 : 0.35)
+        : Math.max(
+            model.residualQ90 || 0,
+            r.main * (outside || !model.strictlyValidated ? 0.35 : 0.2),
+          );
       r.low = Math.max(0, r.main - spread);
       r.high = r.main + spread;
       if (outside)
