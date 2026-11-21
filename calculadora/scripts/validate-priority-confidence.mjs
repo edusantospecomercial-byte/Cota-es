@@ -8,6 +8,9 @@ const app = readFileSync(join(here, "../app.js"), "utf8");
 const checks = {
   removesGenericLowWarning:
     /warnings = warnings\.filter\([\s\S]*?!warning\.startsWith\("Baixa confiança:"\)/.test(app),
+  removesGenericRangeWarning:
+    /!warning\.startsWith\("Perfil fora da faixa principal da base:"\)/.test(app) &&
+    /!warning\.startsWith\("Perfil ou capital fora da faixa validada"\)/.test(app),
   exactOfficialLabel: /"oficial exata"/.test(app),
   partialOfficialLabel: /"oficial parcial"/.test(app),
   validatedMapeLabel:

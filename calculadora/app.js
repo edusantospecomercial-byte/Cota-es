@@ -493,7 +493,10 @@ function render(p) {
     r.providerGap = priorityMatch.gap || null;
     r.priorityExact = priorityMatch.exact;
     warnings = warnings.filter(
-      (warning) => !warning.startsWith("Baixa confiança:"),
+      (warning) =>
+        !warning.startsWith("Baixa confiança:") &&
+        !warning.startsWith("Perfil fora da faixa principal da base:") &&
+        !warning.startsWith("Perfil ou capital fora da faixa validada"),
     );
     if (!priorityMatch.exact && !priorityMatch.partial && p.ci > 0)
       warnings.push(
