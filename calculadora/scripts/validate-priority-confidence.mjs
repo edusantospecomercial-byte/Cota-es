@@ -34,6 +34,11 @@ const checks = {
     /Perfil fora da faixa principal da base: estimativa por extrapolação, com margem ampliada/.test(app),
   confidenceRenderedSafely:
     /confiança \$\{escapeHtml\(confidenceLabel\)\}/.test(app),
+  exactSourceTraceability:
+    /SolutionBuilder ref\. \$\{escapeHtml\(r\.providerQuotes\[0\]\.modelId\)\}/.test(app) &&
+    /r\.providerQuotes\[0\]\.sourceDate/.test(app),
+  interpolatedSourceTraceability:
+    /Interpolação de múltiplas âncoras oficiais do SolutionBuilder/.test(app),
   underwritingInputsDisclosed:
     /Peso, altura e profissão são informativos/.test(index) &&
     /loading médico ou ocupacional automático/.test(index),

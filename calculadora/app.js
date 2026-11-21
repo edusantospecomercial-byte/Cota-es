@@ -162,6 +162,7 @@ function priorityQuotesFor(p) {
             : "Zurich Life",
         premium: Number(knownGap.zurich_premium),
         modelId: knownGap.model_id,
+        sourceDate: knownGap.source_date,
       },
       {
         provider: "Aviva",
@@ -171,6 +172,7 @@ function priorityQuotesFor(p) {
             : "Aviva Life Insurance+",
         premium: Number(knownGap.aviva_premium),
         modelId: knownGap.model_id,
+        sourceDate: knownGap.source_date,
       },
     ]
       .filter((quote) => Number.isFinite(quote.premium))
@@ -610,7 +612,7 @@ function render(p) {
       ? `modelo histórico agregado (${confidencePt(model.confidence)})`
       : "insuficiente";
   let priorityDetail = r.providerQuotes?.length
-    ? `<dt>Seguradoras prioritárias</dt><dd>${r.providerQuotes.map((quote) => `${escapeHtml(quote.provider)} ${gbp(quote.premium)}`).join(" · ")}${r.providerGap ? ` · ${escapeHtml(r.providerGap.provider)} indisponível` : ""}</dd><dt>Referência usada</dt><dd>${escapeHtml(r.provider)} · ${escapeHtml(r.product)}</dd>`
+    ? `<dt>Seguradoras prioritárias</dt><dd>${r.providerQuotes.map((quote) => `${escapeHtml(quote.provider)} ${gbp(quote.premium)}`).join(" · ")}${r.providerGap ? ` · ${escapeHtml(r.providerGap.provider)} indisponível` : ""}</dd><dt>Preço-base usado</dt><dd>${escapeHtml(r.provider)} · ${escapeHtml(r.product)}</dd><dt>Origem do preço</dt><dd>${r.priorityExact ? `SolutionBuilder ref. ${escapeHtml(r.providerQuotes[0].modelId)}${r.providerQuotes[0].sourceDate ? ` · ${escapeHtml(r.providerQuotes[0].sourceDate)}` : ""}` : "Interpolação de múltiplas âncoras oficiais do SolutionBuilder"}</dd>`
     : "";
   $("details").innerHTML =
     `<dt>Perfil</dt><dd>${p.age} anos · ${p.smoker === "smoker" ? "fumante" : "não fumante"}</dd><dt>Profissão</dt><dd>${escapeHtml(p.occupation)}</dd><dt>Peso · altura · IMC</dt><dd>${p.weight}kg · ${p.height}cm · ${bmi}</dd><dt>Cobertura</dt><dd>até ${p.toAge} · ${p.term} anos</dd><dt>Vida</dt><dd>${gbp(p.life)}</dd><dt>Doenças Graves</dt><dd>${gbp(p.ci)}</dd><dt>Premium</dt><dd>Garantido</dd>${priorityDetail}<dt>Base comparável</dt><dd>${model?.records || 0} casos · confiança ${escapeHtml(confidenceLabel)}</dd>`;
