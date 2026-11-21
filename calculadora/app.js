@@ -47,13 +47,12 @@ function parsePriorityCsv(csv) {
     ),
   );
 }
-function exactPriorityQuotes(p) {
+function priorityQuotesFor(p) {
   let expectedSmoker = p.smoker === "smoker" ? "Yes" : "No";
-  return priorityRows
+  let candidates = priorityRows
     .filter(
       (row) =>
         row.available === "true" &&
-        Number(row.age) === p.age &&
         row.smoker === expectedSmoker &&
         Number(row.to_age) === p.toAge &&
         Number(row.life_cover) === p.life &&
@@ -64,9 +63,34 @@ function exactPriorityQuotes(p) {
       product: row.product,
       premium: Number(row.monthly_premium),
       modelId: row.model_id,
+      age: Number(row.age),
     }))
-    .filter((row) => Number.isFinite(row.premium))
+    .filter((row) => Number.isFinite(row.premium));
+  let exact = candidates
+    .filter((row) => row.age === p.age)
     .sort((a, b) => a.premium - b.premium);
+  if (new Set(exact.map((row) => row.provider)).size === 3)
+    return { quotes: exact, exact: true };
+  let providers = ["Legal & General", "Zurich", "Aviva"],
+    interpolated = providers.map((provider) => {
+      let rows = candidates
+          .filter((row) => row.provider === provider)
+          .sort((a, b) => a.age - b.age),
+        below = rows.filter((row) => row.age < p.age).at(-1),
+        above = rows.find((row) => row.age > p.age);
+      if (!below || !above || above.age - below.age > 10) return null;
+      let ratio = (p.age - below.age) / (above.age - below.age);
+      return {
+        provider,
+        product: below.product === above.product ? below.product : above.product,
+        premium: below.premium + (above.premium - below.premium) * ratio,
+        modelId: `${below.modelId}-${above.modelId}`,
+        age: p.age,
+      };
+    });
+  return interpolated.every(Boolean)
+    ? { quotes: interpolated.sort((a, b) => a.premium - b.premium), exact: false }
+    : { quotes: [], exact: false };
 }
 function toAge() {
   return Number(document.querySelector('input[name="toAge"]:checked').value);
@@ -286,7 +310,8 @@ function render(p) {
     warnings.push(
       "Esta combinação ainda não passou nos controles de validação. Faça a cotação oficial no SolutionBuilder.",
     );
-  let priorityQuotes = exactPriorityQuotes(p);
+  let priorityMatch = priorityQuotesFor(p),
+    priorityQuotes = priorityMatch.quotes;
   if (priorityQuotes.length === 3) {
     let selected = priorityQuotes[0];
     r.supported = true;
@@ -296,9 +321,11 @@ function render(p) {
     r.provider = selected.provider;
     r.product = selected.product;
     r.providerQuotes = priorityQuotes;
-    r.priorityExact = true;
+    r.priorityExact = priorityMatch.exact;
     warnings.unshift(
-      `Preço oficial exato do SolutionBuilder: ${selected.provider} entre as seguradoras prioritárias.`,
+      priorityMatch.exact
+        ? `Preço oficial exato do SolutionBuilder: ${selected.provider} entre as seguradoras prioritárias.`
+        : `Estimativa interpolada entre idades oficiais do SolutionBuilder: ${selected.provider} entre as seguradoras prioritárias.`,
     );
   }
   $("results").classList.remove("hidden");
