@@ -83,6 +83,15 @@ A calculadora fornece uma estimativa indicativa, sem underwriting. Peso, altura,
 - 43 illustrations recentes possuem validação explícita por SHA-256, com reconciliação entre prêmio-base, opcionais e total. A base inclui combinações de vida + doenças graves e âncoras de vida pura de Zurich, Legal & General e Aviva, com capital auditado de até £500k e prazo até 85 anos. O prazo aceita idade atual ou idade no próximo aniversário, conforme a convenção registrada pela seguradora.
 - Todos os cenários incompletos permanecem fora do conjunto oficial de 288 preços e passam por validação contra duplicidade e prêmio inválido.
 
+## Expansão do arquivo local — 21/11/2026
+
+- 449 registros de validação histórica foram reconciliados a partir de 355 PDFs oficiais únicos.
+- A varredura recuperou illustrations de Zurich, Legal & General e Aviva tanto das pastas de downloads quanto de pastas genéricas de clientes.
+- Novas âncoras exatas foram incorporadas apenas quando produto, fumante, idade, capital e prazo eram comparáveis ao modelo publicado.
+- Valores de vida pura foram separados dos opcionais; descontos multiproduto foram identificados quando o prêmio total era inferior ao prêmio bruto mostrado no detalhamento.
+- Doenças graves Enhanced, Enhanced Plus, Upgraded e Child não foram misturadas com Standard/Core.
+- A cobertura exata dos próprios registros históricos comparáveis passou de 93% para vida pura e vida + CI Standard/Core; isso mede presença de âncora no acervo, não precisão fora da amostra nem garantia de underwriting.
+
 # Atualização de 19/11/2026 — bateria fumante
 
 - Perfil de teste: mulher, 35 anos, fumante, prêmio garantido, capital nivelado e sem coberturas adicionais.
