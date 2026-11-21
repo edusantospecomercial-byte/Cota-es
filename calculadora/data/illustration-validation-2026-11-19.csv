@@ -102,3 +102,13 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-10-15,Leticia Cotao,32,false,Legal & General,Life,64,32,200000,0,11.06,10.95,0,0.11,Waiver of Premium,1856b6e2dca42b1ec38007e7b13a7d5ea30da46b3cb247eb20b3543c53f1bdf2
 2026-10-22,Isabel Cotao,54,false,Legal & General,Life,69,15,100000,0,27.31,26.77,0,0.54,Waiver of Premium,fbafa61feb221d6aa9d1b016613623872791af25fafbaa83da2ed638a4f9f583
 2026-09-10,Local Cotao 59,59,true,Legal & General,Life,69,10,100000,0,88.44,88.44,0,0,None,dea780e4747e7b9864bd510254221c3fdd3e8e3df48aeef51476b3a9ed1a158a
+2026-10-13,Gilda Cotao,56,false,Zurich,Life,70,14,50000,0,16.62,16.62,0,0,None,c2494b94c5bfbeeb73f844e2462e604465bfc0b7efe7076816e2740e0deed5a4
+2026-10-16,Kaizze Cotao,31,false,Legal & General,Life,64,33,50000,0,4.64,4.59,0,0.05,Waiver of Premium,3b0a1ca1b8eab6ad3057aea42a294ccfa0424d371cc775cb88b1bb6d6948d797
+2026-10-16,Kaizze Cotao,31,false,Legal & General,Life + CI Standard,64,33,10000,10000,5.21,0,5.17,0.04,Waiver of Premium,3b0a1ca1b8eab6ad3057aea42a294ccfa0424d371cc775cb88b1bb6d6948d797
+2026-09-03,Anderson Cotao,35,false,Aviva,Life Insurance+,65,30,50000,0,5.56,5.54,0,0.02,Waiver of Premium,e4d3cfa6d4b0d4a24dcd4f1f91da81e0b8a975d575ecabaf27ddd5153ba07de1
+2026-09-03,Anderson Cotao,35,false,Aviva,Life Insurance+ with Core CI,65,30,10000,10000,5.32,0,5.26,0.06,TPD and Waiver of Premium,e4d3cfa6d4b0d4a24dcd4f1f91da81e0b8a975d575ecabaf27ddd5153ba07de1
+2026-09-27,Local Cotao 20,20,false,Zurich,Life,65,45,50000,0,5.26,5.13,0,0.13,Waiver of Premium,7a7f6ce08fc657d5546dff47452dd53b4c92e12b58b23574d0b7bef5ae469212
+2026-09-28,Local Cotao 60,60,false,Zurich,Life,70,10,50000,0,20.56,20.56,0,0,None,93a97fce6378e42856efd14ef72ea39973ddeb81dd16b87f23bf67e6ecdc4e48
+2026-09-28,Local Cotao 44,44,false,Zurich,Life,70,26,150000,0,20.08,19.40,0,0.68,Waiver of Premium,9b4d4bed3e0c85b6673f602176fa16a60cd7200d5bbfb5403e024f16f5d83ccf
+2026-09-29,Local Cotao 36,36,false,Zurich,Life,65,29,150000,0,11.03,10.76,0,0.27,Waiver of Premium,2233e0d2e72e6cdc805fa0b498e22975e6d2d6d32350c7a69ccaac05ece77c56
+2026-09-25,Inacio Cotao,53,true,Legal & General,Life,64,11,30000,0,18.94,18.57,0,0.37,Waiver of Premium,b1dce3684bde9f6074f686f347328e920b95e299edc1cd30580d66b91ec300d3
