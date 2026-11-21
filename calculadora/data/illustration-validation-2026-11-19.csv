@@ -303,3 +303,25 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-06-10,Janaina Cotao,38,false,Legal & General,Life + CI Standard,69,31,10000,10000,7.35,0,7.17,0.18,TPD and Waiver of Premium,ff193dba13a8d2ee514d47facdaaaf9b296d5641c5be5d59e110299ba87b7902
 2026-06-10,Janaina Cotao,43,true,Aviva,Life Insurance+ with Core CI,70,27,10000,10000,13.01,0,12.80,0.21,TPD and Waiver of Premium,ccc89b596c42b37649af7ae921939e18fc6d5c53919fa6049063da2a5291e772
 2026-06-10,Janaina Cotao,43,true,Aviva,Life Insurance+,70,27,50000,0,17.40,17.27,0,0.13,Waiver of Premium,ccc89b596c42b37649af7ae921939e18fc6d5c53919fa6049063da2a5291e772
+2026-07-07,Sonia Cotao,51,false,Aviva,Life Insurance+ with Core CI,70,19,10000,10000,12.05,0,11.84,0.21,TPD and Waiver of Premium,2bbda67375df39d66dbae497efd7e1a37d034235c4164e897b341e3f06b79299
+2026-07-07,Sonia Cotao,51,false,Aviva,Life Insurance+,70,19,50000,0,12.87,12.74,0,0.13,Waiver of Premium,2bbda67375df39d66dbae497efd7e1a37d034235c4164e897b341e3f06b79299
+2026-07-07,Sonia Cotao,51,false,Legal & General,Life,69,18,100000,0,21.78,21.35,0,0.43,Waiver of Premium,1981aa26e53d338ed93c0dff75bd795e1d650a393b3f7c5c9a07e93035d92edf
+2026-07-07,Sonia Cotao,51,false,Legal & General,Life discounted multiproduct,69,18,100000,0,21.53,21.10,0,0.43,Waiver; multi-product discount reflected,2b9f3544895be53d475f1d599dadf1154b3e03222e06eaa9e110cc6e55e86ee2
+2026-07-07,Sonia Cotao,51,false,Legal & General,Life + CI Standard,69,18,10000,10000,13.89,0,13.42,0.47,TPD and Waiver of Premium,2b9f3544895be53d475f1d599dadf1154b3e03222e06eaa9e110cc6e55e86ee2
+2026-07-14,Virgilio Cotao,40,false,Zurich,Life discounted multipolicy,70,30,100000,0,9.78,9.78,0,0,None; multi-policy discount reflected,8efb6a5a12a80fc3866760a1f58b5e75dec85ba22c75ac88c144386669a6cbee
+2026-07-14,Virgilio Cotao,40,false,Zurich,Critical Illness discounted multipolicy,70,30,0,10000,8.79,0,8.63,0.16,TPD; multi-policy discount reflected,8efb6a5a12a80fc3866760a1f58b5e75dec85ba22c75ac88c144386669a6cbee
+2026-07-14,Virgilio Cotao,40,false,Legal & General,Life,69,29,200000,0,17.71,17.53,0,0.18,Waiver of Premium,557b7d79e1984eb25df518845ba57d56194f661f8fc9bdeb8992fe01cd33c90f
+2026-07-14,Virgilio Cotao,40,false,Legal & General,Life + CI Standard,69,29,20000,20000,13.47,0,13.12,0.35,TPD and Waiver of Premium,557b7d79e1984eb25df518845ba57d56194f661f8fc9bdeb8992fe01cd33c90f
+2026-07-15,Rodrigo Cotao,52,false,Aviva,Life Insurance+ with Core CI,70,18,10000,10000,12.74,0,12.51,0.23,TPD and Waiver of Premium,c35a6b2e6d57dbba41ccad80ab431f5880a9ff59376e3707b93029b53183b1f0
+2026-07-15,Rodrigo Cotao,52,false,Aviva,Life Insurance+,70,18,50000,0,13.60,13.46,0,0.14,Waiver of Premium,c35a6b2e6d57dbba41ccad80ab431f5880a9ff59376e3707b93029b53183b1f0
+2026-07-16,Rodrigo Cotao,44,false,Zurich,Life & CI discounted multipolicy,70,26,10000,10000,10.63,0,10.42,0.21,TPD; multi-policy discount reflected,ea6a1aaf2dd24fd8d37bbcb480e21cc8e54018573b9025dc95abe7579201980e
+2026-07-16,Rodrigo Cotao,44,false,Zurich,Life discounted multipolicy,70,26,50000,0,7.13,7.13,0,0,None; multi-policy discount reflected,ea6a1aaf2dd24fd8d37bbcb480e21cc8e54018573b9025dc95abe7579201980e
+2026-07-16,Rodrigo Cotao,44,true,Aviva,Life Insurance+ with Core CI,65,21,10000,10000,12.46,0,12.27,0.19,TPD and Waiver of Premium,355f8eb0b8baeb3675bc95166aabdc63329501cb83016d85abd567eb7d7e8184
+2026-07-16,Rodrigo Cotao,44,true,Aviva,Life Insurance+,65,21,50000,0,16.18,16.06,0,0.12,Waiver of Premium,355f8eb0b8baeb3675bc95166aabdc63329501cb83016d85abd567eb7d7e8184
+2026-07-16,Bruna Cotao,41,false,Zurich,Life & CI discounted multipolicy,65,24,10000,10000,8.35,0,7.87,0.48,TPD and Waiver; multi-policy discount reflected,8cce5354a31db3310fcef3393cf595ef2d3ef354c87ceb98f7a53a0707bb0786
+2026-07-16,Bruna Cotao,41,false,Zurich,Life discounted multipolicy,65,24,50000,0,5.46,5.23,0,0.23,Waiver; multi-policy discount reflected,8cce5354a31db3310fcef3393cf595ef2d3ef354c87ceb98f7a53a0707bb0786
+2026-07-16,Bruna Cotao,41,false,Zurich,Life & CI discounted multipolicy,65,24,20000,20000,13.42,0,13.13,0.29,TPD; multi-policy discount reflected,4fd9deb56f4e51857894fee3092822d8195f9322a9d4f1957f314ee2abbc47b1
+2026-07-16,Bruna Cotao,41,false,Zurich,Life discounted multipolicy,65,24,50000,0,5.23,5.23,0,0,None; multi-policy discount reflected,4fd9deb56f4e51857894fee3092822d8195f9322a9d4f1957f314ee2abbc47b1
+2026-07-20,Aviva Cotao,49,false,Aviva,Life Insurance+ with Core CI,70,21,20000,20000,22.04,0,21.82,0.22,TPD,8e5f0788ae098d74e5e79b5c601f8572b76bc0f8e988203c49563da304838b37
+2026-07-21,Aviva Cotao,34,false,Aviva,Life Insurance+,65,31,100000,0,8.07,8.07,0,0,None,204ca33dd37a6e833f0cca0562cd144ece544e357b838682d8555258321bdd26
+2026-07-23,Aviva Cotao,57,false,Aviva,Critical Illness+ Core,70,13,0,10000,16.54,0,16.37,0.17,TPD,6026932afd0a5c37639bf8d657c56dbcd6a89fd7e1cae52d283c87d2386bb8e3
