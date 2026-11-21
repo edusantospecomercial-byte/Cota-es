@@ -3,6 +3,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const here = dirname(fileURLToPath(import.meta.url));
+const reportOnly = process.argv.includes("--report-only");
 const files = [
   "solutionbuilder-priority-providers-2026-11-20.csv",
   "solutionbuilder-priority-provider-archive-2026-11-21.csv",
@@ -66,31 +67,47 @@ const comparisons = [...groups.values()]
     };
   });
 
-const meanAbsolutePercentageChange =
-  comparisons.reduce(
-    (sum, row) => sum + row.absolutePercentageChange,
-    0,
-  ) / comparisons.length;
-const within10 =
-  comparisons.filter((row) => row.absolutePercentageChange <= 0.1).length /
-  comparisons.length;
-const within20 =
-  comparisons.filter((row) => row.absolutePercentageChange <= 0.2).length /
-  comparisons.length;
+function summarize(values) {
+  const meanAbsolutePercentageChange =
+    values.reduce((sum, row) => sum + row.absolutePercentageChange, 0) /
+    values.length;
+  const within10 =
+    values.filter((row) => row.absolutePercentageChange <= 0.1).length /
+    values.length;
+  const within20 =
+    values.filter((row) => row.absolutePercentageChange <= 0.2).length /
+    values.length;
+  return {
+    repeatedAnchors: values.length,
+    meanAbsolutePercentageChange: Number(
+      meanAbsolutePercentageChange.toFixed(4),
+    ),
+    within10: Number(within10.toFixed(4)),
+    within20: Number(within20.toFixed(4)),
+  };
+}
 const metrics = {
-  repeatedAnchors: comparisons.length,
-  meanAbsolutePercentageChange: Number(
-    meanAbsolutePercentageChange.toFixed(4),
+  ...summarize(comparisons),
+  byProvider: Object.fromEntries(
+    ["Legal & General", "Zurich", "Aviva"].map((provider) => [
+      provider,
+      summarize(comparisons.filter((row) => row.provider === provider)),
+    ]),
   ),
-  within10: Number(within10.toFixed(4)),
-  within20: Number(within20.toFixed(4)),
 };
 
 if (
   comparisons.length < 100 ||
-  meanAbsolutePercentageChange > 0.05 ||
-  within10 < 0.9 ||
-  within20 < 0.98
+  metrics.meanAbsolutePercentageChange > 0.05 ||
+  metrics.within10 < 0.9 ||
+  metrics.within20 < 0.98 ||
+  Object.values(metrics.byProvider).some(
+    (provider) =>
+      provider.repeatedAnchors < 30 ||
+      provider.meanAbsolutePercentageChange > 0.06 ||
+      provider.within10 < 0.85 ||
+      provider.within20 < 0.95,
+  )
 )
   throw new Error(
     JSON.stringify({ issue: "priority price stability regression", metrics }, null, 2),
@@ -98,13 +115,7 @@ if (
 
 const catalog = JSON.parse(readFileSync(join(here, "../data/models.json"), "utf8"));
 const published = catalog.audit?.priorityProviderTemporalStability;
-if (
-  published?.repeatedAnchors !== metrics.repeatedAnchors ||
-  published?.meanAbsolutePercentageChange !==
-    metrics.meanAbsolutePercentageChange ||
-  published?.within10 !== metrics.within10 ||
-  published?.within20 !== metrics.within20
-)
+if (!reportOnly && JSON.stringify(published) !== JSON.stringify(metrics))
   throw new Error(
     JSON.stringify(
       {

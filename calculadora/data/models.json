@@ -13902,7 +13902,27 @@
       "repeatedAnchors": 147,
       "meanAbsolutePercentageChange": 0.0174,
       "within10": 0.9728,
-      "within20": 1
+      "within20": 1,
+      "byProvider": {
+        "Legal & General": {
+          "repeatedAnchors": 49,
+          "meanAbsolutePercentageChange": 0.0218,
+          "within10": 0.9796,
+          "within20": 1
+        },
+        "Zurich": {
+          "repeatedAnchors": 49,
+          "meanAbsolutePercentageChange": 0.0144,
+          "within10": 0.9796,
+          "within20": 1
+        },
+        "Aviva": {
+          "repeatedAnchors": 49,
+          "meanAbsolutePercentageChange": 0.016,
+          "within10": 0.9592,
+          "within20": 1
+        }
+      }
     },
     "priorityProviderSexSensitivity": {
       "matchedProviderAnchors": 69,
