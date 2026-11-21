@@ -38,7 +38,7 @@ Em 16/11/2026, foi incorporado um illustration Zurich de vida com idade 63, praz
 
 Isso mede ajuste nos próprios pontos de calibração, não precisão para outras idades, prazos ou capitais. A validação fora da amostra continua dependente da bateria planejada de 25 a 63 anos.
 
-## Bateria Amaro de 18/11/2026
+## Bateria do perfil A de 18/11/2026
 
 - 173 novos preços oficiais coletados no Solution Builder sem underwriting.
 - 12 cenários padronizados: 50 anos, mulher, não fumante, vida de £20.000, £30.000, £50.000 e £100.000, até 65, 70 e 75 anos.
@@ -47,7 +47,7 @@ Isso mede ajuste nos próprios pontos de calibração, não precisão para outra
 - Após a incorporação, os 12 pontos oficiais são reproduzidos com erro de 0%; 12 de 12 ficam dentro de ±20%.
 - Duas cotações históricas com waiver e uma com doença grave foram auditadas, mas excluídas do modelo de vida puro para evitar contaminação.
 
-Os mínimos oficiais da bateria estão preservados em `data/solutionbuilder-amaro-minimos-2026-11-18.csv`.
+Os mínimos oficiais da bateria estão preservados em `data/solutionbuilder-profile-a-minimos-2026-11-18.csv`.
 
 ## Extensão estratégica de 19/11/2026
 
@@ -57,7 +57,7 @@ Os mínimos oficiais da bateria estão preservados em `data/solutionbuilder-amar
 - Menores prêmios oficiais: £11,33 e £14,30 até 65; £12,06 e £15,51 até 70; £13,08 e £16,67 até 75.
 - Os seis mínimos foram incorporados como âncoras exatas; a coleta não clicou em Apply e não submeteu proposta.
 
-Os mínimos oficiais desta extensão estão preservados em `data/solutionbuilder-amaro-minimos-2026-11-19.csv`.
+Os mínimos oficiais desta extensão estão preservados em `data/solutionbuilder-profile-a-minimos-2026-11-19.csv`.
 
 ## Política de coleta vigente — 20/11/2026
 

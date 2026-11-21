@@ -7,11 +7,11 @@ const dataDir = join(here, "..", "data");
 const fields = [
   ["illustration-validation-2026-11-19.csv", "profile", new Set(["Archive Quote"])],
   ["solutionbuilder-history-validation-2026-11-19.csv", "profile", new Set(["Calibration Profile"])],
-  ["solutionbuilder-isamara-fumante-vida-ci-2026-11-19.csv", "profile", new Set(["Calibration Profile"])],
+  ["solutionbuilder-profile-b-fumante-vida-ci-2026-11-19.csv", "profile", new Set(["Calibration Profile"])],
   ["solutionbuilder-priority-providers-2026-11-20.csv", "profile", new Set(["Calibration Profile"])],
   ["solutionbuilder-priority-provider-gaps-2026-11-20.csv", "profile", new Set(["Calibration Profile"])],
   ["solutionbuilder-calibracao-2026-11-18.csv", "source_client", new Set(["Calibration Profile"])],
-  ["solutionbuilder-amaro-minimos-2026-11-18.csv", "source_client", new Set(["Calibration Profile"])],
+  ["solutionbuilder-profile-a-minimos-2026-11-18.csv", "source_client", new Set(["Calibration Profile"])],
 ];
 
 const failures = [];

@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const dataDir = join(here, '..', 'data');
-const csvPath = join(dataDir, 'solutionbuilder-isamara-fumante-vida-ci-2026-11-19.csv');
+const csvPath = join(dataDir, 'solutionbuilder-profile-b-fumante-vida-ci-2026-11-19.csv');
 const illustrationPath = join(dataDir, 'illustration-validation-2026-11-19.csv');
 const historyPath = join(dataDir, 'solutionbuilder-history-validation-2026-11-19.csv');
 const modelsPath = join(dataDir, 'models.json');
@@ -369,7 +369,7 @@ if (failures.length) {
 
 console.log(JSON.stringify({
   ok: true,
-  profile: 'Isamara Cotacao',
+  profile: 'Calibration Profile',
   exactAnchorsChecked: rows.length,
   illustrationValidationRecords: illustrationRows.length,
   solutionBuilderHistoryValidationRecords: historyRows.length,
