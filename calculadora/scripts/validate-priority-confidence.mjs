@@ -30,6 +30,8 @@ const checks = {
     /low: "baixa"/.test(app) &&
     /medium: "média"/.test(app) &&
     /high: "alta"/.test(app),
+  extrapolationWarning:
+    /Perfil fora da faixa principal da base: estimativa por extrapolação, com margem ampliada/.test(app),
   confidenceRenderedSafely:
     /confiança \$\{escapeHtml\(confidenceLabel\)\}/.test(app),
   underwritingInputsDisclosed:
