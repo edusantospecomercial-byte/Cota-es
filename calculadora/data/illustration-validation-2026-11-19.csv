@@ -35,3 +35,4 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-11-04,Rachael Cotao,41,false,Legal & General,Life + Life & CI,64,23,90000,10000,16.42,8.76,7.66,0,TPD and Waiver included,8265b4cd719b4d83e876891fc07d8a9b949bd10f03984072ed80fd8b49013123
 2026-11-04,Elza Cotao,56,false,Aviva,Multi-Product with Core CI,70,14,60000,10000,35.77,19.12,16.65,0,TPD and Waiver included,7a981c1026538918932d9678c629c2ad1c6da20057bbff53c60a8a5c81cfc0ad
 2026-11-04,Rachael Cotao,41,false,Zurich,Life,65,24,100000,0,11.28,10.90,0,0.38,Waiver of Premium,4ecad569a5e4b64a61272563d93e75972f67acd5349ce3b893f33c62915a999f
+2026-11-20,Jana Cotao,46,false,Zurich,Life,65,19,500000,0,49.28,49.28,0,0,None,4c5eccb1bcec17dcdd407a60679f623b6ab3cec0efaf5bf61792a58a26b9a309
