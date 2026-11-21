@@ -57,4 +57,9 @@ if (JSON.stringify(actual) !== JSON.stringify(expected) || assetChecks.some((ass
   console.error(JSON.stringify({ ok: false, issue: "live deployment differs from local release", expected, actual, assetChecks }, null, 2));
   process.exit(1);
 }
-console.log(JSON.stringify({ ok: true, url: baseUrl, ...actual, verifiedAssets: assetChecks.length, assetChecks }, null, 2));
+const report = { ok: true, url: baseUrl, ...actual, verifiedAssets: assetChecks.length };
+console.log(JSON.stringify(
+  process.argv.includes("--compact") ? report : { ...report, assetChecks },
+  null,
+  2,
+));
