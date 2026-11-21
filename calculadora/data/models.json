@@ -13908,7 +13908,27 @@
       "matchedProviderAnchors": 69,
       "meanSymmetricDifference": 0.027,
       "maximumSymmetricDifference": 0.0936,
-      "within10": 1
+      "within10": 1,
+      "byProvider": {
+        "Legal & General": {
+          "matchedProviderAnchors": 23,
+          "meanSymmetricDifference": 0.039,
+          "maximumSymmetricDifference": 0.0936,
+          "within10": 1
+        },
+        "Zurich": {
+          "matchedProviderAnchors": 23,
+          "meanSymmetricDifference": 0.0203,
+          "maximumSymmetricDifference": 0.0646,
+          "within10": 1
+        },
+        "Aviva": {
+          "matchedProviderAnchors": 23,
+          "meanSymmetricDifference": 0.0217,
+          "maximumSymmetricDifference": 0.0769,
+          "within10": 1
+        }
+      }
     },
     "priorityProviderRecency": {
       "prices": 1164,

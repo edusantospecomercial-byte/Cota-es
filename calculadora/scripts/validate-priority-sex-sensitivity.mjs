@@ -3,6 +3,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const here = dirname(fileURLToPath(import.meta.url));
+const reportOnly = process.argv.includes("--report-only");
 const files = [
   "solutionbuilder-priority-providers-2026-11-20.csv",
   "solutionbuilder-priority-provider-archive-2026-11-21.csv",
@@ -66,24 +67,38 @@ for (const row of latestBySex.values()) {
   pair[row.sex] = row;
   paired.set(key, pair);
 }
-const differences = [...paired.values()]
+const matchedDifferences = [...paired.values()]
   .filter((pair) => pair.F && pair.M)
-  .map((pair) =>
-    Math.abs(pair.M.premium - pair.F.premium) /
-    ((pair.M.premium + pair.F.premium) / 2),
-  );
+  .map((pair) => ({
+    provider: pair.F.provider,
+    difference:
+      Math.abs(pair.M.premium - pair.F.premium) /
+      ((pair.M.premium + pair.F.premium) / 2),
+  }));
+const differences = matchedDifferences.map((row) => row.difference);
+function summarize(values) {
+  return {
+    matchedProviderAnchors: values.length,
+    meanSymmetricDifference: Number(
+      (values.reduce((sum, value) => sum + value, 0) / values.length).toFixed(4),
+    ),
+    maximumSymmetricDifference: Number(Math.max(...values).toFixed(4)),
+    within10: Number(
+      (values.filter((value) => value <= 0.1).length / values.length).toFixed(4),
+    ),
+  };
+}
 const metrics = {
-  matchedProviderAnchors: differences.length,
-  meanSymmetricDifference: Number(
-    (
-      differences.reduce((sum, value) => sum + value, 0) / differences.length
-    ).toFixed(4),
-  ),
-  maximumSymmetricDifference: Number(Math.max(...differences).toFixed(4)),
-  within10: Number(
-    (
-      differences.filter((value) => value <= 0.1).length / differences.length
-    ).toFixed(4),
+  ...summarize(differences),
+  byProvider: Object.fromEntries(
+    ["Legal & General", "Zurich", "Aviva"].map((provider) => [
+      provider,
+      summarize(
+        matchedDifferences
+          .filter((row) => row.provider === provider)
+          .map((row) => row.difference),
+      ),
+    ]),
   ),
 };
 
@@ -91,7 +106,14 @@ if (
   metrics.matchedProviderAnchors < 50 ||
   metrics.meanSymmetricDifference > 0.05 ||
   metrics.maximumSymmetricDifference > 0.15 ||
-  metrics.within10 < 0.95
+  metrics.within10 < 0.95 ||
+  Object.values(metrics.byProvider).some(
+    (provider) =>
+      provider.matchedProviderAnchors < 15 ||
+      provider.meanSymmetricDifference > 0.06 ||
+      provider.maximumSymmetricDifference > 0.15 ||
+      provider.within10 < 0.9,
+  )
 )
   throw new Error(
     JSON.stringify({ issue: "sex-neutral input sensitivity regression", metrics }, null, 2),
@@ -99,7 +121,7 @@ if (
 
 const catalog = JSON.parse(readFileSync(join(here, "../data/models.json"), "utf8"));
 const published = catalog.audit?.priorityProviderSexSensitivity;
-if (JSON.stringify(published) !== JSON.stringify(metrics))
+if (!reportOnly && JSON.stringify(published) !== JSON.stringify(metrics))
   throw new Error(
     JSON.stringify(
       {
