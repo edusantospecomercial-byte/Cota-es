@@ -493,6 +493,9 @@ function render(p) {
     r.providerQuotes = priorityQuotes;
     r.providerGap = priorityMatch.gap || null;
     r.priorityExact = priorityMatch.exact;
+    warnings = warnings.filter(
+      (warning) => !warning.startsWith("Baixa confiança:"),
+    );
     warnings.unshift(
       priorityMatch.partial
         ? `Preços oficiais exatos disponíveis para ${priorityQuotes.map((quote) => quote.provider).join(" e ")}; ${priorityMatch.gap.provider} ficou indisponível neste cenário.`
@@ -520,11 +523,18 @@ function render(p) {
       : "—";
   $("warning").textContent = warnings.join(" ");
   let bmi = (p.weight / (p.height / 100) ** 2).toFixed(1);
+  let confidenceLabel = r.providerQuotes?.length
+    ? r.providerGap
+      ? "oficial parcial"
+      : r.priorityExact
+        ? "oficial exata"
+        : `validada (${Number(catalog.audit?.priorityProviderCrossValidation?.mape * 100 || 0).toFixed(2)}% MAPE)`
+    : model?.confidence || "insuficiente";
   let priorityDetail = r.providerQuotes?.length
     ? `<dt>Seguradoras prioritárias</dt><dd>${r.providerQuotes.map((quote) => `${escapeHtml(quote.provider)} ${gbp(quote.premium)}`).join(" · ")}${r.providerGap ? ` · ${escapeHtml(r.providerGap.provider)} indisponível` : ""}</dd><dt>Referência usada</dt><dd>${escapeHtml(r.provider)} · ${escapeHtml(r.product)}</dd>`
     : "";
   $("details").innerHTML =
-    `<dt>Perfil</dt><dd>${p.age} anos · ${p.smoker === "smoker" ? "fumante" : "não fumante"}</dd><dt>Profissão</dt><dd>${escapeHtml(p.occupation)}</dd><dt>Peso · altura · IMC</dt><dd>${p.weight}kg · ${p.height}cm · ${bmi}</dd><dt>Cobertura</dt><dd>até ${p.toAge} · ${p.term} anos</dd><dt>Vida</dt><dd>${gbp(p.life)}</dd><dt>Doenças Graves</dt><dd>${gbp(p.ci)}</dd><dt>Premium</dt><dd>Garantido</dd>${priorityDetail}<dt>Base comparável</dt><dd>${model?.records || 0} casos · confiança ${escapeHtml(model?.confidence || "insuficiente")}</dd>`;
+    `<dt>Perfil</dt><dd>${p.age} anos · ${p.smoker === "smoker" ? "fumante" : "não fumante"}</dd><dt>Profissão</dt><dd>${escapeHtml(p.occupation)}</dd><dt>Peso · altura · IMC</dt><dd>${p.weight}kg · ${p.height}cm · ${bmi}</dd><dt>Cobertura</dt><dd>até ${p.toAge} · ${p.term} anos</dd><dt>Vida</dt><dd>${gbp(p.life)}</dd><dt>Doenças Graves</dt><dd>${gbp(p.ci)}</dd><dt>Premium</dt><dd>Garantido</dd>${priorityDetail}<dt>Base comparável</dt><dd>${model?.records || 0} casos · confiança ${escapeHtml(confidenceLabel)}</dd>`;
   $("metlifeResult").textContent = m.unavailable
     ? "MultiProtect indisponível para nova contratação após 65 anos"
     : m.c
