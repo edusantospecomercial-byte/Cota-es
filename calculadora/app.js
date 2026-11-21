@@ -55,7 +55,6 @@ function priorityQuotesFor(p) {
         row.available === "true" &&
         row.smoker === expectedSmoker &&
         Number(row.to_age) === p.toAge &&
-        Number(row.life_cover) === p.life &&
         Number(row.critical_illness_cover) === p.ci,
     )
     .map((row) => ({
@@ -64,20 +63,49 @@ function priorityQuotesFor(p) {
       premium: Number(row.monthly_premium),
       modelId: row.model_id,
       age: Number(row.age),
+      life: Number(row.life_cover),
     }))
     .filter((row) => Number.isFinite(row.premium));
   let exact = candidates
-    .filter((row) => row.age === p.age)
+    .filter((row) => row.age === p.age && row.life === p.life)
     .sort((a, b) => a.premium - b.premium);
   if (new Set(exact.map((row) => row.provider)).size === 3)
     return { quotes: exact, exact: true };
   let providers = ["Legal & General", "Zurich", "Aviva"],
     interpolated = providers.map((provider) => {
-      let rows = candidates
-          .filter((row) => row.provider === provider)
-          .sort((a, b) => a.age - b.age),
-        below = rows.filter((row) => row.age < p.age).at(-1),
-        above = rows.find((row) => row.age > p.age);
+      let rows = candidates.filter((row) => row.provider === provider),
+        ageValues = [...new Set(rows.map((row) => row.age))]
+          .sort((a, b) => a - b)
+          .map((age) => {
+            let atAge = rows
+                .filter((row) => row.age === age)
+                .sort((a, b) => a.life - b.life),
+              exactLife = atAge.find((row) => row.life === p.life);
+            if (exactLife) return exactLife;
+            let belowLife = atAge.filter((row) => row.life < p.life).at(-1),
+              aboveLife = atAge.find((row) => row.life > p.life);
+            if (!belowLife || !aboveLife) return null;
+            let ratio =
+              (p.life - belowLife.life) / (aboveLife.life - belowLife.life);
+            return {
+              provider,
+              product:
+                belowLife.product === aboveLife.product
+                  ? belowLife.product
+                  : aboveLife.product,
+              premium:
+                belowLife.premium +
+                (aboveLife.premium - belowLife.premium) * ratio,
+              modelId: `${belowLife.modelId}-${aboveLife.modelId}`,
+              age,
+              life: p.life,
+            };
+          })
+          .filter(Boolean),
+        exactAge = ageValues.find((row) => row.age === p.age);
+      if (exactAge) return exactAge;
+      let below = ageValues.filter((row) => row.age < p.age).at(-1),
+        above = ageValues.find((row) => row.age > p.age);
       if (!below || !above || above.age - below.age > 10) return null;
       let ratio = (p.age - below.age) / (above.age - below.age);
       return {
@@ -86,6 +114,7 @@ function priorityQuotesFor(p) {
         premium: below.premium + (above.premium - below.premium) * ratio,
         modelId: `${below.modelId}-${above.modelId}`,
         age: p.age,
+        life: p.life,
       };
     });
   return interpolated.every(Boolean)
@@ -325,7 +354,7 @@ function render(p) {
     warnings.unshift(
       priorityMatch.exact
         ? `Preço oficial exato do SolutionBuilder: ${selected.provider} entre as seguradoras prioritárias.`
-        : `Estimativa interpolada entre idades oficiais do SolutionBuilder: ${selected.provider} entre as seguradoras prioritárias.`,
+        : `Estimativa interpolada entre âncoras oficiais do SolutionBuilder: ${selected.provider} entre as seguradoras prioritárias.`,
     );
   }
   $("results").classList.remove("hidden");
