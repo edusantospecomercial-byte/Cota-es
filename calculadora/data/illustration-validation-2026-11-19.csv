@@ -36,3 +36,9 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-11-04,Elza Cotao,56,false,Aviva,Multi-Product with Core CI,70,14,60000,10000,35.77,19.12,16.65,0,TPD and Waiver included,7a981c1026538918932d9678c629c2ad1c6da20057bbff53c60a8a5c81cfc0ad
 2026-11-04,Rachael Cotao,41,false,Zurich,Life,65,24,100000,0,11.28,10.90,0,0.38,Waiver of Premium,4ecad569a5e4b64a61272563d93e75972f67acd5349ce3b893f33c62915a999f
 2026-11-20,Jana Cotao,46,false,Zurich,Life,65,19,500000,0,49.28,49.28,0,0,None,4c5eccb1bcec17dcdd407a60679f623b6ab3cec0efaf5bf61792a58a26b9a309
+2026-11-04,Wagner Cotao,49,false,Aviva,Life Insurance+ with Core CI,65,16,10000,10000,13.99,0,9.89,4.10,Fracture Cover; TPD; Waiver of Premium,d861aadae0fb84af317ddc0031a4003606cf27b5bc3339f2b11fa13f834c94c7
+2026-11-04,Elza Cotao,56,false,Zurich,Life,70,14,50000,0,17.29,17.29,0,0,None,edf7a2b5b35e2df115a6e6027a0c931aeaa2de97f39efd30b3bb467c1cc48b18
+2026-10-28,Wesley Cotao,38,false,Zurich,Life,65,27,100000,0,9.26,9.26,0,0,None,b459511bb53bbb26598af2053c41100c81583b256c5d50a9c826f220a9436a07
+2026-10-28,Manduca Cotao,36,false,Zurich,Life,65,29,100000,0,8.65,8.44,0,0.21,Waiver of Premium,592341982bac52652a0581c485cafa93394b14638c5f28b78bccb59dfb42bd00
+2026-10-27,Everaldo Cotao,42,false,Zurich,Life,65,23,100000,0,11.97,11.57,0,0.40,Waiver of Premium,17a579608d1e981eaa6d4ba30ff1e5ddc72788c16e87099cc8680dfbdcfc3859
+2026-10-27,Local Illustration 2026-10-27 Aviva,61,false,Aviva,Life Insurance+,85,24,80000,0,60.40,59.77,0,0.63,Waiver of Premium,e8aac52396c3019dd904888853113c5436cf6c03786883b94252719246dd71bf
