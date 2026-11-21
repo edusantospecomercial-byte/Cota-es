@@ -38,4 +38,6 @@ Validação de interpolação em 21/11/2026: ao retirar uma âncora oficial por 
 
 Os dados preenchidos não são enviados a servidor. As simulações salvas ficam no `localStorage` do navegador utilizado.
 
+Regra operacional de Eduardo: a tela abre com **MetLife MultiProtect · 1 Cota + Luxações — £13/mês**, discriminado como £11 Essencial + £2 Luxações. O usuário ainda pode alterar a quantidade de cotas, remover o complemento ou acrescentar Crianças; os valores MetLife nunca são interpolados.
+
 Antes de publicar qualquer alteração na calculadora, execute `node calculadora/scripts/validate-all.mjs`. O comando verifica a sintaxe do aplicativo, a estrutura dos CSVs, as âncoras, os cenários prioritários, as lacunas conhecidas, as interpolações e a validação cruzada leave-one-anchor-out.
