@@ -325,3 +325,51 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-07-20,Aviva Cotao,49,false,Aviva,Life Insurance+ with Core CI,70,21,20000,20000,22.04,0,21.82,0.22,TPD,8e5f0788ae098d74e5e79b5c601f8572b76bc0f8e988203c49563da304838b37
 2026-07-21,Aviva Cotao,34,false,Aviva,Life Insurance+,65,31,100000,0,8.07,8.07,0,0,None,204ca33dd37a6e833f0cca0562cd144ece544e357b838682d8555258321bdd26
 2026-07-23,Aviva Cotao,57,false,Aviva,Critical Illness+ Core,70,13,0,10000,16.54,0,16.37,0.17,TPD,6026932afd0a5c37639bf8d657c56dbcd6a89fd7e1cae52d283c87d2386bb8e3
+2025-08-12,Eduardo Pereira premium,41,false,Zurich,Life,65,24,200000,0,26.77,18.12,0,8.65,Additional benefits,ef8ce69ffad987c8768f3e68e9288f408a422024802515aada5ac3ca860912b3
+2025-08-23,Melise Da Silva Costa Martins premium,36,false,Zurich,Life,65,29,150000,0,10.76,10.50,0,0.26,Additional benefits,3f365ca646a218a037db192f84be1de00e79199284475ddc594d559a2b8ed843
+2025-08-22,Henrique Jose De Almeida Martins premium,43,false,Zurich,Life,65,22,150000,0,16.89,16.32,0,0.57,Additional benefits,9a5e26818ec08a249f960ad75fee9fbd103c91d105d0452e2268b6a034d069af
+2026-01-27,Cotao Jaasiel £19.47,56,false,Zurich,Life,80,24,40000,0,19.47,19.47,0,0.00,None,86a2c6e7572fdcfa31c669171847d88f21ec457060e9abb0879378e6b3a694c0
+2026-02-25,Cotao SUZANA £18.31,55,false,Zurich,Life,70,15,30000,0,18.31,10.56,0,7.75,Additional benefits,97ad4ae8750f01c7c720099f44503acbc15891b6b428b8ad755fa338873b5fe1
+2026-05-26,Cotao Andreia £22.21,50,false,Zurich,Life,70,20,100000,0,22.21,21.15,0,1.06,Additional benefits,e7d28ae72beb834b242c6a5a613cf707d1491e7ec579f018e54d0e6751d052e8
+2026-03-10,Cotao WILLIAM £33.07,49,false,Zurich,Life,65,16,150000,0,33.07,25.32,0,7.75,Additional benefits,61c352087842e8867081c8c0b6af9b2855fc67cd928e81e6e2441b910fdf2466
+2026-04-01,Cotao Angela £20.73,50,false,Zurich,Life,70,20,100000,0,20.73,20.73,0,0.00,None,acf2632fcf8757c6ca7a5f4b2a26d2650e1930d41296d22ae64201277b1d23df
+2025-11-10,Historical Quote,60,false,Zurich,Life,75,15,50000,0,24.68,24.68,0,0.00,None,0334a6ade4611779c3be339b42eb47f62db84b75143deebb08d227f8c3e20b7a
+2026-03-09,Cotao WILLIAM £44.55,51,false,Zurich,Life,70,19,100000,0,28.59,22.09,0,6.50,Additional benefits,0f59dfee3e33afdd3f5cb4a64435cff9dc00f68dd4d4432031ef42315b3c99f7
+2026-05-05,Cotao Nadioreth £20.33,60,false,Zurich,Life,70,10,50000,0,20.33,20.33,0,0.00,None,d2cfc086c4446345d93f3f295fc074eb18121b7da8260c92196b7e22ad1ce17c
+2026-05-26,Cotao Fabio £18.39,54,false,Zurich,Life,70,16,60000,0,18.39,17.51,0,0.88,Additional benefits,55f4e9a050d535ba86d5d1dd68f11b1e662e375f45e90557d219d9ae41646631
+2025-11-08,Mrs Maria Tereza Pereira Guimaraes Ferna,36,false,Legal & General,Life,64,28,20000,0,13.00,13.00,0,0.00,None,d720579e7cc2358cb34640ef807741afdb3d6d3c88c7d576479b5360c690a189
+2026-01-14,Cotao DAIANA £9.03,38,false,Zurich,Life,65,27,100000,0,9.03,9.03,0,0.00,None,933fb3d8ee0670052937fc43d5e37bba086dc6f098f7a277dc20eabb56fb89cc
+2026-03-09,Cotao WILLIAM £47.51,51,false,Zurich,Life,70,19,100000,0,28.59,22.09,0,6.50,Additional benefits,5b5a6095c6acad3697582de2b8c2f66de3c9d0d2af3a1ff5c864393b3e5f2085
+2026-06-09,Cotao Lina £10.52,63,false,Zurich,Life,70,7,20000,0,10.52,10.52,0,0.00,None,1d2e5e4d941ac24c0a41e04cc10d9f0eb44a4cd4f225b750079f4c4773ffb646
+2026-05-05,Cotao Erca Gans £43.68,60,false,Zurich,Life,70,10,120000,0,43.68,43.68,0,0.00,None,51b1bffee6a4d4426af2e681396a4e7caeda1501f945ceb083b6132f4fec459b
+2026-04-22,Cotao Domenico Esposito £71.66,62,false,Zurich,Life,70,8,200000,0,71.66,71.66,0,0.00,None,bc33b6da91cfdd09e2534d296e1c9f180dfe4ff2f25f17d13d1a44cdb5e86baa
+2026-01-23,Cotao DAIANA £27.95,61,false,Zurich,Life,80,19,30000,0,27.95,20.20,0,7.75,Additional benefits,1386ee8901402a6dd3c0615ad330d8aaaa7ba316af58d0fe27c03340f8abb7c4
+2026-05-26,Cotao Andreia £14.58,50,false,Zurich,Life,70,20,60000,0,14.58,13.89,0,0.69,Additional benefits,09fd8bcbe336874b6348540ae0e6aa9f3bc56f33022948bcc5b6d964af409821
+2026-03-10,Cotao Aldir £22.12,31,false,Zurich,Life,65,34,300000,0,22.12,14.37,0,7.75,Additional benefits,f7a9f9f72a5bd20a33f21ccffcb4f24744556ab1db9e51ffea686caa694c97a4
+2026-01-23,Cotao DAIANA £39.56,61,false,Zurich,Life,80,19,50000,0,39.56,31.81,0,7.75,Additional benefits,7b1f4759143edcc597f9c4ad71d430db8c856a0ce93cacd96aabc422fa53e5ec
+2026-06-22,Cotao Abel £18.48,52,false,Zurich,Life,70,18,70000,0,18.48,17.60,0,0.88,Additional benefits,77c402416a7b56af6cb6446a6e94fd76519ca9de1c310fb07ce09d2ea6036fe9
+2026-05-01,Cotao Rita £13.53,60,false,Zurich,Life,70,10,30000,0,13.53,13.53,0,0.00,None,74d9d983e38b12892117caaaa900c58e2aae540b0a5044985facdf4e26da3297
+2026-07-03,Dr Cotao Juliana Vargas,53,false,Legal & General,Life,69,16,200000,0,43.43,42.58,0,0.85,Waiver of Premium,d98cd73629da17e38de6ed64108667105649b03d8aa6e60c4d1bebfbd6a40604
+2026-01-27,Cotao Jaasiel £11.13,56,false,Zurich,Life,80,24,20000,0,11.13,11.13,0,0.00,None,c1b655554075f2ca8c3969578447c7710f2ac67a26e4698d457b6250b22a75db
+2026-05-15,Cotao Leila Pereira £19.04,43,false,Zurich,Life,70,27,150000,0,19.04,18.40,0,0.64,Additional benefits,c88e77e6988ed530ece63cc73f83f2b228359ec9cdcaa14e00008f94562207d7
+2026-03-09,Cotao WILLIAM £56.37,51,false,Zurich,Life,65,14,300000,0,56.37,48.62,0,7.75,Additional benefits,cb84f5817aa1d6020f1f65d6db39d04ecd0760ec2e9dbdb195cfcbf465e5be4f
+2026-03-10,Cotao WILLIAM £24.96,49,false,Zurich,Life,65,16,100000,0,24.96,17.21,0,7.75,Additional benefits,a7e6ee7f88cd74469ee5d957bab3bd6bc9e0271e64b7e22625d91413ffd8ab1f
+2026-06-09,Cotao Lina £16.93,35,false,Zurich,Life,70,35,100000,0,16.93,8.77,0,8.16,Additional benefits,a4eb47a024b03f0df3c18063486a10dbd76ec79c8d2b2a060e3e4339768b3a90
+2026-03-18,Owl Esposo Evanise £17.61,47,false,Zurich,Life,70,23,50000,0,17.61,9.86,0,7.75,Additional benefits,69fb8c956ebfd28024651f5cbdee167529743efca4e3b4ef80b7b396d10265a8
+2026-04-20,Cotao Claudia Gomes £12.19,58,false,Zurich,Life,70,12,30000,0,12.19,12.19,0,0.00,None,17eea7ae143f8059307106c04855834bc1ed18fe25b6d161973164432584346b
+2025-12-03,COTACAO CLIENTE £21.78,57,false,Zurich,Life,70,13,60000,0,21.78,20.27,0,1.51,Additional benefits,57549a074da5bd8ef5b28935a4ae2ecdac0c4e21f7fa1e581a2d2d8e153ed1d6
+2026-05-12,Cotao Rogerio Borela £12.75,52,false,Zurich,Life,70,18,10519,0,12.75,5.00,0,7.75,Additional benefits,e58e2649b5da741d829dd84fecf36c6098d9478b835e1fa6e954d2bc46230ff0
+2026-04-28,Cotao CRISTINO ANTONIO £30.35,59,true,Zurich,Life,70,11,20000,0,30.35,30.35,0,0.00,None,27ee0696b082b6e71ce4ac5a1c526e317c551de04fecb66cd863f62775cba519
+2026-03-09,Mr Cotao WILLIAM,51,false,Legal & General,Life,64,13,500000,0,67.98,66.65,0,1.33,Waiver of Premium,24bc3cf54cae96dc06d4a937e7a29268c4d31aaf23e85d06a5bec99cbc8e9450
+2026-05-05,Cotao Djalo £15.99,50,false,Zurich,Life,70,20,30000,0,15.99,8.24,0,7.75,Additional benefits,b75d60e1c357565d6cfd03b117044bbab1c10a8165d477bb9ddf7799ba6d160e
+2026-01-14,Cotao DAIANA £13.84,38,false,Zurich,Life,65,27,50000,0,13.84,6.09,0,7.75,Additional benefits,75262d0ee456ab6992c88fbc31662cedee9f0d2a36dd674328a14df11aba7a71
+2025-12-03,COTACAO CLIENTE £11.83,57,false,Zurich,Life,70,13,30000,0,11.83,11.83,0,0.00,None,2103eaa678a949724caf25a68b82017ca85ea1271aa94a7192301fc5a0b9464d
+2026-03-09,Mr Cotao WILLIAM,51,false,Legal & General,Life,64,13,350000,0,51.41,50.40,0,1.01,Waiver of Premium,2b59626a615cff6b47d069c167af035cafa8c0db8a72b7e210e3a665cab7ce23
+2026-05-26,Cotao Fabio £28.40,54,false,Zurich,Life,70,16,100000,0,28.40,27.05,0,1.35,Additional benefits,2b84d90e82b9434c67916fb20a9bf904b8e85caae51fcb3c7732a139637f855a
+2026-07-02,Dr Cotao Oriondina,54,false,Legal & General,Life,69,15,70000,0,18.82,18.45,0,0.37,Waiver of Premium,d985af73e3b2c9415172025149f607de828397ae11ebc16944b7718ebb949510
+2025-12-23,Cotao DAIANA £17.85,54,false,Zurich,Life,65,11,70000,0,17.85,17.00,0,0.85,Additional benefits,1ac2c36f5b68bc836032e561e96adf916128237bdb3941f9603954808b871df5
+2026-05-26,Dr Cotao Danilo,38,false,Legal & General,Life,69,31,200000,0,16.47,16.31,0,0.16,Waiver of Premium,309fb8f3f53ff128a8dac977bd06d6f2e651f67f2e2131735f421e2275df6c2e
+2026-05-27,Cotao Andr Matos £19.61,56,false,Zurich,Life,70,14,60000,0,19.61,19.61,0,0.00,None,863722960021c7cb505e0c32b9263f711bc1cca07178fdb5fa2539b8718b86c5
+2026-07-22,Cotao Iracema £17.11,64,false,Zurich,Life,80,16,20000,0,17.11,17.11,0,0.00,None,7fb727a9d37c9ddb233974895784f5da0e96b954abd12bd70ec20ed8de027fee
+2026-09-15,Mrs Cotao Ester,55,false,Legal & General,Life,69,14,50000,0,15.53,15.15,0,0.38,Waiver of Premium,2f7641c7cd8661fc12d63d75cc55d8e771c9f4bc2186a6989cee44168e62c20f
+2026-09-29,Cotao Maia - Rodrigo £18.97,36,false,Zurich,Life,65,29,150000,0,18.97,10.76,0,8.21,Additional benefits,2140f320a95ca7bb209096009ce50a30c1c9087a61a9bb9b627759e279b5c48c
