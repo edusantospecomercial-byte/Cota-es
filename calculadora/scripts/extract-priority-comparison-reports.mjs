@@ -146,7 +146,50 @@ const summary = {
   ).length,
 };
 
-if (process.argv.includes("--csv")) {
+if (process.argv.includes("--partial-csv")) {
+  console.log(
+    "source_date,model_id,profile,age,sex,smoker,to_age,life_cover,critical_illness_cover,missing_provider,reason,zurich_premium,aviva_premium,notes",
+  );
+  const latest = new Map();
+  for (const row of unique.filter(
+    (candidate) =>
+      candidate.status === "partial" &&
+      Number.isFinite(candidate.prices.Zurich) &&
+      Number.isFinite(candidate.prices.Aviva),
+  )) {
+    const key = [row.age, row.smoker, row.toAge, row.life, row.ci].join("|");
+    const previous = latest.get(key);
+    if (
+      !previous ||
+      row.sourceDate > previous.sourceDate ||
+      (row.sourceDate === previous.sourceDate &&
+        Number(row.reference) > Number(previous.reference))
+    )
+      latest.set(key, row);
+  }
+  for (const row of [...latest.values()].sort(
+    (left, right) => Number(left.reference) - Number(right.reference),
+  )) {
+    console.log(
+      [
+        row.sourceDate,
+        row.reference,
+        "Comparison Report Archive",
+        row.age,
+        row.sex,
+        row.smoker,
+        row.toAge,
+        row.life,
+        row.ci,
+        "Legal & General",
+        "Provider did not return a quote",
+        row.prices.Zurich.toFixed(2),
+        row.prices.Aviva.toFixed(2),
+        `Official partial comparison report ref ${row.reference} sha256 ${row.sha256}`,
+      ].join(","),
+    );
+  }
+} else if (process.argv.includes("--csv")) {
   console.log(
     "source_date,model_id,profile,age,sex,smoker,to_age,life_cover,critical_illness_cover,provider,product,monthly_premium,available,notes",
   );

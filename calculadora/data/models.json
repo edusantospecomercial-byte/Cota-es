@@ -13870,6 +13870,8 @@
     "priorityProviderScenarios": 387,
     "comparisonReportArchiveReports": 289,
     "comparisonReportArchivePrices": 867,
+    "comparisonReportArchivePartialReports": 62,
+    "comparisonReportArchivePartialPrices": 124,
     "priorityProviderCrossValidation": {
       "tested": 609,
       "mape": 0.0301,

@@ -11,6 +11,7 @@ const fields = [
   ["solutionbuilder-priority-providers-2026-11-20.csv", "profile", new Set(["Calibration Profile"])],
   ["solutionbuilder-priority-provider-archive-2026-11-21.csv", "profile", new Set(["Comparison Report Archive"])],
   ["solutionbuilder-priority-provider-gaps-2026-11-20.csv", "profile", new Set(["Calibration Profile"])],
+  ["solutionbuilder-priority-provider-gap-archive-2026-11-21.csv", "profile", new Set(["Comparison Report Archive"])],
   ["solutionbuilder-calibracao-2026-11-18.csv", "source_client", new Set(["Calibration Profile"])],
   ["solutionbuilder-profile-a-minimos-2026-11-18.csv", "source_client", new Set(["Calibration Profile"])],
 ];

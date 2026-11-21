@@ -77,8 +77,8 @@ A calculadora fornece uma estimativa indicativa, sem underwriting. Peso, altura,
 ## Consolidação prioritária de 20/11/2026
 
 - 1.161 preços oficiais completos de Zurich, Legal & General e Aviva, distribuídos por 387 execuções comparáveis. A consolidação inclui 867 preços recuperados de 289 relatórios oficiais de comparação, cada um com referência e SHA-256 do PDF de origem; a cotação mais recente prevalece quando duas execuções ocupam a mesma âncora.
-- 12 cenários adicionais foram preservados como lacunas e excluídos da calibração completa porque a Legal & General não retornou preço.
-- Em 8 lacunas de vida pura, a interface pode mostrar os valores oficiais exatos de Zurich e Aviva e identifica a Legal & General como indisponível; nenhum preço ausente é interpolado.
+- 74 cenários adicionais foram preservados como lacunas e excluídos da calibração completa porque a Legal & General não retornou preço; 62 deles foram recuperados do arquivo de relatórios e acrescentam 124 preços oficiais parciais de Zurich e Aviva.
+- Em 33 combinações únicas de vida pura, a interface pode mostrar os valores oficiais exatos de Zurich e Aviva e identifica a Legal & General como indisponível; nenhum preço ausente é interpolado. Quando existe também uma execução completa, prevalece a evidência mais recente.
 - Lacunas com doenças graves não reutilizam preços parciais, pois podem envolver TPD ou estruturas de cobertura diferentes.
 - 43 illustrations recentes possuem validação explícita por SHA-256, com reconciliação entre prêmio-base, opcionais e total. A base inclui combinações de vida + doenças graves e âncoras de vida pura de Zurich, Legal & General e Aviva, com capital auditado de até £500k e prazo até 85 anos. O prazo aceita idade atual ou idade no próximo aniversário, conforme a convenção registrada pela seguradora.
 - Todos os cenários incompletos permanecem fora do conjunto oficial de 1.161 preços e passam por validação contra duplicidade e prêmio inválido.

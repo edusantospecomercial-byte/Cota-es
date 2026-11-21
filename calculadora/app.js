@@ -24,7 +24,13 @@ function toast(s) {
   setTimeout(() => $("toast").classList.remove("show"), 2200);
 }
 async function init() {
-  const [loadedCatalog, currentPriorityRows, archivePriorityRows, loadedGapRows] = await Promise.all([
+  const [
+    loadedCatalog,
+    currentPriorityRows,
+    archivePriorityRows,
+    loadedGapRows,
+    archiveGapRows,
+  ] = await Promise.all([
     fetch("./data/models.json", { cache: "no-store" })
       .then((r) => r.json())
       .catch(() => ({ models: {} })),
@@ -46,10 +52,16 @@ async function init() {
       .then((r) => r.text())
       .then(parsePriorityCsv)
       .catch(() => []),
+    fetch("./data/solutionbuilder-priority-provider-gap-archive-2026-11-21.csv", {
+      cache: "no-store",
+    })
+      .then((r) => r.text())
+      .then(parsePriorityCsv)
+      .catch(() => []),
   ]);
   catalog = loadedCatalog;
   priorityRows = [...currentPriorityRows, ...archivePriorityRows];
-  priorityGapRows = loadedGapRows;
+  priorityGapRows = [...loadedGapRows, ...archiveGapRows];
   let n = Object.keys(catalog.models).length,
     records =
       catalog.calibratedRecords ||
@@ -79,48 +91,6 @@ function interpolateRiskPremium(below, above, ratio) {
 }
 function priorityQuotesFor(p) {
   let expectedSmoker = p.smoker === "smoker" ? "Yes" : "No";
-  let knownGap = priorityGapRows.find(
-    (row) =>
-      row.smoker === expectedSmoker &&
-      Number(row.age) === p.age &&
-      Number(row.to_age) === p.toAge &&
-      Number(row.life_cover) === p.life &&
-      Number(row.critical_illness_cover) === p.ci,
-  );
-  if (knownGap) {
-    let exactAvailableQuotes = [
-      {
-        provider: "Zurich",
-        product:
-          Number(knownGap.critical_illness_cover) > 0
-            ? "Zurich Life & CI"
-            : "Zurich Life",
-        premium: Number(knownGap.zurich_premium),
-        modelId: knownGap.model_id,
-      },
-      {
-        provider: "Aviva",
-        product:
-          Number(knownGap.critical_illness_cover) > 0
-            ? "Aviva Life Insurance+ with Core CI"
-            : "Aviva Life Insurance+",
-        premium: Number(knownGap.aviva_premium),
-        modelId: knownGap.model_id,
-      },
-    ]
-      .filter((quote) => Number.isFinite(quote.premium))
-      .sort((a, b) => a.premium - b.premium);
-    return {
-      quotes: exactAvailableQuotes,
-      exact: exactAvailableQuotes.length > 0,
-      partial: exactAvailableQuotes.length > 0,
-      gap: {
-        provider: knownGap.missing_provider,
-        reason: knownGap.reason,
-        modelId: knownGap.model_id,
-      },
-    };
-  }
   let rawCandidates = priorityRows
     .filter(
       (row) =>
@@ -158,6 +128,58 @@ function priorityQuotesFor(p) {
         row.age === p.age && row.life === p.life && row.toAge === p.toAge,
     )
     .sort((a, b) => a.premium - b.premium);
+  const knownGap = priorityGapRows
+    .filter(
+      (row) =>
+        row.smoker === expectedSmoker &&
+        Number(row.age) === p.age &&
+        Number(row.to_age) === p.toAge &&
+        Number(row.life_cover) === p.life &&
+        Number(row.critical_illness_cover) === p.ci,
+    )
+    .sort(
+      (left, right) =>
+        right.source_date.localeCompare(left.source_date) ||
+        Number(right.model_id) - Number(left.model_id),
+    )[0];
+  const completeDate = exact.reduce(
+    (latest, row) => (row.sourceDate > latest ? row.sourceDate : latest),
+    "",
+  );
+  if (knownGap && (!completeDate || knownGap.source_date >= completeDate)) {
+    let exactAvailableQuotes = [
+      {
+        provider: "Zurich",
+        product:
+          Number(knownGap.critical_illness_cover) > 0
+            ? "Zurich Life & CI"
+            : "Zurich Life",
+        premium: Number(knownGap.zurich_premium),
+        modelId: knownGap.model_id,
+      },
+      {
+        provider: "Aviva",
+        product:
+          Number(knownGap.critical_illness_cover) > 0
+            ? "Aviva Life Insurance+ with Core CI"
+            : "Aviva Life Insurance+",
+        premium: Number(knownGap.aviva_premium),
+        modelId: knownGap.model_id,
+      },
+    ]
+      .filter((quote) => Number.isFinite(quote.premium))
+      .sort((a, b) => a.premium - b.premium);
+    return {
+      quotes: exactAvailableQuotes,
+      exact: exactAvailableQuotes.length > 0,
+      partial: exactAvailableQuotes.length > 0,
+      gap: {
+        provider: knownGap.missing_provider,
+        reason: knownGap.reason,
+        modelId: knownGap.model_id,
+      },
+    };
+  }
   if (new Set(exact.map((row) => row.provider)).size === 3)
     return { quotes: exact, exact: true };
   let providers = ["Legal & General", "Zurich", "Aviva"],
