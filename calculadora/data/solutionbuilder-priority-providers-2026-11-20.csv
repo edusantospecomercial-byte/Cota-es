@@ -1,289 +1,289 @@
 source_date,model_id,profile,age,sex,smoker,to_age,life_cover,critical_illness_cover,provider,product,monthly_premium,available,notes
-2026-11-20,34984386,Jana Cotacao,46,F,No,65,50000,0,Legal & General,Legal & General Life,8.06,true,Indicative non-underwritten result
-2026-11-20,34984386,Jana Cotacao,46,F,No,65,50000,0,Zurich,Zurich Life,8.47,true,Indicative non-underwritten result
-2026-11-20,34984386,Jana Cotacao,46,F,No,65,50000,0,Aviva,Aviva Life Insurance+,9.25,true,Indicative non-underwritten result
-2026-11-20,34984390,Jana Cotacao,46,F,No,65,100000,0,Legal & General,Legal & General Life,13.28,true,Indicative non-underwritten result
-2026-11-20,34984390,Jana Cotacao,46,F,No,65,100000,0,Zurich,Zurich Life,14.12,true,Indicative non-underwritten result
-2026-11-20,34984390,Jana Cotacao,46,F,No,65,100000,0,Aviva,Aviva Life Insurance+,15.80,true,Indicative non-underwritten result
-2026-11-20,34984393,Jana Cotacao,46,F,No,75,50000,0,Legal & General,Legal & General Life,9.93,true,Indicative non-underwritten result
-2026-11-20,34984393,Jana Cotacao,46,F,No,75,50000,0,Zurich,Zurich Life,10.46,true,Indicative non-underwritten result
-2026-11-20,34984393,Jana Cotacao,46,F,No,75,50000,0,Aviva,Aviva Life Insurance+,11.11,true,Indicative non-underwritten result
-2026-11-20,34984394,Jana Cotacao,46,F,No,75,100000,0,Legal & General,Legal & General Life,16.90,true,Indicative non-underwritten result
-2026-11-20,34984394,Jana Cotacao,46,F,No,75,100000,0,Zurich,Zurich Life,18.04,true,Indicative non-underwritten result
-2026-11-20,34984394,Jana Cotacao,46,F,No,75,100000,0,Aviva,Aviva Life Insurance+,20.42,true,Indicative non-underwritten result
-2026-11-20,34984397,Jana Cotacao,46,F,No,65,50000,10000,Legal & General,Legal & General Life + CI (Standard),16.61,true,Indicative non-underwritten result
-2026-11-20,34984397,Jana Cotacao,46,F,No,65,50000,10000,Zurich,Zurich Life & CI,17.11,true,Indicative non-underwritten result
-2026-11-20,34984397,Jana Cotacao,46,F,No,65,50000,10000,Aviva,Aviva Multi-Product with Core CI,17.45,true,Indicative non-underwritten result
-2026-11-20,34984399,Jana Cotacao,46,F,No,65,50000,20000,Legal & General,Legal & General Life + CI (Standard),23.51,true,Indicative non-underwritten result
-2026-11-20,34984399,Jana Cotacao,46,F,No,65,50000,20000,Zurich,Zurich Life & CI,24.09,true,Indicative non-underwritten result
-2026-11-20,34984399,Jana Cotacao,46,F,No,65,50000,20000,Aviva,Aviva Multi-Product with Core CI,25.63,true,Indicative non-underwritten result
-2026-11-20,34984400,Jana Cotacao,46,F,No,65,100000,10000,Legal & General,Legal & General Life + CI (Standard),21.83,true,Indicative non-underwritten result
-2026-11-20,34984400,Jana Cotacao,46,F,No,65,100000,10000,Zurich,Zurich Life & CI,22.76,true,Indicative non-underwritten result
-2026-11-20,34984400,Jana Cotacao,46,F,No,65,100000,10000,Aviva,Aviva Multi-Product with Core CI,24.00,true,Indicative non-underwritten result
-2026-11-20,34984401,Jana Cotacao,46,F,No,65,100000,20000,Legal & General,Legal & General Life + CI (Standard),28.73,true,Indicative non-underwritten result
-2026-11-20,34984401,Jana Cotacao,46,F,No,65,100000,20000,Zurich,Zurich Life & CI,29.74,true,Indicative non-underwritten result
-2026-11-20,34984401,Jana Cotacao,46,F,No,65,100000,20000,Aviva,Aviva Multi-Product with Core CI,32.18,true,Indicative non-underwritten result
-2026-11-20,34984402,Jana Cotacao,46,F,No,75,50000,10000,Legal & General,Legal & General Life + CI (Standard),20.88,true,Indicative non-underwritten result
-2026-11-20,34984402,Jana Cotacao,46,F,No,75,50000,10000,Zurich,Zurich Life & CI,22.48,true,Indicative non-underwritten result
-2026-11-20,34984402,Jana Cotacao,46,F,No,75,50000,10000,Aviva,Aviva Multi-Product with Core CI,21.84,true,Indicative non-underwritten result
-2026-11-20,34984403,Jana Cotacao,46,F,No,75,50000,20000,Legal & General,Legal & General Life + CI (Standard),30.18,true,Indicative non-underwritten result
-2026-11-20,34984403,Jana Cotacao,46,F,No,75,50000,20000,Zurich,Zurich Life & CI,32.26,true,Indicative non-underwritten result
-2026-11-20,34984403,Jana Cotacao,46,F,No,75,50000,20000,Aviva,Aviva Multi-Product with Core CI,32.57,true,Indicative non-underwritten result
-2026-11-20,34984404,Jana Cotacao,46,F,No,75,100000,10000,Legal & General,Legal & General Life + CI (Standard),27.85,true,Indicative non-underwritten result
-2026-11-20,34984404,Jana Cotacao,46,F,No,75,100000,10000,Zurich,Zurich Life & CI,30.06,true,Indicative non-underwritten result
-2026-11-20,34984404,Jana Cotacao,46,F,No,75,100000,10000,Aviva,Aviva Multi-Product with Core CI,31.15,true,Indicative non-underwritten result
-2026-11-20,34984405,Jana Cotacao,46,F,No,75,100000,20000,Legal & General,Legal & General Life + CI (Standard),37.15,true,Indicative non-underwritten result
-2026-11-20,34984405,Jana Cotacao,46,F,No,75,100000,20000,Zurich,Zurich Life & CI,39.84,true,Indicative non-underwritten result
-2026-11-20,34984405,Jana Cotacao,46,F,No,75,100000,20000,Aviva,Aviva Multi-Product with Core CI,41.88,true,Indicative non-underwritten result
-2026-11-19,34962032,Isamara Cotacao,34,F,No,65,50000,10000,Legal & General,Legal & General Life + CI (Standard),10.67,true,Recovered from SolutionBuilder client history
-2026-11-19,34962032,Isamara Cotacao,34,F,No,65,50000,10000,Zurich,Zurich Life & CI,10.43,true,Recovered from SolutionBuilder client history
-2026-11-19,34962032,Isamara Cotacao,34,F,No,65,50000,10000,Aviva,Aviva Multi-Product with Core CI,10.23,true,Recovered from SolutionBuilder client history
-2026-11-19,34961508,Jaqueline Gomes Cotacao,54,F,No,65,100000,0,Legal & General,Legal & General Life,20.66,true,Recovered from SolutionBuilder client history
-2026-11-19,34961508,Jaqueline Gomes Cotacao,54,F,No,65,100000,0,Zurich,Zurich Life,22.57,true,Recovered from SolutionBuilder client history
-2026-11-19,34961508,Jaqueline Gomes Cotacao,54,F,No,65,100000,0,Aviva,Aviva Life Insurance+,26.62,true,Recovered from SolutionBuilder client history
-2026-11-19,34969602,Isamara Cotacao,60,F,No,65,100000,0,Legal & General,Legal & General Life,26.12,true,Recovered from SolutionBuilder client history
-2026-11-19,34969602,Isamara Cotacao,60,F,No,65,100000,0,Zurich,Zurich Life,26.49,true,Recovered from SolutionBuilder client history
-2026-11-19,34969602,Isamara Cotacao,60,F,No,65,100000,0,Aviva,Aviva Life Insurance+,29.14,true,Recovered from SolutionBuilder client history
-2026-11-19,34969601,Isamara Cotacao,60,F,No,65,50000,0,Legal & General,Legal & General Life,16.72,true,Recovered from SolutionBuilder client history
-2026-11-19,34969601,Isamara Cotacao,60,F,No,65,50000,0,Zurich,Zurich Life,15.29,true,Recovered from SolutionBuilder client history
-2026-11-19,34969601,Isamara Cotacao,60,F,No,65,50000,0,Aviva,Aviva Life Insurance+,14.57,true,Recovered from SolutionBuilder client history
-2026-11-19,34969578,Isamara Cotacao,55,F,No,75,50000,0,Legal & General,Legal & General Life,16.94,true,Recovered from SolutionBuilder client history
-2026-11-19,34969578,Isamara Cotacao,55,F,No,75,50000,0,Zurich,Zurich Life,18.02,true,Recovered from SolutionBuilder client history
-2026-11-19,34969578,Isamara Cotacao,55,F,No,75,50000,0,Aviva,Aviva Life Insurance+,18.35,true,Recovered from SolutionBuilder client history
-2026-11-19,34969581,Isamara Cotacao,55,F,No,75,100000,0,Legal & General,Legal & General Life,30.12,true,Recovered from SolutionBuilder client history
-2026-11-19,34969581,Isamara Cotacao,55,F,No,75,100000,0,Zurich,Zurich Life,32.50,true,Recovered from SolutionBuilder client history
-2026-11-19,34969581,Isamara Cotacao,55,F,No,75,100000,0,Aviva,Aviva Life Insurance+,35.93,true,Recovered from SolutionBuilder client history
-2026-11-19,34969621,Isamara Cotacao,60,F,No,75,50000,0,Legal & General,Legal & General Life,23.37,true,Recovered from SolutionBuilder client history
-2026-11-19,34969621,Isamara Cotacao,60,F,No,75,50000,0,Zurich,Zurich Life,24.68,true,Recovered from SolutionBuilder client history
-2026-11-19,34969621,Isamara Cotacao,60,F,No,75,50000,0,Aviva,Aviva Life Insurance+,26.24,true,Recovered from SolutionBuilder client history
-2026-11-19,34969622,Isamara Cotacao,60,F,No,75,100000,0,Legal & General,Legal & General Life,42.22,true,Recovered from SolutionBuilder client history
-2026-11-19,34969622,Isamara Cotacao,60,F,No,75,100000,0,Zurich,Zurich Life,45.94,true,Recovered from SolutionBuilder client history
-2026-11-19,34969622,Isamara Cotacao,60,F,No,75,100000,0,Aviva,Aviva Life Insurance+,49.29,true,Recovered from SolutionBuilder client history
-2026-11-19,34969514,Isamara Cotacao,45,F,No,65,50000,0,Legal & General,Legal & General Life,7.58,true,Recovered from SolutionBuilder client history
-2026-11-19,34969514,Isamara Cotacao,45,F,No,65,50000,0,Zurich,Zurich Life,8.02,true,Recovered from SolutionBuilder client history
-2026-11-19,34969514,Isamara Cotacao,45,F,No,65,50000,0,Aviva,Aviva Life Insurance+,8.68,true,Recovered from SolutionBuilder client history
-2026-11-19,34969516,Isamara Cotacao,45,F,No,65,100000,0,Legal & General,Legal & General Life,12.49,true,Recovered from SolutionBuilder client history
-2026-11-19,34969516,Isamara Cotacao,45,F,No,65,100000,0,Zurich,Zurich Life,13.25,true,Recovered from SolutionBuilder client history
-2026-11-19,34969516,Isamara Cotacao,45,F,No,65,100000,0,Aviva,Aviva Life Insurance+,15.00,true,Recovered from SolutionBuilder client history
-2026-11-19,34969550,Isamara Cotacao,45,F,No,85,50000,0,Legal & General,Legal & General Life,10.90,true,Recovered from SolutionBuilder client history
-2026-11-19,34969550,Isamara Cotacao,45,F,No,85,50000,0,Zurich,Zurich Life,13.63,true,Recovered from SolutionBuilder client history
-2026-11-19,34969550,Isamara Cotacao,45,F,No,85,50000,0,Aviva,Aviva Life Insurance+,13.46,true,Recovered from SolutionBuilder client history
-2026-11-19,34969551,Isamara Cotacao,45,F,No,85,100000,0,Legal & General,Legal & General Life,20.91,true,Recovered from SolutionBuilder client history
-2026-11-19,34969551,Isamara Cotacao,45,F,No,85,100000,0,Zurich,Zurich Life,24.55,true,Recovered from SolutionBuilder client history
-2026-11-19,34969551,Isamara Cotacao,45,F,No,85,100000,0,Aviva,Aviva Life Insurance+,22.34,true,Recovered from SolutionBuilder client history
-2026-11-20,34969557,Isamara Cotacao,55,F,No,65,50000,0,Legal & General,Legal & General Life,12.80,true,Recovered from SolutionBuilder client history
-2026-11-20,34969557,Isamara Cotacao,55,F,No,65,50000,0,Zurich,Zurich Life,13.57,true,Recovered from SolutionBuilder client history
-2026-11-20,34969557,Isamara Cotacao,55,F,No,65,50000,0,Aviva,Aviva Life Insurance+,15.40,true,Recovered from SolutionBuilder client history
-2026-11-20,34969559,Isamara Cotacao,55,F,No,65,100000,0,Legal & General,Legal & General Life,21.40,true,Recovered from SolutionBuilder client history
-2026-11-20,34969559,Isamara Cotacao,55,F,No,65,100000,0,Zurich,Zurich Life,23.68,true,Recovered from SolutionBuilder client history
-2026-11-20,34969559,Isamara Cotacao,55,F,No,65,100000,0,Aviva,Aviva Life Insurance+,30.64,true,Recovered from SolutionBuilder client history
-2026-11-19,34969588,Isamara Cotacao,55,F,No,85,50000,0,Legal & General,Legal & General Life,24.19,true,Recovered from SolutionBuilder client history
-2026-11-19,34969588,Isamara Cotacao,55,F,No,85,50000,0,Zurich,Zurich Life,25.79,true,Recovered from SolutionBuilder client history
-2026-11-19,34969588,Isamara Cotacao,55,F,No,85,50000,0,Aviva,Aviva Life Insurance+,25.04,true,Recovered from SolutionBuilder client history
-2026-11-19,34969590,Isamara Cotacao,55,F,No,85,100000,0,Legal & General,Legal & General Life,43.87,true,Recovered from SolutionBuilder client history
-2026-11-19,34969590,Isamara Cotacao,55,F,No,85,100000,0,Zurich,Zurich Life,47.25,true,Recovered from SolutionBuilder client history
-2026-11-19,34969590,Isamara Cotacao,55,F,No,85,100000,0,Aviva,Aviva Life Insurance+,48.59,true,Recovered from SolutionBuilder client history
-2026-11-20,34969608,Isamara Cotacao,60,F,No,70,50000,0,Legal & General,Legal & General Life,20.41,true,Recovered from SolutionBuilder client history
-2026-11-20,34969608,Isamara Cotacao,60,F,No,70,50000,0,Zurich,Zurich Life,20.53,true,Recovered from SolutionBuilder client history
-2026-11-20,34969608,Isamara Cotacao,60,F,No,70,50000,0,Aviva,Aviva Life Insurance+,23.13,true,Recovered from SolutionBuilder client history
-2026-11-20,34969610,Isamara Cotacao,60,F,No,70,100000,0,Legal & General,Legal & General Life,37.09,true,Recovered from SolutionBuilder client history
-2026-11-20,34969610,Isamara Cotacao,60,F,No,70,100000,0,Zurich,Zurich Life,36.86,true,Recovered from SolutionBuilder client history
-2026-11-20,34969610,Isamara Cotacao,60,F,No,70,100000,0,Aviva,Aviva Life Insurance+,46.20,true,Recovered from SolutionBuilder client history
-2026-11-20,34969634,Isamara Cotacao,60,F,No,85,50000,0,Legal & General,Legal & General Life,33.46,true,Recovered from SolutionBuilder client history
-2026-11-20,34969634,Isamara Cotacao,60,F,No,85,50000,0,Zurich,Zurich Life,35.71,true,Recovered from SolutionBuilder client history
-2026-11-20,34969634,Isamara Cotacao,60,F,No,85,50000,0,Aviva,Aviva Life Insurance+,36.45,true,Recovered from SolutionBuilder client history
-2026-11-20,34969636,Isamara Cotacao,60,F,No,85,100000,0,Legal & General,Legal & General Life,61.61,true,Recovered from SolutionBuilder client history
-2026-11-20,34969636,Isamara Cotacao,60,F,No,85,100000,0,Zurich,Zurich Life,65.95,true,Recovered from SolutionBuilder client history
-2026-11-20,34969636,Isamara Cotacao,60,F,No,85,100000,0,Aviva,Aviva Life Insurance+,68.28,true,Recovered from SolutionBuilder client history
-2026-11-19,34969529,Isamara Cotacao,45,F,No,70,50000,0,Legal & General,Legal & General Life,8.18,true,Recovered from SolutionBuilder client history
-2026-11-19,34969529,Isamara Cotacao,45,F,No,70,50000,0,Zurich,Zurich Life,8.87,true,Recovered from SolutionBuilder client history
-2026-11-19,34969529,Isamara Cotacao,45,F,No,70,50000,0,Aviva,Aviva Life Insurance+,9.42,true,Recovered from SolutionBuilder client history
-2026-11-19,34969532,Isamara Cotacao,45,F,No,70,100000,0,Legal & General,Legal & General Life,14.17,true,Recovered from SolutionBuilder client history
-2026-11-19,34969532,Isamara Cotacao,45,F,No,70,100000,0,Zurich,Zurich Life,14.94,true,Recovered from SolutionBuilder client history
-2026-11-19,34969532,Isamara Cotacao,45,F,No,70,100000,0,Aviva,Aviva Life Insurance+,17.13,true,Recovered from SolutionBuilder client history
-2026-11-19,34969540,Isamara Cotacao,45,F,No,75,50000,0,Legal & General,Legal & General Life,9.29,true,Recovered from SolutionBuilder client history
-2026-11-19,34969540,Isamara Cotacao,45,F,No,75,50000,0,Zurich,Zurich Life,9.88,true,Recovered from SolutionBuilder client history
-2026-11-19,34969540,Isamara Cotacao,45,F,No,75,50000,0,Aviva,Aviva Life Insurance+,10.27,true,Recovered from SolutionBuilder client history
-2026-11-19,34969541,Isamara Cotacao,45,F,No,75,100000,0,Legal & General,Legal & General Life,15.42,true,Recovered from SolutionBuilder client history
-2026-11-19,34969541,Isamara Cotacao,45,F,No,75,100000,0,Zurich,Zurich Life,16.87,true,Recovered from SolutionBuilder client history
-2026-11-19,34969541,Isamara Cotacao,45,F,No,75,100000,0,Aviva,Aviva Life Insurance+,19.55,true,Recovered from SolutionBuilder client history
-2026-11-20,34969565,Isamara Cotacao,55,F,No,70,50000,0,Legal & General,Legal & General Life,14.60,true,Recovered from SolutionBuilder client history
-2026-11-20,34969565,Isamara Cotacao,55,F,No,70,50000,0,Zurich,Zurich Life,15.78,true,Recovered from SolutionBuilder client history
-2026-11-20,34969565,Isamara Cotacao,55,F,No,70,50000,0,Aviva,Aviva Life Insurance+,16.16,true,Recovered from SolutionBuilder client history
-2026-11-20,34969566,Isamara Cotacao,55,F,No,70,100000,0,Legal & General,Legal & General Life,26.33,true,Recovered from SolutionBuilder client history
-2026-11-20,34969566,Isamara Cotacao,55,F,No,70,100000,0,Zurich,Zurich Life,28.34,true,Recovered from SolutionBuilder client history
-2026-11-20,34969566,Isamara Cotacao,55,F,No,70,100000,0,Aviva,Aviva Life Insurance+,32.12,true,Recovered from SolutionBuilder client history
-2026-11-19,34969511,Isamara Cotacao,45,F,No,65,20000,0,Legal & General,Legal & General Life,6.00,true,Recovered from SolutionBuilder client history
-2026-11-19,34969511,Isamara Cotacao,45,F,No,65,20000,0,Zurich,Zurich Life,5.00,true,Recovered from SolutionBuilder client history
-2026-11-19,34969511,Isamara Cotacao,45,F,No,65,20000,0,Aviva,Aviva Life Insurance+,5.00,true,Recovered from SolutionBuilder client history
-2026-11-19,34969512,Isamara Cotacao,45,F,No,65,30000,0,Legal & General,Legal & General Life,6.00,true,Recovered from SolutionBuilder client history
-2026-11-19,34969512,Isamara Cotacao,45,F,No,65,30000,0,Zurich,Zurich Life,5.94,true,Recovered from SolutionBuilder client history
-2026-11-19,34969512,Isamara Cotacao,45,F,No,65,30000,0,Aviva,Aviva Life Insurance+,5.43,true,Recovered from SolutionBuilder client history
-2026-11-19,34969555,Isamara Cotacao,55,F,No,65,20000,0,Legal & General,Legal & General Life,6.60,true,Recovered from SolutionBuilder client history
-2026-11-19,34969555,Isamara Cotacao,55,F,No,65,20000,0,Zurich,Zurich Life,7.11,true,Recovered from SolutionBuilder client history
-2026-11-19,34969555,Isamara Cotacao,55,F,No,65,20000,0,Aviva,Aviva Life Insurance+,6.79,true,Recovered from SolutionBuilder client history
-2026-11-19,34969556,Isamara Cotacao,55,F,No,65,30000,0,Legal & General,Legal & General Life,8.48,true,Recovered from SolutionBuilder client history
-2026-11-19,34969556,Isamara Cotacao,55,F,No,65,30000,0,Zurich,Zurich Life,9.26,true,Recovered from SolutionBuilder client history
-2026-11-19,34969556,Isamara Cotacao,55,F,No,65,30000,0,Aviva,Aviva Life Insurance+,9.45,true,Recovered from SolutionBuilder client history
-2026-11-19,34969599,Isamara Cotacao,60,F,No,65,20000,0,Legal & General,Legal & General Life,7.81,true,Recovered from SolutionBuilder client history
-2026-11-19,34969599,Isamara Cotacao,60,F,No,65,20000,0,Zurich,Zurich Life,7.80,true,Recovered from SolutionBuilder client history
-2026-11-19,34969599,Isamara Cotacao,60,F,No,65,20000,0,Aviva,Aviva Life Insurance+,7.59,true,Recovered from SolutionBuilder client history
-2026-11-19,34969600,Isamara Cotacao,60,F,No,65,30000,0,Legal & General,Legal & General Life,10.83,true,Recovered from SolutionBuilder client history
-2026-11-19,34969600,Isamara Cotacao,60,F,No,65,30000,0,Zurich,Zurich Life,10.29,true,Recovered from SolutionBuilder client history
-2026-11-19,34969600,Isamara Cotacao,60,F,No,65,30000,0,Aviva,Aviva Life Insurance+,10.07,true,Recovered from SolutionBuilder client history
-2026-11-19,34969525,Isamara Cotacao,45,F,No,70,20000,0,Legal & General,Legal & General Life,6.00,true,Recovered from SolutionBuilder client history
-2026-11-19,34969525,Isamara Cotacao,45,F,No,70,20000,0,Zurich,Zurich Life,5.23,true,Recovered from SolutionBuilder client history
-2026-11-19,34969525,Isamara Cotacao,45,F,No,70,20000,0,Aviva,Aviva Life Insurance+,5.00,true,Recovered from SolutionBuilder client history
-2026-11-19,34969527,Isamara Cotacao,45,F,No,70,30000,0,Legal & General,Legal & General Life,6.00,true,Recovered from SolutionBuilder client history
-2026-11-19,34969527,Isamara Cotacao,45,F,No,70,30000,0,Zurich,Zurich Life,6.44,true,Recovered from SolutionBuilder client history
-2026-11-19,34969527,Isamara Cotacao,45,F,No,70,30000,0,Aviva,Aviva Life Insurance+,6.21,true,Recovered from SolutionBuilder client history
-2026-11-19,34969563,Isamara Cotacao,55,F,No,70,20000,0,Legal & General,Legal & General Life,6.61,true,Recovered from SolutionBuilder client history
-2026-11-19,34969563,Isamara Cotacao,55,F,No,70,20000,0,Zurich,Zurich Life,7.99,true,Recovered from SolutionBuilder client history
-2026-11-19,34969563,Isamara Cotacao,55,F,No,70,20000,0,Aviva,Aviva Life Insurance+,7.29,true,Recovered from SolutionBuilder client history
-2026-11-19,34969564,Isamara Cotacao,55,F,No,70,30000,0,Legal & General,Legal & General Life,9.56,true,Recovered from SolutionBuilder client history
-2026-11-19,34969564,Isamara Cotacao,55,F,No,70,30000,0,Zurich,Zurich Life,10.58,true,Recovered from SolutionBuilder client history
-2026-11-19,34969564,Isamara Cotacao,55,F,No,70,30000,0,Aviva,Aviva Life Insurance+,10.94,true,Recovered from SolutionBuilder client history
-2026-11-19,34969606,Isamara Cotacao,60,F,No,70,20000,0,Legal & General,Legal & General Life,9.62,true,Recovered from SolutionBuilder client history
-2026-11-19,34969606,Isamara Cotacao,60,F,No,70,20000,0,Zurich,Zurich Life,9.89,true,Recovered from SolutionBuilder client history
-2026-11-19,34969606,Isamara Cotacao,60,F,No,70,20000,0,Aviva,Aviva Life Insurance+,10.14,true,Recovered from SolutionBuilder client history
-2026-11-19,34969607,Isamara Cotacao,60,F,No,70,30000,0,Legal & General,Legal & General Life,13.05,true,Recovered from SolutionBuilder client history
-2026-11-19,34969607,Isamara Cotacao,60,F,No,70,30000,0,Zurich,Zurich Life,13.44,true,Recovered from SolutionBuilder client history
-2026-11-19,34969607,Isamara Cotacao,60,F,No,70,30000,0,Aviva,Aviva Life Insurance+,13.88,true,Recovered from SolutionBuilder client history
-2026-11-19,34969538,Isamara Cotacao,45,F,No,75,20000,0,Legal & General,Legal & General Life,6.00,true,Recovered from SolutionBuilder client history
-2026-11-19,34969538,Isamara Cotacao,45,F,No,75,20000,0,Zurich,Zurich Life,5.63,true,Recovered from SolutionBuilder client history
-2026-11-19,34969538,Isamara Cotacao,45,F,No,75,20000,0,Aviva,Aviva Life Insurance+,5.18,true,Recovered from SolutionBuilder client history
-2026-11-19,34969539,Isamara Cotacao,45,F,No,75,30000,0,Legal & General,Legal & General Life,6.38,true,Recovered from SolutionBuilder client history
-2026-11-19,34969539,Isamara Cotacao,45,F,No,75,30000,0,Zurich,Zurich Life,7.04,true,Recovered from SolutionBuilder client history
-2026-11-19,34969539,Isamara Cotacao,45,F,No,75,30000,0,Aviva,Aviva Life Insurance+,7.03,true,Recovered from SolutionBuilder client history
-2026-11-19,34969575,Isamara Cotacao,55,F,No,75,20000,0,Legal & General,Legal & General Life,7.62,true,Recovered from SolutionBuilder client history
-2026-11-19,34969575,Isamara Cotacao,55,F,No,75,20000,0,Zurich,Zurich Life,8.89,true,Recovered from SolutionBuilder client history
-2026-11-19,34969575,Isamara Cotacao,55,F,No,75,20000,0,Aviva,Aviva Life Insurance+,8.75,true,Recovered from SolutionBuilder client history
-2026-11-19,34969576,Isamara Cotacao,55,F,No,75,30000,0,Legal & General,Legal & General Life,10.97,true,Recovered from SolutionBuilder client history
-2026-11-19,34969576,Isamara Cotacao,55,F,No,75,30000,0,Zurich,Zurich Life,11.93,true,Recovered from SolutionBuilder client history
-2026-11-19,34969576,Isamara Cotacao,55,F,No,75,30000,0,Aviva,Aviva Life Insurance+,12.56,true,Recovered from SolutionBuilder client history
-2026-11-19,34969620,Isamara Cotacao,60,F,No,75,30000,0,Legal & General,Legal & General Life,14.82,true,Recovered from SolutionBuilder client history
-2026-11-19,34969620,Isamara Cotacao,60,F,No,75,30000,0,Zurich,Zurich Life,15.93,true,Recovered from SolutionBuilder client history
-2026-11-19,34969620,Isamara Cotacao,60,F,No,75,30000,0,Aviva,Aviva Life Insurance+,16.18,true,Recovered from SolutionBuilder client history
-2026-11-19,34969548,Isamara Cotacao,45,F,No,85,20000,0,Legal & General,Legal & General Life,6.40,true,Recovered from SolutionBuilder client history
-2026-11-19,34969548,Isamara Cotacao,45,F,No,85,20000,0,Zurich,Zurich Life,7.13,true,Recovered from SolutionBuilder client history
-2026-11-19,34969548,Isamara Cotacao,45,F,No,85,20000,0,Aviva,Aviva Life Insurance+,6.63,true,Recovered from SolutionBuilder client history
-2026-11-19,34969549,Isamara Cotacao,45,F,No,85,30000,0,Legal & General,Legal & General Life,7.34,true,Recovered from SolutionBuilder client history
-2026-11-19,34969549,Isamara Cotacao,45,F,No,85,30000,0,Zurich,Zurich Life,9.30,true,Recovered from SolutionBuilder client history
-2026-11-19,34969549,Isamara Cotacao,45,F,No,85,30000,0,Aviva,Aviva Life Insurance+,9.51,true,Recovered from SolutionBuilder client history
-2026-11-19,34969586,Isamara Cotacao,55,F,No,85,20000,0,Legal & General,Legal & General Life,10.02,true,Recovered from SolutionBuilder client history
-2026-11-19,34969586,Isamara Cotacao,55,F,No,85,20000,0,Zurich,Zurich Life,12.00,true,Recovered from SolutionBuilder client history
-2026-11-19,34969586,Isamara Cotacao,55,F,No,85,20000,0,Aviva,Aviva Life Insurance+,12.06,true,Recovered from SolutionBuilder client history
-2026-11-19,34969587,Isamara Cotacao,55,F,No,85,30000,0,Legal & General,Legal & General Life,15.31,true,Recovered from SolutionBuilder client history
-2026-11-19,34969587,Isamara Cotacao,55,F,No,85,30000,0,Zurich,Zurich Life,16.60,true,Recovered from SolutionBuilder client history
-2026-11-19,34969587,Isamara Cotacao,55,F,No,85,30000,0,Aviva,Aviva Life Insurance+,17.13,true,Recovered from SolutionBuilder client history
-2026-11-19,34969632,Isamara Cotacao,60,F,No,85,20000,0,Legal & General,Legal & General Life,15.10,true,Recovered from SolutionBuilder client history
-2026-11-19,34969632,Isamara Cotacao,60,F,No,85,20000,0,Zurich,Zurich Life,15.96,true,Recovered from SolutionBuilder client history
-2026-11-19,34969632,Isamara Cotacao,60,F,No,85,20000,0,Aviva,Aviva Life Insurance+,16.82,true,Recovered from SolutionBuilder client history
-2026-11-19,34969633,Isamara Cotacao,60,F,No,85,30000,0,Legal & General,Legal & General Life,20.87,true,Recovered from SolutionBuilder client history
-2026-11-19,34969633,Isamara Cotacao,60,F,No,85,30000,0,Zurich,Zurich Life,22.55,true,Recovered from SolutionBuilder client history
-2026-11-19,34969633,Isamara Cotacao,60,F,No,85,30000,0,Aviva,Aviva Life Insurance+,22.77,true,Recovered from SolutionBuilder client history
-2026-11-18,34952267,Isamara Cotacao,50,F,No,70,20000,0,Legal & General,Legal & General Life,6.47,true,Recovered from SolutionBuilder client history
-2026-11-18,34952267,Isamara Cotacao,50,F,No,70,20000,0,Zurich,Zurich Life,6.44,true,Recovered from SolutionBuilder client history
-2026-11-18,34952267,Isamara Cotacao,50,F,No,70,20000,0,Aviva,Aviva Life Insurance+,5.91,true,Recovered from SolutionBuilder client history
-2026-11-18,34952269,Isamara Cotacao,50,F,No,70,30000,0,Legal & General,Legal & General Life,7.50,true,Recovered from SolutionBuilder client history
-2026-11-18,34952269,Isamara Cotacao,50,F,No,70,30000,0,Zurich,Zurich Life,8.27,true,Recovered from SolutionBuilder client history
-2026-11-18,34952269,Isamara Cotacao,50,F,No,70,30000,0,Aviva,Aviva Life Insurance+,7.89,true,Recovered from SolutionBuilder client history
-2026-11-18,34952271,Isamara Cotacao,50,F,No,70,50000,0,Legal & General,Legal & General Life,11.17,true,Recovered from SolutionBuilder client history
-2026-11-18,34952271,Isamara Cotacao,50,F,No,70,50000,0,Zurich,Zurich Life,11.91,true,Recovered from SolutionBuilder client history
-2026-11-18,34952271,Isamara Cotacao,50,F,No,70,50000,0,Aviva,Aviva Life Insurance+,12.02,true,Recovered from SolutionBuilder client history
-2026-11-18,34952272,Isamara Cotacao,50,F,No,70,100000,0,Legal & General,Legal & General Life,18.73,true,Recovered from SolutionBuilder client history
-2026-11-18,34952272,Isamara Cotacao,50,F,No,70,100000,0,Zurich,Zurich Life,20.82,true,Recovered from SolutionBuilder client history
-2026-11-18,34952272,Isamara Cotacao,50,F,No,70,100000,0,Aviva,Aviva Life Insurance+,22.69,true,Recovered from SolutionBuilder client history
-2026-11-18,34950418,Isamara Cotacao,50,F,No,65,70000,0,Legal & General,Legal & General Life,12.92,true,Recovered from SolutionBuilder client history
-2026-11-18,34950418,Isamara Cotacao,50,F,No,65,70000,0,Zurich,Zurich Life,14.44,true,Recovered from SolutionBuilder client history
-2026-11-18,34950418,Isamara Cotacao,50,F,No,65,70000,0,Aviva,Aviva Life Insurance+,14.61,true,Recovered from SolutionBuilder client history
-2026-11-18,34945773,Isamara Cotacao,51,F,No,75,100000,0,Legal & General,Legal & General Life,23.34,true,Recovered from SolutionBuilder client history
-2026-11-18,34945773,Isamara Cotacao,51,F,No,75,100000,0,Zurich,Zurich Life,24.83,true,Recovered from SolutionBuilder client history
-2026-11-18,34945773,Isamara Cotacao,51,F,No,75,100000,0,Aviva,Aviva Life Insurance+,28.60,true,Recovered from SolutionBuilder client history
-2026-11-19,34968235,Isamara Cotacao,38,F,No,65,50000,10000,Legal & General,Legal & General Life + CI (Standard),11.88,true,Recovered from SolutionBuilder client history
-2026-11-19,34968235,Isamara Cotacao,38,F,No,65,50000,10000,Zurich,Zurich Life & CI,12.24,true,Recovered from SolutionBuilder client history
-2026-11-19,34968235,Isamara Cotacao,38,F,No,65,50000,10000,Aviva,Aviva Multi-Product with Core CI,12.06,true,Recovered from SolutionBuilder client history
-2026-11-18,34945722,Isamara Cotacao,51,F,No,75,50000,10000,Legal & General,Legal & General Life + CI (Standard),29.01,true,Recovered from SolutionBuilder client history
-2026-11-18,34945722,Isamara Cotacao,51,F,No,75,50000,10000,Zurich,Zurich Life & CI,33.04,true,Recovered from SolutionBuilder client history
-2026-11-18,34945722,Isamara Cotacao,51,F,No,75,50000,10000,Aviva,Aviva Multi-Product with Core CI,28.80,true,Recovered from SolutionBuilder client history
-2026-11-19,34968397,Isamara Cotacao,34,F,No,65,20000,20000,Legal & General,Legal & General Life + CI (Standard),13.42,true,Recovered from SolutionBuilder client history
-2026-11-19,34968397,Isamara Cotacao,34,F,No,65,20000,20000,Zurich,Zurich Life & CI,13.98,true,Recovered from SolutionBuilder client history
-2026-11-19,34968397,Isamara Cotacao,34,F,No,65,20000,20000,Aviva,Aviva Multi-Product with Core CI,15.33,true,Recovered from SolutionBuilder client history
-2026-11-18,34937503,Wendel Cotacao,35,F,No,65,50000,0,Legal & General,Legal & General Life,6.00,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
-2026-11-18,34937503,Wendel Cotacao,35,F,No,65,50000,0,Zurich,Zurich Life,5.66,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
-2026-11-18,34937503,Wendel Cotacao,35,F,No,65,50000,0,Aviva,Aviva Life Insurance+,5.56,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
-2026-11-18,34937530,Wendel Cotacao,35,F,No,65,100000,0,Legal & General,Legal & General Life,6.92,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
-2026-11-18,34937530,Wendel Cotacao,35,F,No,65,100000,0,Zurich,Zurich Life,7.91,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
-2026-11-18,34937530,Wendel Cotacao,35,F,No,65,100000,0,Aviva,Aviva Life Insurance+,8.40,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
-2026-11-18,34952255,Amaro Cotacao,50,F,No,65,20000,0,Legal & General,Legal & General Life,6.01,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
-2026-11-18,34952255,Amaro Cotacao,50,F,No,65,20000,0,Zurich,Zurich Life,5.94,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
-2026-11-18,34952255,Amaro Cotacao,50,F,No,65,20000,0,Aviva,Aviva Life Insurance+,5.19,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
-2026-11-18,34952257,Amaro Cotacao,50,F,No,65,30000,0,Legal & General,Legal & General Life,6.85,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
-2026-11-18,34952257,Amaro Cotacao,50,F,No,65,30000,0,Zurich,Zurich Life,7.50,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
-2026-11-18,34952257,Amaro Cotacao,50,F,No,65,30000,0,Aviva,Aviva Life Insurance+,7.10,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
-2026-11-18,34952260,Amaro Cotacao,50,F,No,65,50000,0,Legal & General,Legal & General Life,10.08,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
-2026-11-18,34952260,Amaro Cotacao,50,F,No,65,50000,0,Zurich,Zurich Life,10.64,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
-2026-11-18,34952260,Amaro Cotacao,50,F,No,65,50000,0,Aviva,Aviva Life Insurance+,10.62,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
-2026-11-18,34952261,Amaro Cotacao,50,F,No,65,100000,0,Legal & General,Legal & General Life,17.09,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
-2026-11-18,34952261,Amaro Cotacao,50,F,No,65,100000,0,Zurich,Zurich Life,18.42,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
-2026-11-18,34952261,Amaro Cotacao,50,F,No,65,100000,0,Aviva,Aviva Life Insurance+,19.93,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
-2026-11-18,34952273,Amaro Cotacao,50,F,No,75,20000,0,Legal & General,Legal & General Life,6.58,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
-2026-11-18,34952273,Amaro Cotacao,50,F,No,75,20000,0,Zurich,Zurich Life,6.91,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
-2026-11-18,34952273,Amaro Cotacao,50,F,No,75,20000,0,Aviva,Aviva Life Insurance+,6.75,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
-2026-11-18,34952274,Amaro Cotacao,50,F,No,75,30000,0,Legal & General,Legal & General Life,8.24,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
-2026-11-18,34952274,Amaro Cotacao,50,F,No,75,30000,0,Zurich,Zurich Life,8.96,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
-2026-11-18,34952274,Amaro Cotacao,50,F,No,75,30000,0,Aviva,Aviva Life Insurance+,9.13,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
-2026-11-18,34952275,Amaro Cotacao,50,F,No,75,50000,0,Legal & General,Legal & General Life,12.39,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
-2026-11-18,34952275,Amaro Cotacao,50,F,No,75,50000,0,Zurich,Zurich Life,13.07,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
-2026-11-18,34952275,Amaro Cotacao,50,F,No,75,50000,0,Aviva,Aviva Life Insurance+,13.76,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
-2026-11-18,34952276,Amaro Cotacao,50,F,No,75,100000,0,Legal & General,Legal & General Life,21.61,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
-2026-11-18,34952276,Amaro Cotacao,50,F,No,75,100000,0,Zurich,Zurich Life,23.04,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
-2026-11-18,34952276,Amaro Cotacao,50,F,No,75,100000,0,Aviva,Aviva Life Insurance+,26.79,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
-2026-11-19,34955631,Amaro Cotacao,40,F,No,70,200000,0,Legal & General,Legal & General Life,17.41,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
-2026-11-19,34955631,Amaro Cotacao,40,F,No,70,200000,0,Zurich,Zurich Life,18.30,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
-2026-11-19,34955631,Amaro Cotacao,40,F,No,70,200000,0,Aviva,Aviva Life Insurance+,22.36,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
-2026-11-19,34955578,Amaro Cotacao,40,F,No,75,200000,0,Legal & General,Legal & General Life,19.88,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
-2026-11-19,34955578,Amaro Cotacao,40,F,No,75,200000,0,Zurich,Zurich Life,21.16,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
-2026-11-19,34955578,Amaro Cotacao,40,F,No,75,200000,0,Aviva,Aviva Life Insurance+,24.55,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
-2026-11-19,34955484,Amaro Cotacao,40,F,No,65,150000,0,Legal & General,Legal & General Life,12.59,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
-2026-11-19,34955484,Amaro Cotacao,40,F,No,65,150000,0,Zurich,Zurich Life,13.22,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
-2026-11-19,34955484,Amaro Cotacao,40,F,No,65,150000,0,Aviva,Aviva Life Insurance+,15.86,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
-2026-11-19,34955511,Amaro Cotacao,40,F,No,65,200000,0,Legal & General,Legal & General Life,15.35,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
-2026-11-19,34955511,Amaro Cotacao,40,F,No,65,200000,0,Zurich,Zurich Life,16.53,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
-2026-11-19,34955511,Amaro Cotacao,40,F,No,65,200000,0,Aviva,Aviva Life Insurance+,19.81,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
-2026-11-19,34955604,Amaro Cotacao,40,F,No,70,150000,0,Legal & General,Legal & General Life,14.03,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
-2026-11-19,34955604,Amaro Cotacao,40,F,No,70,150000,0,Zurich,Zurich Life,14.68,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
-2026-11-19,34955604,Amaro Cotacao,40,F,No,70,150000,0,Aviva,Aviva Life Insurance+,17.92,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
-2026-11-19,34955550,Amaro Cotacao,40,F,No,75,150000,0,Legal & General,Legal & General Life,15.89,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
-2026-11-19,34955550,Amaro Cotacao,40,F,No,75,150000,0,Zurich,Zurich Life,16.82,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
-2026-11-19,34955550,Amaro Cotacao,40,F,No,75,150000,0,Aviva,Aviva Life Insurance+,18.50,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
-2026-11-20,34981932,Jana Cotacao,47,F,No,65,1000000,0,Legal & General,Legal & General Life,90.36,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details; waiver excluded
-2026-11-20,34981932,Jana Cotacao,47,F,No,65,1000000,0,Zurich,Zurich Life,110.44,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details; waiver excluded
-2026-11-20,34981932,Jana Cotacao,47,F,No,65,1000000,0,Aviva,Aviva Life Insurance+,93.80,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details; waiver excluded
-2026-11-20,34981705,Jana Cotacao,47,F,No,65,500000,0,Legal & General,Legal & General Life,48.96,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details; waiver excluded
-2026-11-20,34981705,Jana Cotacao,47,F,No,65,500000,0,Zurich,Zurich Life,49.28,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details; waiver excluded
-2026-11-20,34981705,Jana Cotacao,47,F,No,65,500000,0,Aviva,Aviva Life Insurance+,51.32,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details; waiver excluded
-2026-11-20,34981685,Jana Cotacao,47,F,No,65,100000,0,Legal & General,Legal & General Life,13.28,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details; waiver excluded
-2026-11-20,34981685,Jana Cotacao,47,F,No,65,100000,0,Zurich,Zurich Life,14.12,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details; waiver excluded
-2026-11-20,34981685,Jana Cotacao,47,F,No,65,100000,0,Aviva,Aviva Life Insurance+,15.80,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details; waiver excluded
-2026-11-20,34984446,Jana Cotacao,47,F,No,70,100000,0,Legal & General,Legal & General Life,15.18,true,Generated in SolutionBuilder; parameters confirmed in Full Details; waiver excluded
-2026-11-20,34984446,Jana Cotacao,47,F,No,70,100000,0,Zurich,Zurich Life,15.86,true,Generated in SolutionBuilder; parameters confirmed in Full Details; waiver excluded
-2026-11-20,34984446,Jana Cotacao,47,F,No,70,100000,0,Aviva,Aviva Life Insurance+,18.12,true,Generated in SolutionBuilder; parameters confirmed in Full Details; waiver excluded
-2026-11-18,34937407,Wendel Cotacao,35,F,No,65,20000,0,Aviva,Aviva Life Insurance+,5.00,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
-2026-11-18,34937407,Wendel Cotacao,35,F,No,65,20000,0,Zurich,Zurich Life,5.00,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
-2026-11-18,34937407,Wendel Cotacao,35,F,No,65,20000,0,Legal & General,Legal & General Life,6.00,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
-2026-11-18,34937472,Wendel Cotacao,35,F,No,65,30000,0,Aviva,Aviva Life Insurance+,5.00,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
-2026-11-18,34937472,Wendel Cotacao,35,F,No,65,30000,0,Zurich,Zurich Life,5.00,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
-2026-11-18,34937472,Wendel Cotacao,35,F,No,65,30000,0,Legal & General,Legal & General Life,6.00,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
-2026-11-18,34937984,Wendel Cotacao,35,F,Yes,65,20000,0,Aviva,Aviva Life Insurance+,5.00,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
-2026-11-18,34937984,Wendel Cotacao,35,F,Yes,65,20000,0,Zurich,Zurich Life,5.30,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
-2026-11-18,34937984,Wendel Cotacao,35,F,Yes,65,20000,0,Legal & General,Legal & General Life,6.00,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
-2026-11-18,34938036,Wendel Cotacao,35,F,Yes,65,30000,0,Legal & General,Legal & General Life,6.00,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
-2026-11-18,34938036,Wendel Cotacao,35,F,Yes,65,30000,0,Aviva,Aviva Life Insurance+,6.15,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
-2026-11-18,34938036,Wendel Cotacao,35,F,Yes,65,30000,0,Zurich,Zurich Life,6.54,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
-2026-11-18,34938086,Wendel Cotacao,35,F,Yes,65,50000,0,Legal & General,Legal & General Life,8.32,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
-2026-11-18,34938086,Wendel Cotacao,35,F,Yes,65,50000,0,Aviva,Aviva Life Insurance+,9.02,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
-2026-11-18,34938086,Wendel Cotacao,35,F,Yes,65,50000,0,Zurich,Zurich Life,9.03,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
-2026-11-18,34938113,Wendel Cotacao,35,F,Yes,65,100000,0,Legal & General,Legal & General Life,13.18,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
-2026-11-18,34938113,Wendel Cotacao,35,F,Yes,65,100000,0,Aviva,Aviva Life Insurance+,14.66,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
-2026-11-18,34938113,Wendel Cotacao,35,F,Yes,65,100000,0,Zurich,Zurich Life,14.91,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-20,34984386,Calibration Profile,46,F,No,65,50000,0,Legal & General,Legal & General Life,8.06,true,Indicative non-underwritten result
+2026-11-20,34984386,Calibration Profile,46,F,No,65,50000,0,Zurich,Zurich Life,8.47,true,Indicative non-underwritten result
+2026-11-20,34984386,Calibration Profile,46,F,No,65,50000,0,Aviva,Aviva Life Insurance+,9.25,true,Indicative non-underwritten result
+2026-11-20,34984390,Calibration Profile,46,F,No,65,100000,0,Legal & General,Legal & General Life,13.28,true,Indicative non-underwritten result
+2026-11-20,34984390,Calibration Profile,46,F,No,65,100000,0,Zurich,Zurich Life,14.12,true,Indicative non-underwritten result
+2026-11-20,34984390,Calibration Profile,46,F,No,65,100000,0,Aviva,Aviva Life Insurance+,15.80,true,Indicative non-underwritten result
+2026-11-20,34984393,Calibration Profile,46,F,No,75,50000,0,Legal & General,Legal & General Life,9.93,true,Indicative non-underwritten result
+2026-11-20,34984393,Calibration Profile,46,F,No,75,50000,0,Zurich,Zurich Life,10.46,true,Indicative non-underwritten result
+2026-11-20,34984393,Calibration Profile,46,F,No,75,50000,0,Aviva,Aviva Life Insurance+,11.11,true,Indicative non-underwritten result
+2026-11-20,34984394,Calibration Profile,46,F,No,75,100000,0,Legal & General,Legal & General Life,16.90,true,Indicative non-underwritten result
+2026-11-20,34984394,Calibration Profile,46,F,No,75,100000,0,Zurich,Zurich Life,18.04,true,Indicative non-underwritten result
+2026-11-20,34984394,Calibration Profile,46,F,No,75,100000,0,Aviva,Aviva Life Insurance+,20.42,true,Indicative non-underwritten result
+2026-11-20,34984397,Calibration Profile,46,F,No,65,50000,10000,Legal & General,Legal & General Life + CI (Standard),16.61,true,Indicative non-underwritten result
+2026-11-20,34984397,Calibration Profile,46,F,No,65,50000,10000,Zurich,Zurich Life & CI,17.11,true,Indicative non-underwritten result
+2026-11-20,34984397,Calibration Profile,46,F,No,65,50000,10000,Aviva,Aviva Multi-Product with Core CI,17.45,true,Indicative non-underwritten result
+2026-11-20,34984399,Calibration Profile,46,F,No,65,50000,20000,Legal & General,Legal & General Life + CI (Standard),23.51,true,Indicative non-underwritten result
+2026-11-20,34984399,Calibration Profile,46,F,No,65,50000,20000,Zurich,Zurich Life & CI,24.09,true,Indicative non-underwritten result
+2026-11-20,34984399,Calibration Profile,46,F,No,65,50000,20000,Aviva,Aviva Multi-Product with Core CI,25.63,true,Indicative non-underwritten result
+2026-11-20,34984400,Calibration Profile,46,F,No,65,100000,10000,Legal & General,Legal & General Life + CI (Standard),21.83,true,Indicative non-underwritten result
+2026-11-20,34984400,Calibration Profile,46,F,No,65,100000,10000,Zurich,Zurich Life & CI,22.76,true,Indicative non-underwritten result
+2026-11-20,34984400,Calibration Profile,46,F,No,65,100000,10000,Aviva,Aviva Multi-Product with Core CI,24.00,true,Indicative non-underwritten result
+2026-11-20,34984401,Calibration Profile,46,F,No,65,100000,20000,Legal & General,Legal & General Life + CI (Standard),28.73,true,Indicative non-underwritten result
+2026-11-20,34984401,Calibration Profile,46,F,No,65,100000,20000,Zurich,Zurich Life & CI,29.74,true,Indicative non-underwritten result
+2026-11-20,34984401,Calibration Profile,46,F,No,65,100000,20000,Aviva,Aviva Multi-Product with Core CI,32.18,true,Indicative non-underwritten result
+2026-11-20,34984402,Calibration Profile,46,F,No,75,50000,10000,Legal & General,Legal & General Life + CI (Standard),20.88,true,Indicative non-underwritten result
+2026-11-20,34984402,Calibration Profile,46,F,No,75,50000,10000,Zurich,Zurich Life & CI,22.48,true,Indicative non-underwritten result
+2026-11-20,34984402,Calibration Profile,46,F,No,75,50000,10000,Aviva,Aviva Multi-Product with Core CI,21.84,true,Indicative non-underwritten result
+2026-11-20,34984403,Calibration Profile,46,F,No,75,50000,20000,Legal & General,Legal & General Life + CI (Standard),30.18,true,Indicative non-underwritten result
+2026-11-20,34984403,Calibration Profile,46,F,No,75,50000,20000,Zurich,Zurich Life & CI,32.26,true,Indicative non-underwritten result
+2026-11-20,34984403,Calibration Profile,46,F,No,75,50000,20000,Aviva,Aviva Multi-Product with Core CI,32.57,true,Indicative non-underwritten result
+2026-11-20,34984404,Calibration Profile,46,F,No,75,100000,10000,Legal & General,Legal & General Life + CI (Standard),27.85,true,Indicative non-underwritten result
+2026-11-20,34984404,Calibration Profile,46,F,No,75,100000,10000,Zurich,Zurich Life & CI,30.06,true,Indicative non-underwritten result
+2026-11-20,34984404,Calibration Profile,46,F,No,75,100000,10000,Aviva,Aviva Multi-Product with Core CI,31.15,true,Indicative non-underwritten result
+2026-11-20,34984405,Calibration Profile,46,F,No,75,100000,20000,Legal & General,Legal & General Life + CI (Standard),37.15,true,Indicative non-underwritten result
+2026-11-20,34984405,Calibration Profile,46,F,No,75,100000,20000,Zurich,Zurich Life & CI,39.84,true,Indicative non-underwritten result
+2026-11-20,34984405,Calibration Profile,46,F,No,75,100000,20000,Aviva,Aviva Multi-Product with Core CI,41.88,true,Indicative non-underwritten result
+2026-11-19,34962032,Calibration Profile,34,F,No,65,50000,10000,Legal & General,Legal & General Life + CI (Standard),10.67,true,Recovered from SolutionBuilder client history
+2026-11-19,34962032,Calibration Profile,34,F,No,65,50000,10000,Zurich,Zurich Life & CI,10.43,true,Recovered from SolutionBuilder client history
+2026-11-19,34962032,Calibration Profile,34,F,No,65,50000,10000,Aviva,Aviva Multi-Product with Core CI,10.23,true,Recovered from SolutionBuilder client history
+2026-11-19,34961508,Calibration Profile,54,F,No,65,100000,0,Legal & General,Legal & General Life,20.66,true,Recovered from SolutionBuilder client history
+2026-11-19,34961508,Calibration Profile,54,F,No,65,100000,0,Zurich,Zurich Life,22.57,true,Recovered from SolutionBuilder client history
+2026-11-19,34961508,Calibration Profile,54,F,No,65,100000,0,Aviva,Aviva Life Insurance+,26.62,true,Recovered from SolutionBuilder client history
+2026-11-19,34969602,Calibration Profile,60,F,No,65,100000,0,Legal & General,Legal & General Life,26.12,true,Recovered from SolutionBuilder client history
+2026-11-19,34969602,Calibration Profile,60,F,No,65,100000,0,Zurich,Zurich Life,26.49,true,Recovered from SolutionBuilder client history
+2026-11-19,34969602,Calibration Profile,60,F,No,65,100000,0,Aviva,Aviva Life Insurance+,29.14,true,Recovered from SolutionBuilder client history
+2026-11-19,34969601,Calibration Profile,60,F,No,65,50000,0,Legal & General,Legal & General Life,16.72,true,Recovered from SolutionBuilder client history
+2026-11-19,34969601,Calibration Profile,60,F,No,65,50000,0,Zurich,Zurich Life,15.29,true,Recovered from SolutionBuilder client history
+2026-11-19,34969601,Calibration Profile,60,F,No,65,50000,0,Aviva,Aviva Life Insurance+,14.57,true,Recovered from SolutionBuilder client history
+2026-11-19,34969578,Calibration Profile,55,F,No,75,50000,0,Legal & General,Legal & General Life,16.94,true,Recovered from SolutionBuilder client history
+2026-11-19,34969578,Calibration Profile,55,F,No,75,50000,0,Zurich,Zurich Life,18.02,true,Recovered from SolutionBuilder client history
+2026-11-19,34969578,Calibration Profile,55,F,No,75,50000,0,Aviva,Aviva Life Insurance+,18.35,true,Recovered from SolutionBuilder client history
+2026-11-19,34969581,Calibration Profile,55,F,No,75,100000,0,Legal & General,Legal & General Life,30.12,true,Recovered from SolutionBuilder client history
+2026-11-19,34969581,Calibration Profile,55,F,No,75,100000,0,Zurich,Zurich Life,32.50,true,Recovered from SolutionBuilder client history
+2026-11-19,34969581,Calibration Profile,55,F,No,75,100000,0,Aviva,Aviva Life Insurance+,35.93,true,Recovered from SolutionBuilder client history
+2026-11-19,34969621,Calibration Profile,60,F,No,75,50000,0,Legal & General,Legal & General Life,23.37,true,Recovered from SolutionBuilder client history
+2026-11-19,34969621,Calibration Profile,60,F,No,75,50000,0,Zurich,Zurich Life,24.68,true,Recovered from SolutionBuilder client history
+2026-11-19,34969621,Calibration Profile,60,F,No,75,50000,0,Aviva,Aviva Life Insurance+,26.24,true,Recovered from SolutionBuilder client history
+2026-11-19,34969622,Calibration Profile,60,F,No,75,100000,0,Legal & General,Legal & General Life,42.22,true,Recovered from SolutionBuilder client history
+2026-11-19,34969622,Calibration Profile,60,F,No,75,100000,0,Zurich,Zurich Life,45.94,true,Recovered from SolutionBuilder client history
+2026-11-19,34969622,Calibration Profile,60,F,No,75,100000,0,Aviva,Aviva Life Insurance+,49.29,true,Recovered from SolutionBuilder client history
+2026-11-19,34969514,Calibration Profile,45,F,No,65,50000,0,Legal & General,Legal & General Life,7.58,true,Recovered from SolutionBuilder client history
+2026-11-19,34969514,Calibration Profile,45,F,No,65,50000,0,Zurich,Zurich Life,8.02,true,Recovered from SolutionBuilder client history
+2026-11-19,34969514,Calibration Profile,45,F,No,65,50000,0,Aviva,Aviva Life Insurance+,8.68,true,Recovered from SolutionBuilder client history
+2026-11-19,34969516,Calibration Profile,45,F,No,65,100000,0,Legal & General,Legal & General Life,12.49,true,Recovered from SolutionBuilder client history
+2026-11-19,34969516,Calibration Profile,45,F,No,65,100000,0,Zurich,Zurich Life,13.25,true,Recovered from SolutionBuilder client history
+2026-11-19,34969516,Calibration Profile,45,F,No,65,100000,0,Aviva,Aviva Life Insurance+,15.00,true,Recovered from SolutionBuilder client history
+2026-11-19,34969550,Calibration Profile,45,F,No,85,50000,0,Legal & General,Legal & General Life,10.90,true,Recovered from SolutionBuilder client history
+2026-11-19,34969550,Calibration Profile,45,F,No,85,50000,0,Zurich,Zurich Life,13.63,true,Recovered from SolutionBuilder client history
+2026-11-19,34969550,Calibration Profile,45,F,No,85,50000,0,Aviva,Aviva Life Insurance+,13.46,true,Recovered from SolutionBuilder client history
+2026-11-19,34969551,Calibration Profile,45,F,No,85,100000,0,Legal & General,Legal & General Life,20.91,true,Recovered from SolutionBuilder client history
+2026-11-19,34969551,Calibration Profile,45,F,No,85,100000,0,Zurich,Zurich Life,24.55,true,Recovered from SolutionBuilder client history
+2026-11-19,34969551,Calibration Profile,45,F,No,85,100000,0,Aviva,Aviva Life Insurance+,22.34,true,Recovered from SolutionBuilder client history
+2026-11-20,34969557,Calibration Profile,55,F,No,65,50000,0,Legal & General,Legal & General Life,12.80,true,Recovered from SolutionBuilder client history
+2026-11-20,34969557,Calibration Profile,55,F,No,65,50000,0,Zurich,Zurich Life,13.57,true,Recovered from SolutionBuilder client history
+2026-11-20,34969557,Calibration Profile,55,F,No,65,50000,0,Aviva,Aviva Life Insurance+,15.40,true,Recovered from SolutionBuilder client history
+2026-11-20,34969559,Calibration Profile,55,F,No,65,100000,0,Legal & General,Legal & General Life,21.40,true,Recovered from SolutionBuilder client history
+2026-11-20,34969559,Calibration Profile,55,F,No,65,100000,0,Zurich,Zurich Life,23.68,true,Recovered from SolutionBuilder client history
+2026-11-20,34969559,Calibration Profile,55,F,No,65,100000,0,Aviva,Aviva Life Insurance+,30.64,true,Recovered from SolutionBuilder client history
+2026-11-19,34969588,Calibration Profile,55,F,No,85,50000,0,Legal & General,Legal & General Life,24.19,true,Recovered from SolutionBuilder client history
+2026-11-19,34969588,Calibration Profile,55,F,No,85,50000,0,Zurich,Zurich Life,25.79,true,Recovered from SolutionBuilder client history
+2026-11-19,34969588,Calibration Profile,55,F,No,85,50000,0,Aviva,Aviva Life Insurance+,25.04,true,Recovered from SolutionBuilder client history
+2026-11-19,34969590,Calibration Profile,55,F,No,85,100000,0,Legal & General,Legal & General Life,43.87,true,Recovered from SolutionBuilder client history
+2026-11-19,34969590,Calibration Profile,55,F,No,85,100000,0,Zurich,Zurich Life,47.25,true,Recovered from SolutionBuilder client history
+2026-11-19,34969590,Calibration Profile,55,F,No,85,100000,0,Aviva,Aviva Life Insurance+,48.59,true,Recovered from SolutionBuilder client history
+2026-11-20,34969608,Calibration Profile,60,F,No,70,50000,0,Legal & General,Legal & General Life,20.41,true,Recovered from SolutionBuilder client history
+2026-11-20,34969608,Calibration Profile,60,F,No,70,50000,0,Zurich,Zurich Life,20.53,true,Recovered from SolutionBuilder client history
+2026-11-20,34969608,Calibration Profile,60,F,No,70,50000,0,Aviva,Aviva Life Insurance+,23.13,true,Recovered from SolutionBuilder client history
+2026-11-20,34969610,Calibration Profile,60,F,No,70,100000,0,Legal & General,Legal & General Life,37.09,true,Recovered from SolutionBuilder client history
+2026-11-20,34969610,Calibration Profile,60,F,No,70,100000,0,Zurich,Zurich Life,36.86,true,Recovered from SolutionBuilder client history
+2026-11-20,34969610,Calibration Profile,60,F,No,70,100000,0,Aviva,Aviva Life Insurance+,46.20,true,Recovered from SolutionBuilder client history
+2026-11-20,34969634,Calibration Profile,60,F,No,85,50000,0,Legal & General,Legal & General Life,33.46,true,Recovered from SolutionBuilder client history
+2026-11-20,34969634,Calibration Profile,60,F,No,85,50000,0,Zurich,Zurich Life,35.71,true,Recovered from SolutionBuilder client history
+2026-11-20,34969634,Calibration Profile,60,F,No,85,50000,0,Aviva,Aviva Life Insurance+,36.45,true,Recovered from SolutionBuilder client history
+2026-11-20,34969636,Calibration Profile,60,F,No,85,100000,0,Legal & General,Legal & General Life,61.61,true,Recovered from SolutionBuilder client history
+2026-11-20,34969636,Calibration Profile,60,F,No,85,100000,0,Zurich,Zurich Life,65.95,true,Recovered from SolutionBuilder client history
+2026-11-20,34969636,Calibration Profile,60,F,No,85,100000,0,Aviva,Aviva Life Insurance+,68.28,true,Recovered from SolutionBuilder client history
+2026-11-19,34969529,Calibration Profile,45,F,No,70,50000,0,Legal & General,Legal & General Life,8.18,true,Recovered from SolutionBuilder client history
+2026-11-19,34969529,Calibration Profile,45,F,No,70,50000,0,Zurich,Zurich Life,8.87,true,Recovered from SolutionBuilder client history
+2026-11-19,34969529,Calibration Profile,45,F,No,70,50000,0,Aviva,Aviva Life Insurance+,9.42,true,Recovered from SolutionBuilder client history
+2026-11-19,34969532,Calibration Profile,45,F,No,70,100000,0,Legal & General,Legal & General Life,14.17,true,Recovered from SolutionBuilder client history
+2026-11-19,34969532,Calibration Profile,45,F,No,70,100000,0,Zurich,Zurich Life,14.94,true,Recovered from SolutionBuilder client history
+2026-11-19,34969532,Calibration Profile,45,F,No,70,100000,0,Aviva,Aviva Life Insurance+,17.13,true,Recovered from SolutionBuilder client history
+2026-11-19,34969540,Calibration Profile,45,F,No,75,50000,0,Legal & General,Legal & General Life,9.29,true,Recovered from SolutionBuilder client history
+2026-11-19,34969540,Calibration Profile,45,F,No,75,50000,0,Zurich,Zurich Life,9.88,true,Recovered from SolutionBuilder client history
+2026-11-19,34969540,Calibration Profile,45,F,No,75,50000,0,Aviva,Aviva Life Insurance+,10.27,true,Recovered from SolutionBuilder client history
+2026-11-19,34969541,Calibration Profile,45,F,No,75,100000,0,Legal & General,Legal & General Life,15.42,true,Recovered from SolutionBuilder client history
+2026-11-19,34969541,Calibration Profile,45,F,No,75,100000,0,Zurich,Zurich Life,16.87,true,Recovered from SolutionBuilder client history
+2026-11-19,34969541,Calibration Profile,45,F,No,75,100000,0,Aviva,Aviva Life Insurance+,19.55,true,Recovered from SolutionBuilder client history
+2026-11-20,34969565,Calibration Profile,55,F,No,70,50000,0,Legal & General,Legal & General Life,14.60,true,Recovered from SolutionBuilder client history
+2026-11-20,34969565,Calibration Profile,55,F,No,70,50000,0,Zurich,Zurich Life,15.78,true,Recovered from SolutionBuilder client history
+2026-11-20,34969565,Calibration Profile,55,F,No,70,50000,0,Aviva,Aviva Life Insurance+,16.16,true,Recovered from SolutionBuilder client history
+2026-11-20,34969566,Calibration Profile,55,F,No,70,100000,0,Legal & General,Legal & General Life,26.33,true,Recovered from SolutionBuilder client history
+2026-11-20,34969566,Calibration Profile,55,F,No,70,100000,0,Zurich,Zurich Life,28.34,true,Recovered from SolutionBuilder client history
+2026-11-20,34969566,Calibration Profile,55,F,No,70,100000,0,Aviva,Aviva Life Insurance+,32.12,true,Recovered from SolutionBuilder client history
+2026-11-19,34969511,Calibration Profile,45,F,No,65,20000,0,Legal & General,Legal & General Life,6.00,true,Recovered from SolutionBuilder client history
+2026-11-19,34969511,Calibration Profile,45,F,No,65,20000,0,Zurich,Zurich Life,5.00,true,Recovered from SolutionBuilder client history
+2026-11-19,34969511,Calibration Profile,45,F,No,65,20000,0,Aviva,Aviva Life Insurance+,5.00,true,Recovered from SolutionBuilder client history
+2026-11-19,34969512,Calibration Profile,45,F,No,65,30000,0,Legal & General,Legal & General Life,6.00,true,Recovered from SolutionBuilder client history
+2026-11-19,34969512,Calibration Profile,45,F,No,65,30000,0,Zurich,Zurich Life,5.94,true,Recovered from SolutionBuilder client history
+2026-11-19,34969512,Calibration Profile,45,F,No,65,30000,0,Aviva,Aviva Life Insurance+,5.43,true,Recovered from SolutionBuilder client history
+2026-11-19,34969555,Calibration Profile,55,F,No,65,20000,0,Legal & General,Legal & General Life,6.60,true,Recovered from SolutionBuilder client history
+2026-11-19,34969555,Calibration Profile,55,F,No,65,20000,0,Zurich,Zurich Life,7.11,true,Recovered from SolutionBuilder client history
+2026-11-19,34969555,Calibration Profile,55,F,No,65,20000,0,Aviva,Aviva Life Insurance+,6.79,true,Recovered from SolutionBuilder client history
+2026-11-19,34969556,Calibration Profile,55,F,No,65,30000,0,Legal & General,Legal & General Life,8.48,true,Recovered from SolutionBuilder client history
+2026-11-19,34969556,Calibration Profile,55,F,No,65,30000,0,Zurich,Zurich Life,9.26,true,Recovered from SolutionBuilder client history
+2026-11-19,34969556,Calibration Profile,55,F,No,65,30000,0,Aviva,Aviva Life Insurance+,9.45,true,Recovered from SolutionBuilder client history
+2026-11-19,34969599,Calibration Profile,60,F,No,65,20000,0,Legal & General,Legal & General Life,7.81,true,Recovered from SolutionBuilder client history
+2026-11-19,34969599,Calibration Profile,60,F,No,65,20000,0,Zurich,Zurich Life,7.80,true,Recovered from SolutionBuilder client history
+2026-11-19,34969599,Calibration Profile,60,F,No,65,20000,0,Aviva,Aviva Life Insurance+,7.59,true,Recovered from SolutionBuilder client history
+2026-11-19,34969600,Calibration Profile,60,F,No,65,30000,0,Legal & General,Legal & General Life,10.83,true,Recovered from SolutionBuilder client history
+2026-11-19,34969600,Calibration Profile,60,F,No,65,30000,0,Zurich,Zurich Life,10.29,true,Recovered from SolutionBuilder client history
+2026-11-19,34969600,Calibration Profile,60,F,No,65,30000,0,Aviva,Aviva Life Insurance+,10.07,true,Recovered from SolutionBuilder client history
+2026-11-19,34969525,Calibration Profile,45,F,No,70,20000,0,Legal & General,Legal & General Life,6.00,true,Recovered from SolutionBuilder client history
+2026-11-19,34969525,Calibration Profile,45,F,No,70,20000,0,Zurich,Zurich Life,5.23,true,Recovered from SolutionBuilder client history
+2026-11-19,34969525,Calibration Profile,45,F,No,70,20000,0,Aviva,Aviva Life Insurance+,5.00,true,Recovered from SolutionBuilder client history
+2026-11-19,34969527,Calibration Profile,45,F,No,70,30000,0,Legal & General,Legal & General Life,6.00,true,Recovered from SolutionBuilder client history
+2026-11-19,34969527,Calibration Profile,45,F,No,70,30000,0,Zurich,Zurich Life,6.44,true,Recovered from SolutionBuilder client history
+2026-11-19,34969527,Calibration Profile,45,F,No,70,30000,0,Aviva,Aviva Life Insurance+,6.21,true,Recovered from SolutionBuilder client history
+2026-11-19,34969563,Calibration Profile,55,F,No,70,20000,0,Legal & General,Legal & General Life,6.61,true,Recovered from SolutionBuilder client history
+2026-11-19,34969563,Calibration Profile,55,F,No,70,20000,0,Zurich,Zurich Life,7.99,true,Recovered from SolutionBuilder client history
+2026-11-19,34969563,Calibration Profile,55,F,No,70,20000,0,Aviva,Aviva Life Insurance+,7.29,true,Recovered from SolutionBuilder client history
+2026-11-19,34969564,Calibration Profile,55,F,No,70,30000,0,Legal & General,Legal & General Life,9.56,true,Recovered from SolutionBuilder client history
+2026-11-19,34969564,Calibration Profile,55,F,No,70,30000,0,Zurich,Zurich Life,10.58,true,Recovered from SolutionBuilder client history
+2026-11-19,34969564,Calibration Profile,55,F,No,70,30000,0,Aviva,Aviva Life Insurance+,10.94,true,Recovered from SolutionBuilder client history
+2026-11-19,34969606,Calibration Profile,60,F,No,70,20000,0,Legal & General,Legal & General Life,9.62,true,Recovered from SolutionBuilder client history
+2026-11-19,34969606,Calibration Profile,60,F,No,70,20000,0,Zurich,Zurich Life,9.89,true,Recovered from SolutionBuilder client history
+2026-11-19,34969606,Calibration Profile,60,F,No,70,20000,0,Aviva,Aviva Life Insurance+,10.14,true,Recovered from SolutionBuilder client history
+2026-11-19,34969607,Calibration Profile,60,F,No,70,30000,0,Legal & General,Legal & General Life,13.05,true,Recovered from SolutionBuilder client history
+2026-11-19,34969607,Calibration Profile,60,F,No,70,30000,0,Zurich,Zurich Life,13.44,true,Recovered from SolutionBuilder client history
+2026-11-19,34969607,Calibration Profile,60,F,No,70,30000,0,Aviva,Aviva Life Insurance+,13.88,true,Recovered from SolutionBuilder client history
+2026-11-19,34969538,Calibration Profile,45,F,No,75,20000,0,Legal & General,Legal & General Life,6.00,true,Recovered from SolutionBuilder client history
+2026-11-19,34969538,Calibration Profile,45,F,No,75,20000,0,Zurich,Zurich Life,5.63,true,Recovered from SolutionBuilder client history
+2026-11-19,34969538,Calibration Profile,45,F,No,75,20000,0,Aviva,Aviva Life Insurance+,5.18,true,Recovered from SolutionBuilder client history
+2026-11-19,34969539,Calibration Profile,45,F,No,75,30000,0,Legal & General,Legal & General Life,6.38,true,Recovered from SolutionBuilder client history
+2026-11-19,34969539,Calibration Profile,45,F,No,75,30000,0,Zurich,Zurich Life,7.04,true,Recovered from SolutionBuilder client history
+2026-11-19,34969539,Calibration Profile,45,F,No,75,30000,0,Aviva,Aviva Life Insurance+,7.03,true,Recovered from SolutionBuilder client history
+2026-11-19,34969575,Calibration Profile,55,F,No,75,20000,0,Legal & General,Legal & General Life,7.62,true,Recovered from SolutionBuilder client history
+2026-11-19,34969575,Calibration Profile,55,F,No,75,20000,0,Zurich,Zurich Life,8.89,true,Recovered from SolutionBuilder client history
+2026-11-19,34969575,Calibration Profile,55,F,No,75,20000,0,Aviva,Aviva Life Insurance+,8.75,true,Recovered from SolutionBuilder client history
+2026-11-19,34969576,Calibration Profile,55,F,No,75,30000,0,Legal & General,Legal & General Life,10.97,true,Recovered from SolutionBuilder client history
+2026-11-19,34969576,Calibration Profile,55,F,No,75,30000,0,Zurich,Zurich Life,11.93,true,Recovered from SolutionBuilder client history
+2026-11-19,34969576,Calibration Profile,55,F,No,75,30000,0,Aviva,Aviva Life Insurance+,12.56,true,Recovered from SolutionBuilder client history
+2026-11-19,34969620,Calibration Profile,60,F,No,75,30000,0,Legal & General,Legal & General Life,14.82,true,Recovered from SolutionBuilder client history
+2026-11-19,34969620,Calibration Profile,60,F,No,75,30000,0,Zurich,Zurich Life,15.93,true,Recovered from SolutionBuilder client history
+2026-11-19,34969620,Calibration Profile,60,F,No,75,30000,0,Aviva,Aviva Life Insurance+,16.18,true,Recovered from SolutionBuilder client history
+2026-11-19,34969548,Calibration Profile,45,F,No,85,20000,0,Legal & General,Legal & General Life,6.40,true,Recovered from SolutionBuilder client history
+2026-11-19,34969548,Calibration Profile,45,F,No,85,20000,0,Zurich,Zurich Life,7.13,true,Recovered from SolutionBuilder client history
+2026-11-19,34969548,Calibration Profile,45,F,No,85,20000,0,Aviva,Aviva Life Insurance+,6.63,true,Recovered from SolutionBuilder client history
+2026-11-19,34969549,Calibration Profile,45,F,No,85,30000,0,Legal & General,Legal & General Life,7.34,true,Recovered from SolutionBuilder client history
+2026-11-19,34969549,Calibration Profile,45,F,No,85,30000,0,Zurich,Zurich Life,9.30,true,Recovered from SolutionBuilder client history
+2026-11-19,34969549,Calibration Profile,45,F,No,85,30000,0,Aviva,Aviva Life Insurance+,9.51,true,Recovered from SolutionBuilder client history
+2026-11-19,34969586,Calibration Profile,55,F,No,85,20000,0,Legal & General,Legal & General Life,10.02,true,Recovered from SolutionBuilder client history
+2026-11-19,34969586,Calibration Profile,55,F,No,85,20000,0,Zurich,Zurich Life,12.00,true,Recovered from SolutionBuilder client history
+2026-11-19,34969586,Calibration Profile,55,F,No,85,20000,0,Aviva,Aviva Life Insurance+,12.06,true,Recovered from SolutionBuilder client history
+2026-11-19,34969587,Calibration Profile,55,F,No,85,30000,0,Legal & General,Legal & General Life,15.31,true,Recovered from SolutionBuilder client history
+2026-11-19,34969587,Calibration Profile,55,F,No,85,30000,0,Zurich,Zurich Life,16.60,true,Recovered from SolutionBuilder client history
+2026-11-19,34969587,Calibration Profile,55,F,No,85,30000,0,Aviva,Aviva Life Insurance+,17.13,true,Recovered from SolutionBuilder client history
+2026-11-19,34969632,Calibration Profile,60,F,No,85,20000,0,Legal & General,Legal & General Life,15.10,true,Recovered from SolutionBuilder client history
+2026-11-19,34969632,Calibration Profile,60,F,No,85,20000,0,Zurich,Zurich Life,15.96,true,Recovered from SolutionBuilder client history
+2026-11-19,34969632,Calibration Profile,60,F,No,85,20000,0,Aviva,Aviva Life Insurance+,16.82,true,Recovered from SolutionBuilder client history
+2026-11-19,34969633,Calibration Profile,60,F,No,85,30000,0,Legal & General,Legal & General Life,20.87,true,Recovered from SolutionBuilder client history
+2026-11-19,34969633,Calibration Profile,60,F,No,85,30000,0,Zurich,Zurich Life,22.55,true,Recovered from SolutionBuilder client history
+2026-11-19,34969633,Calibration Profile,60,F,No,85,30000,0,Aviva,Aviva Life Insurance+,22.77,true,Recovered from SolutionBuilder client history
+2026-11-18,34952267,Calibration Profile,50,F,No,70,20000,0,Legal & General,Legal & General Life,6.47,true,Recovered from SolutionBuilder client history
+2026-11-18,34952267,Calibration Profile,50,F,No,70,20000,0,Zurich,Zurich Life,6.44,true,Recovered from SolutionBuilder client history
+2026-11-18,34952267,Calibration Profile,50,F,No,70,20000,0,Aviva,Aviva Life Insurance+,5.91,true,Recovered from SolutionBuilder client history
+2026-11-18,34952269,Calibration Profile,50,F,No,70,30000,0,Legal & General,Legal & General Life,7.50,true,Recovered from SolutionBuilder client history
+2026-11-18,34952269,Calibration Profile,50,F,No,70,30000,0,Zurich,Zurich Life,8.27,true,Recovered from SolutionBuilder client history
+2026-11-18,34952269,Calibration Profile,50,F,No,70,30000,0,Aviva,Aviva Life Insurance+,7.89,true,Recovered from SolutionBuilder client history
+2026-11-18,34952271,Calibration Profile,50,F,No,70,50000,0,Legal & General,Legal & General Life,11.17,true,Recovered from SolutionBuilder client history
+2026-11-18,34952271,Calibration Profile,50,F,No,70,50000,0,Zurich,Zurich Life,11.91,true,Recovered from SolutionBuilder client history
+2026-11-18,34952271,Calibration Profile,50,F,No,70,50000,0,Aviva,Aviva Life Insurance+,12.02,true,Recovered from SolutionBuilder client history
+2026-11-18,34952272,Calibration Profile,50,F,No,70,100000,0,Legal & General,Legal & General Life,18.73,true,Recovered from SolutionBuilder client history
+2026-11-18,34952272,Calibration Profile,50,F,No,70,100000,0,Zurich,Zurich Life,20.82,true,Recovered from SolutionBuilder client history
+2026-11-18,34952272,Calibration Profile,50,F,No,70,100000,0,Aviva,Aviva Life Insurance+,22.69,true,Recovered from SolutionBuilder client history
+2026-11-18,34950418,Calibration Profile,50,F,No,65,70000,0,Legal & General,Legal & General Life,12.92,true,Recovered from SolutionBuilder client history
+2026-11-18,34950418,Calibration Profile,50,F,No,65,70000,0,Zurich,Zurich Life,14.44,true,Recovered from SolutionBuilder client history
+2026-11-18,34950418,Calibration Profile,50,F,No,65,70000,0,Aviva,Aviva Life Insurance+,14.61,true,Recovered from SolutionBuilder client history
+2026-11-18,34945773,Calibration Profile,51,F,No,75,100000,0,Legal & General,Legal & General Life,23.34,true,Recovered from SolutionBuilder client history
+2026-11-18,34945773,Calibration Profile,51,F,No,75,100000,0,Zurich,Zurich Life,24.83,true,Recovered from SolutionBuilder client history
+2026-11-18,34945773,Calibration Profile,51,F,No,75,100000,0,Aviva,Aviva Life Insurance+,28.60,true,Recovered from SolutionBuilder client history
+2026-11-19,34968235,Calibration Profile,38,F,No,65,50000,10000,Legal & General,Legal & General Life + CI (Standard),11.88,true,Recovered from SolutionBuilder client history
+2026-11-19,34968235,Calibration Profile,38,F,No,65,50000,10000,Zurich,Zurich Life & CI,12.24,true,Recovered from SolutionBuilder client history
+2026-11-19,34968235,Calibration Profile,38,F,No,65,50000,10000,Aviva,Aviva Multi-Product with Core CI,12.06,true,Recovered from SolutionBuilder client history
+2026-11-18,34945722,Calibration Profile,51,F,No,75,50000,10000,Legal & General,Legal & General Life + CI (Standard),29.01,true,Recovered from SolutionBuilder client history
+2026-11-18,34945722,Calibration Profile,51,F,No,75,50000,10000,Zurich,Zurich Life & CI,33.04,true,Recovered from SolutionBuilder client history
+2026-11-18,34945722,Calibration Profile,51,F,No,75,50000,10000,Aviva,Aviva Multi-Product with Core CI,28.80,true,Recovered from SolutionBuilder client history
+2026-11-19,34968397,Calibration Profile,34,F,No,65,20000,20000,Legal & General,Legal & General Life + CI (Standard),13.42,true,Recovered from SolutionBuilder client history
+2026-11-19,34968397,Calibration Profile,34,F,No,65,20000,20000,Zurich,Zurich Life & CI,13.98,true,Recovered from SolutionBuilder client history
+2026-11-19,34968397,Calibration Profile,34,F,No,65,20000,20000,Aviva,Aviva Multi-Product with Core CI,15.33,true,Recovered from SolutionBuilder client history
+2026-11-18,34937503,Calibration Profile,35,F,No,65,50000,0,Legal & General,Legal & General Life,6.00,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-18,34937503,Calibration Profile,35,F,No,65,50000,0,Zurich,Zurich Life,5.66,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-18,34937503,Calibration Profile,35,F,No,65,50000,0,Aviva,Aviva Life Insurance+,5.56,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-18,34937530,Calibration Profile,35,F,No,65,100000,0,Legal & General,Legal & General Life,6.92,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-18,34937530,Calibration Profile,35,F,No,65,100000,0,Zurich,Zurich Life,7.91,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-18,34937530,Calibration Profile,35,F,No,65,100000,0,Aviva,Aviva Life Insurance+,8.40,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-18,34952255,Calibration Profile,50,F,No,65,20000,0,Legal & General,Legal & General Life,6.01,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952255,Calibration Profile,50,F,No,65,20000,0,Zurich,Zurich Life,5.94,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952255,Calibration Profile,50,F,No,65,20000,0,Aviva,Aviva Life Insurance+,5.19,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952257,Calibration Profile,50,F,No,65,30000,0,Legal & General,Legal & General Life,6.85,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952257,Calibration Profile,50,F,No,65,30000,0,Zurich,Zurich Life,7.50,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952257,Calibration Profile,50,F,No,65,30000,0,Aviva,Aviva Life Insurance+,7.10,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952260,Calibration Profile,50,F,No,65,50000,0,Legal & General,Legal & General Life,10.08,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952260,Calibration Profile,50,F,No,65,50000,0,Zurich,Zurich Life,10.64,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952260,Calibration Profile,50,F,No,65,50000,0,Aviva,Aviva Life Insurance+,10.62,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952261,Calibration Profile,50,F,No,65,100000,0,Legal & General,Legal & General Life,17.09,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-18,34952261,Calibration Profile,50,F,No,65,100000,0,Zurich,Zurich Life,18.42,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-18,34952261,Calibration Profile,50,F,No,65,100000,0,Aviva,Aviva Life Insurance+,19.93,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-18,34952273,Calibration Profile,50,F,No,75,20000,0,Legal & General,Legal & General Life,6.58,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952273,Calibration Profile,50,F,No,75,20000,0,Zurich,Zurich Life,6.91,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952273,Calibration Profile,50,F,No,75,20000,0,Aviva,Aviva Life Insurance+,6.75,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952274,Calibration Profile,50,F,No,75,30000,0,Legal & General,Legal & General Life,8.24,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952274,Calibration Profile,50,F,No,75,30000,0,Zurich,Zurich Life,8.96,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952274,Calibration Profile,50,F,No,75,30000,0,Aviva,Aviva Life Insurance+,9.13,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952275,Calibration Profile,50,F,No,75,50000,0,Legal & General,Legal & General Life,12.39,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952275,Calibration Profile,50,F,No,75,50000,0,Zurich,Zurich Life,13.07,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952275,Calibration Profile,50,F,No,75,50000,0,Aviva,Aviva Life Insurance+,13.76,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952276,Calibration Profile,50,F,No,75,100000,0,Legal & General,Legal & General Life,21.61,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-18,34952276,Calibration Profile,50,F,No,75,100000,0,Zurich,Zurich Life,23.04,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-18,34952276,Calibration Profile,50,F,No,75,100000,0,Aviva,Aviva Life Insurance+,26.79,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-19,34955631,Calibration Profile,40,F,No,70,200000,0,Legal & General,Legal & General Life,17.41,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-19,34955631,Calibration Profile,40,F,No,70,200000,0,Zurich,Zurich Life,18.30,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-19,34955631,Calibration Profile,40,F,No,70,200000,0,Aviva,Aviva Life Insurance+,22.36,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-19,34955578,Calibration Profile,40,F,No,75,200000,0,Legal & General,Legal & General Life,19.88,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-19,34955578,Calibration Profile,40,F,No,75,200000,0,Zurich,Zurich Life,21.16,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-19,34955578,Calibration Profile,40,F,No,75,200000,0,Aviva,Aviva Life Insurance+,24.55,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-19,34955484,Calibration Profile,40,F,No,65,150000,0,Legal & General,Legal & General Life,12.59,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-19,34955484,Calibration Profile,40,F,No,65,150000,0,Zurich,Zurich Life,13.22,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-19,34955484,Calibration Profile,40,F,No,65,150000,0,Aviva,Aviva Life Insurance+,15.86,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-19,34955511,Calibration Profile,40,F,No,65,200000,0,Legal & General,Legal & General Life,15.35,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-19,34955511,Calibration Profile,40,F,No,65,200000,0,Zurich,Zurich Life,16.53,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-19,34955511,Calibration Profile,40,F,No,65,200000,0,Aviva,Aviva Life Insurance+,19.81,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-19,34955604,Calibration Profile,40,F,No,70,150000,0,Legal & General,Legal & General Life,14.03,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-19,34955604,Calibration Profile,40,F,No,70,150000,0,Zurich,Zurich Life,14.68,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-19,34955604,Calibration Profile,40,F,No,70,150000,0,Aviva,Aviva Life Insurance+,17.92,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-19,34955550,Calibration Profile,40,F,No,75,150000,0,Legal & General,Legal & General Life,15.89,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-19,34955550,Calibration Profile,40,F,No,75,150000,0,Zurich,Zurich Life,16.82,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-19,34955550,Calibration Profile,40,F,No,75,150000,0,Aviva,Aviva Life Insurance+,18.50,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-20,34981932,Calibration Profile,47,F,No,65,1000000,0,Legal & General,Legal & General Life,90.36,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details; waiver excluded
+2026-11-20,34981932,Calibration Profile,47,F,No,65,1000000,0,Zurich,Zurich Life,110.44,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details; waiver excluded
+2026-11-20,34981932,Calibration Profile,47,F,No,65,1000000,0,Aviva,Aviva Life Insurance+,93.80,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details; waiver excluded
+2026-11-20,34981705,Calibration Profile,47,F,No,65,500000,0,Legal & General,Legal & General Life,48.96,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details; waiver excluded
+2026-11-20,34981705,Calibration Profile,47,F,No,65,500000,0,Zurich,Zurich Life,49.28,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details; waiver excluded
+2026-11-20,34981705,Calibration Profile,47,F,No,65,500000,0,Aviva,Aviva Life Insurance+,51.32,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details; waiver excluded
+2026-11-20,34981685,Calibration Profile,47,F,No,65,100000,0,Legal & General,Legal & General Life,13.28,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details; waiver excluded
+2026-11-20,34981685,Calibration Profile,47,F,No,65,100000,0,Zurich,Zurich Life,14.12,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details; waiver excluded
+2026-11-20,34981685,Calibration Profile,47,F,No,65,100000,0,Aviva,Aviva Life Insurance+,15.80,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details; waiver excluded
+2026-11-20,34984446,Calibration Profile,47,F,No,70,100000,0,Legal & General,Legal & General Life,15.18,true,Generated in SolutionBuilder; parameters confirmed in Full Details; waiver excluded
+2026-11-20,34984446,Calibration Profile,47,F,No,70,100000,0,Zurich,Zurich Life,15.86,true,Generated in SolutionBuilder; parameters confirmed in Full Details; waiver excluded
+2026-11-20,34984446,Calibration Profile,47,F,No,70,100000,0,Aviva,Aviva Life Insurance+,18.12,true,Generated in SolutionBuilder; parameters confirmed in Full Details; waiver excluded
+2026-11-18,34937407,Calibration Profile,35,F,No,65,20000,0,Aviva,Aviva Life Insurance+,5.00,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34937407,Calibration Profile,35,F,No,65,20000,0,Zurich,Zurich Life,5.00,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34937407,Calibration Profile,35,F,No,65,20000,0,Legal & General,Legal & General Life,6.00,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34937472,Calibration Profile,35,F,No,65,30000,0,Aviva,Aviva Life Insurance+,5.00,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34937472,Calibration Profile,35,F,No,65,30000,0,Zurich,Zurich Life,5.00,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34937472,Calibration Profile,35,F,No,65,30000,0,Legal & General,Legal & General Life,6.00,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34937984,Calibration Profile,35,F,Yes,65,20000,0,Aviva,Aviva Life Insurance+,5.00,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34937984,Calibration Profile,35,F,Yes,65,20000,0,Zurich,Zurich Life,5.30,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34937984,Calibration Profile,35,F,Yes,65,20000,0,Legal & General,Legal & General Life,6.00,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34938036,Calibration Profile,35,F,Yes,65,30000,0,Legal & General,Legal & General Life,6.00,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34938036,Calibration Profile,35,F,Yes,65,30000,0,Aviva,Aviva Life Insurance+,6.15,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34938036,Calibration Profile,35,F,Yes,65,30000,0,Zurich,Zurich Life,6.54,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34938086,Calibration Profile,35,F,Yes,65,50000,0,Legal & General,Legal & General Life,8.32,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34938086,Calibration Profile,35,F,Yes,65,50000,0,Aviva,Aviva Life Insurance+,9.02,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34938086,Calibration Profile,35,F,Yes,65,50000,0,Zurich,Zurich Life,9.03,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34938113,Calibration Profile,35,F,Yes,65,100000,0,Legal & General,Legal & General Life,13.18,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34938113,Calibration Profile,35,F,Yes,65,100000,0,Aviva,Aviva Life Insurance+,14.66,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34938113,Calibration Profile,35,F,Yes,65,100000,0,Zurich,Zurich Life,14.91,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive

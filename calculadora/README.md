@@ -2,6 +2,8 @@
 
 Estimador indicativo, non-underwritten, calibrado com illustrations históricos anonimizados.
 
+Privacidade: nomes usados durante a coleta local não são publicados. Os CSVs públicos usam apenas `Archive Quote` ou `Calibration Profile`, e um validador bloqueia qualquer publicação que reintroduza nomes nos campos de perfil/origem.
+
 - 1.763 PDFs auditados em todo o acervo local indexado
 - 918 arquivos candidatos a illustration/cotação
 - 400 illustrations únicos após deduplicação por SHA-256

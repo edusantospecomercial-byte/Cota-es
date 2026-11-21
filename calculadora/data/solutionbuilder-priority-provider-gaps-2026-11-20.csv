@@ -1,13 +1,13 @@
 source_date,model_id,profile,age,sex,smoker,to_age,life_cover,critical_illness_cover,missing_provider,reason,zurich_premium,aviva_premium,notes
-2026-11-20,34984447,Jana Cotacao,47,F,No,75,100000,0,Legal & General,Provider did not return a quote,18.04,20.42,Excluded from calibration because the priority trio is incomplete
-2026-11-20,34984448,Jana Cotacao,47,F,No,70,50000,0,Legal & General,Provider did not return a quote,9.35,9.59,Excluded from calibration because the priority trio is incomplete
-2026-11-20,34984449,Jana Cotacao,47,F,No,70,200000,0,Legal & General,Provider did not return a quote,27.56,32.06,Excluded from calibration because the priority trio is incomplete
-2026-11-20,34984450,Jana Cotacao,47,F,No,70,150000,0,Legal & General,Provider did not return a quote,21.72,25.44,Excluded from calibration because the priority trio is incomplete
-2026-11-20,34984452,Jana Cotacao,47,F,No,60,100000,0,Legal & General,Provider did not return a quote,12.50,14.81,Excluded from calibration because the priority trio is incomplete
-2026-11-20,34984453,Jana Cotacao,47,F,No,70,50000,10000,Legal & General,Additional critical illness basis is not supported,19.20,18.65,Excluded from calibration because the priority trio is incomplete
-2026-11-20,34984454,Jana Cotacao,47,F,No,70,50000,10000,Legal & General,Additional critical illness basis is not supported,19.44,18.74,TPD own occupation included; excluded because the priority trio is incomplete
-2026-11-20,34984455,Jana Cotacao,47,F,No,65,50000,10000,Legal & General,Provider temporarily unable to quote,17.11,17.45,TPD own occupation included; excluded because the priority trio is incomplete
-2026-11-20,34984456,Jana Cotacao,47,F,No,65,50000,10000,Legal & General,Provider temporarily unable to quote,16.06,16.02,Life 40000 plus life-or-earlier-CI 10000; TPD included; excluded because the priority trio is incomplete
-2026-11-20,34984495,Jana Cotacao,47,F,No,70,300000,0,Legal & General,Provider did not return a quote,37.54,44.22,Life only; no waiver; no TPD; excluded because the priority trio is incomplete
-2026-11-20,34984496,Jana Cotacao,47,F,No,65,300000,0,Legal & General,We are not currently able to quote for this product,32.84,38.31,Life only; no waiver; no TPD; exclusion reason confirmed in Products Not Quoting
-2026-11-20,34984518,Isamara Cotacao,35,F,Yes,70,20000,0,Legal & General,Provider did not return a quote,5.49,5.00,Life only; no waiver; excluded from calibration because the priority trio is incomplete
+2026-11-20,34984447,Calibration Profile,47,F,No,75,100000,0,Legal & General,Provider did not return a quote,18.04,20.42,Excluded from calibration because the priority trio is incomplete
+2026-11-20,34984448,Calibration Profile,47,F,No,70,50000,0,Legal & General,Provider did not return a quote,9.35,9.59,Excluded from calibration because the priority trio is incomplete
+2026-11-20,34984449,Calibration Profile,47,F,No,70,200000,0,Legal & General,Provider did not return a quote,27.56,32.06,Excluded from calibration because the priority trio is incomplete
+2026-11-20,34984450,Calibration Profile,47,F,No,70,150000,0,Legal & General,Provider did not return a quote,21.72,25.44,Excluded from calibration because the priority trio is incomplete
+2026-11-20,34984452,Calibration Profile,47,F,No,60,100000,0,Legal & General,Provider did not return a quote,12.50,14.81,Excluded from calibration because the priority trio is incomplete
+2026-11-20,34984453,Calibration Profile,47,F,No,70,50000,10000,Legal & General,Additional critical illness basis is not supported,19.20,18.65,Excluded from calibration because the priority trio is incomplete
+2026-11-20,34984454,Calibration Profile,47,F,No,70,50000,10000,Legal & General,Additional critical illness basis is not supported,19.44,18.74,TPD own occupation included; excluded because the priority trio is incomplete
+2026-11-20,34984455,Calibration Profile,47,F,No,65,50000,10000,Legal & General,Provider temporarily unable to quote,17.11,17.45,TPD own occupation included; excluded because the priority trio is incomplete
+2026-11-20,34984456,Calibration Profile,47,F,No,65,50000,10000,Legal & General,Provider temporarily unable to quote,16.06,16.02,Life 40000 plus life-or-earlier-CI 10000; TPD included; excluded because the priority trio is incomplete
+2026-11-20,34984495,Calibration Profile,47,F,No,70,300000,0,Legal & General,Provider did not return a quote,37.54,44.22,Life only; no waiver; no TPD; excluded because the priority trio is incomplete
+2026-11-20,34984496,Calibration Profile,47,F,No,65,300000,0,Legal & General,We are not currently able to quote for this product,32.84,38.31,Life only; no waiver; no TPD; exclusion reason confirmed in Products Not Quoting
+2026-11-20,34984518,Calibration Profile,35,F,Yes,70,20000,0,Legal & General,Provider did not return a quote,5.49,5.00,Life only; no waiver; excluded from calibration because the priority trio is incomplete
