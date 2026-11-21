@@ -27,7 +27,7 @@ async function init() {
       .then(parsePriorityCsv)
       .catch(() => []),
     fetch(
-      "./data/solutionbuilder-priority-provider-gaps-2026-11-20.csv?v=20261120-98",
+      "./data/solutionbuilder-priority-provider-gaps-2026-11-20.csv?v=20261120-104",
     )
       .then((r) => r.text())
       .then(parsePriorityCsv)

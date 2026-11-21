@@ -10,3 +10,4 @@ source_date,model_id,profile,age,sex,smoker,to_age,life_cover,critical_illness_c
 2026-11-20,34984456,Jana Cotacao,47,F,No,65,50000,10000,Legal & General,Provider temporarily unable to quote,16.06,16.02,Life 40000 plus life-or-earlier-CI 10000; TPD included; excluded because the priority trio is incomplete
 2026-11-20,34984495,Jana Cotacao,47,F,No,70,300000,0,Legal & General,Provider did not return a quote,37.54,44.22,Life only; no waiver; no TPD; excluded because the priority trio is incomplete
 2026-11-20,34984496,Jana Cotacao,47,F,No,65,300000,0,Legal & General,We are not currently able to quote for this product,32.84,38.31,Life only; no waiver; no TPD; exclusion reason confirmed in Products Not Quoting
+2026-11-20,34984518,Isamara Cotacao,35,F,Yes,70,20000,0,Legal & General,Provider did not return a quote,5.49,5.00,Life only; no waiver; excluded from calibration because the priority trio is incomplete
