@@ -25,6 +25,7 @@ const checks = {
     /forwardMetrics = catalog\.audit\?\.priorityProviderTemporalHoldout/.test(app) &&
     /validação futura/.test(app) &&
     /forwardMetrics\.p95 \* 100/.test(app) &&
+    /forwardMetrics\.coverage \* 100/.test(app) &&
     /forwardMetrics\.predicted/.test(app),
   temporalHoldoutStatus:
     /priorityProviderTemporalHoldout/.test(app) &&

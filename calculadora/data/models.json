@@ -13934,6 +13934,7 @@
       "trainingAnchors": 555,
       "laterAnchors": 456,
       "predicted": 141,
+      "coverage": 0.3092,
       "mape": 0.0394,
       "median": 0.0311,
       "p90": 0.0824,

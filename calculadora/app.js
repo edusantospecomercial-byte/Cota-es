@@ -607,7 +607,7 @@ function render(p) {
     ] || {};
   const forwardMetrics = catalog.audit?.priorityProviderTemporalHoldout || {};
   const forwardEvidence = forwardMetrics.predicted
-    ? ` · validação futura ${Number(forwardMetrics.mape * 100).toFixed(2)}% MAPE · P95 ${Number(forwardMetrics.p95 * 100).toFixed(2)}% · n=${forwardMetrics.predicted}`
+    ? ` · validação futura ${Number(forwardMetrics.mape * 100).toFixed(2)}% MAPE · P95 ${Number(forwardMetrics.p95 * 100).toFixed(2)}% · cobertura ${Number(forwardMetrics.coverage * 100).toFixed(2)}% · n=${forwardMetrics.predicted}`
     : "";
   let confidenceLabel = r.providerQuotes?.length
     ? r.providerGap

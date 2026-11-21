@@ -120,6 +120,7 @@ const calculated = {
   trainingAnchors: training.length,
   laterAnchors: testing.length,
   predicted: errors.length,
+  coverage: Number((errors.length / testing.length).toFixed(4)),
   mape: Number((errors.reduce((sum, value) => sum + value, 0) / errors.length).toFixed(4)),
   median: Number(quantile(errors, 0.5).toFixed(4)),
   p90: Number(quantile(errors, 0.9).toFixed(4)),
@@ -139,7 +140,7 @@ const providerFailure = Object.values(byProvider).some((metrics) =>
   metrics.predicted < 30 || metrics.mape > 0.1 || metrics.p95 > 0.2 ||
   metrics.within20 < 0.95 || metrics.maximum > 0.3 || Math.abs(metrics.bias) > 0.08
 );
-if (stale || providerFailure || calculated.predicted < 100 || calculated.mape > 0.08 || calculated.p95 > 0.15 || calculated.within20 < 0.98 || calculated.maximum > 0.25 || Math.abs(calculated.bias) > 0.05) {
+if (stale || providerFailure || calculated.predicted < 100 || calculated.coverage < 0.25 || calculated.mape > 0.08 || calculated.p95 > 0.15 || calculated.within20 < 0.98 || calculated.maximum > 0.25 || Math.abs(calculated.bias) > 0.05) {
   console.error(JSON.stringify({ ok: false, stale, published, calculated }, null, 2));
   process.exit(1);
 }
