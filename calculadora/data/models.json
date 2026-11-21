@@ -13868,7 +13868,13 @@
       "tested": 177,
       "mape": 0.0308,
       "within20": 1,
-      "method": "leave-one-anchor-out"
+      "method": "leave-one-anchor-out",
+      "bySegment": {
+        "nonSmokerLife": { "tested": 171, "mape": 0.0304, "within20": 1 },
+        "nonSmokerCI": { "tested": 0, "mape": null, "within20": null },
+        "smokerLife": { "tested": 6, "mape": 0.042, "within20": 1 },
+        "smokerCI": { "tested": 0, "mape": null, "within20": null }
+      }
     },
     "illustrationValidationRecords": 478,
     "solutionBuilderHistoryValidationRecords": 171,

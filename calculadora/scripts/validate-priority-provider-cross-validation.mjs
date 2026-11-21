@@ -103,6 +103,22 @@ const byProvider = Object.fromEntries(
     return [provider, { tested: values.length, mape, within20 }];
   }),
 );
+function summarize(values) {
+  if (!values.length) return { tested: 0, mape: null, within20: null };
+  return {
+    tested: values.length,
+    mape: values.reduce((sum, row) => sum + row.ape, 0) / values.length,
+    within20: values.filter((row) => row.ape <= 0.2).length / values.length,
+  };
+}
+const bySegment = Object.fromEntries(
+  [
+    ["nonSmokerLife", (row) => row.smoker === "No" && row.ci === 0],
+    ["nonSmokerCI", (row) => row.smoker === "No" && row.ci > 0],
+    ["smokerLife", (row) => row.smoker === "Yes" && row.ci === 0],
+    ["smokerCI", (row) => row.smoker === "Yes" && row.ci > 0],
+  ].map(([name, predicate]) => [name, summarize(results.filter(predicate))]),
+);
 const overallMape = results.reduce((sum, row) => sum + row.ape, 0) / results.length;
 const overallWithin20 = results.filter((row) => row.ape <= 0.2).length / results.length;
 const worstCases = [...results]
@@ -128,7 +144,17 @@ const published = catalog.audit?.priorityProviderCrossValidation;
 if (
   published?.tested !== results.length ||
   Math.abs(published?.mape - Number(overallMape.toFixed(4))) > 0.00001 ||
-  Math.abs(published?.within20 - Number(overallWithin20.toFixed(4))) > 0.00001
+  Math.abs(published?.within20 - Number(overallWithin20.toFixed(4))) > 0.00001 ||
+  Object.entries(bySegment).some(([segment, metrics]) => {
+    const saved = published?.bySegment?.[segment];
+    return saved?.tested !== metrics.tested ||
+      (metrics.mape == null
+        ? saved?.mape !== null
+        : Math.abs(saved?.mape - Number(metrics.mape.toFixed(4))) > 0.00001) ||
+      (metrics.within20 == null
+        ? saved?.within20 !== null
+        : Math.abs(saved?.within20 - Number(metrics.within20.toFixed(4))) > 0.00001);
+  })
 ) {
   throw new Error(JSON.stringify({
     issue: "published cross-validation metrics are stale",
@@ -152,5 +178,10 @@ console.log(JSON.stringify({
     tested: metrics.tested,
     mape: Number(metrics.mape.toFixed(4)),
     within20: Number(metrics.within20.toFixed(4)),
+  }])),
+  bySegment: Object.fromEntries(Object.entries(bySegment).map(([segment, metrics]) => [segment, {
+    tested: metrics.tested,
+    mape: metrics.mape == null ? null : Number(metrics.mape.toFixed(4)),
+    within20: metrics.within20 == null ? null : Number(metrics.within20.toFixed(4)),
   }])),
 }, null, 2));

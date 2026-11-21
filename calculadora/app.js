@@ -48,7 +48,7 @@ async function init() {
     priority = catalog.audit?.priorityProviderPrices || 0,
     crossValidation = catalog.audit?.priorityProviderCrossValidation;
   $("baseStatus").textContent = n
-    ? `${records} registros confiáveis · ${priority} preços prioritários · ${n} famílias calibradas${crossValidation ? ` · validação ${Number(crossValidation.mape * 100).toFixed(2)}% MAPE` : ""}`
+    ? `${records} registros confiáveis · ${priority} preços prioritários · ${n} famílias calibradas${crossValidation ? ` · vida: ${Number(crossValidation.mape * 100).toFixed(2)}% MAPE (n=${crossValidation.tested})` : ""}`
     : "Base histórica · cotação oficial necessária";
   updateProfile();
   updateMetlife();
@@ -528,7 +528,11 @@ function render(p) {
       ? "oficial parcial"
       : r.priorityExact
         ? "oficial exata"
-        : `validada (${Number(catalog.audit?.priorityProviderCrossValidation?.mape * 100 || 0).toFixed(2)}% MAPE)`
+        : p.ci > 0
+          ? "interpolada · validação pendente para CI"
+          : p.smoker === "smoker"
+            ? `amostra limitada (${Number(catalog.audit?.priorityProviderCrossValidation?.bySegment?.smokerLife?.mape * 100 || 0).toFixed(2)}% MAPE · n=${catalog.audit?.priorityProviderCrossValidation?.bySegment?.smokerLife?.tested || 0})`
+            : `validada (${Number(catalog.audit?.priorityProviderCrossValidation?.bySegment?.nonSmokerLife?.mape * 100 || 0).toFixed(2)}% MAPE · n=${catalog.audit?.priorityProviderCrossValidation?.bySegment?.nonSmokerLife?.tested || 0})`
     : model?.confidence || "insuficiente";
   let priorityDetail = r.providerQuotes?.length
     ? `<dt>Seguradoras prioritárias</dt><dd>${r.providerQuotes.map((quote) => `${escapeHtml(quote.provider)} ${gbp(quote.premium)}`).join(" · ")}${r.providerGap ? ` · ${escapeHtml(r.providerGap.provider)} indisponível` : ""}</dd><dt>Referência usada</dt><dd>${escapeHtml(r.provider)} · ${escapeHtml(r.product)}</dd>`

@@ -11,7 +11,9 @@ const checks = {
   exactOfficialLabel: /"oficial exata"/.test(app),
   partialOfficialLabel: /"oficial parcial"/.test(app),
   validatedMapeLabel:
-    /priorityProviderCrossValidation\?\.mape \* 100/.test(app),
+    /bySegment\?\.nonSmokerLife\?\.mape \* 100/.test(app),
+  smokerLimitedSample: /bySegment\?\.smokerLife\?\.tested/.test(app),
+  ciValidationPending: /validação pendente para CI/.test(app),
   confidenceRenderedSafely:
     /confiança \$\{escapeHtml\(confidenceLabel\)\}/.test(app),
 };
