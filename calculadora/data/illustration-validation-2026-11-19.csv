@@ -261,3 +261,17 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-05-04,Erca Gans Cotao,60,false,Zurich,Life discounted multipolicy,70,10,80000,0,29.33,29.33,0,0,None; multi-policy discount reflected,fb0e18bb0cd09e942481a20d76792e8cdff8f44c451090af0f33f3c6a089824d
 2026-05-04,Erca Gans Cotao,60,false,Zurich,Life & CI Enhanced discounted multipolicy,70,10,10000,10000,30.38,0,29.69,0.69,TPD; multi-policy discount reflected,eb7893cd9428f06cae0e21265cb5e074a890b28a2af6d9119ac73985937c8936
 2026-05-04,Erca Gans Cotao,60,false,Zurich,Life discounted multipolicy,70,10,30000,0,12.28,12.28,0,0,None; multi-policy discount reflected,eb7893cd9428f06cae0e21265cb5e074a890b28a2af6d9119ac73985937c8936
+2026-05-14,Fatima Cotao,60,false,Zurich,Life,65,5,100000,0,26.48,26.48,0,0,None,cf3d92ee7ef5b4edb184ad4705d21b10ed31a40f2a65a931f261115948010b10
+2026-05-20,Saint Cotao,52,false,Zurich,Life,70,18,100000,0,25.12,23.92,0,1.20,Waiver of Premium,368e48238e382f04dd03fe037ba681a1139f05c258fbd928f6ce99a8eb7294b8
+2026-05-20,Saint Cotao,52,false,Zurich,Life & CI Enhanced discounted multipolicy,70,18,10000,10000,28.17,0,20.05,8.12,TPD Own Occupation and optional benefits; multi-policy discount reflected,0b8045117d129c46908f6cc36161f1b0a3212a075df6b3ec783a8f9bf5f8448b
+2026-05-20,Saint Cotao,52,false,Zurich,Life discounted multipolicy,70,18,100000,0,22.67,22.67,0,0,None; multi-policy discount reflected,0b8045117d129c46908f6cc36161f1b0a3212a075df6b3ec783a8f9bf5f8448b
+2026-05-20,Saint Cotao,52,false,Zurich,Life,70,18,200000,0,50.25,47.86,0,2.39,Waiver of Premium,deacd2b267d83ae5dbaa6bcbb2a69bd105423471ed4756affc056f4d0cf89f39
+2026-04-08,Insurance Cotao,33,false,Zurich,Life & CI Enhanced discounted multipolicy,65,32,10000,10000,7.31,0,7.01,0.30,TPD Own Occupation and Waiver; multi-policy discount reflected,b0fa2eb2d03edd964c8561a8a83849712282a30e9a453274f9001979a7ecbd8f
+2026-04-08,Insurance Cotao,33,false,Zurich,Life discounted multipolicy,65,32,200000,0,10.94,10.64,0,0.30,Waiver; multi-policy discount reflected,b0fa2eb2d03edd964c8561a8a83849712282a30e9a453274f9001979a7ecbd8f
+2026-03-13,Marcos Cotao,48,false,Zurich,Life & CI Enhanced discounted multipolicy,65,17,10000,10000,20.58,0,12.59,7.99,TPD Own Occupation and optional benefits; multi-policy discount reflected,f3c1672fd93989561fabf9537ce8018c456156120834d1c79180d5cced6523e1
+2026-03-13,Marcos Cotao,48,false,Zurich,Life discounted multipolicy,65,17,20000,0,4.22,4.22,0,0,None; multi-policy discount reflected,f3c1672fd93989561fabf9537ce8018c456156120834d1c79180d5cced6523e1
+2026-03-13,Marcos Cotao,48,false,Zurich,Life & CI Enhanced discounted multipolicy,65,17,5000,5000,14.92,0,7.06,7.86,TPD Own Occupation and optional benefits; multi-policy discount reflected,5245487f6d9dfba1126c961984e9a4c2c9ae834d560f0f0bb55b9f72bc0698d1
+2026-03-13,Marcos Cotao,48,false,Zurich,Life discounted multipolicy,65,17,20000,0,4.22,4.22,0,0,None; multi-policy discount reflected,5245487f6d9dfba1126c961984e9a4c2c9ae834d560f0f0bb55b9f72bc0698d1
+2026-04-01,Angela Cotao,50,false,Zurich,Life,70,20,50000,0,11.86,11.86,0,0,None,afa15ff0db849bfb7a54d1127aea07729ccbaddf16db5f5d293c6aeb39029a5c
+2026-04-01,Angela Cotao,50,false,Zurich,Life,70,20,100000,0,28.48,20.73,0,7.75,Optional benefits,1972d4480fcae8a61c2b12989b87d99aa115eb41b2194934c377bfd5d4362b6f
+2026-04-01,Angela Cotao,50,false,Zurich,Life,70,20,80000,0,17.18,17.18,0,0,None,5ee4bf4d45ab6d2076d0e1df2f311c2c5106ea4c8bbb1d1fc1fd565cbba68450
