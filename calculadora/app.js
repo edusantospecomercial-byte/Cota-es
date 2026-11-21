@@ -54,6 +54,11 @@ function parsePriorityCsv(csv) {
     ),
   );
 }
+function interpolateRiskPremium(below, above, ratio) {
+  if (below > 0 && above > 0)
+    return Math.exp(Math.log(below) + (Math.log(above) - Math.log(below)) * ratio);
+  return below + (above - below) * ratio;
+}
 function priorityQuotesFor(p) {
   let expectedSmoker = p.smoker === "smoker" ? "Yes" : "No";
   let knownGap = priorityGapRows.find(
@@ -183,9 +188,11 @@ function priorityQuotesFor(p) {
                 belowAge.product === aboveAge.product
                   ? belowAge.product
                   : aboveAge.product,
-              premium:
-                belowAge.premium +
-                (aboveAge.premium - belowAge.premium) * ratio,
+              premium: interpolateRiskPremium(
+                belowAge.premium,
+                aboveAge.premium,
+                ratio,
+              ),
               modelId: `${belowAge.modelId}-${aboveAge.modelId}`,
               age: p.age,
               life: p.life,
@@ -207,8 +214,11 @@ function priorityQuotesFor(p) {
           belowTerm.product === aboveTerm.product
             ? belowTerm.product
             : aboveTerm.product,
-        premium:
-          belowTerm.premium + (aboveTerm.premium - belowTerm.premium) * ratio,
+        premium: interpolateRiskPremium(
+          belowTerm.premium,
+          aboveTerm.premium,
+          ratio,
+        ),
         modelId: `${belowTerm.modelId}-${aboveTerm.modelId}`,
         age: p.age,
         life: p.life,

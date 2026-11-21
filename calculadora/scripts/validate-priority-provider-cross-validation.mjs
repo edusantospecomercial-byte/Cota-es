@@ -39,7 +39,13 @@ function interpolate1d(points, target, axis, maxGap = Infinity) {
   if (!below || !above || above[axis] - below[axis] > maxGap) return null;
   const ratio = (target - below[axis]) / (above[axis] - below[axis]);
   return {
-    premium: below.premium + (above.premium - below.premium) * ratio,
+    premium:
+      axis === "life"
+        ? below.premium + (above.premium - below.premium) * ratio
+        : Math.exp(
+            Math.log(below.premium) +
+              (Math.log(above.premium) - Math.log(below.premium)) * ratio,
+          ),
     age: axis === "age" ? target : below.age,
     life: axis === "life" ? target : below.life,
     toAge: axis === "toAge" ? target : below.toAge,
@@ -96,6 +102,20 @@ const byProvider = Object.fromEntries(
 );
 const overallMape = results.reduce((sum, row) => sum + row.ape, 0) / results.length;
 const overallWithin20 = results.filter((row) => row.ape <= 0.2).length / results.length;
+const worstCases = [...results]
+  .sort((a, b) => b.ape - a.ape)
+  .slice(0, 5)
+  .map((row) => ({
+    provider: row.provider,
+    smoker: row.smoker,
+    age: row.age,
+    toAge: row.toAge,
+    life: row.life,
+    ci: row.ci,
+    actual: row.premium,
+    predicted: Number(row.predicted.toFixed(2)),
+    ape: Number(row.ape.toFixed(4)),
+  }));
 
 if (results.length < 90 || overallMape > 0.13 || overallWithin20 < 0.8) {
   throw new Error(JSON.stringify({ results: results.length, overallMape, overallWithin20, byProvider }, null, 2));
@@ -107,6 +127,7 @@ console.log(JSON.stringify({
   tested: results.length,
   overallMape: Number(overallMape.toFixed(4)),
   overallWithin20: Number(overallWithin20.toFixed(4)),
+  worstCases,
   byProvider: Object.fromEntries(Object.entries(byProvider).map(([provider, metrics]) => [provider, {
     tested: metrics.tested,
     mape: Number(metrics.mape.toFixed(4)),
