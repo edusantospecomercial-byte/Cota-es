@@ -13929,6 +13929,18 @@
         }
       }
     },
+    "priorityProviderTemporalHoldout": {
+      "cutoff": "2026-10-01",
+      "trainingAnchors": 555,
+      "laterAnchors": 456,
+      "predicted": 141,
+      "mape": 0.0394,
+      "median": 0.0311,
+      "p90": 0.0824,
+      "p95": 0.103,
+      "within20": 0.9929,
+      "maximum": 0.2089
+    },
     "priorityProviderSexSensitivity": {
       "matchedProviderAnchors": 69,
       "meanSymmetricDifference": 0.027,
