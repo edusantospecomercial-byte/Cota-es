@@ -52,6 +52,7 @@ const failures = [];
 
 function checkIncreasing(groupKeys, varyingKey, label) {
   const groups = new Map();
+  let comparedPairs = 0;
   for (const row of rows) {
     const key = groupKeys.map((field) => row[field]).join("|");
     const group = groups.get(key) ?? [];
@@ -63,6 +64,7 @@ function checkIncreasing(groupKeys, varyingKey, label) {
     for (let index = 1; index < group.length; index += 1) {
       const previous = group[index - 1];
       const current = group[index];
+      if (current[varyingKey] > previous[varyingKey]) comparedPairs += 1;
       if (
         current[varyingKey] > previous[varyingKey] &&
         // Reports come from different real client occupations and quote dates.
@@ -84,17 +86,23 @@ function checkIncreasing(groupKeys, varyingKey, label) {
       }
     }
   }
+  return comparedPairs;
 }
 
-checkIncreasing(
+const capitalCurvePairs = checkIncreasing(
   ["provider", "sex", "smoker", "age", "to_age", "critical_illness_cover"],
   "life_cover",
   "capital",
 );
-checkIncreasing(
+const termCurvePairs = checkIncreasing(
   ["provider", "sex", "smoker", "age", "life_cover", "critical_illness_cover"],
   "to_age",
   "term",
+);
+const criticalIllnessCurvePairs = checkIncreasing(
+  ["provider", "sex", "smoker", "age", "to_age", "life_cover"],
+  "critical_illness_cover",
+  "critical illness",
 );
 
 const ageGroups = new Map();
@@ -245,5 +253,5 @@ if (failures.length) {
 }
 
 console.log(
-  `Priority-provider curves passed: ${rows.length} prices, ${ageInterpolationSegments.size} age, ${capitalInterpolationSegments.size} capital and ${termInterpolationSegments.size} term interpolation segments; ${ageReversals.length}/${adjacentAgePairs} adjacent age pairs reverse (${(ageReversalRate * 100).toFixed(2)}%, max ${(maximumAgeReversal * 100).toFixed(2)}%).`,
+  `Priority-provider curves passed: ${rows.length} prices, ${ageInterpolationSegments.size} age, ${capitalInterpolationSegments.size} capital and ${termInterpolationSegments.size} term interpolation segments; ${capitalCurvePairs} capital, ${termCurvePairs} term and ${criticalIllnessCurvePairs} CI monotonic pairs; ${ageReversals.length}/${adjacentAgePairs} adjacent age pairs reverse (${(ageReversalRate * 100).toFixed(2)}%, max ${(maximumAgeReversal * 100).toFixed(2)}%).`,
 );
