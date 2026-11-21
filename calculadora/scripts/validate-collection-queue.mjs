@@ -181,28 +181,28 @@ const prefixGains = [4, 8, 12, 16, 20, 24, 26, 29, 33, 37].map((scenarios) => {
   };
 });
 if (
-  (projectedTestable.smokerLife || 0) < 24 ||
-  (projectedTestable.nonSmokerCI || 0) < 21 ||
-  (projectedTestable.smokerCI || 0) < 6
+  (projectedTestable.smokerLife || 0) < 63 ||
+  (projectedTestable.nonSmokerCI || 0) < 294 ||
+  (projectedTestable.smokerCI || 0) < 60
 ) problems.push({ insufficientValidationGain: projectedTestable });
 if (
-  projectedCoverage.smoker_ci0.coverage < 0.0342 ||
-  projectedCoverage.smoker_ci10000.coverage < 0.0673 ||
-  projectedCoverage.smoker_ci20000.coverage < 0.0673 ||
-  projectedCoverage.nonSmoker_ci10000.coverage < 0.0363 ||
-  projectedCoverage.nonSmoker_ci20000.coverage < 0.0171
+  projectedCoverage.smoker_ci0.coverage < 0.1122 ||
+  projectedCoverage.smoker_ci10000.coverage < 0.0983 ||
+  projectedCoverage.smoker_ci20000.coverage < 0.0684 ||
+  projectedCoverage.nonSmoker_ci10000.coverage < 0.2083 ||
+  projectedCoverage.nonSmoker_ci20000.coverage < 0.0726
 ) problems.push({ insufficientCoverageGain: projectedCoverage });
 const prefix4 = prefixGains.find((row) => row.scenarios === 4);
 const prefix24 = prefixGains.find((row) => row.scenarios === 24);
 const prefix26 = prefixGains.find((row) => row.scenarios === 26);
 const prefix33 = prefixGains.find((row) => row.scenarios === 33);
 if (
-  prefix4.coverage.smoker_ci0.complete < 14 ||
-  (prefix4.testable.smokerLife || 0) < 12 ||
-  prefix24.coverage.smoker_ci10000.complete < 63 ||
-  prefix24.coverage.smoker_ci20000.complete < 63 ||
-  (prefix26.testable.smokerCI || 0) < 6 ||
-  (prefix33.testable.nonSmokerCI || 0) < 21
+  prefix4.coverage.smoker_ci0.complete < 74 ||
+  (prefix4.testable.smokerLife || 0) < 42 ||
+  prefix24.coverage.smoker_ci10000.complete < 92 ||
+  prefix24.coverage.smoker_ci20000.complete < 64 ||
+  (prefix26.testable.smokerCI || 0) < 60 ||
+  (prefix33.testable.nonSmokerCI || 0) < 294
 ) problems.push({ inefficientQueueOrder: prefixGains });
 
 if (problems.length) {
