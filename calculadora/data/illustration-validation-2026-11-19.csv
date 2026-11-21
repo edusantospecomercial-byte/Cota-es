@@ -228,3 +228,12 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-08-12,Namorada Antonio Cotao,38,false,Legal & General,Life + CI Standard,64,26,10000,10000,6.40,0,6.25,0.15,TPD and Waiver of Premium,00ffc926aec511a69fe66f96d04d4c5d2e8f440e68f64a7adcd41bf8c333f6c3
 2026-08-14,Josiane Cotao,55,false,Legal & General,Life,69,14,50000,0,15.80,15.33,0,0.47,Waiver of Premium,b86cdda6e8740fbdfa30d5a0e20b5f64f81928e49073de413b147b1babc969ab
 2026-08-14,Josiane Cotao,55,false,Legal & General,Life + CI Standard,69,14,10000,10000,17.93,0,17.15,0.78,TPD and Waiver of Premium,b86cdda6e8740fbdfa30d5a0e20b5f64f81928e49073de413b147b1babc969ab
+2026-07-22,Iracema Cotao,64,false,Aviva,Life Insurance+ with Core CI,70,6,10000,10000,23.04,0,22.81,0.23,TPD,f5fd67bc54e55a25cf8d27fb335baa11a3cebf0d227a341fc5246eb83b7e9ca8
+2026-07-22,Iracema Cotao,64,false,Aviva,Life Insurance+,70,6,20000,0,11.06,11.06,0,0,None,f5fd67bc54e55a25cf8d27fb335baa11a3cebf0d227a341fc5246eb83b7e9ca8
+2026-08-10,Oguinei Cotao,40,false,Zurich,Life,70,30,571000,0,47.72,47.72,0,0,None,9987775d9adcfb76c5cc44b497ad5e2f56ac4c7295ab533338940cfd9aa31c10
+2026-08-10,Manuel Goncalves,63,false,Legal & General,Life,78,15,50000,0,33.07,33.07,0,0,None,dd20c4ec42f6f7d40485522a82f62efa92665ddf847baaaf650e6c19e7ba736f
+2026-08-10,Manuel Goncalves,63,false,Legal & General,Life,78,15,35000,0,23.75,23.75,0,0,None,3ebc33afd64fdaab5fb673eeab67916972ba4b4244786d64b5e36af1805da575
+2026-08-20,Cleicy Kellin,31,false,Legal & General,Life,51,20,150000,0,6.21,6.15,0,0.06,Waiver of Premium,ea8209230cf1ca25559508b166a3f61ba851d64a2e2e4fff9e4e8bbc4ed6c026
+2026-08-20,Cleicy Kellin,31,false,Legal & General,Life + CI Extra,51,20,20000,20000,8.12,0,7.97,0.15,TPD and Waiver of Premium,ea8209230cf1ca25559508b166a3f61ba851d64a2e2e4fff9e4e8bbc4ed6c026
+2026-08-04,Jennifer Cotao,41,false,Legal & General,Life,56,15,100000,0,8.22,8.14,0,0.08,Waiver of Premium,11dc485ebc31cf3b6707061184cd0f750a4d6b68ad76115046ec08cd7e4d0208
+2026-08-04,Jennifer Cotao,41,false,Legal & General,Life + CI Extra,56,15,20000,20000,13.79,0,13.53,0.26,TPD and Waiver of Premium,11dc485ebc31cf3b6707061184cd0f750a4d6b68ad76115046ec08cd7e4d0208
