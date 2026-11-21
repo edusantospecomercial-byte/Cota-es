@@ -13892,10 +13892,10 @@
         "overestimates": 0.469
       },
       "bySegment": {
-        "nonSmokerLife": { "tested": 378, "mape": 0.0335, "within20": 1 },
-        "nonSmokerCI": { "tested": 192, "mape": 0.0227, "within20": 1 },
-        "smokerLife": { "tested": 21, "mape": 0.0334, "within20": 1 },
-        "smokerCI": { "tested": 21, "mape": 0.027, "within20": 1 }
+        "nonSmokerLife": { "tested": 378, "mape": 0.0335, "within20": 1, "p90": 0.0757, "p95": 0.0941, "maximum": 0.1935, "bias": -0.0048 },
+        "nonSmokerCI": { "tested": 192, "mape": 0.0227, "within20": 1, "p90": 0.0519, "p95": 0.0663, "maximum": 0.0998, "bias": 0.0034 },
+        "smokerLife": { "tested": 21, "mape": 0.0334, "within20": 1, "p90": 0.0626, "p95": 0.0821, "maximum": 0.1289, "bias": 0.0127 },
+        "smokerCI": { "tested": 21, "mape": 0.027, "within20": 1, "p90": 0.0458, "p95": 0.0564, "maximum": 0.0581, "bias": -0.003 }
       }
     },
     "priorityProviderTemporalStability": {

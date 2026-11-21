@@ -114,12 +114,39 @@ const byProvider = Object.fromEntries(
     return [provider, { tested: values.length, mape, within20 }];
   }),
 );
+function quantile(values, probability) {
+  const sorted = [...values].sort((left, right) => left - right);
+  const index = (sorted.length - 1) * probability;
+  const lower = Math.floor(index);
+  const upper = Math.ceil(index);
+  if (lower === upper) return sorted[lower];
+  return sorted[lower] + (sorted[upper] - sorted[lower]) * (index - lower);
+}
 function summarize(values) {
-  if (!values.length) return { tested: 0, mape: null, within20: null };
+  if (!values.length)
+    return {
+      tested: 0,
+      mape: null,
+      within20: null,
+      p90: null,
+      p95: null,
+      maximum: null,
+      bias: null,
+    };
+  const errors = values.map((row) => row.ape);
+  const signedErrors = values.map(
+    (row) => (row.predicted - row.premium) / row.premium,
+  );
   return {
     tested: values.length,
-    mape: values.reduce((sum, row) => sum + row.ape, 0) / values.length,
+    mape: errors.reduce((sum, value) => sum + value, 0) / values.length,
     within20: values.filter((row) => row.ape <= 0.2).length / values.length,
+    p90: quantile(errors, 0.9),
+    p95: quantile(errors, 0.95),
+    maximum: Math.max(...errors),
+    bias:
+      signedErrors.reduce((sum, value) => sum + value, 0) /
+      signedErrors.length,
   };
 }
 const bySegment = Object.fromEntries(
@@ -132,14 +159,6 @@ const bySegment = Object.fromEntries(
 );
 const overallMape = results.reduce((sum, row) => sum + row.ape, 0) / results.length;
 const overallWithin20 = results.filter((row) => row.ape <= 0.2).length / results.length;
-function quantile(values, probability) {
-  const sorted = [...values].sort((left, right) => left - right);
-  const index = (sorted.length - 1) * probability;
-  const lower = Math.floor(index);
-  const upper = Math.ceil(index);
-  if (lower === upper) return sorted[lower];
-  return sorted[lower] + (sorted[upper] - sorted[lower]) * (index - lower);
-}
 const absolutePercentageErrors = results.map((row) => row.ape);
 const errorDistribution = {
   median: Number(quantile(absolutePercentageErrors, 0.5).toFixed(4)),
@@ -207,13 +226,17 @@ if (!reportOnly && (
   }) ||
   Object.entries(bySegment).some(([segment, metrics]) => {
     const saved = published?.bySegment?.[segment];
-    return saved?.tested !== metrics.tested ||
-      (metrics.mape == null
-        ? saved?.mape !== null
-        : Math.abs(saved?.mape - Number(metrics.mape.toFixed(4))) > 0.00001) ||
-      (metrics.within20 == null
-        ? saved?.within20 !== null
-        : Math.abs(saved?.within20 - Number(metrics.within20.toFixed(4))) > 0.00001);
+    return ["tested", "mape", "within20", "p90", "p95", "maximum", "bias"].some(
+      (metric) => {
+        const calculated =
+          metric === "tested"
+            ? metrics[metric]
+            : metrics[metric] == null
+              ? null
+              : Number(metrics[metric].toFixed(4));
+        return saved?.[metric] !== calculated;
+      },
+    );
   })
 )) {
   throw new Error(JSON.stringify({
@@ -247,5 +270,9 @@ console.log(JSON.stringify({
     tested: metrics.tested,
     mape: metrics.mape == null ? null : Number(metrics.mape.toFixed(4)),
     within20: metrics.within20 == null ? null : Number(metrics.within20.toFixed(4)),
+    p90: metrics.p90 == null ? null : Number(metrics.p90.toFixed(4)),
+    p95: metrics.p95 == null ? null : Number(metrics.p95.toFixed(4)),
+    maximum: metrics.maximum == null ? null : Number(metrics.maximum.toFixed(4)),
+    bias: metrics.bias == null ? null : Number(metrics.bias.toFixed(4)),
   }])),
 }, null, 2));

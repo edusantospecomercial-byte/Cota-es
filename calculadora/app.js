@@ -597,7 +597,7 @@ function render(p) {
       ? "oficial parcial"
       : r.priorityExact
         ? "oficial exata"
-        : `${(confidenceMetrics.tested || 0) < 30 ? "amostra limitada" : "validada"} (${Number(confidenceMetrics.mape * 100 || 0).toFixed(2)}% MAPE · n=${confidenceMetrics.tested || 0})`
+        : `${(confidenceMetrics.tested || 0) < 30 ? "amostra limitada" : "validada"} (${Number(confidenceMetrics.mape * 100 || 0).toFixed(2)}% MAPE · P95 ${Number(confidenceMetrics.p95 * 100 || 0).toFixed(2)}% · n=${confidenceMetrics.tested || 0})`
     : model?.confidence || "insuficiente";
   let priorityDetail = r.providerQuotes?.length
     ? `<dt>Seguradoras prioritárias</dt><dd>${r.providerQuotes.map((quote) => `${escapeHtml(quote.provider)} ${gbp(quote.premium)}`).join(" · ")}${r.providerGap ? ` · ${escapeHtml(r.providerGap.provider)} indisponível` : ""}</dd><dt>Referência usada</dt><dd>${escapeHtml(r.provider)} · ${escapeHtml(r.product)}</dd>`
