@@ -79,6 +79,32 @@ if (
   });
 }
 
+for (const row of illustrationRows) {
+  const term = Number(row.term_years);
+  const expectedTerm = Number(row.to_age) - Number(row.age);
+  const total = Number(row.total_monthly);
+  const components =
+    Number(row.base_life_monthly)
+    + Number(row.base_ci_monthly)
+    + Number(row.optional_monthly);
+  if (!Number.isFinite(term) || term !== expectedTerm) {
+    failures.push({
+      illustrationHash: row.sha256,
+      issue: 'term does not reconcile with age and to_age',
+      term,
+      expectedTerm,
+    });
+  }
+  if (!Number.isFinite(total) || !Number.isFinite(components) || Math.abs(total - components) > 0.011) {
+    failures.push({
+      illustrationHash: row.sha256,
+      issue: 'premium components do not reconcile with total',
+      total,
+      components,
+    });
+  }
+}
+
 const historyRecordIds = historyRows.map((row) => row.record_id);
 const uniqueHistoryRows = historyRows.filter((row) => !row.logical_duplicate_of);
 if (
