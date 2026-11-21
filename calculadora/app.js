@@ -423,10 +423,7 @@ function render(p) {
         : p.life
           ? "life_only"
           : "critical_illness_only",
-    model =
-      catalog.models[key] ||
-      catalog.models["life_plus_standalone_ci:standard_core_ci"] ||
-      Object.values(catalog.models)[0],
+    model = catalog.models[key] || null,
     warnings = [],
     r = { supported: false, main: 0, low: 0, high: 0 };
   if (p.age === 65 && m.c)
@@ -472,7 +469,9 @@ function render(p) {
       );
   } else
     warnings.push(
-      "Esta combinação ainda não passou nos controles de validação. Faça a cotação oficial no SolutionBuilder.",
+      p.ci && !p.life
+        ? "Doenças graves sem seguro de vida ainda não têm modelo próprio calibrado. Faça a cotação oficial no SolutionBuilder."
+        : "Esta combinação ainda não passou nos controles de validação. Faça a cotação oficial no SolutionBuilder.",
     );
   let priorityMatch = priorityQuotesFor(p),
     priorityQuotes = priorityMatch.quotes;
