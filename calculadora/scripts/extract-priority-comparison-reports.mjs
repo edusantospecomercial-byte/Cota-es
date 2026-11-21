@@ -9,6 +9,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 const roots = [
   "/Users/eduardosantos/Desktop",
   "/Users/eduardosantos/Downloads",
+  "/Users/eduardosantos/Documents/Codex",
 ].filter(existsSync);
 
 function pdfText(file) {
