@@ -38,6 +38,8 @@ Um segundo controle compara o lookup direto com o menor prêmio-base não descon
 
 Validação de interpolação em 21/11/2026: ao retirar uma âncora oficial por vez e tentar reconstruí-la apenas pelas âncoras vizinhas, 609 preços puderam ser testados. A interpolação linear por capital e logarítmica por idade/prazo obteve erro percentual absoluto médio de 3,01%, com 100% dentro de ±20%. A amostra inclui 378 preços de vida para não fumantes (3,35% MAPE), 189 de não fumante + CI Standard/Core (2,33%), 21 de vida para fumantes (3,34%) e 21 de fumante + CI (2,70%). Por seguradora, o erro médio foi 3,34% na Legal & General, 2,52% na Zurich e 3,17% na Aviva. É uma validação interna da malha observada, não uma promessa de precisão para underwriting, perfis médicos ou extrapolações fora dessa malha.
 
+Estabilidade temporal: 147 âncoras oficiais foram cotadas mais de uma vez em datas diferentes com o mesmo sexo, idade, tabagismo, prazo e capitais. Entre a primeira e a última execução, a variação absoluta média foi 1,74%; 97,28% ficaram dentro de ±10% e 100% dentro de ±20%. O motor sempre utiliza a execução mais recente, e um validador impede publicação se essa estabilidade se deteriorar materialmente.
+
 Os dados preenchidos não são enviados a servidor. As simulações salvas ficam no `localStorage` do navegador utilizado.
 
 Regra operacional de Eduardo: a tela abre com **MetLife MultiProtect · 1 Cota + Luxações — £13/mês**, discriminado como £11 Essencial + £2 Luxações. O usuário ainda pode alterar a quantidade de cotas, remover o complemento ou acrescentar Crianças; os valores MetLife nunca são interpolados.

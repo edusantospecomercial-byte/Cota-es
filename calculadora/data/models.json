@@ -13886,6 +13886,12 @@
         "smokerCI": { "tested": 21, "mape": 0.027, "within20": 1 }
       }
     },
+    "priorityProviderTemporalStability": {
+      "repeatedAnchors": 147,
+      "meanAbsolutePercentageChange": 0.0174,
+      "within10": 0.9728,
+      "within20": 1
+    },
     "illustrationValidationRecords": 487,
     "solutionBuilderHistoryValidationRecords": 171,
     "solutionBuilderHistoryUniqueRecords": 170,
