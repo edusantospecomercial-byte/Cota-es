@@ -124,3 +124,13 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-10-26,Luiz Cotao,61,false,Zurich,Life,70,9,70000,0,28.38,28.38,0,0,None,74a7ba97104ea582b076b69e895a208e85de33d0488fc531017241ef94847c46
 2026-09-29,Local Cotao 36 B,36,false,Zurich,Life,65,29,100000,0,8.48,8.27,0,0.21,Waiver of Premium,02c17e23a7c4839e606327267f43aa9c55e188eea7626987b50e62ad68744a2c
 2026-09-01,Flavio Cotao,36,false,Legal & General,Life,56,20,100000,0,6.89,6.82,0,0.07,Waiver of Premium,35ae68a863b8c6aa78f53aad6c98fcdb4a4fc57717e2f64a5c04a61be42cc223
+2026-08-26,Local Cotao 55,55,false,Zurich,Life,70,15,30000,0,10.56,10.56,0,0,None,df38146868033cfc2d58e479090bf601273c900b27b417d71352c4f0092eb8f5
+2026-08-26,Antonia Cotao,56,false,Aviva,Life Insurance+ with Core CI,70,14,20000,20000,31.64,0,31.08,0.56,TPD and Waiver of Premium,de1fec079a93dbc59fe3e5e5211279504e030145e5753611323f5ce17bcfa008
+2026-09-28,Ana Paula Cotao,55,false,Legal & General,Life,69,14,50000,0,15.53,15.15,0,0.38,Waiver of Premium,67ce784ad41d72cdf9dbc34e01f78373c019e28ffaea077365899d409cbdf34e
+2026-10-19,Ana Paula Cotao,44,false,Legal & General,Life,64,20,100000,0,12.17,11.93,0,0.24,Waiver of Premium,1988f7fed3cd71c5e59a84814bb3deb0f47c96bd53563c8698440cf6c4c2f675
+2026-10-26,Luiz Cotao,61,false,Zurich,Life,70,9,30000,0,13.99,13.99,0,0,None,7d0b9a15f8d4a65f3fe7fe3c723539855b3f6b438232b4f55900f3717be4f885
+2026-10-12,Wagner Gois Cotao,49,false,Aviva,Life Insurance+,65,16,30000,0,6.90,6.85,0,0.05,Waiver of Premium,73d5e995230cb345a04f5e7b583e2896a297339f9eac8c319a7a950286bdb610
+2026-10-12,Wagner Gois Cotao,49,false,Aviva,Life Insurance+ with Core CI,65,16,10000,10000,9.81,0,9.65,0.16,TPD and Waiver of Premium,73d5e995230cb345a04f5e7b583e2896a297339f9eac8c319a7a950286bdb610
+2026-09-15,Jhenifer Cotao,26,true,Legal & General,Life + CI Extra,64,38,10000,10000,11.22,0,11.16,0.06,Waiver of Premium,87a10876982d91c0379b0a4419cf376fddab451b50b8c4acd3729923e1ce8de9
+2026-10-09,Francisco Cotao,54,true,Aviva,Life Insurance+,65,11,30000,0,21.76,21.53,0,0.23,Waiver of Premium,2b7010e0915f9ce8be3bc828dc837bfd04e432d98d66d6de02130996696dea2f
+2026-10-09,Francisco Cotao,54,true,Aviva,Life Insurance+ with Core CI,65,11,10000,10000,23.11,0,22.69,0.42,TPD and Waiver of Premium,2b7010e0915f9ce8be3bc828dc837bfd04e432d98d66d6de02130996696dea2f
