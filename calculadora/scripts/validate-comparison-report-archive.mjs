@@ -64,6 +64,19 @@ for (const [scenario, providers] of scenarios) {
     failures.push({ scenario, issue: "incomplete priority trio" });
 }
 
+const recoveredStandardCiAnchors = [
+  { modelId: "1080433474", provider: "Aviva", premium: 40.98 },
+  { modelId: "1080838983", provider: "Legal & General", premium: 18.25 },
+  { modelId: "1080839019", provider: "Zurich", premium: 32.36 },
+];
+for (const expected of recoveredStandardCiAnchors) {
+  const actual = rows.find(
+    (row) => row.model_id === expected.modelId && row.provider === expected.provider,
+  );
+  if (!actual || Math.abs(Number(actual.monthly_premium) - expected.premium) > 0.001)
+    failures.push({ issue: "recovered standard CI anchor missing", expected, actual });
+}
+
 if (rows.length !== 879 || scenarios.size !== 293)
   failures.push({
     issue: "archive count changed without review",
