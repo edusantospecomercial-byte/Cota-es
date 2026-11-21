@@ -54,7 +54,6 @@ function priorityQuotesFor(p) {
       (row) =>
         row.available === "true" &&
         row.smoker === expectedSmoker &&
-        Number(row.to_age) === p.toAge &&
         Number(row.critical_illness_cover) === p.ci,
     )
     .map((row) => ({
@@ -64,57 +63,112 @@ function priorityQuotesFor(p) {
       modelId: row.model_id,
       age: Number(row.age),
       life: Number(row.life_cover),
+      toAge: Number(row.to_age),
     }))
     .filter((row) => Number.isFinite(row.premium));
   let exact = candidates
-    .filter((row) => row.age === p.age && row.life === p.life)
+    .filter(
+      (row) =>
+        row.age === p.age && row.life === p.life && row.toAge === p.toAge,
+    )
     .sort((a, b) => a.premium - b.premium);
   if (new Set(exact.map((row) => row.provider)).size === 3)
     return { quotes: exact, exact: true };
   let providers = ["Legal & General", "Zurich", "Aviva"],
     interpolated = providers.map((provider) => {
       let rows = candidates.filter((row) => row.provider === provider),
-        ageValues = [...new Set(rows.map((row) => row.age))]
+        termValues = [...new Set(rows.map((row) => row.toAge))]
           .sort((a, b) => a - b)
-          .map((age) => {
-            let atAge = rows
-                .filter((row) => row.age === age)
-                .sort((a, b) => a.life - b.life),
-              exactLife = atAge.find((row) => row.life === p.life);
-            if (exactLife) return exactLife;
-            let belowLife = atAge.filter((row) => row.life < p.life).at(-1),
-              aboveLife = atAge.find((row) => row.life > p.life);
-            if (!belowLife || !aboveLife) return null;
+          .map((toAge) => {
+            let atTerm = rows.filter((row) => row.toAge === toAge),
+              ageValues = [...new Set(atTerm.map((row) => row.age))]
+                .sort((a, b) => a - b)
+                .map((age) => {
+                  let atAge = atTerm
+                      .filter((row) => row.age === age)
+                      .sort((a, b) => a.life - b.life),
+                    exactLife = atAge.find((row) => row.life === p.life);
+                  if (exactLife) return exactLife;
+                  let belowLife = atAge
+                      .filter((row) => row.life < p.life)
+                      .at(-1),
+                    aboveLife = atAge.find((row) => row.life > p.life);
+                  if (!belowLife || !aboveLife) return null;
+                  let ratio =
+                    (p.life - belowLife.life) /
+                    (aboveLife.life - belowLife.life);
+                  return {
+                    provider,
+                    product:
+                      belowLife.product === aboveLife.product
+                        ? belowLife.product
+                        : aboveLife.product,
+                    premium:
+                      belowLife.premium +
+                      (aboveLife.premium - belowLife.premium) * ratio,
+                    modelId: `${belowLife.modelId}-${aboveLife.modelId}`,
+                    age,
+                    life: p.life,
+                    toAge,
+                  };
+                })
+                .filter(Boolean),
+              exactAge = ageValues.find((row) => row.age === p.age);
+            if (exactAge) return exactAge;
+            let belowAge = ageValues
+                .filter((row) => row.age < p.age)
+                .at(-1),
+              aboveAge = ageValues.find((row) => row.age > p.age);
+            if (
+              !belowAge ||
+              !aboveAge ||
+              aboveAge.age - belowAge.age > 10
+            )
+              return null;
             let ratio =
-              (p.life - belowLife.life) / (aboveLife.life - belowLife.life);
+              (p.age - belowAge.age) / (aboveAge.age - belowAge.age);
             return {
               provider,
               product:
-                belowLife.product === aboveLife.product
-                  ? belowLife.product
-                  : aboveLife.product,
+                belowAge.product === aboveAge.product
+                  ? belowAge.product
+                  : aboveAge.product,
               premium:
-                belowLife.premium +
-                (aboveLife.premium - belowLife.premium) * ratio,
-              modelId: `${belowLife.modelId}-${aboveLife.modelId}`,
-              age,
+                belowAge.premium +
+                (aboveAge.premium - belowAge.premium) * ratio,
+              modelId: `${belowAge.modelId}-${aboveAge.modelId}`,
+              age: p.age,
               life: p.life,
+              toAge,
             };
           })
           .filter(Boolean),
-        exactAge = ageValues.find((row) => row.age === p.age);
-      if (exactAge) return exactAge;
-      let below = ageValues.filter((row) => row.age < p.age).at(-1),
-        above = ageValues.find((row) => row.age > p.age);
-      if (!below || !above || above.age - below.age > 10) return null;
-      let ratio = (p.age - below.age) / (above.age - below.age);
+        exactTerm = termValues.find((row) => row.toAge === p.toAge);
+      if (exactTerm) return exactTerm;
+      let belowTerm = termValues.filter((row) => row.toAge < p.toAge).at(-1),
+        aboveTerm = termValues.find((row) => row.toAge > p.toAge);
+      if (
+        !belowTerm ||
+        !aboveTerm ||
+        aboveTerm.toAge - belowTerm.toAge > 10
+      )
+        return null;
+      let ratio =
+        (p.toAge - belowTerm.toAge) /
+        (aboveTerm.toAge - belowTerm.toAge);
       return {
         provider,
-        product: below.product === above.product ? below.product : above.product,
-        premium: below.premium + (above.premium - below.premium) * ratio,
-        modelId: `${below.modelId}-${above.modelId}`,
+        product:
+          belowTerm.product === aboveTerm.product
+            ? belowTerm.product
+            : aboveTerm.product,
+        premium:
+          belowTerm.premium +
+          (aboveTerm.premium - belowTerm.premium) * ratio,
+        modelId: `${belowTerm.modelId}-${aboveTerm.modelId}`,
         age: p.age,
         life: p.life,
+        toAge: p.toAge,
       };
     });
   return interpolated.every(Boolean)
