@@ -26,7 +26,7 @@ A base histórica existente permanece publicada até que haja volume suficiente 
 
 A calculadora sempre retorna uma estimativa. Fora das faixas validadas ela usa extrapolação, amplia o intervalo e sinaliza baixa confiança. Os valores não constituem cotação ou garantia de aceitação. Confirme sempre o resultado final no SolutionBuilder e com a seguradora.
 
-Situação em 20/11/2026: a base prioritária contém 288 preços oficiais completos em 96 cenários, incluindo os primeiros quatro cenários completos de fumante com Zurich, Legal & General e Aviva. Doze cenários incompletos são mantidos em um arquivo separado; oito lacunas de vida pura permitem exibir apenas os preços oficiais disponíveis de Zurich e Aviva, com a Legal & General marcada como indisponível. A base de auditoria recente contém 24 illustrations com hashes únicos e prêmios reconciliados.
+Situação em 20/11/2026: a base prioritária contém 288 preços oficiais completos em 96 cenários, incluindo os primeiros quatro cenários completos de fumante com Zurich, Legal & General e Aviva. Doze cenários incompletos são mantidos em um arquivo separado; oito lacunas de vida pura permitem exibir apenas os preços oficiais disponíveis de Zurich e Aviva, com a Legal & General marcada como indisponível. A base de auditoria recente contém 25 illustrations com hashes únicos e prêmios reconciliados, incluindo a âncora Zurich multiproduto de £70k de vida + £20k de doenças graves aos 34 anos.
 
 Os dados preenchidos não são enviados a servidor. As simulações salvas ficam no `localStorage` do navegador utilizado.
 

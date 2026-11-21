@@ -23,3 +23,4 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-11-16,Local Illustration 2026-11-16 E,45,true,Legal & General,Life,65,19,60000,0,20.76,20.35,0,0.41,Waiver of Premium,255d0674113328e473fc8f9efc1dcf1a6631b93a32ae221c9f9b417d40306e41
 2026-11-16,Local Illustration 2026-11-16 F,46,true,Aviva,Life Insurance+,65,19,40000,0,15.95,15.83,0,0.12,Waiver of Premium,a548582b75ba1e61430a3a40abeacc5a5a1ccd9b832d8ed480a47914980ac284
 2026-11-18,Local Illustration 2026-11-18 C,50,false,Legal & General,Life,65,14,70000,0,12.92,12.67,0,0.25,Waiver of Premium,c46382d30fa0bcd2a7b00dfa4997719ec0cd7ff4748da45d3256d70e0118703a
+2026-11-20,Isamara Cotao,34,false,Zurich,Life & CI + Life,65,31,70000,20000,14.69,4.46,10.23,0,TPD and Waiver included; multi-policy discount reflected,f39d8171f5877e007358647f7510cf6eb4cd9aa354dfc064ac114317a5923b5a
