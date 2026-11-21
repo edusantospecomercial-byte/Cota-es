@@ -562,6 +562,10 @@ function render(p) {
         : `Estimativa interpolada entre âncoras oficiais do SolutionBuilder: ${selected.provider} entre as seguradoras prioritárias.`,
     );
   }
+  if (r.supported && !r.providerQuotes?.length)
+    warnings.unshift(
+      "Estimativa do modelo histórico agregado; ainda sem interpolação validada das três seguradoras prioritárias para esta combinação.",
+    );
   $("results").classList.remove("hidden");
   $("quoteCount").textContent = r.supported ? 1 : 0;
   $("unsupportedCount").textContent = r.supported ? 0 : 1;
@@ -598,7 +602,9 @@ function render(p) {
       : r.priorityExact
         ? "oficial exata"
         : `${(confidenceMetrics.tested || 0) < 30 ? "amostra limitada" : "validada"} (${Number(confidenceMetrics.mape * 100 || 0).toFixed(2)}% MAPE · P95 ${Number(confidenceMetrics.p95 * 100 || 0).toFixed(2)}% · n=${confidenceMetrics.tested || 0})`
-    : model?.confidence || "insuficiente";
+    : model
+      ? `modelo histórico agregado (${model.confidence || "não classificada"})`
+      : "insuficiente";
   let priorityDetail = r.providerQuotes?.length
     ? `<dt>Seguradoras prioritárias</dt><dd>${r.providerQuotes.map((quote) => `${escapeHtml(quote.provider)} ${gbp(quote.premium)}`).join(" · ")}${r.providerGap ? ` · ${escapeHtml(r.providerGap.provider)} indisponível` : ""}</dd><dt>Referência usada</dt><dd>${escapeHtml(r.provider)} · ${escapeHtml(r.product)}</dd>`
     : "";

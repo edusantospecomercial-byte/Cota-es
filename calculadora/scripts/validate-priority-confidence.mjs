@@ -23,6 +23,9 @@ const checks = {
   validatedP95Label: /confidenceMetrics\.p95 \* 100/.test(app),
   limitedSampleThreshold: /confidenceMetrics\.tested \|\| 0\) < 30/.test(app),
   limitedSampleWarning: /A validação deste segmento ainda usa amostra limitada/.test(app),
+  aggregateFallbackWarning:
+    /Estimativa do modelo histórico agregado; ainda sem interpolação validada das três seguradoras prioritárias/.test(app),
+  aggregateFallbackLabel: /modelo histórico agregado/.test(app),
   confidenceRenderedSafely:
     /confiança \$\{escapeHtml\(confidenceLabel\)\}/.test(app),
   underwritingInputsDisclosed:
