@@ -25,7 +25,7 @@ function toast(s) {
 }
 async function init() {
   [catalog, priorityRows, priorityGapRows] = await Promise.all([
-    fetch("./data/models.json?v=20261121-113")
+    fetch("./data/models.json?v=20261121-122")
       .then((r) => r.json())
       .catch(() => ({ models: {} })),
     fetch(
@@ -45,9 +45,10 @@ async function init() {
     records =
       catalog.calibratedRecords ||
       Object.values(catalog.models).reduce((s, m) => s + (m.records || 0), 0),
-    priority = catalog.audit?.priorityProviderPrices || 0;
+    priority = catalog.audit?.priorityProviderPrices || 0,
+    crossValidation = catalog.audit?.priorityProviderCrossValidation;
   $("baseStatus").textContent = n
-    ? `${records} registros confiáveis · ${priority} preços prioritários · ${n} famílias calibradas`
+    ? `${records} registros confiáveis · ${priority} preços prioritários · ${n} famílias calibradas${crossValidation ? ` · validação ${Number(crossValidation.mape * 100).toFixed(2)}% MAPE` : ""}`
     : "Base histórica · cotação oficial necessária";
   updateProfile();
   updateMetlife();

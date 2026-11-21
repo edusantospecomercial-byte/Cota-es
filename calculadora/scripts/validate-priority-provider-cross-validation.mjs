@@ -3,6 +3,9 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
+const catalog = JSON.parse(
+  readFileSync(join(scriptDir, "../data/models.json"), "utf8"),
+);
 const rows = readFileSync(
   join(scriptDir, "../data/solutionbuilder-priority-providers-2026-11-20.csv"),
   "utf8",
@@ -119,6 +122,23 @@ const worstCases = [...results]
 
 if (results.length < 90 || overallMape > 0.13 || overallWithin20 < 0.8) {
   throw new Error(JSON.stringify({ results: results.length, overallMape, overallWithin20, byProvider }, null, 2));
+}
+
+const published = catalog.audit?.priorityProviderCrossValidation;
+if (
+  published?.tested !== results.length ||
+  Math.abs(published?.mape - Number(overallMape.toFixed(4))) > 0.00001 ||
+  Math.abs(published?.within20 - Number(overallWithin20.toFixed(4))) > 0.00001
+) {
+  throw new Error(JSON.stringify({
+    issue: "published cross-validation metrics are stale",
+    published,
+    calculated: {
+      tested: results.length,
+      mape: Number(overallMape.toFixed(4)),
+      within20: Number(overallWithin20.toFixed(4)),
+    },
+  }, null, 2));
 }
 
 console.log(JSON.stringify({
