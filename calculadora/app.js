@@ -65,25 +65,28 @@ function priorityQuotesFor(p) {
       Number(row.critical_illness_cover) === p.ci,
   );
   if (knownGap) {
-    let exactAvailableQuotes =
-      Number(knownGap.critical_illness_cover) === 0
-        ? [
-            {
-              provider: "Zurich",
-              product: "Zurich Life",
-              premium: Number(knownGap.zurich_premium),
-              modelId: knownGap.model_id,
-            },
-            {
-              provider: "Aviva",
-              product: "Aviva Life Insurance+",
-              premium: Number(knownGap.aviva_premium),
-              modelId: knownGap.model_id,
-            },
-          ]
-            .filter((quote) => Number.isFinite(quote.premium))
-            .sort((a, b) => a.premium - b.premium)
-        : [];
+    let exactAvailableQuotes = [
+      {
+        provider: "Zurich",
+        product:
+          Number(knownGap.critical_illness_cover) > 0
+            ? "Zurich Life & CI"
+            : "Zurich Life",
+        premium: Number(knownGap.zurich_premium),
+        modelId: knownGap.model_id,
+      },
+      {
+        provider: "Aviva",
+        product:
+          Number(knownGap.critical_illness_cover) > 0
+            ? "Aviva Life Insurance+ with Core CI"
+            : "Aviva Life Insurance+",
+        premium: Number(knownGap.aviva_premium),
+        modelId: knownGap.model_id,
+      },
+    ]
+      .filter((quote) => Number.isFinite(quote.premium))
+      .sort((a, b) => a.premium - b.premium);
     return {
       quotes: exactAvailableQuotes,
       exact: exactAvailableQuotes.length > 0,

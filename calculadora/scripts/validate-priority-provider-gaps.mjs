@@ -21,6 +21,7 @@ const official = parseCsv(
 const officialModels = new Set(official.map((row) => row.model_id));
 const seen = new Set();
 const lifeOnlyScenarios = new Set();
+const exactPartialScenarios = new Set();
 const failures = [];
 
 for (const row of gaps) {
@@ -45,7 +46,18 @@ for (const row of gaps) {
       failures.push({ model_id: row.model_id, issue: "duplicate life-only gap scenario" });
     lifeOnlyScenarios.add(scenario);
   }
+  exactPartialScenarios.add([
+    row.model_id,
+    row.age,
+    row.smoker,
+    row.to_age,
+    row.life_cover,
+    row.critical_illness_cover,
+  ].join("|"));
 }
+
+if (exactPartialScenarios.size !== gaps.length)
+  failures.push({ issue: "duplicate partial priority scenario" });
 
 if (failures.length) {
   console.error(JSON.stringify(failures, null, 2));
@@ -53,5 +65,5 @@ if (failures.length) {
 }
 
 console.log(
-  `Priority-provider exclusions passed: ${gaps.length} incomplete scenarios kept out of calibration; ${lifeOnlyScenarios.size} life-only gaps safe for exact partial display.`,
+  `Priority-provider exclusions passed: ${gaps.length} incomplete quote variants kept out of three-provider calibration; all ${exactPartialScenarios.size} retain exact Zurich and Aviva partial display (${lifeOnlyScenarios.size} unique life-only scenarios).`,
 );
