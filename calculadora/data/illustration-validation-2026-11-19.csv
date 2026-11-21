@@ -209,3 +209,22 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-08-14,Josiane Cotao,55,false,Aviva,Life Insurance+ with Core CI,70,15,20000,20000,30.57,0,30.03,0.54,TPD and Waiver of Premium,330cd36c1e578438e331c695dd475bd51d9a31fc4365ce349abe027265604f40
 2026-08-20,Fernanda Cotao,46,false,Aviva,Life Insurance+ with Core CI,70,24,10000,10000,9.77,0,9.61,0.16,TPD and Waiver of Premium,42ce3847429741c5bfd8e47257088fbff672b4859273bb2ff78e7e15a2c9d752
 2026-08-20,Fernanda Cotao,46,false,Aviva,Life Insurance+,70,24,30000,0,6.77,6.72,0,0.05,Waiver of Premium,42ce3847429741c5bfd8e47257088fbff672b4859273bb2ff78e7e15a2c9d752
+2026-07-29,Julio Cesar Cotao,40,true,Legal & General,Life,64,24,50000,0,11.63,11.51,0,0.12,Waiver of Premium,a7d7c2c5df526071b68ecd1213235d787d6d80d72a3945bb3fe2dc6f210c627e
+2026-07-29,Julio Cesar Cotao,40,true,Legal & General,Life + CI Standard,64,24,10000,10000,10.64,0,10.38,0.26,TPD and Waiver of Premium,a7d7c2c5df526071b68ecd1213235d787d6d80d72a3945bb3fe2dc6f210c627e
+2026-07-29,Julio Cesar Cotao,40,true,Legal & General,Life,64,24,100000,0,20.63,20.43,0,0.20,Waiver of Premium,5e6e55e878e57e4ee22b5fb05b56781bbcc67737417665d45992da350e5132c0
+2026-08-04,Aurea Cotao,57,true,Legal & General,Life,69,12,20000,0,20.77,20.16,0,0.61,Waiver of Premium,0262de7dfd3fa68910662b5cb798ee6c519730723dc353423c07684e46bf5799
+2026-08-04,Aurea Cotao,57,true,Legal & General,Life + CI Standard,69,12,10000,10000,36.41,0,34.78,1.63,TPD and Waiver of Premium,0262de7dfd3fa68910662b5cb798ee6c519730723dc353423c07684e46bf5799
+2026-08-05,Raissa Cotao,37,false,Legal & General,Life,64,27,70000,0,6.47,6.40,0,0.07,Waiver of Premium,d995aa1591b0f41d865634ec3224c70d0bc9eca9cf8316c16fa05030d9bb8f5d
+2026-08-05,Raissa Cotao,37,false,Legal & General,Life + CI Standard,64,27,10000,10000,6.38,0,6.23,0.15,TPD and Waiver of Premium,d995aa1591b0f41d865634ec3224c70d0bc9eca9cf8316c16fa05030d9bb8f5d
+2026-08-05,Raissa Cotao,37,false,Legal & General,Life + CI Standard,64,27,30000,30000,16.59,0,16.15,0.44,TPD and Waiver of Premium,d5d584692f5b6997de2327406442a286f48d799fdafa1f43a89d5d44eb366365
+2026-08-05,Diana Cotao,40,false,Legal & General,Life,64,24,50000,0,6.00,5.94,0,0.06,Waiver of Premium,a0bb5aa0d16fd7f00bf7852d6bd0a8e9fee184544696a4bf6daf875d6f19f3d4
+2026-08-05,Diana Cotao,40,false,Legal & General,Life + CI Standard,64,24,10000,10000,7.11,0,6.95,0.16,TPD and Waiver of Premium,a0bb5aa0d16fd7f00bf7852d6bd0a8e9fee184544696a4bf6daf875d6f19f3d4
+2026-08-11,Leticia Cotao,37,true,Legal & General,Life,64,27,50000,0,9.35,9.25,0,0.10,Waiver of Premium,dc393bb0dcfa38735e57b7d08a4c24fcce84464e584c0207b94c9d41e2a0b394
+2026-08-11,Leticia Cotao,37,true,Legal & General,Life + CI Standard,64,27,10000,10000,8.93,0,8.70,0.23,TPD and Waiver of Premium,dc393bb0dcfa38735e57b7d08a4c24fcce84464e584c0207b94c9d41e2a0b394
+2026-08-11,Leticia Cotao,37,true,Legal & General,Life,64,27,30000,0,6.57,6.50,0,0.07,Waiver of Premium,8f39fc9342123f2d45dcaff292debc9aa83bb935350f741dc34eb3355f90bad0
+2026-08-11,Leticia Cotao,37,true,Legal & General,Life,64,27,30000,0,6.32,6.25,0,0.07,Waiver of Premium; multi-product discount reflected,dc426a1eea7000171dd3af6dc96adc121f7e0dabec953091cf830959e545fd34
+2026-08-11,Leticia Cotao,37,true,Legal & General,Life + CI Standard,64,27,10000,10000,8.93,0,8.70,0.23,TPD and Waiver of Premium,dc426a1eea7000171dd3af6dc96adc121f7e0dabec953091cf830959e545fd34
+2026-08-12,Namorada Antonio Cotao,38,false,Legal & General,Life,64,26,100000,0,8.42,8.33,0,0.09,Waiver of Premium,00ffc926aec511a69fe66f96d04d4c5d2e8f440e68f64a7adcd41bf8c333f6c3
+2026-08-12,Namorada Antonio Cotao,38,false,Legal & General,Life + CI Standard,64,26,10000,10000,6.40,0,6.25,0.15,TPD and Waiver of Premium,00ffc926aec511a69fe66f96d04d4c5d2e8f440e68f64a7adcd41bf8c333f6c3
+2026-08-14,Josiane Cotao,55,false,Legal & General,Life,69,14,50000,0,15.80,15.33,0,0.47,Waiver of Premium,b86cdda6e8740fbdfa30d5a0e20b5f64f81928e49073de413b147b1babc969ab
+2026-08-14,Josiane Cotao,55,false,Legal & General,Life + CI Standard,69,14,10000,10000,17.93,0,17.15,0.78,TPD and Waiver of Premium,b86cdda6e8740fbdfa30d5a0e20b5f64f81928e49073de413b147b1babc969ab

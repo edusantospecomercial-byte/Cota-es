@@ -109,14 +109,14 @@ const illustrationFingerprints = illustrationRows.map((row) => [
   row.total_monthly,
 ].join('|'));
 if (
-  illustrationRows.length !== 210
-  || new Set(hashes).size !== 171
+  illustrationRows.length !== 229
+  || new Set(hashes).size !== 182
   || new Set(illustrationFingerprints).size !== illustrationRows.length
   || hashes.some((hash) => !/^[a-f0-9]{64}$/.test(hash))
-  || catalog.audit?.illustrationValidationRecords !== 210
+  || catalog.audit?.illustrationValidationRecords !== 229
 ) {
   failures.push({
-    expectedIllustrationValidation: { rows: 210, uniqueDocuments: 171, uniqueRecords: 210, auditCount: 210 },
+    expectedIllustrationValidation: { rows: 229, uniqueDocuments: 182, uniqueRecords: 229, auditCount: 229 },
     actualIllustrationValidation: {
       rows: illustrationRows.length,
       uniqueDocuments: new Set(hashes).size,
