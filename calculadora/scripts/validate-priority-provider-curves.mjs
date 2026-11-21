@@ -97,6 +97,53 @@ checkIncreasing(
   "term",
 );
 
+const ageGroups = new Map();
+for (const row of rows) {
+  const key = [
+    row.provider,
+    row.sex,
+    row.smoker,
+    row.to_age,
+    row.life_cover,
+    row.critical_illness_cover,
+  ].join("|");
+  const group = ageGroups.get(key) ?? [];
+  group.push(row);
+  ageGroups.set(key, group);
+}
+let adjacentAgePairs = 0;
+const ageReversals = [];
+for (const [key, group] of ageGroups) {
+  group.sort((left, right) => left.age - right.age);
+  for (let index = 1; index < group.length; index += 1) {
+    adjacentAgePairs += 1;
+    const previous = group[index - 1];
+    const current = group[index];
+    if (current.monthly_premium + 0.05 < previous.monthly_premium)
+      ageReversals.push({
+        group: key,
+        fromAge: previous.age,
+        toAge: current.age,
+        relativeDrop:
+          (previous.monthly_premium - current.monthly_premium) /
+          previous.monthly_premium,
+      });
+  }
+}
+const ageReversalRate = ageReversals.length / adjacentAgePairs;
+const maximumAgeReversal = Math.max(
+  0,
+  ...ageReversals.map((row) => row.relativeDrop),
+);
+if (ageReversalRate > 0.05 || maximumAgeReversal > 0.06)
+  failures.push({
+    curve: "age consistency",
+    adjacentAgePairs,
+    reversals: ageReversals.length,
+    ageReversalRate,
+    maximumAgeReversal,
+  });
+
 if (failures.length) {
   console.error(JSON.stringify(failures, null, 2));
   process.exit(1);
@@ -198,5 +245,5 @@ if (failures.length) {
 }
 
 console.log(
-  `Priority-provider curves passed: ${rows.length} prices, ${ageInterpolationSegments.size} age, ${capitalInterpolationSegments.size} capital and ${termInterpolationSegments.size} term interpolation segments.`,
+  `Priority-provider curves passed: ${rows.length} prices, ${ageInterpolationSegments.size} age, ${capitalInterpolationSegments.size} capital and ${termInterpolationSegments.size} term interpolation segments; ${ageReversals.length}/${adjacentAgePairs} adjacent age pairs reverse (${(ageReversalRate * 100).toFixed(2)}%, max ${(maximumAgeReversal * 100).toFixed(2)}%).`,
 );
