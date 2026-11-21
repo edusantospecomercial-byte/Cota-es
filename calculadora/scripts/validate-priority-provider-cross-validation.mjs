@@ -155,6 +155,17 @@ const byProvider = Object.fromEntries(
     summarize(results.filter((row) => row.provider === provider)),
   ]),
 );
+const byPremiumBand = Object.fromEntries(
+  [
+    ["under10", (row) => row.premium < 10],
+    ["from10To25", (row) => row.premium >= 10 && row.premium < 25],
+    ["atLeast25", (row) => row.premium >= 25],
+  ].map(([name, predicate]) => [name, summarize(results.filter(predicate))]),
+);
+const premiumBandFailure = Object.values(byPremiumBand).some((metrics) =>
+  metrics.tested < 100 || metrics.mape > 0.08 || metrics.p95 > 0.15 ||
+  metrics.within20 < 0.98 || metrics.maximum > 0.25 || Math.abs(metrics.bias) > 0.05
+);
 const overallMape = results.reduce((sum, row) => sum + row.ape, 0) / results.length;
 const overallWithin20 = results.filter((row) => row.ape <= 0.2).length / results.length;
 const absolutePercentageErrors = results.map((row) => row.ape);
@@ -203,7 +214,7 @@ const worstCases = [...results]
     ape: Number(row.ape.toFixed(4)),
   }));
 
-if (results.length < 90 || overallMape > 0.13 || overallWithin20 < 0.8) {
+if (results.length < 90 || overallMape > 0.13 || overallWithin20 < 0.8 || premiumBandFailure) {
   throw new Error(JSON.stringify({ results: results.length, overallMape, overallWithin20, byProvider }, null, 2));
 }
 
@@ -249,6 +260,15 @@ if (!reportOnly && (
         return saved?.[metric] !== calculated;
       },
     );
+  }) ||
+  Object.entries(byPremiumBand).some(([band, metrics]) => {
+    const saved = published?.byPremiumBand?.[band];
+    return ["tested", "mape", "within20", "p90", "p95", "maximum", "bias"].some(
+      (metric) => {
+        const calculated = metric === "tested" ? metrics[metric] : Number(metrics[metric].toFixed(4));
+        return saved?.[metric] !== calculated;
+      },
+    );
   })
 )) {
   throw new Error(JSON.stringify({
@@ -290,5 +310,14 @@ console.log(JSON.stringify({
     p95: metrics.p95 == null ? null : Number(metrics.p95.toFixed(4)),
     maximum: metrics.maximum == null ? null : Number(metrics.maximum.toFixed(4)),
     bias: metrics.bias == null ? null : Number(metrics.bias.toFixed(4)),
+  }])),
+  byPremiumBand: Object.fromEntries(Object.entries(byPremiumBand).map(([band, metrics]) => [band, {
+    tested: metrics.tested,
+    mape: Number(metrics.mape.toFixed(4)),
+    within20: Number(metrics.within20.toFixed(4)),
+    p90: Number(metrics.p90.toFixed(4)),
+    p95: Number(metrics.p95.toFixed(4)),
+    maximum: Number(metrics.maximum.toFixed(4)),
+    bias: Number(metrics.bias.toFixed(4)),
   }])),
 }, null, 2));
