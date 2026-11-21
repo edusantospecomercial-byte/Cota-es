@@ -13939,7 +13939,12 @@
       "p90": 0.0824,
       "p95": 0.103,
       "within20": 0.9929,
-      "maximum": 0.2089
+      "maximum": 0.2089,
+      "byProvider": {
+        "Legal & General": { "predicted": 47, "mape": 0.0431, "p95": 0.1074, "within20": 1, "maximum": 0.1286 },
+        "Zurich": { "predicted": 47, "mape": 0.0338, "p95": 0.0685, "within20": 1, "maximum": 0.1408 },
+        "Aviva": { "predicted": 47, "mape": 0.0412, "p95": 0.1024, "within20": 0.9787, "maximum": 0.2089 }
+      }
     },
     "priorityProviderSexSensitivity": {
       "matchedProviderAnchors": 69,

@@ -81,15 +81,36 @@ function quantile(values, probability) {
 const training = latest(rows.filter((row) => row.date < cutoff));
 const testing = latest(rows.filter((row) => row.date >= cutoff));
 const errors = [];
+const errorRows = [];
 for (const target of testing) {
   const pool = training.filter((row) => !(
     row.provider === target.provider && row.smoker === target.smoker && row.age === target.age &&
     row.toAge === target.toAge && row.life === target.life && row.ci === target.ci
   ));
   const predicted = estimate(pool, target);
-  if (predicted != null) errors.push(Math.abs(predicted - target.premium) / target.premium);
+  if (predicted != null) {
+    const ape = Math.abs(predicted - target.premium) / target.premium;
+    errors.push(ape);
+    errorRows.push({ provider: target.provider, ape });
+  }
 }
 errors.sort((left, right) => left - right);
+function summarize(source) {
+  const values = source.map((row) => row.ape).sort((left, right) => left - right);
+  return {
+    predicted: values.length,
+    mape: Number((values.reduce((sum, value) => sum + value, 0) / values.length).toFixed(4)),
+    p95: Number(quantile(values, 0.95).toFixed(4)),
+    within20: Number((values.filter((value) => value <= 0.2).length / values.length).toFixed(4)),
+    maximum: Number(Math.max(...values).toFixed(4)),
+  };
+}
+const byProvider = Object.fromEntries(
+  ["Legal & General", "Zurich", "Aviva"].map((provider) => [
+    provider,
+    summarize(errorRows.filter((row) => row.provider === provider)),
+  ]),
+);
 const calculated = {
   cutoff,
   trainingAnchors: training.length,
@@ -101,12 +122,17 @@ const calculated = {
   p95: Number(quantile(errors, 0.95).toFixed(4)),
   within20: Number((errors.filter((value) => value <= 0.2).length / errors.length).toFixed(4)),
   maximum: Number(Math.max(...errors).toFixed(4)),
+  byProvider,
 };
 
 const catalog = JSON.parse(readFileSync(join(dataDir, "models.json"), "utf8"));
 const published = catalog.audit?.priorityProviderTemporalHoldout;
-const stale = Object.entries(calculated).some(([key, value]) => published?.[key] !== value);
-if (stale || calculated.predicted < 100 || calculated.mape > 0.08 || calculated.p95 > 0.15 || calculated.within20 < 0.98 || calculated.maximum > 0.25) {
+const stale = JSON.stringify(published) !== JSON.stringify(calculated);
+const providerFailure = Object.values(byProvider).some((metrics) =>
+  metrics.predicted < 30 || metrics.mape > 0.1 || metrics.p95 > 0.2 ||
+  metrics.within20 < 0.95 || metrics.maximum > 0.3
+);
+if (stale || providerFailure || calculated.predicted < 100 || calculated.mape > 0.08 || calculated.p95 > 0.15 || calculated.within20 < 0.98 || calculated.maximum > 0.25) {
   console.error(JSON.stringify({ ok: false, stale, published, calculated }, null, 2));
   process.exit(1);
 }
