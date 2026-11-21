@@ -19,14 +19,20 @@ priority,batch,age,smoker,to_age,life_cover,critical_illness_cover,providers,rea
 18,smoker_ci_term,35,Yes,75,50000,20000,Legal & General|Zurich|Aviva,Open smoker Core CI term interpolation,pending_authentication
 19,smoker_ci_rectangle,55,Yes,75,50000,10000,Legal & General|Zurich|Aviva,Complete smoker Core CI age and term rectangle,pending_authentication
 20,smoker_ci_rectangle,55,Yes,75,50000,20000,Legal & General|Zurich|Aviva,Complete smoker Core CI age and term rectangle,pending_authentication
-21,nonsmoker_ci_validation_age,40,No,65,50000,10000,Legal & General|Zurich|Aviva,Create first non-smoker Core CI age holdouts,pending_authentication
-22,nonsmoker_ci_validation_age,40,No,65,50000,20000,Legal & General|Zurich|Aviva,Build Core CI age validation mesh,pending_authentication
-23,nonsmoker_ci_validation_age,42,No,65,50000,20000,Legal & General|Zurich|Aviva,Create Core CI age holdouts within 10-year gap,pending_authentication
-24,nonsmoker_ci_validation_capital,46,No,65,75000,10000,Legal & General|Zurich|Aviva,Create Core CI capital holdouts,pending_authentication
-25,nonsmoker_ci_validation_capital,46,No,65,75000,20000,Legal & General|Zurich|Aviva,Create Core CI capital holdouts,pending_authentication
-26,nonsmoker_ci_validation_rectangle,46,No,75,75000,10000,Legal & General|Zurich|Aviva,Complete Core CI capital and term validation mesh,pending_authentication
-27,nonsmoker_ci_validation_rectangle,46,No,75,75000,20000,Legal & General|Zurich|Aviva,Complete Core CI capital and term validation mesh,pending_authentication
-28,nonsmoker_ci_upper_age,60,No,65,50000,10000,Legal & General|Zurich|Aviva,Extend non-smoker Core CI upper age,pending_authentication
-29,nonsmoker_ci_upper_age,60,No,65,50000,20000,Legal & General|Zurich|Aviva,Extend non-smoker Core CI upper age,pending_authentication
-30,nonsmoker_ci_upper_rectangle,60,No,75,50000,10000,Legal & General|Zurich|Aviva,Complete upper-age Core CI term rectangle,pending_authentication
-31,nonsmoker_ci_upper_rectangle,60,No,75,50000,20000,Legal & General|Zurich|Aviva,Complete upper-age Core CI term rectangle,pending_authentication
+21,smoker_ci_validation_support,45,Yes,65,50000,10000,Legal & General|Zurich|Aviva,Support smoker Core CI term holdouts,pending_authentication
+22,smoker_ci_validation_support,45,Yes,65,50000,20000,Legal & General|Zurich|Aviva,Support smoker Core CI term holdouts,pending_authentication
+23,smoker_ci_validation_support,45,Yes,75,50000,10000,Legal & General|Zurich|Aviva,Support smoker Core CI term holdouts,pending_authentication
+24,smoker_ci_validation_support,45,Yes,75,50000,20000,Legal & General|Zurich|Aviva,Support smoker Core CI term holdouts,pending_authentication
+25,smoker_ci_validation_center,45,Yes,70,50000,10000,Legal & General|Zurich|Aviva,Create first smoker Core CI leave-one-out holdouts,pending_authentication
+26,smoker_ci_validation_center,45,Yes,70,50000,20000,Legal & General|Zurich|Aviva,Create first smoker Core CI leave-one-out holdouts,pending_authentication
+27,nonsmoker_ci_validation_age,40,No,65,50000,10000,Legal & General|Zurich|Aviva,Create first non-smoker Core CI age holdouts,pending_authentication
+28,nonsmoker_ci_validation_age,40,No,65,50000,20000,Legal & General|Zurich|Aviva,Build Core CI age validation mesh,pending_authentication
+29,nonsmoker_ci_validation_age,42,No,65,50000,20000,Legal & General|Zurich|Aviva,Create Core CI age holdouts within 10-year gap,pending_authentication
+30,nonsmoker_ci_validation_capital,46,No,65,75000,10000,Legal & General|Zurich|Aviva,Create Core CI capital holdouts,pending_authentication
+31,nonsmoker_ci_validation_capital,46,No,65,75000,20000,Legal & General|Zurich|Aviva,Create Core CI capital holdouts,pending_authentication
+32,nonsmoker_ci_validation_rectangle,46,No,75,75000,10000,Legal & General|Zurich|Aviva,Complete Core CI capital and term validation mesh,pending_authentication
+33,nonsmoker_ci_validation_rectangle,46,No,75,75000,20000,Legal & General|Zurich|Aviva,Complete Core CI capital and term validation mesh,pending_authentication
+34,nonsmoker_ci_upper_age,60,No,65,50000,10000,Legal & General|Zurich|Aviva,Extend non-smoker Core CI upper age,pending_authentication
+35,nonsmoker_ci_upper_age,60,No,65,50000,20000,Legal & General|Zurich|Aviva,Extend non-smoker Core CI upper age,pending_authentication
+36,nonsmoker_ci_upper_rectangle,60,No,75,50000,10000,Legal & General|Zurich|Aviva,Complete upper-age Core CI term rectangle,pending_authentication
+37,nonsmoker_ci_upper_rectangle,60,No,75,50000,20000,Legal & General|Zurich|Aviva,Complete upper-age Core CI term rectangle,pending_authentication

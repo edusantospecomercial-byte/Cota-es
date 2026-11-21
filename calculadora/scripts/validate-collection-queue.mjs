@@ -17,10 +17,12 @@ const [priorityHeader, ...priorityLines] = readFileSync(
   "utf8",
 ).trim().split(/\r?\n/);
 const priorityColumns = priorityHeader.split(",");
-const collectedScenarioKeys = new Set(priorityLines.map((line) => {
-  const row = Object.fromEntries(
+const priorityRows = priorityLines.map((line) =>
+  Object.fromEntries(
     line.split(",").map((value, index) => [priorityColumns[index], value]),
-  );
+  ),
+);
+const collectedScenarioKeys = new Set(priorityRows.map((row) => {
   return [
     row.age,
     row.smoker,
@@ -52,6 +54,82 @@ const mix = rows.reduce((counts, row) => {
 }, {});
 if (!mix.smokerLife || !mix.smokerCI || !mix.nonSmokerCI) problems.push("missing strategic segment");
 
+function interpolatePoint(points, target, axis, maxGap = Infinity) {
+  const sorted = [...points].sort((a, b) => a[axis] - b[axis]);
+  const exact = sorted.find((row) => row[axis] === target);
+  if (exact) return exact;
+  const below = sorted.filter((row) => row[axis] < target).at(-1);
+  const above = sorted.find((row) => row[axis] > target);
+  if (!below || !above || above[axis] - below[axis] > maxGap) return null;
+  return {
+    age: axis === "age" ? target : below.age,
+    life: axis === "life" ? target : below.life,
+    toAge: axis === "toAge" ? target : below.toAge,
+  };
+}
+
+function canInterpolate(pool, target) {
+  const comparable = pool.filter((row) =>
+    row.provider === target.provider &&
+    row.smoker === target.smoker &&
+    row.ci === target.ci
+  );
+  const byTerm = [...new Set(comparable.map((row) => row.toAge))]
+    .map((toAge) => {
+      const atTerm = comparable.filter((row) => row.toAge === toAge);
+      const byAge = [...new Set(atTerm.map((row) => row.age))]
+        .map((age) => {
+          const value = interpolatePoint(
+            atTerm.filter((row) => row.age === age),
+            target.life,
+            "life",
+          );
+          return value ? { ...value, age, toAge } : null;
+        })
+        .filter(Boolean);
+      const value = interpolatePoint(byAge, target.age, "age", 10);
+      return value ? { ...value, toAge } : null;
+    })
+    .filter(Boolean);
+  return Boolean(interpolatePoint(byTerm, target.toAge, "toAge", 10));
+}
+
+function countTestable(anchors) {
+  const counts = {};
+  for (let index = 0; index < anchors.length; index += 1) {
+    const target = anchors[index];
+    if (!canInterpolate(anchors.filter((_, candidate) => candidate !== index), target)) continue;
+    const segment = `${target.smoker === "Yes" ? "smoker" : "nonSmoker"}${target.ci > 0 ? "CI" : "Life"}`;
+    counts[segment] = (counts[segment] || 0) + 1;
+  }
+  return counts;
+}
+
+const currentAnchors = priorityRows
+  .filter((row) => row.available === "true")
+  .map((row) => ({
+    provider: row.provider,
+    smoker: row.smoker,
+    age: Number(row.age),
+    toAge: Number(row.to_age),
+    life: Number(row.life_cover),
+    ci: Number(row.critical_illness_cover),
+  }));
+const queuedAnchors = rows.flatMap((row) => row.providers.split("|").map((provider) => ({
+  provider,
+  smoker: row.smoker,
+  age: Number(row.age),
+  toAge: Number(row.to_age),
+  life: Number(row.life_cover),
+  ci: Number(row.critical_illness_cover),
+})));
+const projectedTestable = countTestable([...currentAnchors, ...queuedAnchors]);
+if (
+  (projectedTestable.smokerLife || 0) < 24 ||
+  (projectedTestable.nonSmokerCI || 0) < 21 ||
+  (projectedTestable.smokerCI || 0) < 6
+) problems.push({ insufficientValidationGain: projectedTestable });
+
 if (problems.length) {
   console.error(JSON.stringify({ ok: false, problems, mix }, null, 2));
   process.exit(1);
@@ -62,5 +140,6 @@ console.log(JSON.stringify({
   queuedScenarios: rows.length,
   maximumPrices: rows.length * 3,
   existingScenariosChecked: collectedScenarioKeys.size,
+  projectedTestable,
   mix,
 }, null, 2));

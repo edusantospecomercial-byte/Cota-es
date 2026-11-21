@@ -53,10 +53,12 @@ Executar em ordem crescente de `priority` no arquivo `data/next-priority-collect
 
 - 1–12: vida para fumantes; abre malha de idade, prazo e capital.
 - 13–20: fumante + CI; cria a primeira malha Core CI para fumantes.
-- 21–27: pontos intermediários de CI não fumante; escolhidos para produzir os primeiros holdouts de validação.
-- 28–31: extensão de CI não fumante até 60 anos.
+- 21–24: apoios da malha fumante + CI aos 45 anos; fecham os extremos de prazo necessários para validar os centros.
+- 25–26: centros da malha fumante + CI; criam os primeiros holdouts desse segmento.
+- 27–33: pontos intermediários de CI não fumante; escolhidos para produzir os primeiros holdouts de validação.
+- 34–37: extensão de CI não fumante até 60 anos.
 
-Os 31 cenários podem produzir até 93 preços oficiais.
+Os 37 cenários podem produzir até 111 preços oficiais.
 
 ## Validação antes de publicar
 
