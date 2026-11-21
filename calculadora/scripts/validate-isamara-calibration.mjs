@@ -100,13 +100,13 @@ if (catalog.calibratedRecords !== 1384 || model.records !== 521 || catalog.model
 
 const hashes = illustrationRows.map((row) => row.sha256);
 if (
-  illustrationRows.length !== 69
-  || new Set(hashes).size !== 69
+  illustrationRows.length !== 77
+  || new Set(hashes).size !== 77
   || hashes.some((hash) => !/^[a-f0-9]{64}$/.test(hash))
-  || catalog.audit?.illustrationValidationRecords !== 69
+  || catalog.audit?.illustrationValidationRecords !== 77
 ) {
   failures.push({
-    expectedIllustrationValidation: { rows: 69, uniqueHashes: 69, auditCount: 69 },
+    expectedIllustrationValidation: { rows: 77, uniqueHashes: 77, auditCount: 77 },
     actualIllustrationValidation: {
       rows: illustrationRows.length,
       uniqueHashes: new Set(hashes).size,

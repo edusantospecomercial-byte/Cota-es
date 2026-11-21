@@ -596,6 +596,14 @@
     "life_only": {
       "modelType": "knn",
       "lookup": {
+        "36|64|100000|0|0": 7.90,
+        "44|69|50000|0|0": 7.92,
+        "44|69|100000|0|0": 13.38,
+        "49|64|50000|0|0": 9.57,
+        "53|69|30000|0|1": 21.21,
+        "47|65|50000|0|0": 9.61,
+        "46|64|50000|0|1": 17.60,
+        "44|64|100000|0|0": 12.18,
         "51|65|50000|0|0": 11.27,
         "50|70|40000|0|0": 10.32,
         "58|70|50000|0|0": 18.69,
@@ -13612,7 +13620,7 @@
     "officialMinimumAnchors": 217,
     "priorityProviderPrices": 288,
     "priorityProviderScenarios": 96,
-    "illustrationValidationRecords": 69,
+    "illustrationValidationRecords": 77,
     "solutionBuilderHistoryValidationRecords": 171,
     "solutionBuilderHistoryUniqueRecords": 170,
     "manualReviewRecords": 187,
