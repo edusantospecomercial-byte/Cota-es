@@ -13962,6 +13962,16 @@
       "newestAgeDays": 1,
       "oldestAgeDays": 456
     },
+    "priorityProviderSpread": {
+      "uniqueComparableScenarios": 336,
+      "relativeMedian": 0.1234,
+      "relativeP90": 0.2324,
+      "relativeP95": 0.269,
+      "relativeMaximum": 0.5256,
+      "absoluteMedian": 2.08,
+      "absoluteP95": 8.39,
+      "absoluteMaximum": 46.48
+    },
     "illustrationValidationRecords": 487,
     "solutionBuilderHistoryValidationRecords": 171,
     "solutionBuilderHistoryUniqueRecords": 170,
