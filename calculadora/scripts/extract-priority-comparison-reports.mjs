@@ -151,6 +151,23 @@ const unique = [...byReference.values()];
 const duplicateGroups = [...referenceGroups.values()].filter(
   (group) => group.length > 1,
 );
+function materialFingerprint(row) {
+  return JSON.stringify({
+    status: row.status,
+    sourceDate: row.sourceDate,
+    age: row.age,
+    sex: row.sex,
+    smoker: row.smoker,
+    toAge: row.toAge,
+    life: row.life,
+    ci: row.ci,
+    prices: row.prices,
+    missing: row.missing,
+  });
+}
+const materiallyConflictingDuplicates = duplicateGroups.filter(
+  (group) => new Set(group.map(materialFingerprint)).size > 1,
+);
 const summary = {
   files: files.length,
   uniqueReferences: unique.length,
@@ -163,6 +180,8 @@ const summary = {
     (group) =>
       new Set(group.map((row) => row.sourceDate).filter(Boolean)).size > 1,
   ).length,
+  duplicateReferencesWithDifferentMaterialData:
+    materiallyConflictingDuplicates.length,
   complete: unique.filter((row) => row.status === "complete").length,
   partial: unique.filter((row) => row.status === "partial").length,
   noPrices: unique.filter((row) => row.status === "no-prices").length,
@@ -177,6 +196,17 @@ const summary = {
     (row) => row.status === "complete" && row.smoker === "Yes",
   ).length,
 };
+
+if (
+  materiallyConflictingDuplicates.length &&
+  (process.argv.includes("--csv") || process.argv.includes("--partial-csv"))
+) {
+  throw new Error(
+    `Conflicting duplicate comparison references: ${materiallyConflictingDuplicates
+      .map((group) => group[0].reference)
+      .join(", ")}`,
+  );
+}
 
 if (process.argv.includes("--partial-csv")) {
   console.log(
