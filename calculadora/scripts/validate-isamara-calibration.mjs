@@ -64,13 +64,13 @@ if (catalog.calibratedRecords !== 1384 || model.records !== 521 || catalog.model
 
 const hashes = illustrationRows.map((row) => row.sha256);
 if (
-  illustrationRows.length !== 23
-  || new Set(hashes).size !== 23
+  illustrationRows.length !== 24
+  || new Set(hashes).size !== 24
   || hashes.some((hash) => !/^[a-f0-9]{64}$/.test(hash))
-  || catalog.audit?.illustrationValidationRecords !== 23
+  || catalog.audit?.illustrationValidationRecords !== 24
 ) {
   failures.push({
-    expectedIllustrationValidation: { rows: 23, uniqueHashes: 23, auditCount: 23 },
+    expectedIllustrationValidation: { rows: 24, uniqueHashes: 24, auditCount: 24 },
     actualIllustrationValidation: {
       rows: illustrationRows.length,
       uniqueHashes: new Set(hashes).size,
@@ -87,12 +87,13 @@ for (const row of illustrationRows) {
     Number(row.base_life_monthly)
     + Number(row.base_ci_monthly)
     + Number(row.optional_monthly);
-  if (!Number.isFinite(term) || term !== expectedTerm) {
+  const validTerms = new Set([expectedTerm, expectedTerm - 1]);
+  if (!Number.isFinite(term) || !validTerms.has(term)) {
     failures.push({
       illustrationHash: row.sha256,
-      issue: 'term does not reconcile with age and to_age',
+      issue: 'term does not reconcile with current-age or age-next-birthday basis',
       term,
-      expectedTerm,
+      acceptedTerms: [...validTerms],
     });
   }
   if (!Number.isFinite(total) || !Number.isFinite(components) || Math.abs(total - components) > 0.011) {
