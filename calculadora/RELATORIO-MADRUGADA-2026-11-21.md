@@ -39,6 +39,8 @@ A auditoria integral encontrou 436 PDFs e 413 referências únicas. Nenhuma refe
 node calculadora/scripts/audit-new-comparison-reports.mjs
 ```
 
+O comando `node calculadora/scripts/audit-comparison-report-hashes.mjs` recalcula o inventário e confirma que cada referência e SHA-256 publicado ainda corresponde ao PDF de origem presente na máquina.
+
 ## Portal e próxima coleta
 
 O ConcertHub chegou à etapa física de autenticação por Face ID, impressão digital, PIN ou chave de segurança. A aba foi preservada nessa tela. Sem a intervenção física não foi possível gerar novos reports oficiais durante este trecho.
