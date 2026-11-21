@@ -239,3 +239,6 @@ source_date,model_id,profile,age,sex,smoker,to_age,life_cover,critical_illness_c
 2026-11-18,34952276,Amaro Cotacao,50,F,No,75,100000,0,Legal & General,Legal & General Life,21.61,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
 2026-11-18,34952276,Amaro Cotacao,50,F,No,75,100000,0,Zurich,Zurich Life,23.04,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
 2026-11-18,34952276,Amaro Cotacao,50,F,No,75,100000,0,Aviva,Aviva Life Insurance+,26.79,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-19,34955631,Amaro Cotacao,40,F,No,70,200000,0,Legal & General,Legal & General Life,17.41,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-19,34955631,Amaro Cotacao,40,F,No,70,200000,0,Zurich,Zurich Life,18.30,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-19,34955631,Amaro Cotacao,40,F,No,70,200000,0,Aviva,Aviva Life Insurance+,22.36,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
