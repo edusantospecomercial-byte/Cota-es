@@ -4,7 +4,8 @@ import { fileURLToPath } from "node:url";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const dataDir = join(here, "../data");
-const cutoff = "2026-10-01";
+const reportOnly = process.argv.includes("--report-only");
+const cutoff = process.argv.find((argument) => argument.startsWith("--cutoff="))?.split("=")[1] || "2026-10-01";
 const files = [
   "solutionbuilder-priority-providers-2026-11-20.csv",
   "solutionbuilder-priority-provider-archive-2026-11-21.csv",
@@ -153,7 +154,7 @@ const establishedSegmentFailure = [bySegment.nonSmokerLife, bySegment.nonSmokerC
   metrics.predicted < 30 || metrics.mape > 0.1 || metrics.p95 > 0.2 ||
   metrics.within20 < 0.95 || metrics.maximum > 0.3 || Math.abs(metrics.bias) > 0.08
 );
-if (stale || providerFailure || establishedSegmentFailure || calculated.predicted < 100 || calculated.coverage < 0.25 || calculated.mape > 0.08 || calculated.p95 > 0.15 || calculated.within20 < 0.98 || calculated.maximum > 0.25 || Math.abs(calculated.bias) > 0.05) {
+if (!reportOnly && (stale || providerFailure || establishedSegmentFailure || calculated.predicted < 100 || calculated.coverage < 0.25 || calculated.mape > 0.08 || calculated.p95 > 0.15 || calculated.within20 < 0.98 || calculated.maximum > 0.25 || Math.abs(calculated.bias) > 0.05)) {
   console.error(JSON.stringify({ ok: false, stale, published, calculated }, null, 2));
   process.exit(1);
 }
