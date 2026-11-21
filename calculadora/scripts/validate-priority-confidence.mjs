@@ -21,6 +21,11 @@ const checks = {
     /"nonSmokerLife"/.test(app),
   validatedMapeLabel: /confidenceMetrics\.mape \* 100/.test(app),
   validatedP95Label: /confidenceMetrics\.p95 \* 100/.test(app),
+  forwardValidationInResult:
+    /forwardMetrics = catalog\.audit\?\.priorityProviderTemporalHoldout/.test(app) &&
+    /validação futura/.test(app) &&
+    /forwardMetrics\.p95 \* 100/.test(app) &&
+    /forwardMetrics\.predicted/.test(app),
   temporalHoldoutStatus:
     /priorityProviderTemporalHoldout/.test(app) &&
     /temporal: \$\{Number\(temporalHoldout\.mape \* 100\)/.test(app),

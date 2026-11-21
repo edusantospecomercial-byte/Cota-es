@@ -605,12 +605,16 @@ function render(p) {
     catalog.audit?.priorityProviderCrossValidation?.bySegment?.[
       confidenceSegmentKey
     ] || {};
+  const forwardMetrics = catalog.audit?.priorityProviderTemporalHoldout || {};
+  const forwardEvidence = forwardMetrics.predicted
+    ? ` · validação futura ${Number(forwardMetrics.mape * 100).toFixed(2)}% MAPE · P95 ${Number(forwardMetrics.p95 * 100).toFixed(2)}% · n=${forwardMetrics.predicted}`
+    : "";
   let confidenceLabel = r.providerQuotes?.length
     ? r.providerGap
       ? "oficial parcial"
       : r.priorityExact
         ? "oficial exata"
-        : `${(confidenceMetrics.tested || 0) < 30 ? "amostra limitada" : "validada"} (${Number(confidenceMetrics.mape * 100 || 0).toFixed(2)}% MAPE · P95 ${Number(confidenceMetrics.p95 * 100 || 0).toFixed(2)}% · n=${confidenceMetrics.tested || 0})`
+        : `${(confidenceMetrics.tested || 0) < 30 ? "amostra limitada" : "validada"} (${Number(confidenceMetrics.mape * 100 || 0).toFixed(2)}% MAPE · P95 ${Number(confidenceMetrics.p95 * 100 || 0).toFixed(2)}% · n=${confidenceMetrics.tested || 0}${forwardEvidence})`
     : model
       ? `modelo histórico agregado (${confidencePt(model.confidence)})`
       : "insuficiente";
