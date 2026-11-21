@@ -21,7 +21,7 @@ async function init() {
       .then((r) => r.json())
       .catch(() => ({ models: {} })),
     fetch(
-      "./data/solutionbuilder-priority-providers-2026-11-20.csv?v=20261120-91",
+      "./data/solutionbuilder-priority-providers-2026-11-20.csv?v=20261120-103",
     )
       .then((r) => r.text())
       .then(parsePriorityCsv)

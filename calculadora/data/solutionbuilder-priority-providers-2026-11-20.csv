@@ -269,3 +269,21 @@ source_date,model_id,profile,age,sex,smoker,to_age,life_cover,critical_illness_c
 2026-11-20,34984446,Jana Cotacao,47,F,No,70,100000,0,Legal & General,Legal & General Life,15.18,true,Generated in SolutionBuilder; parameters confirmed in Full Details; waiver excluded
 2026-11-20,34984446,Jana Cotacao,47,F,No,70,100000,0,Zurich,Zurich Life,15.86,true,Generated in SolutionBuilder; parameters confirmed in Full Details; waiver excluded
 2026-11-20,34984446,Jana Cotacao,47,F,No,70,100000,0,Aviva,Aviva Life Insurance+,18.12,true,Generated in SolutionBuilder; parameters confirmed in Full Details; waiver excluded
+2026-11-18,34937407,Wendel Cotacao,35,F,No,65,20000,0,Aviva,Aviva Life Insurance+,5.00,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34937407,Wendel Cotacao,35,F,No,65,20000,0,Zurich,Zurich Life,5.00,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34937407,Wendel Cotacao,35,F,No,65,20000,0,Legal & General,Legal & General Life,6.00,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34937472,Wendel Cotacao,35,F,No,65,30000,0,Aviva,Aviva Life Insurance+,5.00,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34937472,Wendel Cotacao,35,F,No,65,30000,0,Zurich,Zurich Life,5.00,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34937472,Wendel Cotacao,35,F,No,65,30000,0,Legal & General,Legal & General Life,6.00,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34937984,Wendel Cotacao,35,F,Yes,65,20000,0,Aviva,Aviva Life Insurance+,5.00,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34937984,Wendel Cotacao,35,F,Yes,65,20000,0,Zurich,Zurich Life,5.30,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34937984,Wendel Cotacao,35,F,Yes,65,20000,0,Legal & General,Legal & General Life,6.00,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34938036,Wendel Cotacao,35,F,Yes,65,30000,0,Legal & General,Legal & General Life,6.00,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34938036,Wendel Cotacao,35,F,Yes,65,30000,0,Aviva,Aviva Life Insurance+,6.15,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34938036,Wendel Cotacao,35,F,Yes,65,30000,0,Zurich,Zurich Life,6.54,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34938086,Wendel Cotacao,35,F,Yes,65,50000,0,Legal & General,Legal & General Life,8.32,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34938086,Wendel Cotacao,35,F,Yes,65,50000,0,Aviva,Aviva Life Insurance+,9.02,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34938086,Wendel Cotacao,35,F,Yes,65,50000,0,Zurich,Zurich Life,9.03,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34938113,Wendel Cotacao,35,F,Yes,65,100000,0,Legal & General,Legal & General Life,13.18,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34938113,Wendel Cotacao,35,F,Yes,65,100000,0,Aviva,Aviva Life Insurance+,14.66,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
+2026-11-18,34938113,Wendel Cotacao,35,F,Yes,65,100000,0,Zurich,Zurich Life,14.91,true,Recovered from SolutionBuilder history; parameters confirmed in calibration archive
