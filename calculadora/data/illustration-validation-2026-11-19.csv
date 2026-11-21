@@ -92,3 +92,13 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-09-14,Jheniffer Cotao,26,true,Legal & General,Life,64,38,200000,0,13.89,13.82,0,0.07,Waiver of Premium,1b5522add316567bf228d49d2b0187543b74b7f30193140ab24e3710b06cbf8b
 2026-09-24,Joana Cotao,61,false,Zurich,Life,70,9,30000,0,13.85,13.85,0,0,None,158b0e0aa9182eda82349291148287006a231f0dfee7dda359f634e2584700dc
 2026-09-23,Maia Cotao,36,false,Legal & General,Life,64,28,150000,0,10.46,10.35,0,0.11,Waiver of Premium,9dfca636fd4c20116a2e0856d3be1a9fbc3c0ed46a23a8e822883ac9a0800850
+2026-10-14,Brenda Cotao,27,false,Zurich,Life,65,38,200000,0,8.91,8.69,0,0.22,Waiver of Premium,8d2de13dea5960ea192cd4b067de87436a2b26ce20d0e8e2d8fc37fca89cf5d1
+2026-10-21,Rosangela Goncalves Cotao,56,false,Aviva,Life Insurance+ with Core CI,70,14,20000,20000,33.35,0,32.75,0.60,TPD and Waiver of Premium,a02661fc3692abfa796ac86ede12edf82f8b78324ab5efbf2289057212cd5673
+2026-10-13,Naty Cotao,48,false,Zurich,Life,65,17,50000,0,9.92,9.45,0,0.47,Waiver of Premium,f9f0aed7b12024547adae21e01abb78bc5a40d5fb883fee4ea224335e75fc13b
+2026-10-09,Joseane Cotao,47,true,Aviva,Life Insurance+,65,18,30000,0,13.40,13.30,0,0.10,Waiver of Premium,c6d9d535dff836cf9521b51b8f29b27b489f51130c9843bd4310824523ab239c
+2026-10-09,Joseane Cotao,47,true,Aviva,Life Insurance+ with Core CI,65,18,10000,10000,14.73,0,14.50,0.23,TPD and Waiver of Premium,c6d9d535dff836cf9521b51b8f29b27b489f51130c9843bd4310824523ab239c
+2026-09-14,Local Cotao 31,31,false,Zurich,Life,65,34,200000,0,10.50,10.24,0,0.26,Waiver of Premium,113d649ac07d49bb2f583ce144ae0fb2dcbab63c233e46f29ca93f2704d35fbb
+2026-10-12,Edilane Cotao,43,false,Zurich,Life,65,22,100000,0,12.14,11.73,0,0.41,Waiver of Premium,4836de757288252249dadd459b0896cb5e56d5c53030b1d790653f89ec1c4570
+2026-10-15,Leticia Cotao,32,false,Legal & General,Life,64,32,200000,0,11.06,10.95,0,0.11,Waiver of Premium,1856b6e2dca42b1ec38007e7b13a7d5ea30da46b3cb247eb20b3543c53f1bdf2
+2026-10-22,Isabel Cotao,54,false,Legal & General,Life,69,15,100000,0,27.31,26.77,0,0.54,Waiver of Premium,fbafa61feb221d6aa9d1b016613623872791af25fafbaa83da2ed638a4f9f583
+2026-09-10,Local Cotao 59,59,true,Legal & General,Life,69,10,100000,0,88.44,88.44,0,0,None,dea780e4747e7b9864bd510254221c3fdd3e8e3df48aeef51476b3a9ed1a158a
