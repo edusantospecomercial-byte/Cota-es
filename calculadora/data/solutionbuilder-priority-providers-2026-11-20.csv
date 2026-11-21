@@ -245,3 +245,15 @@ source_date,model_id,profile,age,sex,smoker,to_age,life_cover,critical_illness_c
 2026-11-19,34955578,Amaro Cotacao,40,F,No,75,200000,0,Legal & General,Legal & General Life,19.88,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
 2026-11-19,34955578,Amaro Cotacao,40,F,No,75,200000,0,Zurich,Zurich Life,21.16,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
 2026-11-19,34955578,Amaro Cotacao,40,F,No,75,200000,0,Aviva,Aviva Life Insurance+,24.55,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-19,34955484,Amaro Cotacao,40,F,No,65,150000,0,Legal & General,Legal & General Life,12.59,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-19,34955484,Amaro Cotacao,40,F,No,65,150000,0,Zurich,Zurich Life,13.22,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-19,34955484,Amaro Cotacao,40,F,No,65,150000,0,Aviva,Aviva Life Insurance+,15.86,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-19,34955511,Amaro Cotacao,40,F,No,65,200000,0,Legal & General,Legal & General Life,15.35,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-19,34955511,Amaro Cotacao,40,F,No,65,200000,0,Zurich,Zurich Life,16.53,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-19,34955511,Amaro Cotacao,40,F,No,65,200000,0,Aviva,Aviva Life Insurance+,19.81,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-19,34955604,Amaro Cotacao,40,F,No,70,150000,0,Legal & General,Legal & General Life,14.03,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-19,34955604,Amaro Cotacao,40,F,No,70,150000,0,Zurich,Zurich Life,14.68,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-19,34955604,Amaro Cotacao,40,F,No,70,150000,0,Aviva,Aviva Life Insurance+,17.92,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-19,34955550,Amaro Cotacao,40,F,No,75,150000,0,Legal & General,Legal & General Life,15.89,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-19,34955550,Amaro Cotacao,40,F,No,75,150000,0,Zurich,Zurich Life,16.82,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-19,34955550,Amaro Cotacao,40,F,No,75,150000,0,Aviva,Aviva Life Insurance+,18.50,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
