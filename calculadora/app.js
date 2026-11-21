@@ -25,18 +25,18 @@ function toast(s) {
 }
 async function init() {
   [catalog, priorityRows, priorityGapRows] = await Promise.all([
-    fetch("./data/models.json?v=20261121-129")
+    fetch("./data/models.json", { cache: "no-store" })
       .then((r) => r.json())
       .catch(() => ({ models: {} })),
-    fetch(
-      "./data/solutionbuilder-priority-providers-2026-11-20.csv?v=20261120-103",
-    )
+    fetch("./data/solutionbuilder-priority-providers-2026-11-20.csv", {
+      cache: "no-store",
+    })
       .then((r) => r.text())
       .then(parsePriorityCsv)
       .catch(() => []),
-    fetch(
-      "./data/solutionbuilder-priority-provider-gaps-2026-11-20.csv?v=20261120-104",
-    )
+    fetch("./data/solutionbuilder-priority-provider-gaps-2026-11-20.csv", {
+      cache: "no-store",
+    })
       .then((r) => r.text())
       .then(parsePriorityCsv)
       .catch(() => []),
