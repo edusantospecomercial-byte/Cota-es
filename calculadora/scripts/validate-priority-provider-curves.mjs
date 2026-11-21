@@ -146,6 +146,30 @@ for (const provider of ["Legal & General", "Zurich", "Aviva"]) {
   }
 }
 
+const coverageMinimums = {
+  age: 150,
+  capital: 150,
+  term: 150,
+};
+const coverageActual = {
+  age: ageInterpolationSegments.size,
+  capital: capitalInterpolationSegments.size,
+  term: termInterpolationSegments.size,
+};
+for (const [dimension, minimum] of Object.entries(coverageMinimums)) {
+  if (coverageActual[dimension] < minimum)
+    failures.push({
+      coverageRegression: dimension,
+      minimum,
+      actual: coverageActual[dimension],
+    });
+}
+
+if (failures.length) {
+  console.error(JSON.stringify(failures, null, 2));
+  process.exit(1);
+}
+
 console.log(
   `Priority-provider curves passed: ${rows.length} prices, ${ageInterpolationSegments.size} age, ${capitalInterpolationSegments.size} capital and ${termInterpolationSegments.size} term interpolation segments.`,
 );
