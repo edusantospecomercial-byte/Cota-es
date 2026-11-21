@@ -85,10 +85,11 @@ A calculadora fornece uma estimativa indicativa, sem underwriting. Peso, altura,
 
 ## Expansão do arquivo local — 21/11/2026
 
-- 484 registros de validação histórica foram reconciliados a partir de 385 PDFs oficiais únicos.
+- 486 registros de validação histórica foram reconciliados a partir de 386 PDFs oficiais únicos.
 - A varredura recuperou illustrations de Zurich, Legal & General e Aviva tanto das pastas de downloads quanto de pastas genéricas de clientes.
 - Novas âncoras exatas foram incorporadas apenas quando produto, fumante, idade, capital e prazo eram comparáveis ao modelo publicado.
 - Uma nova auditoria local por SHA-256 identificou seis illustrations Zurich de vida pura ainda não catalogados. Três chaves inéditas foram adicionadas para 65 anos até 80 (£20k por £18,16; £25k por £22,06; £50k por £40,60). Um cenário de 43 anos até 70 com £150k foi preservado como evidência por £19,04, sem substituir a âncora competitiva já existente de £18,40. Dois documentos logicamente equivalentes de £50k por £41,34 foram mantidos como evidência documental, sem duplicar a decisão de preço.
+- A mesma auditoria recuperou um illustration Aviva com duas proteções aos 54 anos até 70: vida £20k por £7,17 (£7,10 base + waiver) e vida + Core CI £10k por £14,33 (£14,07 base + TPD/waiver). As evidências foram incorporadas sem elevar os lookups competitivos já existentes de £7,10 e £14,00.
 - Valores de vida pura foram separados dos opcionais; descontos multiproduto foram identificados quando o prêmio total era inferior ao prêmio bruto mostrado no detalhamento.
 - Doenças graves Enhanced, Enhanced Plus, Upgraded e Child não foram misturadas com Standard/Core.
 - A cobertura por chave chegou a 100% dos 317 registros históricos comparáveis de vida pura e dos 135 registros de vida + CI Standard/Core. O validador agora impede publicação se uma combinação conhecida deixar de ter lookup direto. Como uma chave pode refletir o mínimo calibrado entre várias cotações comparáveis, isso mede retenção de cenários, não reprodução literal de cada PDF, precisão fora da amostra ou garantia de underwriting.

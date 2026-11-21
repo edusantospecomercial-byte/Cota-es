@@ -483,3 +483,5 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-06-04,Archive Quote,65,false,Zurich,Level Life Cover,80,15,50000,0,41.34,41.34,0,0,None,196c65b9bba7367c3991a3431e4dc5198d19ecd04015c7086a36836da6cc8c33
 2026-05-15,Archive Quote,43,false,Zurich,Level Life Cover,70,27,150000,0,19.04,19.04,0,0,None,a8b14dee7ac6ef8f345e7aa1ea0cf4f19a0ea2af9bedab97934122d0e53e6e14
 2026-06-04,Archive Quote,65,false,Zurich,Level Life Cover,80,15,25000,0,22.06,22.06,0,0,None,5c7836bb454b05dc70e109923102136cb3c6240e68b1ee1fc6b7a87f1cbdd06f
+2026-05-26,Archive Quote,54,false,Aviva,Life Insurance+ with Core CI,70,16,10000,10000,14.33,0,14.07,0.26,TPD + Waiver of Premium,46f73b0227fe45843e8131829dc847f662bda0474444c30114228429874e631e
+2026-05-26,Archive Quote,54,false,Aviva,Life Insurance+,70,16,20000,0,7.17,7.10,0,0.07,Waiver of Premium,46f73b0227fe45843e8131829dc847f662bda0474444c30114228429874e631e
