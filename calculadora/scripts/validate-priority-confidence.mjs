@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const app = readFileSync(join(here, "../app.js"), "utf8");
+const index = readFileSync(join(here, "../index.html"), "utf8");
 
 const checks = {
   removesGenericLowWarning:
@@ -23,6 +24,9 @@ const checks = {
   limitedSampleWarning: /A validação deste segmento ainda usa amostra limitada/.test(app),
   confidenceRenderedSafely:
     /confiança \$\{escapeHtml\(confidenceLabel\)\}/.test(app),
+  underwritingInputsDisclosed:
+    /Peso, altura e profissão são informativos/.test(index) &&
+    /loading médico ou ocupacional automático/.test(index),
 };
 
 if (Object.values(checks).some((value) => !value)) {
