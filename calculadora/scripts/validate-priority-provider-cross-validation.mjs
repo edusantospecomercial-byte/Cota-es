@@ -132,6 +132,21 @@ const bySegment = Object.fromEntries(
 );
 const overallMape = results.reduce((sum, row) => sum + row.ape, 0) / results.length;
 const overallWithin20 = results.filter((row) => row.ape <= 0.2).length / results.length;
+function quantile(values, probability) {
+  const sorted = [...values].sort((left, right) => left - right);
+  const index = (sorted.length - 1) * probability;
+  const lower = Math.floor(index);
+  const upper = Math.ceil(index);
+  if (lower === upper) return sorted[lower];
+  return sorted[lower] + (sorted[upper] - sorted[lower]) * (index - lower);
+}
+const absolutePercentageErrors = results.map((row) => row.ape);
+const errorDistribution = {
+  median: Number(quantile(absolutePercentageErrors, 0.5).toFixed(4)),
+  p90: Number(quantile(absolutePercentageErrors, 0.9).toFixed(4)),
+  p95: Number(quantile(absolutePercentageErrors, 0.95).toFixed(4)),
+  maximum: Number(Math.max(...absolutePercentageErrors).toFixed(4)),
+};
 const worstCases = [...results]
   .sort((a, b) => b.ape - a.ape)
   .slice(0, 5)
@@ -156,6 +171,12 @@ if (!reportOnly && (
   published?.tested !== results.length ||
   Math.abs(published?.mape - Number(overallMape.toFixed(4))) > 0.00001 ||
   Math.abs(published?.within20 - Number(overallWithin20.toFixed(4))) > 0.00001 ||
+  Object.entries(errorDistribution).some(
+    ([metric, value]) => {
+      const saved = published?.errorDistribution?.[metric];
+      return !Number.isFinite(saved) || Math.abs(saved - value) > 0.00001;
+    },
+  ) ||
   Object.entries(bySegment).some(([segment, metrics]) => {
     const saved = published?.bySegment?.[segment];
     return saved?.tested !== metrics.tested ||
@@ -174,6 +195,7 @@ if (!reportOnly && (
       tested: results.length,
       mape: Number(overallMape.toFixed(4)),
       within20: Number(overallWithin20.toFixed(4)),
+      errorDistribution,
     },
   }, null, 2));
 }
@@ -184,6 +206,7 @@ console.log(JSON.stringify({
   tested: results.length,
   overallMape: Number(overallMape.toFixed(4)),
   overallWithin20: Number(overallWithin20.toFixed(4)),
+  errorDistribution,
   worstCases,
   byProvider: Object.fromEntries(Object.entries(byProvider).map(([provider, metrics]) => [provider, {
     tested: metrics.tested,

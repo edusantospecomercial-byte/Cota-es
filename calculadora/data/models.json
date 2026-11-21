@@ -13879,6 +13879,12 @@
       "mape": 0.0299,
       "within20": 1,
       "method": "leave-one-anchor-out",
+      "errorDistribution": {
+        "median": 0.0219,
+        "p90": 0.0676,
+        "p95": 0.0877,
+        "maximum": 0.1935
+      },
       "bySegment": {
         "nonSmokerLife": { "tested": 378, "mape": 0.0335, "within20": 1 },
         "nonSmokerCI": { "tested": 192, "mape": 0.0227, "within20": 1 },
