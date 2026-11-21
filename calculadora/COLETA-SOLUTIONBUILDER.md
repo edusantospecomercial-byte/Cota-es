@@ -76,8 +76,11 @@ A ordem também é parte do controle de qualidade: os quatro primeiros cenários
 ```bash
 node calculadora/scripts/validate-collection-capture-template.mjs
 node calculadora/scripts/validate-collection-queue.mjs
+node calculadora/scripts/prepare-captured-priority-import.mjs
 node calculadora/scripts/validate-all.mjs
 ```
+
+`prepare-captured-priority-import.mjs` é somente-leitura. Ele informa quantos cenários estão completos. Com `--csv`, imprime apenas cenários com Legal & General, Zurich e Aviva capturadas, produtos e prêmios válidos e o mesmo `model_id`; não altera nenhum arquivo.
 
 4. Conferir a nova validação cruzada por segmento. Não atribuir MAPE de vida a CI.
 5. Só publicar se todos os validadores passarem e nenhuma âncora histórica deixar de ter lookup direto.
