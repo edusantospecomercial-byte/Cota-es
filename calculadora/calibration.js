@@ -29,4 +29,13 @@
     }
     return interpolate(agePoints,p.age);
   };
+  root.quoteRange=function(model,main,{outside=false,directLookup=false}={}){
+    const spread=directLookup
+      ? main*(model?.strictlyValidated?0.2:0.35)
+      : Math.max(
+          model?.residualQ90||0,
+          main*(outside||!model?.strictlyValidated?0.35:0.2),
+        );
+    return {low:Math.max(0,main-spread),high:main+spread};
+  };
 })(globalThis);

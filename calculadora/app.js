@@ -432,14 +432,12 @@ function render(p) {
     if (Number.isFinite(estimate)) {
       r.supported = true;
       r.main = estimate;
-      let spread = directLookup
-        ? r.main * (model.strictlyValidated ? 0.2 : 0.35)
-        : Math.max(
-            model.residualQ90 || 0,
-            r.main * (outside || !model.strictlyValidated ? 0.35 : 0.2),
-          );
-      r.low = Math.max(0, r.main - spread);
-      r.high = r.main + spread;
+      let range = globalThis.quoteRange(model, r.main, {
+        outside,
+        directLookup,
+      });
+      r.low = range.low;
+      r.high = range.high;
       if (outside)
         warnings.push(
           "Perfil fora da faixa principal da base: estimativa por extrapolação, com margem ampliada.",
