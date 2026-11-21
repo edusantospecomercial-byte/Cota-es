@@ -39,6 +39,10 @@ const checks = {
     /r\.providerQuotes\[0\]\.sourceDate/.test(app),
   interpolatedSourceTraceability:
     /Interpolação de múltiplas âncoras oficiais do SolutionBuilder/.test(app),
+  providerRangeDistinguished:
+    /Faixa observada entre seguradoras disponíveis/.test(app) &&
+    /Faixa observada entre seguradoras/.test(app) &&
+    /Faixa estimada entre seguradoras/.test(app),
   underwritingInputsDisclosed:
     /Peso, altura e profissão são informativos/.test(index) &&
     /loading médico ou ocupacional automático/.test(index),

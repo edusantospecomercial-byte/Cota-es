@@ -426,7 +426,9 @@ function makeSummary(p, r) {
       : "Estimativa principal: requer cotação oficial",
   );
   if (r.supported)
-    lines.push(`Faixa provável: ${gbp(r.low)}–${gbp(r.high)}/mês`);
+    lines.push(
+      `${r.providerQuotes?.length ? r.providerGap ? "Faixa observada entre seguradoras disponíveis" : r.priorityExact ? "Faixa observada entre seguradoras" : "Faixa estimada entre seguradoras" : "Faixa provável"}: ${gbp(r.low)}–${gbp(r.high)}/mês`,
+    );
   if (r.provider)
     lines.push(`Referência prioritária: ${r.provider} — ${gbp(r.main)}/mês`);
   if (r.providerQuotes?.length)
@@ -582,7 +584,7 @@ function render(p) {
     ? `${gbp(r.main)}/mês`
     : "Não publicado";
   $("range").textContent = r.supported
-    ? `Faixa provável: ${gbp(r.low)} a ${gbp(r.high)}/mês`
+    ? `${r.providerQuotes?.length ? r.providerGap ? "Faixa observada entre seguradoras disponíveis" : r.priorityExact ? "Faixa observada entre seguradoras" : "Faixa estimada entre seguradoras" : "Faixa provável"}: ${gbp(r.low)} a ${gbp(r.high)}/mês`
     : "O motor não publica um preço sem validação suficiente.";
   $("totalPrice").textContent = r.supported
     ? `${gbp(r.main + m.total)}/mês`
