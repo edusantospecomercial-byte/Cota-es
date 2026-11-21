@@ -95,6 +95,8 @@ A calculadora fornece uma estimativa indicativa, sem underwriting. Peso, altura,
 - Uma validação cruzada leave-one-anchor-out conseguiu reconstruir 177 preços da malha prioritária usando somente os pontos vizinhos. A interpolação logarítmica por idade e prazo melhorou o MAPE de 3,32% para 3,08% e levou os pontos dentro de ±20% de 99,44% para 100%. O MAPE final por seguradora foi 3,77% para Legal & General, 1,74% para Zurich e 3,72% para Aviva.
 - O controle automatizado reprova a publicação se essa bateria cair abaixo de 90 pontos testáveis, ultrapassar 13% de MAPE ou tiver menos de 80% dos pontos dentro de ±20%.
 - Esses números medem interpolação dentro da malha oficial disponível; não medem underwriting médico, ocupacional ou extrapolação fora das combinações observadas.
+- Na grade estratégica de idades 25–63, capitais de £20k–£200k e idades finais 65/70/75/85, a malha completa das três seguradoras cobre por interpolação 33,23% dos cenários de vida para não fumantes. A cobertura ainda é de 2,46% para CI £10k, 0,75% para CI £20k e 0,43% para vida de fumantes; fumante + CI permanece sem malha completa. Por isso, as próximas coletas devem concentrar-se em fumantes e CI, não repetir a região já densa de vida não fumante.
+- O relatório pode ser reproduzido com `node calculadora/scripts/report-priority-coverage.mjs`.
 
 # Atualização de 19/11/2026 — bateria fumante
 
