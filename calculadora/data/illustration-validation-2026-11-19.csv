@@ -142,3 +142,12 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-09-14,Joana Cotao,61,false,Legal & General,Life,79,18,30000,0,20.06,19.48,0,0.58,Waiver of Premium,da372c10d9c54e3f7767786695fd4132ffa2d55ffb1e0670355bb2bc1c1d156f
 2026-10-13,Angela Rackel Cotao,48,false,Zurich,Life,65,17,20000,0,5.74,5.47,0,0.27,Waiver of Premium,ccfd2bc9f9d46df223955b989ef479588b08713e0796f09d3172f647e70d2580
 2026-09-29,Local Cotao 60 C,60,false,Zurich,Life,70,10,20000,0,9.91,9.91,0,0,None,d68c935a8d03967c2c45909e2bb96c6955335d3a97a1ac9c22e01c3e7af38a42
+2026-10-12,Local Cotao 40,40,false,Zurich,Life,65,25,50000,0,6.34,6.17,0,0.17,Waiver of Premium,50084b8b17b080fdfb15dbf5ff3886082bfc63210c54e441f66b40bb9dabe2a6
+2026-10-21,Edilane Cotao,43,false,Aviva,Life Insurance+,65,22,30000,0,5.10,5.10,0,0,None,2ad069cd6956ea5dc2f548aa9b4ebf547b04ac6cfce78785bced5152cfbb9655
+2026-10-13,Daniela Cotao,37,false,Zurich,Life,65,28,100000,0,8.73,8.52,0,0.21,Waiver of Premium,d455c9579a04a2c5608dc2f15649a994480dad21adcb8a6c2965ae298c282890
+2026-08-25,Katia Cotao,39,true,Legal & General,Life,64,25,50000,0,10.71,10.60,0,0.11,Waiver of Premium,6258f47ed7ee71c9c55627f71ac7ef5e861747bd26de5186a75196ca98fcb061
+2026-08-25,Katia Cotao,39,true,Legal & General,Life + CI Standard,64,25,10000,10000,9.60,0,9.53,0.07,Waiver of Premium,6258f47ed7ee71c9c55627f71ac7ef5e861747bd26de5186a75196ca98fcb061
+2026-10-05,Rosilene Cotao,54,true,Legal & General,Life,69,15,30000,0,23.44,22.98,0,0.46,Waiver of Premium,70e77997c41fa58334126043fed3aa5aab3e77c2fb9fd062eb3687a5b1d5be75
+2026-10-19,Aline Rovaris Cotao,30,false,Legal & General,Life,64,34,100000,0,5.67,5.63,0,0.04,Waiver of Premium,cd5741f16004da9511a55a2feb75502380ab3af049c73bf13b449fd20f670448
+2026-10-19,Aline Rovaris Cotao,30,false,Legal & General,Life + CI Standard,64,34,10000,10000,5.03,0,5.00,0.03,Waiver of Premium,cd5741f16004da9511a55a2feb75502380ab3af049c73bf13b449fd20f670448
+2026-10-27,Luiz Cotao,61,false,Zurich,Life,85,24,50000,0,40.86,40.86,0,0,None,86784c5287fa22b1c996647e17d7dc52a1b2fc9f6d769af1156e7fbff9b3683f
