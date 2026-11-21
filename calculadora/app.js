@@ -1,5 +1,6 @@
 let catalog = { models: {} },
   priorityRows = [],
+  priorityGapRows = [],
   lastPayload = null;
 const $ = (id) => document.getElementById(id),
   num = (id) => Number($(id).value || 0),
@@ -15,12 +16,18 @@ function toast(s) {
   setTimeout(() => $("toast").classList.remove("show"), 2200);
 }
 async function init() {
-  [catalog, priorityRows] = await Promise.all([
-    fetch("./data/models.json?v=20261120-90")
+  [catalog, priorityRows, priorityGapRows] = await Promise.all([
+    fetch("./data/models.json?v=20261120-91")
       .then((r) => r.json())
       .catch(() => ({ models: {} })),
     fetch(
-      "./data/solutionbuilder-priority-providers-2026-11-20.csv?v=20261120-90",
+      "./data/solutionbuilder-priority-providers-2026-11-20.csv?v=20261120-91",
+    )
+      .then((r) => r.text())
+      .then(parsePriorityCsv)
+      .catch(() => []),
+    fetch(
+      "./data/solutionbuilder-priority-provider-gaps-2026-11-20.csv?v=20261120-91",
     )
       .then((r) => r.text())
       .then(parsePriorityCsv)
@@ -49,6 +56,24 @@ function parsePriorityCsv(csv) {
 }
 function priorityQuotesFor(p) {
   let expectedSmoker = p.smoker === "smoker" ? "Yes" : "No";
+  let knownGap = priorityGapRows.find(
+    (row) =>
+      row.smoker === expectedSmoker &&
+      Number(row.age) === p.age &&
+      Number(row.to_age) === p.toAge &&
+      Number(row.life_cover) === p.life &&
+      Number(row.critical_illness_cover) === p.ci,
+  );
+  if (knownGap)
+    return {
+      quotes: [],
+      exact: false,
+      gap: {
+        provider: knownGap.missing_provider,
+        reason: knownGap.reason,
+        modelId: knownGap.model_id,
+      },
+    };
   let rawCandidates = priorityRows
     .filter(
       (row) =>
@@ -391,6 +416,10 @@ function render(p) {
     );
   let priorityMatch = priorityQuotesFor(p),
     priorityQuotes = priorityMatch.quotes;
+  if (priorityMatch.gap)
+    warnings.unshift(
+      `Cotação oficial ${priorityMatch.gap.modelId}: ${priorityMatch.gap.provider} não retornou preço (${priorityMatch.gap.reason}). A estimativa geral permanece disponível, sem inventar preço específico dessa seguradora.`,
+    );
   if (priorityQuotes.length === 3) {
     let selected = priorityQuotes[0];
     r.supported = true;
