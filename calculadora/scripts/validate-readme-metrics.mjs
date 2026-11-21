@@ -4,7 +4,13 @@ import { fileURLToPath } from "node:url";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const calculatorDir = join(here, "..");
-const readme = readFileSync(join(calculatorDir, "README.md"), "utf8");
+const documents = {
+  "README.md": readFileSync(join(calculatorDir, "README.md"), "utf8"),
+  "CALIBRACAO-2026-11-11.md": readFileSync(
+    join(calculatorDir, "CALIBRACAO-2026-11-11.md"),
+    "utf8",
+  ),
+};
 const catalog = JSON.parse(readFileSync(join(calculatorDir, "data/models.json"), "utf8"));
 const audit = catalog.audit ?? {};
 const validation = audit.priorityProviderCrossValidation ?? {};
@@ -21,7 +27,11 @@ const requiredClaims = [
   ["P95", percentPt(validation.errorDistribution?.p95)],
 ];
 
-const missing = requiredClaims.filter(([, value]) => !readme.includes(value));
+const missing = Object.entries(documents).flatMap(([document, content]) =>
+  requiredClaims
+    .filter(([, value]) => !content.includes(value))
+    .map(([metric, value]) => ({ document, metric, value })),
+);
 if (missing.length) {
   throw new Error(JSON.stringify({ issue: "README metrics are stale", missing }, null, 2));
 }
