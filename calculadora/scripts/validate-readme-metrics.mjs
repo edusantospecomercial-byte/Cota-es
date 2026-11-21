@@ -14,6 +14,8 @@ const documents = {
 const catalog = JSON.parse(readFileSync(join(calculatorDir, "data/models.json"), "utf8"));
 const audit = catalog.audit ?? {};
 const validation = audit.priorityProviderCrossValidation ?? {};
+const temporal = audit.priorityProviderTemporalHoldout ?? {};
+const rolling = audit.priorityProviderRollingTemporalHoldout ?? [];
 const integerPt = (value) => new Intl.NumberFormat("pt-BR").format(value);
 const percentPt = (value) => `${(value * 100).toFixed(2).replace(".", ",")}%`;
 
@@ -25,6 +27,11 @@ const requiredClaims = [
   ["testes de interpolação", integerPt(validation.tested)],
   ["MAPE", percentPt(validation.mape)],
   ["P95", percentPt(validation.errorDistribution?.p95)],
+  ["previsões temporais", integerPt(temporal.predicted)],
+  ["cobertura temporal", percentPt(temporal.coverage)],
+  ["MAPE temporal", percentPt(temporal.mape)],
+  ["menor MAPE temporal móvel", percentPt(Math.min(...rolling.map((report) => report.mape)))],
+  ["maior MAPE temporal móvel", percentPt(Math.max(...rolling.map((report) => report.mape)))],
 ];
 
 const missing = Object.entries(documents).flatMap(([document, content]) =>
