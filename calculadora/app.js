@@ -16,11 +16,11 @@ function toast(s) {
 }
 async function init() {
   [catalog, priorityRows] = await Promise.all([
-    fetch("./data/models.json?v=20261120-89")
+    fetch("./data/models.json?v=20261120-90")
       .then((r) => r.json())
       .catch(() => ({ models: {} })),
     fetch(
-      "./data/solutionbuilder-priority-providers-2026-11-20.csv?v=20261120-89",
+      "./data/solutionbuilder-priority-providers-2026-11-20.csv?v=20261120-90",
     )
       .then((r) => r.text())
       .then(parsePriorityCsv)

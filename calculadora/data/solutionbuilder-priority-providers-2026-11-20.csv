@@ -266,3 +266,6 @@ source_date,model_id,profile,age,sex,smoker,to_age,life_cover,critical_illness_c
 2026-11-20,34981685,Jana Cotacao,47,F,No,65,100000,0,Legal & General,Legal & General Life,13.28,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details; waiver excluded
 2026-11-20,34981685,Jana Cotacao,47,F,No,65,100000,0,Zurich,Zurich Life,14.12,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details; waiver excluded
 2026-11-20,34981685,Jana Cotacao,47,F,No,65,100000,0,Aviva,Aviva Life Insurance+,15.80,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details; waiver excluded
+2026-11-20,34984446,Jana Cotacao,47,F,No,70,100000,0,Legal & General,Legal & General Life,15.18,true,Generated in SolutionBuilder; parameters confirmed in Full Details; waiver excluded
+2026-11-20,34984446,Jana Cotacao,47,F,No,70,100000,0,Zurich,Zurich Life,15.86,true,Generated in SolutionBuilder; parameters confirmed in Full Details; waiver excluded
+2026-11-20,34984446,Jana Cotacao,47,F,No,70,100000,0,Aviva,Aviva Life Insurance+,18.12,true,Generated in SolutionBuilder; parameters confirmed in Full Details; waiver excluded
