@@ -27,7 +27,8 @@ const historyRows = historyLines.map((line) => Object.fromEntries(
   line.split(',').map((value, index) => [historyColumns[index], value]),
 ));
 
-const catalog = JSON.parse(readFileSync(modelsPath, 'utf8'));
+const modelsJson = readFileSync(modelsPath, 'utf8');
+const catalog = JSON.parse(modelsJson);
 const model = catalog.models?.['life_plus_standalone_ci:standard_core_ci'];
 
 if (!model?.lookup) {
@@ -35,6 +36,41 @@ if (!model?.lookup) {
 }
 
 const failures = [];
+
+// JSON.parse silently keeps the last value when an object repeats a key. Since
+// each lookup key represents one exact insurance scenario, reject duplicate
+// keys before parsing can hide an accidental overwrite.
+for (const match of modelsJson.matchAll(/"lookup"\s*:\s*\{/g)) {
+  const open = modelsJson.indexOf('{', match.index);
+  let depth = 0;
+  let inString = false;
+  let escaped = false;
+  let close = -1;
+  for (let index = open; index < modelsJson.length; index += 1) {
+    const character = modelsJson[index];
+    if (inString) {
+      if (escaped) escaped = false;
+      else if (character === '\\') escaped = true;
+      else if (character === '"') inString = false;
+      continue;
+    }
+    if (character === '"') inString = true;
+    else if (character === '{') depth += 1;
+    else if (character === '}' && --depth === 0) {
+      close = index;
+      break;
+    }
+  }
+  if (close < 0) {
+    failures.push({ issue: 'unterminated lookup object', offset: open });
+    continue;
+  }
+  const keys = [...modelsJson.slice(open + 1, close).matchAll(/^\s*"([^"]+)"\s*:/gm)]
+    .map((keyMatch) => keyMatch[1]);
+  const seen = new Set();
+  const duplicates = [...new Set(keys.filter((key) => seen.has(key) || !seen.add(key)))];
+  if (duplicates.length) failures.push({ issue: 'duplicate lookup keys', duplicates });
+}
 
 for (const row of rows) {
   const smoker = row.smoker === 'true' ? 1 : 0;
