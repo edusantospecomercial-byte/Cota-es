@@ -3,6 +3,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const here = dirname(fileURLToPath(import.meta.url));
+const providers = ["Legal & General", "Zurich", "Aviva"];
 const [header, ...lines] = readFileSync(
   join(here, "../data/next-priority-collection-2026-11-21.csv"),
   "utf8",
@@ -105,6 +106,37 @@ function countTestable(anchors) {
   return counts;
 }
 
+function coverageReport(anchors) {
+  const ages = Array.from({ length: 39 }, (_, index) => index + 25);
+  const toAges = [65, 70, 75, 85];
+  const lifeCovers = [20000, 30000, 50000, 100000, 150000, 200000];
+  const report = {};
+  for (const smoker of ["No", "Yes"]) {
+    for (const ci of [0, 10000, 20000]) {
+      let complete = 0;
+      let total = 0;
+      for (const age of ages) {
+        for (const toAge of toAges) {
+          if (toAge <= age) continue;
+          for (const life of lifeCovers) {
+            total += 1;
+            if (providers.every((provider) =>
+              canInterpolate(anchors, { provider, smoker, ci, age, toAge, life })
+            )) complete += 1;
+          }
+        }
+      }
+      const key = `${smoker === "Yes" ? "smoker" : "nonSmoker"}_ci${ci}`;
+      report[key] = {
+        complete,
+        total,
+        coverage: Number((complete / total).toFixed(4)),
+      };
+    }
+  }
+  return report;
+}
+
 const currentAnchors = priorityRows
   .filter((row) => row.available === "true")
   .map((row) => ({
@@ -124,11 +156,20 @@ const queuedAnchors = rows.flatMap((row) => row.providers.split("|").map((provid
   ci: Number(row.critical_illness_cover),
 })));
 const projectedTestable = countTestable([...currentAnchors, ...queuedAnchors]);
+const currentCoverage = coverageReport(currentAnchors);
+const projectedCoverage = coverageReport([...currentAnchors, ...queuedAnchors]);
 if (
   (projectedTestable.smokerLife || 0) < 24 ||
   (projectedTestable.nonSmokerCI || 0) < 21 ||
   (projectedTestable.smokerCI || 0) < 6
 ) problems.push({ insufficientValidationGain: projectedTestable });
+if (
+  projectedCoverage.smoker_ci0.coverage < 0.0342 ||
+  projectedCoverage.smoker_ci10000.coverage < 0.0673 ||
+  projectedCoverage.smoker_ci20000.coverage < 0.0673 ||
+  projectedCoverage.nonSmoker_ci10000.coverage < 0.0363 ||
+  projectedCoverage.nonSmoker_ci20000.coverage < 0.0171
+) problems.push({ insufficientCoverageGain: projectedCoverage });
 
 if (problems.length) {
   console.error(JSON.stringify({ ok: false, problems, mix }, null, 2));
@@ -141,5 +182,7 @@ console.log(JSON.stringify({
   maximumPrices: rows.length * 3,
   existingScenariosChecked: collectedScenarioKeys.size,
   projectedTestable,
+  currentCoverage,
+  projectedCoverage,
   mix,
 }, null, 2));
