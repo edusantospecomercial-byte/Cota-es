@@ -81,3 +81,6 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-09-10,Dom Roque Cotao,47,false,Aviva,Life Insurance+ with Core CI,65,18,10000,10000,8.93,0,8.79,0.14,TPD and Waiver of Premium,d5038b950b5c86388a83b1d04cebf2519b8b30f87672526912cf88b83d679de1
 2026-09-23,Joice Cotao,56,false,Aviva,Life Insurance+ with Core CI,70,14,10000,10000,16.37,0,16.08,0.29,TPD and Waiver of Premium,3a912c13fc082515353cfbb6163c3c7ce372fb45d118f2762bfa1a87277056de
 2026-09-10,Marcio Vinicius Cotao,30,true,Aviva,Life Insurance+ with Core CI,65,35,10000,10000,5.85,0,5.78,0.07,TPD and Waiver of Premium,1fbc7f8aa46b6093ec91d389b33328985ddf4a6c0967e1782340fe52be9b2fc1
+2026-08-24,Thiago Cotao,36,false,Aviva,Life Insurance+ with Core CI,65,29,10000,10000,5.51,0,5.45,0.06,TPD and Waiver of Premium,45d2fa5defd880c83e0215fe9960be8055d632d83ef9016ce81e56098e8e901e
+2026-09-09,Adao Cotao,59,true,Aviva,Life Insurance+ with Core CI,70,11,10000,10000,36.63,0,35.97,0.66,TPD and Waiver of Premium,29b09b3c68fa7ee71720efbee66cacfd985645ddec85403c8759f84819589444
+2026-09-03,Luiz Cotao,62,false,Aviva,Life Insurance+ with Core CI,70,8,10000,10000,21.60,0,21.21,0.39,TPD and Waiver of Premium,bad81b82f169e74b5ccb7a75045dfbf38f9b44ad951484265034ccde47309f05
