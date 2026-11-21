@@ -55,9 +55,16 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-09-18,Fernando Cotao,64,false,Zurich,Life,80,16,30000,0,24.34,24.34,0,0,None,1935756fcad6b718913f7610ac47edf93e3a4ca015c4a2edcb9d9238587a1620
 2026-09-09,Adao Cotao,59,true,Aviva,Life Insurance+,70,11,20000,0,25.32,25.06,0,0.26,Waiver of Premium,29b09b3c68fa7ee71720efbee66cacfd985645ddec85403c8759f84819589444
 2026-09-09,Adao Cotao,59,true,Legal & General,Life,69,10,20000,0,24.66,23.94,0,0.72,Waiver of Premium,7bfd524f1587538c5e21a2f61346e919d21979c03f9d8bff2f466c8651b11589
-2026-09-23,Joice Cotao,56,false,Aviva,Life Insurance+,70,14,50000,0,18.79,18.59,0,0.20,Waiver of Premium,88a1154f8fdc311da9f9b08718b411ecf9ac7c22811041856ebebe409d328dd6
+2026-09-23,Joice Cotao,56,false,Aviva,Life Insurance+,70,14,50000,0,18.79,18.59,0,0.20,Waiver of Premium,3a912c13fc082515353cfbb6163c3c7ce372fb45d118f2762bfa1a87277056de
 2026-08-24,Thiago Cotao,36,false,Aviva,Life Insurance+,65,29,50000,0,5.76,5.74,0,0.02,Waiver of Premium,45d2fa5defd880c83e0215fe9960be8055d632d83ef9016ce81e56098e8e901e
 2026-09-18,Esposo Gisele Cotao,35,false,Legal & General,Life,64,29,100000,0,7.52,7.44,0,0.08,Waiver of Premium,aafc6b4270a9f316e04892a7556e52cb70c60558ee1149f30f21c1caf8ffa36a
 2026-09-03,Luiz Cotao,62,false,Zurich,Life,70,8,30000,0,13.94,13.94,0,0,None,4cd6cbe7d2f8d79cec973c6dd231497db93c675d73c4ef2a5bacd837ce118f08
 2026-09-03,Luiz Cotao,62,false,Aviva,Life Insurance+,70,8,30000,0,15.70,15.54,0,0.16,Waiver of Premium,bad81b82f169e74b5ccb7a75045dfbf38f9b44ad951484265034ccde47309f05
 2026-09-18,Carlos Cotao,64,false,Zurich,Life,80,16,30000,0,24.27,24.27,0,0,None,23330234246d298515600893f75f2cdedc3a9cf0e55fb0bdb6f1b1492212abd0
+2026-09-23,Mario Cotao,51,false,Aviva,Life Insurance+,65,14,50000,0,11.39,11.27,0,0.12,Waiver of Premium,dd4e95d37227031dc4a453dc54d436d475f1cf658bb606dfb08992a1fe8b72eb
+2026-08-31,Gomes Cotao,50,false,Aviva,Life Insurance+,70,20,40000,0,10.41,10.32,0,0.09,Waiver of Premium,4efada3140b73cb79cf6d59bbf73f4d49ccf4638bcfb0cdff90ca9890ce71ab3
+2026-09-14,Luiz Santos Cotao,58,false,Zurich,Life,70,12,50000,0,18.69,18.69,0,0,None,029566dc184dd068fb1a8acb3508fc67a2237dc097a031ed6070062338ef8c2a
+2026-09-07,Adriana Cotao,51,false,Legal & General,Life,69,18,50000,0,12.87,12.62,0,0.25,Waiver of Premium,1478cebc54d999e8252d6bcc7d2b745c2ff5deb69ad194557433c0577f669281
+2026-09-07,Adriana Cotao,51,false,Aviva,Life Insurance+,70,19,50000,0,13.22,13.08,0,0.14,Waiver of Premium,7266a30dfdda2fce405ef604440d9fb18e92a167056490f253c749a1bb5313c3
+2026-09-14,Adriano Cotao,43,true,Legal & General,Life,64,21,50000,0,14.69,14.40,0,0.29,Waiver of Premium,425432898ac28b473dc5b58d96c1e3cb6e7db2c72c61a4d9a50cf3cfc74a81f7
+2026-09-14,Joyce Cotao,56,false,Zurich,Life,80,24,50000,0,22.89,22.89,0,0,None,88a1154f8fdc311da9f9b08718b411ecf9ac7c22811041856ebebe409d328dd6
