@@ -26,3 +26,8 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-11-20,Isamara Cotao,34,false,Zurich,Life & CI + Life,65,31,70000,20000,14.69,4.46,10.23,0,TPD and Waiver included; multi-policy discount reflected,f39d8171f5877e007358647f7510cf6eb4cd9aa354dfc064ac114317a5923b5a
 2026-11-17,Wendel Cotao,42,false,Zurich,Life,65,23,100000,0,11.95,11.55,0,0.40,Waiver of Premium,ff8b6bcf761dd63b7e2c773d86c9d08f3af0d378404f6bc432697c9dbf86ee7f
 2026-11-17,Lucas Cotao,32,false,Zurich,Life,65,33,100000,0,7.31,7.13,0,0.18,Waiver of Premium,e2125c1faa07127189be867371d6a5e5b4cef31b29e4fbd91419f131c88bdad9
+2026-11-10,Adriana Cotao,54,false,Legal & General,Life,64,10,50000,0,13.27,13.01,0,0.26,Waiver of Premium,9b063e9c8d0d686838bb981d31fa81d86fb5e92f473274b5423aa06aba8ead87
+2026-11-10,Douglas Cotao,54,false,Aviva,Life Insurance+,65,11,50000,0,19.28,15.12,0,4.16,Fracture Cover and Waiver of Premium,8d3ce24ec051c8d150b09ea7d496cf159b5a668afa74f3bcb310c59eac8ac14b
+2026-11-09,Elka Cotao,47,false,Legal & General,Life,69,22,80000,0,14.41,14.13,0,0.28,Waiver of Premium,2d61e294a5de0a1f189337cc96be832c6443bc952cddbc4c13e0e08d7c280ee9
+2026-11-09,Elka Cotao,47,false,Legal & General,Life,69,22,100000,0,17.50,17.16,0,0.34,Waiver of Premium,22bae7f96fdcf566c63f481642c641d8d0a09500f7e07427fa2b6c38ef8e5584
+2026-11-05,Taci Cotao,47,false,Zurich,Life,70,23,70000,0,13.27,13.27,0,0,None,828cc4cca346ee77fe9642bca502f79e94eaccac702b9d3bc6532c585153eeb5
