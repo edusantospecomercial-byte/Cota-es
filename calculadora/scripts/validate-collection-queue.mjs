@@ -13,10 +13,20 @@ const rows = lines.map((line) => Object.fromEntries(
   line.split(",").map((value, index) => [columns[index], value]),
 ));
 
-const [priorityHeader, ...priorityLines] = readFileSync(
-  join(here, "../data/solutionbuilder-priority-providers-2026-11-20.csv"),
+const priorityFiles = [
+  "solutionbuilder-priority-providers-2026-11-20.csv",
+  "solutionbuilder-priority-provider-archive-2026-11-21.csv",
+];
+const [priorityHeader] = readFileSync(
+  join(here, `../data/${priorityFiles[0]}`),
   "utf8",
 ).trim().split(/\r?\n/);
+const priorityLines = priorityFiles.flatMap((file) =>
+  readFileSync(join(here, `../data/${file}`), "utf8")
+    .trim()
+    .split(/\r?\n/)
+    .slice(1),
+);
 const priorityColumns = priorityHeader.split(",");
 const priorityRows = priorityLines.map((line) =>
   Object.fromEntries(

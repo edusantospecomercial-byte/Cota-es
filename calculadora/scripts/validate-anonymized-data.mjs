@@ -9,6 +9,7 @@ const fields = [
   ["solutionbuilder-history-validation-2026-11-19.csv", "profile", new Set(["Calibration Profile"])],
   ["solutionbuilder-profile-b-fumante-vida-ci-2026-11-19.csv", "profile", new Set(["Calibration Profile"])],
   ["solutionbuilder-priority-providers-2026-11-20.csv", "profile", new Set(["Calibration Profile"])],
+  ["solutionbuilder-priority-provider-archive-2026-11-21.csv", "profile", new Set(["Comparison Report Archive"])],
   ["solutionbuilder-priority-provider-gaps-2026-11-20.csv", "profile", new Set(["Calibration Profile"])],
   ["solutionbuilder-calibracao-2026-11-18.csv", "source_client", new Set(["Calibration Profile"])],
   ["solutionbuilder-profile-a-minimos-2026-11-18.csv", "source_client", new Set(["Calibration Profile"])],
@@ -41,5 +42,5 @@ console.log(JSON.stringify({
   ok: true,
   checkedFiles: fields.length,
   checkedRows,
-  allowedLabels: ["Archive Quote", "Calibration Profile"],
+  allowedLabels: ["Archive Quote", "Calibration Profile", "Comparison Report Archive"],
 }, null, 2));

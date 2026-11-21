@@ -7,13 +7,17 @@ const reportOnly = process.argv.includes("--report-only");
 const catalog = JSON.parse(
   readFileSync(join(scriptDir, "../data/models.json"), "utf8"),
 );
-const rows = readFileSync(
-  join(scriptDir, "../data/solutionbuilder-priority-providers-2026-11-20.csv"),
-  "utf8",
-)
-  .trim()
-  .split(/\r?\n/)
-  .slice(1)
+const priorityFiles = [
+  "solutionbuilder-priority-providers-2026-11-20.csv",
+  "solutionbuilder-priority-provider-archive-2026-11-21.csv",
+];
+const rows = priorityFiles
+  .flatMap((file) =>
+    readFileSync(join(scriptDir, `../data/${file}`), "utf8")
+      .trim()
+      .split(/\r?\n/)
+      .slice(1),
+  )
   .map((line) => {
     const [sourceDate, modelId, profile, age, sex, smoker, toAge, life, ci, provider, product, premium, available] = line.split(",");
     return {
@@ -84,7 +88,13 @@ const latest = new Map();
 for (const row of rows) {
   const key = [row.provider, row.smoker, row.age, row.toAge, row.life, row.ci].join("|");
   const previous = latest.get(key);
-  if (!previous || Number(row.modelId) > Number(previous.modelId)) latest.set(key, row);
+  if (
+    !previous ||
+    row.sourceDate > previous.sourceDate ||
+    (row.sourceDate === previous.sourceDate &&
+      Number(row.modelId) > Number(previous.modelId))
+  )
+    latest.set(key, row);
 }
 const anchors = [...latest.values()];
 const results = [];

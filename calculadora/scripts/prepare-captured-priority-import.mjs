@@ -20,7 +20,10 @@ function readCsv(name) {
 }
 
 const capture = readCsv("next-priority-results-2026-11-21.csv");
-const current = readCsv("solutionbuilder-priority-providers-2026-11-20.csv");
+const current = [
+  ...readCsv("solutionbuilder-priority-providers-2026-11-20.csv"),
+  ...readCsv("solutionbuilder-priority-provider-archive-2026-11-21.csv"),
+];
 const currentKeys = new Set(
   current.map((row) =>
     [row.age, row.smoker, row.to_age, row.life_cover, row.critical_illness_cover, row.provider].join("|"),

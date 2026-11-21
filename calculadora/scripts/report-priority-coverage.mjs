@@ -3,11 +3,21 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const here = dirname(fileURLToPath(import.meta.url));
-const lines = readFileSync(
-  join(here, "../data/solutionbuilder-priority-providers-2026-11-20.csv"),
-  "utf8",
-).trim().split(/\r?\n/);
-const columns = lines.shift().split(",");
+const files = [
+  "solutionbuilder-priority-providers-2026-11-20.csv",
+  "solutionbuilder-priority-provider-archive-2026-11-21.csv",
+];
+const first = readFileSync(join(here, `../data/${files[0]}`), "utf8")
+  .trim()
+  .split(/\r?\n/);
+const columns = first.shift().split(",");
+const lines = [
+  ...first,
+  ...readFileSync(join(here, `../data/${files[1]}`), "utf8")
+    .trim()
+    .split(/\r?\n/)
+    .slice(1),
+];
 const rawRows = lines.map((line) => {
   const row = Object.fromEntries(columns.map((column, index) => [column, line.split(",")[index]]));
   return {
@@ -19,6 +29,7 @@ const rawRows = lines.map((line) => {
     ci: Number(row.critical_illness_cover),
     premium: Number(row.monthly_premium),
     modelId: Number(row.model_id),
+    sourceDate: row.source_date,
     available: row.available,
   };
 }).filter((row) => row.available === "true" && Number.isFinite(row.premium));
@@ -26,7 +37,13 @@ const rawRows = lines.map((line) => {
 const latest = new Map();
 for (const row of rawRows) {
   const key = [row.provider, row.smoker, row.age, row.toAge, row.life, row.ci].join("|");
-  if (!latest.has(key) || row.modelId > latest.get(key).modelId) latest.set(key, row);
+  const previous = latest.get(key);
+  if (
+    !previous ||
+    row.sourceDate > previous.sourceDate ||
+    (row.sourceDate === previous.sourceDate && row.modelId > previous.modelId)
+  )
+    latest.set(key, row);
 }
 const rows = [...latest.values()];
 

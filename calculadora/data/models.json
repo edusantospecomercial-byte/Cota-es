@@ -13866,18 +13866,18 @@
     "approvedUniqueRecords": 207,
     "officialSolutionBuilderPrices": 1179,
     "officialMinimumAnchors": 217,
-    "priorityProviderPrices": 294,
-    "priorityProviderScenarios": 98,
+    "priorityProviderPrices": 1161,
+    "priorityProviderScenarios": 387,
     "priorityProviderCrossValidation": {
-      "tested": 180,
-      "mape": 0.0323,
+      "tested": 609,
+      "mape": 0.0301,
       "within20": 1,
       "method": "leave-one-anchor-out",
       "bySegment": {
-        "nonSmokerLife": { "tested": 174, "mape": 0.032, "within20": 1 },
-        "nonSmokerCI": { "tested": 0, "mape": null, "within20": null },
-        "smokerLife": { "tested": 6, "mape": 0.042, "within20": 1 },
-        "smokerCI": { "tested": 0, "mape": null, "within20": null }
+        "nonSmokerLife": { "tested": 378, "mape": 0.0335, "within20": 1 },
+        "nonSmokerCI": { "tested": 189, "mape": 0.0233, "within20": 1 },
+        "smokerLife": { "tested": 21, "mape": 0.0334, "within20": 1 },
+        "smokerCI": { "tested": 21, "mape": 0.027, "within20": 1 }
       }
     },
     "illustrationValidationRecords": 487,

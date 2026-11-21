@@ -13,12 +13,14 @@ const checks = {
     /!warning\.startsWith\("Perfil ou capital fora da faixa validada"\)/.test(app),
   exactOfficialLabel: /"oficial exata"/.test(app),
   partialOfficialLabel: /"oficial parcial"/.test(app),
-  validatedMapeLabel:
-    /bySegment\?\.nonSmokerLife\?\.mape \* 100/.test(app),
-  smokerLimitedSample: /bySegment\?\.smokerLife\?\.tested/.test(app),
-  ciValidationPending: /validação pendente para CI/.test(app),
-  ciBannerWarning: /malha de CI ainda não possui validação leave-one-out/.test(app),
-  smokerSampleWarning: /validação de vida para fumantes ainda usa amostra limitada/.test(app),
+  segmentSpecificValidation:
+    /"smokerCI"/.test(app) &&
+    /"nonSmokerCI"/.test(app) &&
+    /"smokerLife"/.test(app) &&
+    /"nonSmokerLife"/.test(app),
+  validatedMapeLabel: /confidenceMetrics\.mape \* 100/.test(app),
+  limitedSampleThreshold: /confidenceMetrics\.tested \|\| 0\) < 30/.test(app),
+  limitedSampleWarning: /A validação deste segmento ainda usa amostra limitada/.test(app),
   confidenceRenderedSafely:
     /confiança \$\{escapeHtml\(confidenceLabel\)\}/.test(app),
 };

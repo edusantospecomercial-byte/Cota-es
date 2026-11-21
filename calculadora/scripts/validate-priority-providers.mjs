@@ -4,16 +4,21 @@ import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const dataDir = join(here, '..', 'data');
-const csvPath = join(dataDir, 'solutionbuilder-priority-providers-2026-11-20.csv');
+const csvPaths = [
+  join(dataDir, 'solutionbuilder-priority-providers-2026-11-20.csv'),
+  join(dataDir, 'solutionbuilder-priority-provider-archive-2026-11-21.csv'),
+];
 const modelsPath = join(dataDir, 'models.json');
 const expectedHeader = 'source_date,model_id,profile,age,sex,smoker,to_age,life_cover,critical_illness_cover,provider,product,monthly_premium,available,notes';
 const providers = new Set(['Zurich', 'Legal & General', 'Aviva']);
 
-const [header, ...lines] = readFileSync(csvPath, 'utf8').trim().split(/\r?\n/);
-if (header !== expectedHeader) throw new Error('Priority-provider CSV header changed unexpectedly.');
-
-const columns = header.split(',');
-const rows = lines.map((line) => Object.fromEntries(
+const fileRows = csvPaths.map((csvPath) => {
+  const [header, ...lines] = readFileSync(csvPath, 'utf8').trim().split(/\r?\n/);
+  if (header !== expectedHeader) throw new Error(`Priority-provider CSV header changed unexpectedly: ${csvPath}`);
+  return lines;
+});
+const columns = expectedHeader.split(',');
+const rows = fileRows.flat().map((line) => Object.fromEntries(
   line.split(',').map((value, index) => [columns[index], value]),
 ));
 const failures = [];

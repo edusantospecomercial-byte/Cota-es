@@ -24,11 +24,17 @@ function toast(s) {
   setTimeout(() => $("toast").classList.remove("show"), 2200);
 }
 async function init() {
-  [catalog, priorityRows, priorityGapRows] = await Promise.all([
+  const [loadedCatalog, currentPriorityRows, archivePriorityRows, loadedGapRows] = await Promise.all([
     fetch("./data/models.json", { cache: "no-store" })
       .then((r) => r.json())
       .catch(() => ({ models: {} })),
     fetch("./data/solutionbuilder-priority-providers-2026-11-20.csv", {
+      cache: "no-store",
+    })
+      .then((r) => r.text())
+      .then(parsePriorityCsv)
+      .catch(() => []),
+    fetch("./data/solutionbuilder-priority-provider-archive-2026-11-21.csv", {
       cache: "no-store",
     })
       .then((r) => r.text())
@@ -41,6 +47,9 @@ async function init() {
       .then(parsePriorityCsv)
       .catch(() => []),
   ]);
+  catalog = loadedCatalog;
+  priorityRows = [...currentPriorityRows, ...archivePriorityRows];
+  priorityGapRows = loadedGapRows;
   let n = Object.keys(catalog.models).length,
     records =
       catalog.calibratedRecords ||
@@ -48,7 +57,7 @@ async function init() {
     priority = catalog.audit?.priorityProviderPrices || 0,
     crossValidation = catalog.audit?.priorityProviderCrossValidation;
   $("baseStatus").textContent = n
-    ? `${records} registros confiáveis · ${priority} preços prioritários · ${n} famílias calibradas${crossValidation ? ` · vida: ${Number(crossValidation.mape * 100).toFixed(2)}% MAPE (n=${crossValidation.tested})` : ""}`
+    ? `${records} registros confiáveis · ${priority} preços prioritários · ${n} famílias calibradas${crossValidation ? ` · validação: ${Number(crossValidation.mape * 100).toFixed(2)}% MAPE (n=${crossValidation.tested})` : ""}`
     : "Base histórica · cotação oficial necessária";
   updateProfile();
   updateMetlife();
@@ -124,6 +133,7 @@ function priorityQuotesFor(p) {
       product: row.product,
       premium: Number(row.monthly_premium),
       modelId: row.model_id,
+      sourceDate: row.source_date,
       age: Number(row.age),
       life: Number(row.life_cover),
       toAge: Number(row.to_age),
@@ -133,7 +143,12 @@ function priorityQuotesFor(p) {
   for (const row of rawCandidates) {
     let key = [row.provider, row.age, row.toAge, row.life].join("|"),
       previous = latestByAnchor.get(key);
-    if (!previous || Number(row.modelId) > Number(previous.modelId))
+    if (
+      !previous ||
+      row.sourceDate > previous.sourceDate ||
+      (row.sourceDate === previous.sourceDate &&
+        Number(row.modelId) > Number(previous.modelId))
+    )
       latestByAnchor.set(key, row);
   }
   let candidates = [...latestByAnchor.values()];
@@ -483,6 +498,15 @@ function render(p) {
     );
   if (priorityQuotes.length === 3 || (priorityMatch.partial && priorityQuotes.length)) {
     let selected = priorityQuotes[0];
+    const segmentKey = p.ci > 0
+      ? p.smoker === "smoker"
+        ? "smokerCI"
+        : "nonSmokerCI"
+      : p.smoker === "smoker"
+        ? "smokerLife"
+        : "nonSmokerLife";
+    const segmentValidation =
+      catalog.audit?.priorityProviderCrossValidation?.bySegment?.[segmentKey] || {};
     r.supported = true;
     r.main = selected.premium;
     r.low = selected.premium;
@@ -498,19 +522,13 @@ function render(p) {
         !warning.startsWith("Perfil fora da faixa principal da base:") &&
         !warning.startsWith("Perfil ou capital fora da faixa validada"),
     );
-    if (!priorityMatch.exact && !priorityMatch.partial && p.ci > 0)
-      warnings.push(
-        "A malha de CI ainda não possui validação leave-one-out; confirme no SolutionBuilder.",
-      );
-    else if (
+    if (
       !priorityMatch.exact &&
       !priorityMatch.partial &&
-      p.smoker === "smoker" &&
-      (catalog.audit?.priorityProviderCrossValidation?.bySegment?.smokerLife
-        ?.tested || 0) < 30
+      (segmentValidation.tested || 0) < 30
     )
       warnings.push(
-        `A validação de vida para fumantes ainda usa amostra limitada (n=${catalog.audit?.priorityProviderCrossValidation?.bySegment?.smokerLife?.tested || 0}).`,
+        `A validação deste segmento ainda usa amostra limitada (n=${segmentValidation.tested || 0}).`,
       );
     warnings.unshift(
       priorityMatch.partial
@@ -539,16 +557,23 @@ function render(p) {
       : "—";
   $("warning").textContent = warnings.join(" ");
   let bmi = (p.weight / (p.height / 100) ** 2).toFixed(1);
+  const confidenceSegmentKey = p.ci > 0
+    ? p.smoker === "smoker"
+      ? "smokerCI"
+      : "nonSmokerCI"
+    : p.smoker === "smoker"
+      ? "smokerLife"
+      : "nonSmokerLife";
+  const confidenceMetrics =
+    catalog.audit?.priorityProviderCrossValidation?.bySegment?.[
+      confidenceSegmentKey
+    ] || {};
   let confidenceLabel = r.providerQuotes?.length
     ? r.providerGap
       ? "oficial parcial"
       : r.priorityExact
         ? "oficial exata"
-        : p.ci > 0
-          ? "interpolada · validação pendente para CI"
-          : p.smoker === "smoker"
-            ? `amostra limitada (${Number(catalog.audit?.priorityProviderCrossValidation?.bySegment?.smokerLife?.mape * 100 || 0).toFixed(2)}% MAPE · n=${catalog.audit?.priorityProviderCrossValidation?.bySegment?.smokerLife?.tested || 0})`
-            : `validada (${Number(catalog.audit?.priorityProviderCrossValidation?.bySegment?.nonSmokerLife?.mape * 100 || 0).toFixed(2)}% MAPE · n=${catalog.audit?.priorityProviderCrossValidation?.bySegment?.nonSmokerLife?.tested || 0})`
+        : `${(confidenceMetrics.tested || 0) < 30 ? "amostra limitada" : "validada"} (${Number(confidenceMetrics.mape * 100 || 0).toFixed(2)}% MAPE · n=${confidenceMetrics.tested || 0})`
     : model?.confidence || "insuficiente";
   let priorityDetail = r.providerQuotes?.length
     ? `<dt>Seguradoras prioritárias</dt><dd>${r.providerQuotes.map((quote) => `${escapeHtml(quote.provider)} ${gbp(quote.premium)}`).join(" · ")}${r.providerGap ? ` · ${escapeHtml(r.providerGap.provider)} indisponível` : ""}</dd><dt>Referência usada</dt><dd>${escapeHtml(r.provider)} · ${escapeHtml(r.product)}</dd>`

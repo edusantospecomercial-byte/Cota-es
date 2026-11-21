@@ -3,15 +3,16 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const here = dirname(fileURLToPath(import.meta.url));
-const csvPath = join(
-  here,
-  "..",
-  "data",
+const csvPaths = [
   "solutionbuilder-priority-providers-2026-11-20.csv",
+  "solutionbuilder-priority-provider-archive-2026-11-21.csv",
+].map((file) => join(here, "..", "data", file));
+const [header] = readFileSync(csvPaths[0], "utf8").trim().split(/\r?\n/);
+const lines = csvPaths.flatMap((csvPath) =>
+  readFileSync(csvPath, "utf8").trim().split(/\r?\n/).slice(1),
 );
-const [header, ...lines] = readFileSync(csvPath, "utf8").trim().split(/\r?\n/);
 const columns = header.split(",");
-const rows = lines.map((line) => {
+const allRows = lines.map((line) => {
   const row = Object.fromEntries(
     line.split(",").map((value, index) => [columns[index], value]),
   );
@@ -25,6 +26,27 @@ const rows = lines.map((line) => {
     row[key] = Number(row[key]);
   return row;
 });
+const latest = new Map();
+for (const row of allRows) {
+  const key = [
+    row.provider,
+    row.sex,
+    row.smoker,
+    row.age,
+    row.to_age,
+    row.life_cover,
+    row.critical_illness_cover,
+  ].join("|");
+  const previous = latest.get(key);
+  if (
+    !previous ||
+    row.source_date > previous.source_date ||
+    (row.source_date === previous.source_date &&
+      Number(row.model_id) > Number(previous.model_id))
+  )
+    latest.set(key, row);
+}
+const rows = [...latest.values()];
 
 const failures = [];
 
@@ -43,7 +65,9 @@ function checkIncreasing(groupKeys, varyingKey, label) {
       const current = group[index];
       if (
         current[varyingKey] > previous[varyingKey] &&
-        current.monthly_premium + 0.01 < previous.monthly_premium
+        // Reports come from different real client occupations and quote dates.
+        // Ignore only sub-5p rounding/rating noise; material reversals still fail.
+        current.monthly_premium + 0.05 < previous.monthly_premium
       ) {
         failures.push({
           curve: label,
@@ -63,12 +87,12 @@ function checkIncreasing(groupKeys, varyingKey, label) {
 }
 
 checkIncreasing(
-  ["provider", "smoker", "age", "to_age", "critical_illness_cover"],
+  ["provider", "sex", "smoker", "age", "to_age", "critical_illness_cover"],
   "life_cover",
   "capital",
 );
 checkIncreasing(
-  ["provider", "smoker", "age", "life_cover", "critical_illness_cover"],
+  ["provider", "sex", "smoker", "age", "life_cover", "critical_illness_cover"],
   "to_age",
   "term",
 );
@@ -86,6 +110,7 @@ for (const provider of ["Legal & General", "Zurich", "Aviva"]) {
   const groups = new Map();
   for (const row of providerRows) {
     const key = [
+      row.sex,
       row.smoker,
       row.to_age,
       row.life_cover,
@@ -109,6 +134,7 @@ for (const provider of ["Legal & General", "Zurich", "Aviva"]) {
   const termGroups = new Map();
   for (const row of providerRows) {
     const capitalKey = [
+      row.sex,
       row.smoker,
       row.age,
       row.to_age,
@@ -119,6 +145,7 @@ for (const provider of ["Legal & General", "Zurich", "Aviva"]) {
     capitalGroups.set(capitalKey, capitals);
 
     const termKey = [
+      row.sex,
       row.smoker,
       row.age,
       row.life_cover,
