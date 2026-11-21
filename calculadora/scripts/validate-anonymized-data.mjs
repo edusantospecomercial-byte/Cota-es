@@ -69,6 +69,14 @@ for (const filename of publicCsvFiles) {
     if (pattern.test(content)) failures.push({ filename, issue: `possible ${kind}` });
   }
 }
+const publicStructuredFiles = [...publicCsvFiles, "models.json"];
+for (const filename of publicStructuredFiles) {
+  const content = readFileSync(join(dataDir, filename), "utf8");
+  for (const [kind, pattern] of sensitiveValuePatterns) {
+    if (pattern.test(content) && !publicCsvFiles.includes(filename))
+      failures.push({ filename, issue: `possible ${kind}` });
+  }
+}
 
 if (failures.length) {
   console.error(JSON.stringify({ ok: false, failures }, null, 2));
@@ -79,6 +87,7 @@ console.log(JSON.stringify({
   ok: true,
   checkedFiles: fields.length,
   publicCsvFiles: publicCsvFiles.length,
+  publicStructuredFiles: publicStructuredFiles.length,
   checkedRows,
   allowedLabels: ["Archive Quote", "Calibration Profile", "Comparison Report Archive"],
 }, null, 2));
