@@ -11,3 +11,14 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-11-18,Local Illustration 2026-11-18 A,51,false,Zurich,Life Protection,75,24,100000,0,24.83,24.83,0,0,None,b94a9a5be0ba26e60a8886f693e1bdde1d2d0ed7b46a42d216f63414a075836e
 2026-11-18,Local Illustration 2026-11-18 B,49,false,Zurich,Life Protection,65,16,50000,0,10.55,10.05,0,0.50,Waiver of Premium,d1ced447f14b0cbd6b9c96b39e198eb754a288204b62e5328ff58011eb1c018a
 2026-11-20,Local Illustration 2026-11-20 A,46,false,Aviva,Life Insurance+,65,19,1000000,0,94.50,93.80,0,0.70,Waiver of Premium,6b182ca566d92f4e37827a5a888438390755972a42ea288e44528182cc03da9b
+2026-11-11,Local Illustration 2026-11-11 A,20,false,Legal & General,Life,64,44,144073,0,6.00,5.97,0,0.03,Waiver of Premium,e684c5e278730748ac2a23fa0e281d971c18d95af1e79bc26032f3bcbd8a61f0
+2026-11-11,Local Illustration 2026-11-11 B,61,false,Aviva,Life Insurance+,85,24,90000,0,67.96,67.25,0,0.71,Waiver of Premium,4fc57a5133dbf95486f25f7bef14f15f1fc24b8b24cb8f18824340ff3cefe016
+2026-11-11,Local Illustration 2026-11-11 C,54,false,Aviva,Life Insurance+,75,21,50000,0,17.97,17.78,0,0.19,Waiver of Premium,df49171b362712442eac29350f5e45429c49fb2eb477ca201e43d176a1fb0ab3
+2026-11-11,Local Illustration 2026-11-11 D,54,false,Legal & General,Life,74,20,50000,0,17.52,17.18,0,0.34,Waiver of Premium,018a5cd819a9ee1eb9045c27a3dae31005759de9de2e1938dc575eb690887248
+2026-11-11,Local Illustration 2026-11-11 E,54,false,Zurich,Life Protection,75,21,50000,0,26.69,17.67,0,9.02,Waiver of Premium and Multi-Fracture Cover,89e4d61990ccc772d084ffa7f961dc894596ad4ece05e8de469ffd091c886568
+2026-11-16,Local Illustration 2026-11-16 A,61,false,Zurich,Life Protection,85,24,50000,0,40.68,40.68,0,0,None,0bc33ec5db43dcab02a27cf2ab158a393f8dcab396083acf2fdcb235374c4ee3
+2026-11-16,Local Illustration 2026-11-16 B,61,false,Zurich,Life Protection,85,24,30000,0,25.52,25.52,0,0,None,4cb8c49e382ea7a1379cb3930dbb5b0ad86e6546053422da2183af32addb617f
+2026-11-16,Local Illustration 2026-11-16 C,63,false,Zurich,Life Protection,85,22,30000,0,29.03,29.03,0,0,None,1507281c24d4741ef066b49d23975925272b45f5f889066329145674c7081bc0
+2026-11-16,Local Illustration 2026-11-16 D,45,true,Aviva,Life Insurance+,65,20,30000,0,12.45,12.36,0,0.09,Waiver of Premium,e0abf12a8fa29f2a8022953f00b3276fc7d7ef59074252acb8720b0cb0b2007c
+2026-11-16,Local Illustration 2026-11-16 E,45,true,Legal & General,Life,64,19,60000,0,20.76,20.35,0,0.41,Waiver of Premium,255d0674113328e473fc8f9efc1dcf1a6631b93a32ae221c9f9b417d40306e41
+2026-11-16,Local Illustration 2026-11-16 F,46,true,Aviva,Life Insurance+,65,19,40000,0,15.95,15.83,0,0.12,Waiver of Premium,a548582b75ba1e61430a3a40abeacc5a5a1ccd9b832d8ed480a47914980ac284
