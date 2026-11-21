@@ -256,12 +256,19 @@ function ml() {
     child = $("metlifeChild").checked ? 2 * c : 0;
   return { c, base: 11 * c, lux, child, total: 11 * c + lux + child };
 }
+function metlifeForAge(m, age) {
+  return age >= 66 && m.c
+    ? { c: 0, base: 0, lux: 0, child: 0, total: 0, unavailable: true }
+    : m;
+}
 function updateMetlife() {
-  let m = ml();
+  let m = metlifeForAge(ml(), num("age"));
   $("metlifePreview").textContent = gbp(m.total);
-  $("metlifeBreakdown").textContent = m.c
-    ? `${gbp(m.base)} Essencial${m.lux ? " + " + gbp(m.lux) + " Luxações" : ""}${m.child ? " + " + gbp(m.child) + " Crianças" : ""}`
-    : "Não incluído";
+  $("metlifeBreakdown").textContent = m.unavailable
+    ? "Indisponível para nova contratação após 65 anos"
+    : m.c
+      ? `${gbp(m.base)} Essencial${m.lux ? " + " + gbp(m.lux) + " Luxações" : ""}${m.child ? " + " + gbp(m.child) + " Crianças" : ""}`
+      : "Não incluído";
 }
 function normalizeStep(id) {
   let el = $(id),
@@ -348,7 +355,7 @@ function predict(model, p) {
   return ridgePredict(model, p);
 }
 function makeSummary(p, r) {
-  let m = ml(),
+  let m = r.metlife || metlifeForAge(ml(), p.age),
     lines = [
       "Estimativa de proteção",
       "",
@@ -372,7 +379,12 @@ function makeSummary(p, r) {
     lines.push(
       `Seguradoras prioritárias: ${r.providerQuotes.map((quote) => `${quote.provider} ${gbp(quote.premium)}`).join(" · ")}${r.providerGap ? ` · ${r.providerGap.provider} indisponível` : ""}`,
     );
-  if (m.c)
+  if (m.unavailable)
+    lines.push(
+      "",
+      "MetLife MultiProtect: indisponível para nova contratação após 65 anos",
+    );
+  else if (m.c)
     lines.push(
       "",
       `MetLife MultiProtect: ${m.c} Cota${m.c > 1 ? "s" : ""}${m.lux ? " + Luxações" : ""}${m.child ? " + Crianças" : ""}`,
@@ -395,7 +407,7 @@ function render(p) {
     throw Error(
       "Vida e Doenças Graves devem usar intervalos inteiros de £10.000.",
     );
-  let m = ml(),
+  let m = metlifeForAge(ml(), p.age),
     key =
       p.life && p.ci
         ? "life_plus_standalone_ci:standard_core_ci"
@@ -412,9 +424,8 @@ function render(p) {
     warnings.push(
       "MetLife aos 65 anos exige data de nascimento e verificação do aniversário.",
     );
-  if (p.age >= 66 && m.c) {
+  if (m.unavailable) {
     warnings.push("Nova contratação MetLife indisponível para esta idade.");
-    m.total = 0;
   }
   if (model) {
     let lookupKey = `${p.age}|${p.toAge}|${p.life}|${p.ci}|${p.smoker === "smoker" ? 1 : 0}`,
@@ -505,9 +516,12 @@ function render(p) {
     : "";
   $("details").innerHTML =
     `<dt>Perfil</dt><dd>${p.age} anos · ${p.smoker === "smoker" ? "fumante" : "não fumante"}</dd><dt>Profissão</dt><dd>${p.occupation}</dd><dt>Peso · altura · IMC</dt><dd>${p.weight}kg · ${p.height}cm · ${bmi}</dd><dt>Cobertura</dt><dd>até ${p.toAge} · ${p.term} anos</dd><dt>Vida</dt><dd>${gbp(p.life)}</dd><dt>Doenças Graves</dt><dd>${gbp(p.ci)}</dd><dt>Premium</dt><dd>Garantido</dd>${priorityDetail}<dt>Base comparável</dt><dd>${model?.records || 0} casos · confiança ${model?.confidence || "insuficiente"}</dd>`;
-  $("metlifeResult").textContent = m.c
-    ? `MultiProtect ${m.c} cota(s): ${gbp(m.total)} — ${gbp(m.base)} Essencial${m.lux ? ", " + gbp(m.lux) + " Luxações" : ""}${m.child ? ", " + gbp(m.child) + " Crianças" : ""}`
-    : "MultiProtect não incluído";
+  $("metlifeResult").textContent = m.unavailable
+    ? "MultiProtect indisponível para nova contratação após 65 anos"
+    : m.c
+      ? `MultiProtect ${m.c} cota(s): ${gbp(m.total)} — ${gbp(m.base)} Essencial${m.lux ? ", " + gbp(m.lux) + " Luxações" : ""}${m.child ? ", " + gbp(m.child) + " Crianças" : ""}`
+      : "MultiProtect não incluído";
+  r.metlife = m;
   r.text = makeSummary(p, r);
   lastPayload = { ...p, result: r };
   $("results").scrollIntoView({ behavior: "smooth" });
@@ -521,7 +535,11 @@ $("form").addEventListener("submit", (e) => {
     toast(err.message);
   }
 });
-["age", "weight", "height"].forEach((id) =>
+$("age").addEventListener("input", () => {
+  updateProfile();
+  updateMetlife();
+});
+["weight", "height"].forEach((id) =>
   $(id).addEventListener("input", updateProfile),
 );
 document

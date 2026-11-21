@@ -14,6 +14,8 @@ const checks = {
   essentialPrice: /base: 11 \* c/.test(app),
   luxationsPrice: /lux = \$\("metlifeLux"\)\.checked \? 2 \* c : 0/.test(app),
   childrenPrice: /child = \$\("metlifeChild"\)\.checked \? 2 \* c : 0/.test(app),
+  ageEligibility: /age >= 66 && m\.c/.test(app),
+  copiedSummaryUsesAdjustedValue: /r\.metlife \|\| metlifeForAge\(ml\(\), p\.age\)/.test(app),
 };
 
 if (Object.values(checks).some((value) => !value)) {
