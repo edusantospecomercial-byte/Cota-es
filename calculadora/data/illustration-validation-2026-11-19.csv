@@ -6,3 +6,8 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-11-19,Isamara Cotao,34,false,Zurich,Life & CI,65,31,37681,20000,13.98,3.75,10.23,0,TPD and Waiver of Premium included,29b63292aa60d607929b31d5c12aee4b6528e0a5a0cebe95639a25f0faf0cff4
 2026-11-19,Isamara Cotao,34,false,Legal & General,Life + CI Standard,64,30,33858,20000,13.42,4.00,9.42,0,Waiver of Premium included,9d541424b2703c5b0d4e607e3d28bf5c37bd50ff91541cbd6b24d250441fbe7d
 2026-11-19,Isamara Cotao,34,false,Royal London,Menu Enhanced CI no Child CI,65,31,20000,20000,14.16,2.07,9.35,2.74,Plan charge and Waiver of Premium,54be76cc256fda164653cb9f08e489f58e39e126625a7b40a0a8201ffeb6b773
+2026-11-17,Local Illustration 2026-11-17 A,32,false,Zurich,Life Protection,65,33,100000,0,7.31,7.13,0,0.18,Waiver of Premium,e2125c026d69e8eaa3de0b42f3e9b8a3c15287f806fc4432497ad42fc0094fb5
+2026-11-17,Local Illustration 2026-11-17 B,42,false,Zurich,Life Protection,65,23,100000,0,11.95,11.55,0,0.40,Waiver of Premium,ff8b6bf3e5c836f34e91f7295dca9ef667657e3c3ae04e586967f7e4b378109f
+2026-11-18,Local Illustration 2026-11-18 A,51,false,Zurich,Life Protection,75,24,100000,0,24.83,24.83,0,0,None,b94a9a5be0ba26e60a8886f693e1bdde1d2d0ed7b46a42d216f63414a075836e
+2026-11-18,Local Illustration 2026-11-18 B,49,false,Zurich,Life Protection,65,16,50000,0,10.55,10.05,0,0.50,Waiver of Premium,d1ced447f14b0cbd6b9c96b39e198eb754a288204b62e5328ff58011eb1c018a
+2026-11-20,Local Illustration 2026-11-20 A,46,false,Aviva,Life Insurance+,65,19,1000000,0,94.50,93.80,0,0.70,Waiver of Premium,6b182ca566d92f4e37827a5a888438390755972a42ea288e44528182cc03da9b

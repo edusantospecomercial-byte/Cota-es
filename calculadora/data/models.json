@@ -703,7 +703,10 @@
         "50|75|150000|0|0": 13.08,
         "50|75|200000|0|0": 16.67,
         "54|65|100000|0|0": 19.59,
-        "51|75|100000|0|0": 20.24
+        "51|75|100000|0|0": 20.24,
+        "32|65|100000|0|0": 7.13,
+        "42|65|100000|0|0": 11.55,
+        "49|65|50000|0|0": 10.05
       },
       "coefficients": [
         -7.286696235983151,
@@ -1778,7 +1781,7 @@
       ],
       "records": 815,
       "dateMin": "2025-11-10",
-      "dateMax": "2026-11-19",
+      "dateMax": "2026-11-20",
       "ageMin": 20,
       "ageMax": 65,
       "termMin": 5,
@@ -1796,7 +1799,7 @@
       "strictlyValidated": false,
       "monotonicViolations": 6,
       "validationMethod": "5-fold grouped cross-validation",
-      "updateNote": "Recalibrated through 2026-11-20; includes exact Solution Builder minimums for non-smokers aged 35, 45, 50, 51, 54, 55 and 60. The live battery covers four standard life-only capitals across age 45 and 55 terms plus age 60 to ages 65, 70, 75 and 85."
+      "updateNote": "Recalibrated through 2026-11-20; includes exact Solution Builder minimums and audited local illustration anchors for non-smokers aged 32, 35, 42, 45, 49, 50, 51, 54, 55 and 60. The live battery covers four standard life-only capitals across age 45 and 55 terms plus age 60 to ages 65, 70, 75 and 85."
     },
     "life_plus_standalone_ci:standard_core_ci": {
       "modelType": "monotonic_hist_gb",
@@ -13611,7 +13614,7 @@
     "officialMinimumAnchors": 217,
     "priorityProviderPrices": 270,
     "priorityProviderScenarios": 90,
-    "illustrationValidationRecords": 7,
+    "illustrationValidationRecords": 12,
     "solutionBuilderHistoryValidationRecords": 171,
     "solutionBuilderHistoryUniqueRecords": 170,
     "manualReviewRecords": 187,
