@@ -29,7 +29,8 @@ const checks = {
     /ainda limitada/.test(app),
   temporalHoldoutStatus:
     /priorityProviderTemporalHoldout/.test(app) &&
-    /temporal: \$\{Number\(temporalHoldout\.mape \* 100\)/.test(app),
+    /temporal: \$\{Number\(temporalHoldout\.mape \* 100\)/.test(app) &&
+    /temporalHoldout\.coverage \* 100/.test(app),
   limitedSampleThreshold: /confidenceMetrics\.tested \|\| 0\) < 30/.test(app),
   limitedSampleWarning: /A validação deste segmento ainda usa amostra limitada/.test(app),
   aggregateFallbackWarning:
