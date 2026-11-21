@@ -80,7 +80,7 @@ A calculadora fornece uma estimativa indicativa, sem underwriting. Peso, altura,
 - 12 cenários adicionais foram preservados como lacunas e excluídos da calibração completa porque a Legal & General não retornou preço.
 - Em 8 lacunas de vida pura, a interface pode mostrar os valores oficiais exatos de Zurich e Aviva e identifica a Legal & General como indisponível; nenhum preço ausente é interpolado.
 - Lacunas com doenças graves não reutilizam preços parciais, pois podem envolver TPD ou estruturas de cobertura diferentes.
-- 32 illustrations recentes possuem validação explícita por SHA-256, com reconciliação entre prêmio-base, opcionais e total. A base inclui a combinação Zurich de £70k de vida + £20k de doenças graves aos 34 anos por £14,69 e novas âncoras de vida pura de Zurich, Legal & General e Aviva. O prazo aceita idade atual ou idade no próximo aniversário, conforme a convenção registrada pela seguradora.
+- 36 illustrations recentes possuem validação explícita por SHA-256, com reconciliação entre prêmio-base, opcionais e total. A base inclui combinações de vida + doenças graves e âncoras de vida pura de Zurich, Legal & General e Aviva. O prazo aceita idade atual ou idade no próximo aniversário, conforme a convenção registrada pela seguradora.
 - Todos os cenários incompletos permanecem fora do conjunto oficial de 288 preços e passam por validação contra duplicidade e prêmio inválido.
 
 # Atualização de 19/11/2026 — bateria fumante

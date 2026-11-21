@@ -31,3 +31,7 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-11-09,Elka Cotao,47,false,Legal & General,Life,69,22,80000,0,14.41,14.13,0,0.28,Waiver of Premium,2d61e294a5de0a1f189337cc96be832c6443bc952cddbc4c13e0e08d7c280ee9
 2026-11-09,Elka Cotao,47,false,Legal & General,Life,69,22,100000,0,17.50,17.16,0,0.34,Waiver of Premium,22bae7f96fdcf566c63f481642c641d8d0a09500f7e07427fa2b6c38ef8e5584
 2026-11-05,Taci Cotao,47,false,Zurich,Life,70,23,70000,0,13.27,13.27,0,0,None,828cc4cca346ee77fe9642bca502f79e94eaccac702b9d3bc6532c585153eeb5
+2026-11-04,Leticia Cotao,32,false,Zurich,Life & CI + Life,65,33,160000,10000,14.07,8.07,6.00,0,TPD and Waiver included; multi-policy discount reflected,e9141cbb2147127820492f18c700dc7af2264f3a4d4b4c1f1cdcfbe02344f8f3
+2026-11-04,Rachael Cotao,41,false,Legal & General,Life + Life & CI,64,23,90000,10000,16.42,8.76,7.66,0,TPD and Waiver included,8265b4cd719b4d83e876891fc07d8a9b949bd10f03984072ed80fd8b49013123
+2026-11-04,Elza Cotao,56,false,Aviva,Multi-Product with Core CI,70,14,60000,10000,35.77,19.12,16.65,0,TPD and Waiver included,7a981c1026538918932d9678c629c2ad1c6da20057bbff53c60a8a5c81cfc0ad
+2026-11-04,Rachael Cotao,41,false,Zurich,Life,65,24,100000,0,11.28,10.90,0,0.38,Waiver of Premium,4ecad569a5e4b64a61272563d93e75972f67acd5349ce3b893f33c62915a999f

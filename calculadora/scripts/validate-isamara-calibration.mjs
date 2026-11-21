@@ -64,13 +64,13 @@ if (catalog.calibratedRecords !== 1384 || model.records !== 521 || catalog.model
 
 const hashes = illustrationRows.map((row) => row.sha256);
 if (
-  illustrationRows.length !== 32
-  || new Set(hashes).size !== 32
+  illustrationRows.length !== 36
+  || new Set(hashes).size !== 36
   || hashes.some((hash) => !/^[a-f0-9]{64}$/.test(hash))
-  || catalog.audit?.illustrationValidationRecords !== 32
+  || catalog.audit?.illustrationValidationRecords !== 36
 ) {
   failures.push({
-    expectedIllustrationValidation: { rows: 32, uniqueHashes: 32, auditCount: 32 },
+    expectedIllustrationValidation: { rows: 36, uniqueHashes: 36, auditCount: 36 },
     actualIllustrationValidation: {
       rows: illustrationRows.length,
       uniqueHashes: new Set(hashes).size,
@@ -129,6 +129,10 @@ if (
 
 const lifeModel = catalog.models?.life_only;
 const exactHistoryAnchors = [
+  { key: '32|65|160000|10000|0', expected: 14.07, actual: model.lookup['32|65|160000|10000|0'] },
+  { key: '41|64|90000|10000|0', expected: 16.42, actual: model.lookup['41|64|90000|10000|0'] },
+  { key: '56|70|60000|10000|0', expected: 35.77, actual: model.lookup['56|70|60000|10000|0'] },
+  { key: '41|65|100000|0|0', expected: 10.90, actual: lifeModel?.lookup?.['41|65|100000|0|0'] },
   { key: '54|64|50000|0|0', expected: 13.01, actual: lifeModel?.lookup?.['54|64|50000|0|0'] },
   { key: '54|65|50000|0|0', expected: 15.12, actual: lifeModel?.lookup?.['54|65|50000|0|0'] },
   { key: '47|69|80000|0|0', expected: 14.13, actual: lifeModel?.lookup?.['47|69|80000|0|0'] },
