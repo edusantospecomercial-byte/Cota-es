@@ -355,6 +355,10 @@ function makeSummary(p, r) {
     lines.push(`Faixa provável: ${gbp(r.low)}–${gbp(r.high)}/mês`);
   if (r.provider)
     lines.push(`Referência prioritária: ${r.provider} — ${gbp(r.main)}/mês`);
+  if (r.providerQuotes?.length)
+    lines.push(
+      `Seguradoras prioritárias: ${r.providerQuotes.map((quote) => `${quote.provider} ${gbp(quote.premium)}`).join(" · ")}${r.providerGap ? ` · ${r.providerGap.provider} indisponível` : ""}`,
+    );
   if (m.c)
     lines.push(
       "",
