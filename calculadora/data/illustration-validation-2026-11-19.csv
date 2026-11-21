@@ -422,3 +422,29 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-05-26,Aviva Historical Quote,30,false,Aviva,Life Insurance+,70,40,400000,0,17.76,17.72,0,0.04,Optional benefits,d49ef2ae043e120202647cdb57717c15e6aac4dd435e6f380c23156ae6042bb9
 2026-05-25,Aviva Historical Quote,50,false,Aviva,Life Insurance+ with Core CI,70,20,30000,30000,34.38,0,33.80,0.58,Optional benefits,602fcae7b9ac1a54fa72ff766c056ddd5e9df08b92adbe8e197d0a1889b24c84
 2026-05-25,Aviva Historical Quote,50,false,Aviva,Life Insurance+,70,20,40000,0,10.52,10.43,0,0.09,Optional benefits,602fcae7b9ac1a54fa72ff766c056ddd5e9df08b92adbe8e197d0a1889b24c84
+2026-05-26,Archive Quote,50,false,Zurich,Life,70,20,100000,0,22.21,21.15,0,1.06,Additional benefits,b14130d2d557b3322eea7638bdae915a649d551ecf6dbdb81d65ca1ebf114ff6
+2026-05-26,Archive Quote,50,false,Zurich,Life,70,20,60000,0,14.58,13.89,0,0.69,Additional benefits,c8bd44aabad876dbec1ea11ff97712dedaa8a1f9de1ea451fc618833470a42c8
+2026-05-26,Archive Quote,54,false,Zurich,Life,70,16,100000,0,28.40,27.05,0,1.35,Additional benefits,64ca2a2cd9b8b42f97c64afee923e39b8978c4cc31089adba94f697f5c7b94b6
+2026-05-26,Archive Quote,54,false,Zurich,Life,70,16,60000,0,18.39,17.51,0,0.88,Additional benefits,9612911401a2c26980c7356fa5096d6fd4a4dbe42c9fc2e0dde4eff5cd09aace
+2026-05-26,Archive Quote,38,false,Legal & General,Life,69,31,200000,0,16.47,16.31,0,0.16,Waiver of Premium,c3a6f82bf92159309877716081614767aeb6a5637f54fc374f8b3a2e952ef6cb
+2026-04-21,Archive Quote,46,false,Zurich,Life,65,19,20000,0,12.80,5.05,0,7.75,Additional benefits,481086c21ac347deecee0f12bf80012998c66ade75a403d44ccc8e4d45a090f2
+2026-04-20,Archive Quote,46,false,Zurich,Life,65,19,18037,0,13.64,4.83,0,8.81,Additional benefits,e513bf5040cb579faac563cc5ecac0a165f1e87dd4dee67c4f53eaf99123feac
+2026-05-19,Archive Quote,41,false,Zurich,Life,70,29,22348,0,13.02,4.83,0,8.19,Additional benefits,d20c6da532f7c43eb965c8cd6c7b23b3c6cf75bd63bb95c4a4a68876e8d0a363
+2026-06-30,Archive Quote,57,false,Legal & General,Life,69,12,50000,0,47.82,46.43,0,1.39,Waiver of Premium,63fd5e44a3d9faab3ca989bb19bd349a2dad08c1856a0c44a2f40b7b04b0777b
+2026-05-14,Archive Quote,50,false,Legal & General,Life,64,14,200000,0,31.36,31.36,0,0.00,None,98ad6bd7404d53c2e8363a050fcc64e86aeab6997175f44372f9a30dce5ef0a2
+2025-11-27,Archive Quote,44,false,Legal & General,Life,64,20,100000,0,12.62,12.62,0,0.00,None,71adfd849a474004802d48fbf2dff427348da0efce6f49c105e211161c30490d
+2025-11-27,Archive Quote,44,false,Zurich,Life,65,21,150000,0,25.41,17.66,0,7.75,Additional benefits,1eb86a18bc3075a3d98b03ef2c5995394de48ec35cc6f1dfd8ecd4df19f8026f
+2026-06-02,Archive Quote,46,false,Legal & General,Life,61,15,200000,0,21.50,21.50,0,0.00,None,dce14e726b94f6d972fbe1265d4a2f2647bc448c3e4bb9c134423746f7e72389
+2026-04-14,Archive Quote,45,false,Legal & General,Life,60,15,200000,0,21.07,20.66,0,0.41,Waiver of Premium,7c0767907e8454b6eecfd9fd548d74815306169597175e7dde5499608cf81da0
+2025-11-17,Archive Quote,50,false,Legal & General,Life,64,14,30000,0,6.75,6.61,0,0.14,Waiver of Premium,a3d60a8caa224a6a8473b42fd258fe13c10c9ab22cee4061c85b513f8e10e813
+2026-07-14,Archive Quote,40,false,Zurich,Life,70,30,100000,0,9.78,9.78,0,0.00,Multi-policy discount reflected,b6fdee0b4e1fe0cabb44e5576aba5d332ccd38cb674baead0496d53764d12573
+2026-07-22,Archive Quote,64,false,Zurich,Life,80,16,20000,0,17.11,17.11,0,0.00,None,3cb576c2164e70f5788bdb9b4ff74d366d6f34c81677abaadd56b67b4ef939fd
+2026-03-13,Archive Quote,48,false,Zurich,Life & CI Standard,65,17,10000,10000,19.05,0,12.31,6.74,Additional benefits,5bfce2c62f3c046f6f2cf339cb85228cf3dc597a16f93cafcafaf66ffe22e4f3
+2026-03-13,Archive Quote,48,false,Zurich,Life & CI Standard,65,17,10000,10000,19.05,0,12.31,6.74,Additional benefits,1958e9c1e49fa5c276522b2eeb9c6475985aed8c3a26dd9e9ecab25559bb5692
+2026-03-13,Archive Quote,48,false,Zurich,Life & CI Standard,65,17,10000,10000,19.05,0,12.31,6.74,Additional benefits,6f0b4d61e60fb04107b5940932141624c9de71437c1146436f02af0531b5ba82
+2026-05-26,Archive Quote,30,false,Zurich,Life & CI Standard,70,40,10000,10000,6.68,0,6.68,0.00,Multi-policy discount reflected,fcd4e818cf14b8d85911a581a8a594ed85f00ca862058ff10094f5d7ecac8a3d
+2026-05-26,Archive Quote,30,false,Zurich,Life & CI Standard,70,40,10000,10000,6.68,0,6.68,0.00,Multi-policy discount reflected,b05b5c0f86846a869d76a397cdc5ecf7c6d7f13e468cd64b33695f0661c4944e
+2026-05-26,Archive Quote,38,false,Legal & General,Life & CI Standard,69,31,150000,10000,13.12,0,12.99,0.13,Waiver of Premium,6762733ee6347504a76695d2a157cfa9ea908b4562c8a88fef04d5120382c892
+2026-08-11,Archive Quote,37,true,Legal & General,Life & CI Standard,64,27,30000,10000,6.32,0,6.25,0.07,Waiver of Premium,b80a7b5d49662b4afd7d7960bf542f2eb3c260f57bf29cc934cce74f2160f62e
+2026-05-19,Archive Quote,41,false,Zurich,Life & CI Standard,70,29,20000,20000,25.10,0,17.37,7.73,Additional benefits,62e35d3b92a24997f90ca7f3fe97eadc93e9b9512a5e99610a91a536dd52ad53
+2026-07-14,Archive Quote,40,false,Legal & General,Life & CI Standard,69,29,200000,20000,17.71,0,17.53,0.18,Waiver of Premium,baacf554e9189a19c14d86b522f897bcfa52c0a59bb69a6a8e12b8f0af42c1a2
