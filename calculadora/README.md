@@ -40,6 +40,8 @@ Validação de interpolação em 21/11/2026: ao retirar uma âncora oficial por 
 
 Estabilidade temporal: 147 âncoras oficiais foram cotadas mais de uma vez em datas diferentes com o mesmo sexo, idade, tabagismo, prazo e capitais. Entre a primeira e a última execução, a variação absoluta média foi 1,74%; 97,28% ficaram dentro de ±10% e 100% dentro de ±20%. O motor sempre utiliza a execução mais recente, e um validador impede publicação se essa estabilidade se deteriorar materialmente.
 
+Sensibilidade ao sexo não informado: a interface mantém o formulário curto e não solicita sexo. Em 69 pares oficiais com os demais parâmetros iguais, a diferença simétrica média entre masculino e feminino foi 2,70%, o máximo observado foi 9,36% e todos ficaram dentro de 10%. Isso sustenta o uso como estimativa inicial, mas não transforma o resultado em cotação individual; um validador monitora esse limite.
+
 Os dados preenchidos não são enviados a servidor. As simulações salvas ficam no `localStorage` do navegador utilizado.
 
 Regra operacional de Eduardo: a tela abre com **MetLife MultiProtect · 1 Cota + Luxações — £13/mês**, discriminado como £11 Essencial + £2 Luxações. O usuário ainda pode alterar a quantidade de cotas, remover o complemento ou acrescentar Crianças; os valores MetLife nunca são interpolados.

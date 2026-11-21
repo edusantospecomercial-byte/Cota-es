@@ -13892,6 +13892,12 @@
       "within10": 0.9728,
       "within20": 1
     },
+    "priorityProviderSexSensitivity": {
+      "matchedProviderAnchors": 69,
+      "meanSymmetricDifference": 0.027,
+      "maximumSymmetricDifference": 0.0936,
+      "within10": 1
+    },
     "illustrationValidationRecords": 487,
     "solutionBuilderHistoryValidationRecords": 171,
     "solutionBuilderHistoryUniqueRecords": 170,
