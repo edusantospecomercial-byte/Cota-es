@@ -8,3 +8,4 @@ source_date,model_id,profile,age,sex,smoker,to_age,life_cover,critical_illness_c
 2026-11-20,34984454,Jana Cotacao,47,F,No,70,50000,10000,Legal & General,Additional critical illness basis is not supported,19.44,18.74,TPD own occupation included; excluded because the priority trio is incomplete
 2026-11-20,34984455,Jana Cotacao,47,F,No,65,50000,10000,Legal & General,Provider temporarily unable to quote,17.11,17.45,TPD own occupation included; excluded because the priority trio is incomplete
 2026-11-20,34984456,Jana Cotacao,47,F,No,65,50000,10000,Legal & General,Provider temporarily unable to quote,16.06,16.02,Life 40000 plus life-or-earlier-CI 10000; TPD included; excluded because the priority trio is incomplete
+2026-11-20,34984495,Jana Cotacao,47,F,No,70,300000,0,Legal & General,Provider did not return a quote,37.54,44.22,Life only; no waiver; no TPD; excluded because the priority trio is incomplete
