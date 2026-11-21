@@ -61,17 +61,19 @@ function parseReport(file) {
   const lifeOnly = text.match(/£\s*(\d+)\s+life cover/i);
   const life = Number(combined?.[1] || lifeOnly?.[1]);
   const ci = Number(combined?.[2] || 0);
-  if (
-    !reference ||
-    !requested ||
-    !birth ||
-    !sex ||
-    !smoker ||
-    !Number.isFinite(toAge) ||
-    !Number.isFinite(life) ||
-    life <= 0
-  )
-    return { status: "ambiguous", file };
+  const missing = [
+    ["reference", reference],
+    ["requested", requested],
+    ["birth", birth],
+    ["sex", sex],
+    ["smoker", smoker],
+    ["toAge", Number.isFinite(toAge) ? toAge : null],
+    ["life", Number.isFinite(life) && life > 0 ? life : null],
+  ]
+    .filter(([, value]) => value == null)
+    .map(([field]) => field);
+  if (missing.length)
+    return { status: "ambiguous", reference, missing, file };
 
   const patterns = ci
     ? {

@@ -13872,6 +13872,8 @@
     "comparisonReportArchivePrices": 867,
     "comparisonReportArchivePartialReports": 62,
     "comparisonReportArchivePartialPrices": 124,
+    "comparisonReportAmbiguousExcluded": 37,
+    "comparisonReportNoPriorityPricesExcluded": 3,
     "priorityProviderCrossValidation": {
       "tested": 609,
       "mape": 0.0301,
