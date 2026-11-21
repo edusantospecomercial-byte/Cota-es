@@ -97,6 +97,7 @@ A calculadora fornece uma estimativa indicativa, sem underwriting. Peso, altura,
 - Esses números medem interpolação dentro da malha oficial disponível; não medem underwriting médico, ocupacional ou extrapolação fora das combinações observadas.
 - Na grade estratégica de idades 25–63, capitais de £20k–£200k e idades finais 65/70/75/85, a malha completa das três seguradoras cobre por interpolação 33,23% dos cenários de vida para não fumantes. A cobertura ainda é de 2,46% para CI £10k, 0,75% para CI £20k e 0,43% para vida de fumantes; fumante + CI permanece sem malha completa. Por isso, as próximas coletas devem concentrar-se em fumantes e CI, não repetir a região já densa de vida não fumante.
 - O relatório pode ser reproduzido com `node calculadora/scripts/report-priority-coverage.mjs`.
+- A próxima fila operacional contém 24 cenários de alto ganho em `data/next-priority-collection-2026-11-21.csv`: 12 de vida para fumantes, 8 de fumante + CI e 4 para estender CI de não fumantes até 60 anos. Cada cenário deve registrar Legal & General, Zurich e Aviva, totalizando até 72 preços novos sem clicar em `Apply`.
 
 # Atualização de 19/11/2026 — bateria fumante
 

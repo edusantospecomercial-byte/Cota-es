@@ -1,0 +1,25 @@
+priority,batch,age,smoker,to_age,life_cover,critical_illness_cover,providers,reason,status
+1,smoker_life_term,35,Yes,75,20000,0,Legal & General|Zurich|Aviva,Open smoker term interpolation,pending_authentication
+2,smoker_life_term,35,Yes,75,50000,0,Legal & General|Zurich|Aviva,Open smoker term interpolation,pending_authentication
+3,smoker_life_term,35,Yes,75,100000,0,Legal & General|Zurich|Aviva,Open smoker term interpolation,pending_authentication
+4,smoker_life_term,35,Yes,75,200000,0,Legal & General|Zurich|Aviva,Open smoker term interpolation,pending_authentication
+5,smoker_life_age,55,Yes,65,20000,0,Legal & General|Zurich|Aviva,Open smoker age interpolation,pending_authentication
+6,smoker_life_age,55,Yes,65,50000,0,Legal & General|Zurich|Aviva,Open smoker age interpolation,pending_authentication
+7,smoker_life_age,55,Yes,65,100000,0,Legal & General|Zurich|Aviva,Open smoker age interpolation,pending_authentication
+8,smoker_life_age,55,Yes,65,200000,0,Legal & General|Zurich|Aviva,Open smoker age interpolation,pending_authentication
+9,smoker_life_rectangle,55,Yes,75,20000,0,Legal & General|Zurich|Aviva,Complete smoker age and term rectangle,pending_authentication
+10,smoker_life_rectangle,55,Yes,75,50000,0,Legal & General|Zurich|Aviva,Complete smoker age and term rectangle,pending_authentication
+11,smoker_life_rectangle,55,Yes,75,100000,0,Legal & General|Zurich|Aviva,Complete smoker age and term rectangle,pending_authentication
+12,smoker_life_rectangle,55,Yes,75,200000,0,Legal & General|Zurich|Aviva,Complete smoker age and term rectangle,pending_authentication
+13,smoker_ci_seed,35,Yes,65,50000,10000,Legal & General|Zurich|Aviva,Seed smoker Core CI,pending_authentication
+14,smoker_ci_seed,35,Yes,65,50000,20000,Legal & General|Zurich|Aviva,Seed smoker Core CI,pending_authentication
+15,smoker_ci_age,55,Yes,65,50000,10000,Legal & General|Zurich|Aviva,Open smoker Core CI age interpolation,pending_authentication
+16,smoker_ci_age,55,Yes,65,50000,20000,Legal & General|Zurich|Aviva,Open smoker Core CI age interpolation,pending_authentication
+17,smoker_ci_term,35,Yes,75,50000,10000,Legal & General|Zurich|Aviva,Open smoker Core CI term interpolation,pending_authentication
+18,smoker_ci_term,35,Yes,75,50000,20000,Legal & General|Zurich|Aviva,Open smoker Core CI term interpolation,pending_authentication
+19,smoker_ci_rectangle,55,Yes,75,50000,10000,Legal & General|Zurich|Aviva,Complete smoker Core CI age and term rectangle,pending_authentication
+20,smoker_ci_rectangle,55,Yes,75,50000,20000,Legal & General|Zurich|Aviva,Complete smoker Core CI age and term rectangle,pending_authentication
+21,nonsmoker_ci_upper_age,60,No,65,50000,10000,Legal & General|Zurich|Aviva,Extend non-smoker Core CI upper age,pending_authentication
+22,nonsmoker_ci_upper_age,60,No,65,50000,20000,Legal & General|Zurich|Aviva,Extend non-smoker Core CI upper age,pending_authentication
+23,nonsmoker_ci_upper_rectangle,60,No,75,50000,10000,Legal & General|Zurich|Aviva,Complete upper-age Core CI term rectangle,pending_authentication
+24,nonsmoker_ci_upper_rectangle,60,No,75,50000,20000,Legal & General|Zurich|Aviva,Complete upper-age Core CI term rectangle,pending_authentication
