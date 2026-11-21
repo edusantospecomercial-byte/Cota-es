@@ -48,3 +48,5 @@ A fila pronta contém 37 cenários, até 111 preços, começando pelos segmentos
 ## Saúde operacional
 
 O monitor consulta continuamente o GitHub Pages, a contagem publicada e a chegada de novos PDFs. Até o último registro deste relatório, o site permanecia HTTP 200, com 1.173 preços e nenhum PDF novo desde a meia-noite.
+
+O comando `node calculadora/scripts/audit-live-calculator.mjs` compara a versão pública com a release local e falha se o hash do JavaScript, a quantidade de registros, os preços prioritários ou a amostra temporal divergirem.

@@ -1,0 +1,39 @@
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const here = dirname(fileURLToPath(import.meta.url));
+const calculatorDir = join(here, "..");
+const baseUrl = "https://edusantospecomercial-byte.github.io/Cota-es/calculadora/";
+const localIndex = readFileSync(join(calculatorDir, "index.html"), "utf8");
+const localCatalog = JSON.parse(readFileSync(join(calculatorDir, "data/models.json"), "utf8"));
+const expectedAppVersion = localIndex.match(/app\.js\?v=([a-f0-9]+)/)?.[1];
+
+const [pageResponse, catalogResponse] = await Promise.all([
+  fetch(baseUrl, { cache: "no-store" }),
+  fetch(`${baseUrl}data/models.json`, { cache: "no-store" }),
+]);
+if (!pageResponse.ok || !catalogResponse.ok)
+  throw new Error(JSON.stringify({ pageStatus: pageResponse.status, catalogStatus: catalogResponse.status }));
+
+const liveIndex = await pageResponse.text();
+const liveCatalog = await catalogResponse.json();
+const liveAppVersion = liveIndex.match(/app\.js\?v=([a-f0-9]+)/)?.[1];
+const expected = {
+  appVersion: expectedAppVersion,
+  calibratedRecords: localCatalog.calibratedRecords,
+  priorityPrices: localCatalog.audit?.priorityProviderPrices,
+  temporalPredictions: localCatalog.audit?.priorityProviderTemporalHoldout?.predicted,
+};
+const actual = {
+  appVersion: liveAppVersion,
+  calibratedRecords: liveCatalog.calibratedRecords,
+  priorityPrices: liveCatalog.audit?.priorityProviderPrices,
+  temporalPredictions: liveCatalog.audit?.priorityProviderTemporalHoldout?.predicted,
+};
+
+if (JSON.stringify(actual) !== JSON.stringify(expected)) {
+  console.error(JSON.stringify({ ok: false, issue: "live deployment differs from local release", expected, actual }, null, 2));
+  process.exit(1);
+}
+console.log(JSON.stringify({ ok: true, url: baseUrl, ...actual }, null, 2));
