@@ -13885,6 +13885,12 @@
         "p95": 0.0877,
         "maximum": 0.1935
       },
+      "bias": {
+        "mean": -0.0016,
+        "median": -0.0013,
+        "underestimates": 0.5245,
+        "overestimates": 0.469
+      },
       "bySegment": {
         "nonSmokerLife": { "tested": 378, "mape": 0.0335, "within20": 1 },
         "nonSmokerCI": { "tested": 192, "mape": 0.0227, "within20": 1 },

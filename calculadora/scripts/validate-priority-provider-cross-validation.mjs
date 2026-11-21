@@ -147,6 +147,30 @@ const errorDistribution = {
   p95: Number(quantile(absolutePercentageErrors, 0.95).toFixed(4)),
   maximum: Number(Math.max(...absolutePercentageErrors).toFixed(4)),
 };
+const signedPercentageErrors = results.map(
+  (row) => (row.predicted - row.premium) / row.premium,
+);
+const bias = {
+  mean: Number(
+    (
+      signedPercentageErrors.reduce((sum, value) => sum + value, 0) /
+      signedPercentageErrors.length
+    ).toFixed(4),
+  ),
+  median: Number(quantile(signedPercentageErrors, 0.5).toFixed(4)),
+  underestimates: Number(
+    (
+      signedPercentageErrors.filter((value) => value < 0).length /
+      signedPercentageErrors.length
+    ).toFixed(4),
+  ),
+  overestimates: Number(
+    (
+      signedPercentageErrors.filter((value) => value > 0).length /
+      signedPercentageErrors.length
+    ).toFixed(4),
+  ),
+};
 const worstCases = [...results]
   .sort((a, b) => b.ape - a.ape)
   .slice(0, 5)
@@ -177,6 +201,10 @@ if (!reportOnly && (
       return !Number.isFinite(saved) || Math.abs(saved - value) > 0.00001;
     },
   ) ||
+  Object.entries(bias).some(([metric, value]) => {
+    const saved = published?.bias?.[metric];
+    return !Number.isFinite(saved) || Math.abs(saved - value) > 0.00001;
+  }) ||
   Object.entries(bySegment).some(([segment, metrics]) => {
     const saved = published?.bySegment?.[segment];
     return saved?.tested !== metrics.tested ||
@@ -196,6 +224,7 @@ if (!reportOnly && (
       mape: Number(overallMape.toFixed(4)),
       within20: Number(overallWithin20.toFixed(4)),
       errorDistribution,
+      bias,
     },
   }, null, 2));
 }
@@ -207,6 +236,7 @@ console.log(JSON.stringify({
   overallMape: Number(overallMape.toFixed(4)),
   overallWithin20: Number(overallWithin20.toFixed(4)),
   errorDistribution,
+  bias,
   worstCases,
   byProvider: Object.fromEntries(Object.entries(byProvider).map(([provider, metrics]) => [provider, {
     tested: metrics.tested,
