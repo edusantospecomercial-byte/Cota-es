@@ -4,6 +4,14 @@ let catalog = { models: {} },
   lastPayload = null;
 const $ = (id) => document.getElementById(id),
   num = (id) => Number($(id).value || 0),
+  escapeHtml = (value) =>
+    String(value).replace(
+      /[&<>"']/g,
+      (character) =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
+          character
+        ],
+    ),
   gbp = (n) =>
     new Intl.NumberFormat("en-GB", {
       style: "currency",
@@ -512,10 +520,10 @@ function render(p) {
   $("warning").textContent = warnings.join(" ");
   let bmi = (p.weight / (p.height / 100) ** 2).toFixed(1);
   let priorityDetail = r.providerQuotes?.length
-    ? `<dt>Seguradoras prioritárias</dt><dd>${r.providerQuotes.map((quote) => `${quote.provider} ${gbp(quote.premium)}`).join(" · ")}${r.providerGap ? ` · ${r.providerGap.provider} indisponível` : ""}</dd><dt>Referência usada</dt><dd>${r.provider} · ${r.product}</dd>`
+    ? `<dt>Seguradoras prioritárias</dt><dd>${r.providerQuotes.map((quote) => `${escapeHtml(quote.provider)} ${gbp(quote.premium)}`).join(" · ")}${r.providerGap ? ` · ${escapeHtml(r.providerGap.provider)} indisponível` : ""}</dd><dt>Referência usada</dt><dd>${escapeHtml(r.provider)} · ${escapeHtml(r.product)}</dd>`
     : "";
   $("details").innerHTML =
-    `<dt>Perfil</dt><dd>${p.age} anos · ${p.smoker === "smoker" ? "fumante" : "não fumante"}</dd><dt>Profissão</dt><dd>${p.occupation}</dd><dt>Peso · altura · IMC</dt><dd>${p.weight}kg · ${p.height}cm · ${bmi}</dd><dt>Cobertura</dt><dd>até ${p.toAge} · ${p.term} anos</dd><dt>Vida</dt><dd>${gbp(p.life)}</dd><dt>Doenças Graves</dt><dd>${gbp(p.ci)}</dd><dt>Premium</dt><dd>Garantido</dd>${priorityDetail}<dt>Base comparável</dt><dd>${model?.records || 0} casos · confiança ${model?.confidence || "insuficiente"}</dd>`;
+    `<dt>Perfil</dt><dd>${p.age} anos · ${p.smoker === "smoker" ? "fumante" : "não fumante"}</dd><dt>Profissão</dt><dd>${escapeHtml(p.occupation)}</dd><dt>Peso · altura · IMC</dt><dd>${p.weight}kg · ${p.height}cm · ${bmi}</dd><dt>Cobertura</dt><dd>até ${p.toAge} · ${p.term} anos</dd><dt>Vida</dt><dd>${gbp(p.life)}</dd><dt>Doenças Graves</dt><dd>${gbp(p.ci)}</dd><dt>Premium</dt><dd>Garantido</dd>${priorityDetail}<dt>Base comparável</dt><dd>${model?.records || 0} casos · confiança ${escapeHtml(model?.confidence || "insuficiente")}</dd>`;
   $("metlifeResult").textContent = m.unavailable
     ? "MultiProtect indisponível para nova contratação após 65 anos"
     : m.c
@@ -570,7 +578,7 @@ function loadSaved() {
     ? xs
         .map(
           (x) =>
-            `<div class="savedItem"><span>${x.age} anos · ${x.occupation} · Vida ${gbp(x.life)} + CI ${gbp(x.ci)}</span><button onclick="delSaved('${x.id}')">Excluir</button></div>`,
+            `<div class="savedItem"><span>${x.age} anos · ${escapeHtml(x.occupation)} · Vida ${gbp(x.life)} + CI ${gbp(x.ci)}</span><button onclick="delSaved('${escapeHtml(x.id)}')">Excluir</button></div>`,
         )
         .join("")
     : "Nenhuma simulação salva.";
