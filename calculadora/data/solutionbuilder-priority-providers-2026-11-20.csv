@@ -215,3 +215,27 @@ source_date,model_id,profile,age,sex,smoker,to_age,life_cover,critical_illness_c
 2026-11-18,34937530,Wendel Cotacao,35,F,No,65,100000,0,Legal & General,Legal & General Life,6.92,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
 2026-11-18,34937530,Wendel Cotacao,35,F,No,65,100000,0,Zurich,Zurich Life,7.91,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
 2026-11-18,34937530,Wendel Cotacao,35,F,No,65,100000,0,Aviva,Aviva Life Insurance+,8.40,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-18,34952255,Amaro Cotacao,50,F,No,65,20000,0,Legal & General,Legal & General Life,6.01,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952255,Amaro Cotacao,50,F,No,65,20000,0,Zurich,Zurich Life,5.94,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952255,Amaro Cotacao,50,F,No,65,20000,0,Aviva,Aviva Life Insurance+,5.19,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952257,Amaro Cotacao,50,F,No,65,30000,0,Legal & General,Legal & General Life,6.85,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952257,Amaro Cotacao,50,F,No,65,30000,0,Zurich,Zurich Life,7.50,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952257,Amaro Cotacao,50,F,No,65,30000,0,Aviva,Aviva Life Insurance+,7.10,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952260,Amaro Cotacao,50,F,No,65,50000,0,Legal & General,Legal & General Life,10.08,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952260,Amaro Cotacao,50,F,No,65,50000,0,Zurich,Zurich Life,10.64,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952260,Amaro Cotacao,50,F,No,65,50000,0,Aviva,Aviva Life Insurance+,10.62,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952261,Amaro Cotacao,50,F,No,65,100000,0,Legal & General,Legal & General Life,17.09,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-18,34952261,Amaro Cotacao,50,F,No,65,100000,0,Zurich,Zurich Life,18.42,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-18,34952261,Amaro Cotacao,50,F,No,65,100000,0,Aviva,Aviva Life Insurance+,19.93,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-18,34952273,Amaro Cotacao,50,F,No,75,20000,0,Legal & General,Legal & General Life,6.58,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952273,Amaro Cotacao,50,F,No,75,20000,0,Zurich,Zurich Life,6.91,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952273,Amaro Cotacao,50,F,No,75,20000,0,Aviva,Aviva Life Insurance+,6.75,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952274,Amaro Cotacao,50,F,No,75,30000,0,Legal & General,Legal & General Life,8.24,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952274,Amaro Cotacao,50,F,No,75,30000,0,Zurich,Zurich Life,8.96,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952274,Amaro Cotacao,50,F,No,75,30000,0,Aviva,Aviva Life Insurance+,9.13,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952275,Amaro Cotacao,50,F,No,75,50000,0,Legal & General,Legal & General Life,12.39,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952275,Amaro Cotacao,50,F,No,75,50000,0,Zurich,Zurich Life,13.07,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952275,Amaro Cotacao,50,F,No,75,50000,0,Aviva,Aviva Life Insurance+,13.76,true,Recovered from contiguous SolutionBuilder history block; block parameters confirmed in Full Details
+2026-11-18,34952276,Amaro Cotacao,50,F,No,75,100000,0,Legal & General,Legal & General Life,21.61,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-18,34952276,Amaro Cotacao,50,F,No,75,100000,0,Zurich,Zurich Life,23.04,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-18,34952276,Amaro Cotacao,50,F,No,75,100000,0,Aviva,Aviva Life Insurance+,26.79,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
