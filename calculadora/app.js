@@ -64,16 +64,37 @@ function priorityQuotesFor(p) {
       Number(row.life_cover) === p.life &&
       Number(row.critical_illness_cover) === p.ci,
   );
-  if (knownGap)
+  if (knownGap) {
+    let exactAvailableQuotes =
+      Number(knownGap.critical_illness_cover) === 0
+        ? [
+            {
+              provider: "Zurich",
+              product: "Zurich Life",
+              premium: Number(knownGap.zurich_premium),
+              modelId: knownGap.model_id,
+            },
+            {
+              provider: "Aviva",
+              product: "Aviva Life Insurance+",
+              premium: Number(knownGap.aviva_premium),
+              modelId: knownGap.model_id,
+            },
+          ]
+            .filter((quote) => Number.isFinite(quote.premium))
+            .sort((a, b) => a.premium - b.premium)
+        : [];
     return {
-      quotes: [],
-      exact: false,
+      quotes: exactAvailableQuotes,
+      exact: exactAvailableQuotes.length > 0,
+      partial: exactAvailableQuotes.length > 0,
       gap: {
         provider: knownGap.missing_provider,
         reason: knownGap.reason,
         modelId: knownGap.model_id,
       },
     };
+  }
   let rawCandidates = priorityRows
     .filter(
       (row) =>
@@ -418,9 +439,11 @@ function render(p) {
     priorityQuotes = priorityMatch.quotes;
   if (priorityMatch.gap)
     warnings.unshift(
-      `Cotação oficial ${priorityMatch.gap.modelId}: ${priorityMatch.gap.provider} não retornou preço (${priorityMatch.gap.reason}). A estimativa geral permanece disponível, sem inventar preço específico dessa seguradora.`,
+      priorityMatch.partial
+        ? `Cotação oficial ${priorityMatch.gap.modelId}: ${priorityMatch.gap.provider} não retornou preço (${priorityMatch.gap.reason}). Os preços oficiais disponíveis foram preservados sem inventar o valor ausente.`
+        : `Cotação oficial ${priorityMatch.gap.modelId}: ${priorityMatch.gap.provider} não retornou preço (${priorityMatch.gap.reason}). A estimativa geral permanece disponível, sem inventar preço específico dessa seguradora.`,
     );
-  if (priorityQuotes.length === 3) {
+  if (priorityQuotes.length === 3 || (priorityMatch.partial && priorityQuotes.length)) {
     let selected = priorityQuotes[0];
     r.supported = true;
     r.main = selected.premium;
@@ -429,9 +452,12 @@ function render(p) {
     r.provider = selected.provider;
     r.product = selected.product;
     r.providerQuotes = priorityQuotes;
+    r.providerGap = priorityMatch.gap || null;
     r.priorityExact = priorityMatch.exact;
     warnings.unshift(
-      priorityMatch.exact
+      priorityMatch.partial
+        ? `Preços oficiais exatos disponíveis para ${priorityQuotes.map((quote) => quote.provider).join(" e ")}; ${priorityMatch.gap.provider} ficou indisponível neste cenário.`
+        : priorityMatch.exact
         ? `Preço oficial exato do SolutionBuilder: ${selected.provider} entre as seguradoras prioritárias.`
         : `Estimativa interpolada entre âncoras oficiais do SolutionBuilder: ${selected.provider} entre as seguradoras prioritárias.`,
     );
@@ -456,7 +482,7 @@ function render(p) {
   $("warning").textContent = warnings.join(" ");
   let bmi = (p.weight / (p.height / 100) ** 2).toFixed(1);
   let priorityDetail = r.providerQuotes?.length
-    ? `<dt>Seguradoras prioritárias</dt><dd>${r.providerQuotes.map((quote) => `${quote.provider} ${gbp(quote.premium)}`).join(" · ")}</dd><dt>Referência usada</dt><dd>${r.provider} · ${r.product}</dd>`
+    ? `<dt>Seguradoras prioritárias</dt><dd>${r.providerQuotes.map((quote) => `${quote.provider} ${gbp(quote.premium)}`).join(" · ")}${r.providerGap ? ` · ${r.providerGap.provider} indisponível` : ""}</dd><dt>Referência usada</dt><dd>${r.provider} · ${r.product}</dd>`
     : "";
   $("details").innerHTML =
     `<dt>Perfil</dt><dd>${p.age} anos · ${p.smoker === "smoker" ? "fumante" : "não fumante"}</dd><dt>Profissão</dt><dd>${p.occupation}</dd><dt>Peso · altura · IMC</dt><dd>${p.weight}kg · ${p.height}cm · ${bmi}</dd><dt>Cobertura</dt><dd>até ${p.toAge} · ${p.term} anos</dd><dt>Vida</dt><dd>${gbp(p.life)}</dd><dt>Doenças Graves</dt><dd>${gbp(p.ci)}</dd><dt>Premium</dt><dd>Garantido</dd>${priorityDetail}<dt>Base comparável</dt><dd>${model?.records || 0} casos · confiança ${model?.confidence || "insuficiente"}</dd>`;
