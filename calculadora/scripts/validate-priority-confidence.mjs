@@ -23,10 +23,10 @@ const checks = {
   validatedP95Label: /confidenceMetrics\.p95 \* 100/.test(app),
   forwardValidationInResult:
     /forwardMetrics = catalog\.audit\?\.priorityProviderTemporalHoldout/.test(app) &&
-    /validação futura/.test(app) &&
-    /forwardMetrics\.p95 \* 100/.test(app) &&
-    /forwardMetrics\.coverage \* 100/.test(app) &&
-    /forwardMetrics\.predicted/.test(app),
+    /forwardMetrics\.bySegment\?\.\[confidenceSegmentKey\]/.test(app) &&
+    /validação futura do segmento/.test(app) &&
+    /forwardSegmentMetrics\.p95 \* 100/.test(app) &&
+    /ainda limitada/.test(app),
   temporalHoldoutStatus:
     /priorityProviderTemporalHoldout/.test(app) &&
     /temporal: \$\{Number\(temporalHoldout\.mape \* 100\)/.test(app),

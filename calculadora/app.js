@@ -606,9 +606,11 @@ function render(p) {
       confidenceSegmentKey
     ] || {};
   const forwardMetrics = catalog.audit?.priorityProviderTemporalHoldout || {};
-  const forwardEvidence = forwardMetrics.predicted
-    ? ` · validação futura ${Number(forwardMetrics.mape * 100).toFixed(2)}% MAPE · P95 ${Number(forwardMetrics.p95 * 100).toFixed(2)}% · cobertura ${Number(forwardMetrics.coverage * 100).toFixed(2)}% · n=${forwardMetrics.predicted}`
-    : "";
+  const forwardSegmentMetrics =
+    forwardMetrics.bySegment?.[confidenceSegmentKey] || {};
+  const forwardEvidence = (forwardSegmentMetrics.predicted || 0) >= 30
+    ? ` · validação futura do segmento ${Number(forwardSegmentMetrics.mape * 100).toFixed(2)}% MAPE · P95 ${Number(forwardSegmentMetrics.p95 * 100).toFixed(2)}% · n=${forwardSegmentMetrics.predicted}`
+    : ` · validação futura do segmento ainda limitada (n=${forwardSegmentMetrics.predicted || 0})`;
   let confidenceLabel = r.providerQuotes?.length
     ? r.providerGap
       ? "oficial parcial"

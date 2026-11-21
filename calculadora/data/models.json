@@ -13948,6 +13948,12 @@
         "Legal & General": { "predicted": 47, "mape": 0.0431, "p95": 0.1074, "within20": 1, "maximum": 0.1286, "bias": 0.0256 },
         "Zurich": { "predicted": 47, "mape": 0.0338, "p95": 0.0685, "within20": 1, "maximum": 0.1408, "bias": 0.0143 },
         "Aviva": { "predicted": 47, "mape": 0.0412, "p95": 0.1024, "within20": 0.9787, "maximum": 0.2089, "bias": 0.0046 }
+      },
+      "bySegment": {
+        "nonSmokerLife": { "predicted": 96, "mape": 0.0427, "p95": 0.1122, "within20": 0.9896, "maximum": 0.2089, "bias": 0.0128 },
+        "nonSmokerCI": { "predicted": 42, "mape": 0.0344, "p95": 0.0766, "within20": 1, "maximum": 0.097, "bias": 0.0205 },
+        "smokerLife": { "predicted": 3, "mape": 0.0033, "p95": 0.0071, "within20": 1, "maximum": 0.0078, "bias": 0.0033 },
+        "smokerCI": { "predicted": 0, "mape": null, "p95": null, "within20": null, "maximum": null, "bias": null }
       }
     },
     "priorityProviderSexSensitivity": {

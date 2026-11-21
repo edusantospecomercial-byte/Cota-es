@@ -94,7 +94,7 @@ for (const target of testing) {
     const signed = (predicted - target.premium) / target.premium;
     errors.push(ape);
     signedErrors.push(signed);
-    errorRows.push({ provider: target.provider, ape, signed });
+    errorRows.push({ provider: target.provider, smoker: target.smoker, ci: target.ci, ape, signed });
   }
 }
 errors.sort((left, right) => left - right);
@@ -115,6 +115,14 @@ const byProvider = Object.fromEntries(
     summarize(errorRows.filter((row) => row.provider === provider)),
   ]),
 );
+const bySegment = Object.fromEntries(
+  [
+    ["nonSmokerLife", (row) => row.smoker === "No" && row.ci === 0],
+    ["nonSmokerCI", (row) => row.smoker === "No" && row.ci > 0],
+    ["smokerLife", (row) => row.smoker === "Yes" && row.ci === 0],
+    ["smokerCI", (row) => row.smoker === "Yes" && row.ci > 0],
+  ].map(([name, predicate]) => [name, summarize(errorRows.filter(predicate))]),
+);
 const calculated = {
   cutoff,
   trainingAnchors: training.length,
@@ -131,6 +139,7 @@ const calculated = {
   underestimates: Number((signedErrors.filter((value) => value < 0).length / signedErrors.length).toFixed(4)),
   overestimates: Number((signedErrors.filter((value) => value > 0).length / signedErrors.length).toFixed(4)),
   byProvider,
+  bySegment,
 };
 
 const catalog = JSON.parse(readFileSync(join(dataDir, "models.json"), "utf8"));
@@ -140,7 +149,11 @@ const providerFailure = Object.values(byProvider).some((metrics) =>
   metrics.predicted < 30 || metrics.mape > 0.1 || metrics.p95 > 0.2 ||
   metrics.within20 < 0.95 || metrics.maximum > 0.3 || Math.abs(metrics.bias) > 0.08
 );
-if (stale || providerFailure || calculated.predicted < 100 || calculated.coverage < 0.25 || calculated.mape > 0.08 || calculated.p95 > 0.15 || calculated.within20 < 0.98 || calculated.maximum > 0.25 || Math.abs(calculated.bias) > 0.05) {
+const establishedSegmentFailure = [bySegment.nonSmokerLife, bySegment.nonSmokerCI].some((metrics) =>
+  metrics.predicted < 30 || metrics.mape > 0.1 || metrics.p95 > 0.2 ||
+  metrics.within20 < 0.95 || metrics.maximum > 0.3 || Math.abs(metrics.bias) > 0.08
+);
+if (stale || providerFailure || establishedSegmentFailure || calculated.predicted < 100 || calculated.coverage < 0.25 || calculated.mape > 0.08 || calculated.p95 > 0.15 || calculated.within20 < 0.98 || calculated.maximum > 0.25 || Math.abs(calculated.bias) > 0.05) {
   console.error(JSON.stringify({ ok: false, stale, published, calculated }, null, 2));
   process.exit(1);
 }
