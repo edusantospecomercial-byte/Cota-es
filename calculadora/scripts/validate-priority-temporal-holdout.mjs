@@ -81,6 +81,7 @@ function quantile(values, probability) {
 const training = latest(rows.filter((row) => row.date < cutoff));
 const testing = latest(rows.filter((row) => row.date >= cutoff));
 const errors = [];
+const signedErrors = [];
 const errorRows = [];
 for (const target of testing) {
   const pool = training.filter((row) => !(
@@ -90,8 +91,10 @@ for (const target of testing) {
   const predicted = estimate(pool, target);
   if (predicted != null) {
     const ape = Math.abs(predicted - target.premium) / target.premium;
+    const signed = (predicted - target.premium) / target.premium;
     errors.push(ape);
-    errorRows.push({ provider: target.provider, ape });
+    signedErrors.push(signed);
+    errorRows.push({ provider: target.provider, ape, signed });
   }
 }
 errors.sort((left, right) => left - right);
@@ -103,6 +106,7 @@ function summarize(source) {
     p95: Number(quantile(values, 0.95).toFixed(4)),
     within20: Number((values.filter((value) => value <= 0.2).length / values.length).toFixed(4)),
     maximum: Number(Math.max(...values).toFixed(4)),
+    bias: Number((source.reduce((sum, row) => sum + row.signed, 0) / source.length).toFixed(4)),
   };
 }
 const byProvider = Object.fromEntries(
@@ -122,6 +126,9 @@ const calculated = {
   p95: Number(quantile(errors, 0.95).toFixed(4)),
   within20: Number((errors.filter((value) => value <= 0.2).length / errors.length).toFixed(4)),
   maximum: Number(Math.max(...errors).toFixed(4)),
+  bias: Number((signedErrors.reduce((sum, value) => sum + value, 0) / signedErrors.length).toFixed(4)),
+  underestimates: Number((signedErrors.filter((value) => value < 0).length / signedErrors.length).toFixed(4)),
+  overestimates: Number((signedErrors.filter((value) => value > 0).length / signedErrors.length).toFixed(4)),
   byProvider,
 };
 
@@ -130,9 +137,9 @@ const published = catalog.audit?.priorityProviderTemporalHoldout;
 const stale = JSON.stringify(published) !== JSON.stringify(calculated);
 const providerFailure = Object.values(byProvider).some((metrics) =>
   metrics.predicted < 30 || metrics.mape > 0.1 || metrics.p95 > 0.2 ||
-  metrics.within20 < 0.95 || metrics.maximum > 0.3
+  metrics.within20 < 0.95 || metrics.maximum > 0.3 || Math.abs(metrics.bias) > 0.08
 );
-if (stale || providerFailure || calculated.predicted < 100 || calculated.mape > 0.08 || calculated.p95 > 0.15 || calculated.within20 < 0.98 || calculated.maximum > 0.25) {
+if (stale || providerFailure || calculated.predicted < 100 || calculated.mape > 0.08 || calculated.p95 > 0.15 || calculated.within20 < 0.98 || calculated.maximum > 0.25 || Math.abs(calculated.bias) > 0.05) {
   console.error(JSON.stringify({ ok: false, stale, published, calculated }, null, 2));
   process.exit(1);
 }
