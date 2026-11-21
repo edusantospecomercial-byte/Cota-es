@@ -74,6 +74,15 @@ Os mínimos oficiais desta extensão estão preservados em `data/solutionbuilder
 
 A calculadora fornece uma estimativa indicativa, sem underwriting. Peso, altura, profissão e histórico médico podem alterar a cotação oficial. Sempre confirme o valor final no SolutionBuilder e na seguradora.
 
+## Consolidação prioritária de 20/11/2026
+
+- 270 preços oficiais completos de Zurich, Legal & General e Aviva, distribuídos por 90 cenários comparáveis.
+- 11 cenários adicionais foram preservados como lacunas e excluídos da calibração completa porque a Legal & General não retornou preço.
+- Em 7 lacunas de vida pura, a interface pode mostrar os valores oficiais exatos de Zurich e Aviva e identifica a Legal & General como indisponível; nenhum preço ausente é interpolado.
+- Lacunas com doenças graves não reutilizam preços parciais, pois podem envolver TPD ou estruturas de cobertura diferentes.
+- 23 illustrations recentes possuem validação explícita por SHA-256, com reconciliação entre prêmio-base, opcionais e total.
+- Todos os cenários incompletos permanecem fora do conjunto oficial de 270 preços e passam por validação contra duplicidade e prêmio inválido.
+
 # Atualização de 19/11/2026 — bateria fumante
 
 - Perfil de teste: mulher, 35 anos, fumante, prêmio garantido, capital nivelado e sem coberturas adicionais.
