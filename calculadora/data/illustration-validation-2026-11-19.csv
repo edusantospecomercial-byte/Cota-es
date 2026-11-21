@@ -237,3 +237,8 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-08-20,Cleicy Kellin,31,false,Legal & General,Life + CI Extra,51,20,20000,20000,8.12,0,7.97,0.15,TPD and Waiver of Premium,ea8209230cf1ca25559508b166a3f61ba851d64a2e2e4fff9e4e8bbc4ed6c026
 2026-08-04,Jennifer Cotao,41,false,Legal & General,Life,56,15,100000,0,8.22,8.14,0,0.08,Waiver of Premium,11dc485ebc31cf3b6707061184cd0f750a4d6b68ad76115046ec08cd7e4d0208
 2026-08-04,Jennifer Cotao,41,false,Legal & General,Life + CI Extra,56,15,20000,20000,13.79,0,13.53,0.26,TPD and Waiver of Premium,11dc485ebc31cf3b6707061184cd0f750a4d6b68ad76115046ec08cd7e4d0208
+2026-09-29,Maia Rodrigo Cotao,36,false,Zurich,Life,65,29,150000,0,11.03,10.76,0,0.27,Waiver of Premium,c914fe8d20b5ced6cffe3a842abadc1d67104fe40a744c0b5d97f53a9d41d444
+2026-09-28,Julio Cotao,60,false,Zurich,Life,70,10,50000,0,20.56,20.56,0,0,None,ed335ee90ddf8d2bd362fac0c028afc22126ccbd94a503227e8ea2f31525beb5
+2026-10-09,Valdirez Cotao,56,false,Zurich,Life,70,14,50000,0,16.62,16.62,0,0,None,76ee0eb1ea229f46d2c4d6fc4805bc6ca86354d1b1d9f98eb658874bb757621b
+2026-10-09,Flavio Cotao,47,true,Aviva,Life Insurance+ with Core CI,65,18,10000,10000,14.73,0,14.50,0.23,TPD and Waiver of Premium,1f7ec0f8e59c92fae9929d3433e22654877603281d9634c057d17cf1dd330b2b
+2026-10-09,Flavio Cotao,47,true,Aviva,Life Insurance+,65,18,30000,0,13.40,13.30,0,0.10,Waiver of Premium,1f7ec0f8e59c92fae9929d3433e22654877603281d9634c057d17cf1dd330b2b
