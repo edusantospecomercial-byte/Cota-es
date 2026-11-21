@@ -36,7 +36,7 @@ const families = {
 const report = {};
 const failures = [];
 for (const [name, family] of Object.entries(families)) {
-  let exact = 0;
+  let keyed = 0;
   for (const row of family.rows) {
     const key = [
       row.age,
@@ -45,14 +45,14 @@ for (const [name, family] of Object.entries(families)) {
       row.critical_illness_component,
       row.smoker === "true" ? 1 : 0,
     ].join("|");
-    if (family.model.lookup?.[key] != null) exact += 1;
+    if (family.model.lookup?.[key] != null) keyed += 1;
   }
-  const coverage = exact / family.rows.length;
+  const coverage = keyed / family.rows.length;
   report[name] = {
     comparableRecords: family.rows.length,
-    exactRecords: exact,
-    exactCoverage: Number(coverage.toFixed(4)),
-    minimumCoverage: family.minimumCoverage,
+    keyedRecords: keyed,
+    keyCoverage: Number(coverage.toFixed(4)),
+    minimumKeyCoverage: family.minimumCoverage,
   };
   if (coverage < family.minimumCoverage) failures.push({ name, ...report[name] });
 }
