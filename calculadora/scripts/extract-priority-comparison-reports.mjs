@@ -37,7 +37,11 @@ function parseDate(match) {
 
 function premium(text, pattern) {
   const value = text.match(pattern)?.[1];
-  return value == null ? null : Number(value);
+  return value == null ? null : Number(value.replaceAll(",", ""));
+}
+
+function amount(value) {
+  return value == null ? NaN : Number(value.replaceAll(",", ""));
 }
 
 function parseReport(file) {
@@ -57,11 +61,11 @@ function parseReport(file) {
       : null;
   const toAge = Number(text.match(/policy duration is to age\s*(\d+)/i)?.[1]);
   const combined = text.match(
-    /£\s*(\d+)\s+life\s*&\s*£\s*(\d+)\s+life or earlier critical illness cover/i,
+    /£\s*([\d,]+)\s+life\s*&\s*£\s*([\d,]+)\s+(?:life or earlier )?critical illness cover/i,
   );
-  const lifeOnly = text.match(/£\s*(\d+)\s+life cover/i);
-  const life = Number(combined?.[1] || lifeOnly?.[1]);
-  const ci = Number(combined?.[2] || 0);
+  const lifeOnly = text.match(/£\s*([\d,]+)\s+life cover/i);
+  const life = amount(combined?.[1] || lifeOnly?.[1]);
+  const ci = combined ? amount(combined[2]) : 0;
   const missing = [
     ["reference", reference],
     ["requested", requested],

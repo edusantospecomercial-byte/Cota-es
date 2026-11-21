@@ -64,7 +64,7 @@ for (const [scenario, providers] of scenarios) {
     failures.push({ scenario, issue: "incomplete priority trio" });
 }
 
-if (rows.length !== 870 || scenarios.size !== 290)
+if (rows.length !== 879 || scenarios.size !== 293)
   failures.push({
     issue: "archive count changed without review",
     rows: rows.length,

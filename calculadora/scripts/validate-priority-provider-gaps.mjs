@@ -103,7 +103,7 @@ if (exactPartialScenarios.size !== gaps.length)
 const archiveGaps = gaps.filter(
   (row) => row.profile === "Comparison Report Archive",
 );
-if (archiveGaps.length !== 62)
+if (archiveGaps.length !== 63)
   failures.push({
     issue: "partial comparison-report archive count changed without review",
     archiveGaps: archiveGaps.length,

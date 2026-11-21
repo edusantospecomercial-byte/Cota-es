@@ -13864,41 +13864,41 @@
     "candidateFiles": 918,
     "uniqueIllustrations": 400,
     "approvedUniqueRecords": 207,
-    "officialSolutionBuilderPrices": 2049,
+    "officialSolutionBuilderPrices": 2060,
     "officialMinimumAnchors": 217,
-    "priorityProviderPrices": 1164,
-    "priorityProviderScenarios": 388,
-    "comparisonReportArchiveReports": 290,
-    "comparisonReportArchivePrices": 870,
-    "comparisonReportArchivePartialReports": 62,
-    "comparisonReportArchivePartialPrices": 124,
-    "comparisonReportAmbiguousExcluded": 37,
+    "priorityProviderPrices": 1173,
+    "priorityProviderScenarios": 391,
+    "comparisonReportArchiveReports": 293,
+    "comparisonReportArchivePrices": 879,
+    "comparisonReportArchivePartialReports": 63,
+    "comparisonReportArchivePartialPrices": 126,
+    "comparisonReportAmbiguousExcluded": 32,
     "comparisonReportNoPriorityPricesExcluded": 3,
     "priorityProviderCrossValidation": {
-      "tested": 612,
+      "tested": 615,
       "mape": 0.0299,
       "within20": 1,
       "method": "leave-one-anchor-out",
       "errorDistribution": {
-        "median": 0.0219,
-        "p90": 0.0676,
-        "p95": 0.0877,
+        "median": 0.022,
+        "p90": 0.0675,
+        "p95": 0.0876,
         "maximum": 0.1935
       },
       "bias": {
         "mean": -0.0016,
-        "median": -0.0013,
-        "underestimates": 0.5245,
-        "overestimates": 0.469
+        "median": -0.002,
+        "underestimates": 0.5285,
+        "overestimates": 0.465
       },
       "byProvider": {
-        "Legal & General": { "tested": 204, "mape": 0.0332, "within20": 1, "p90": 0.0768, "p95": 0.0917, "maximum": 0.1935, "bias": -0.0012 },
-        "Zurich": { "tested": 204, "mape": 0.0249, "within20": 1, "p90": 0.0581, "p95": 0.0687, "maximum": 0.1901, "bias": -0.001 },
-        "Aviva": { "tested": 204, "mape": 0.0315, "within20": 1, "p90": 0.0648, "p95": 0.0938, "maximum": 0.1536, "bias": -0.0026 }
+        "Legal & General": { "tested": 205, "mape": 0.0332, "within20": 1, "p90": 0.0767, "p95": 0.0917, "maximum": 0.1935, "bias": -0.0012 },
+        "Zurich": { "tested": 205, "mape": 0.0249, "within20": 1, "p90": 0.0579, "p95": 0.0687, "maximum": 0.1901, "bias": -0.001 },
+        "Aviva": { "tested": 205, "mape": 0.0315, "within20": 1, "p90": 0.0647, "p95": 0.0936, "maximum": 0.1536, "bias": -0.0026 }
       },
       "bySegment": {
         "nonSmokerLife": { "tested": 378, "mape": 0.0335, "within20": 1, "p90": 0.0757, "p95": 0.0941, "maximum": 0.1935, "bias": -0.0048 },
-        "nonSmokerCI": { "tested": 192, "mape": 0.0227, "within20": 1, "p90": 0.0519, "p95": 0.0663, "maximum": 0.0998, "bias": 0.0034 },
+        "nonSmokerCI": { "tested": 195, "mape": 0.0229, "within20": 1, "p90": 0.051, "p95": 0.0663, "maximum": 0.0998, "bias": 0.0034 },
         "smokerLife": { "tested": 21, "mape": 0.0334, "within20": 1, "p90": 0.0626, "p95": 0.0821, "maximum": 0.1289, "bias": 0.0127 },
         "smokerCI": { "tested": 21, "mape": 0.027, "within20": 1, "p90": 0.0458, "p95": 0.0564, "maximum": 0.0581, "bias": -0.003 }
       }
@@ -13956,20 +13956,20 @@
       }
     },
     "priorityProviderRecency": {
-      "prices": 1164,
-      "within180": 0.7809,
+      "prices": 1173,
+      "within180": 0.7826,
       "within365": 0.9923,
       "newestAgeDays": 1,
       "oldestAgeDays": 456
     },
     "priorityProviderSpread": {
-      "uniqueComparableScenarios": 336,
-      "relativeMedian": 0.1234,
-      "relativeP90": 0.2324,
-      "relativeP95": 0.269,
+      "uniqueComparableScenarios": 339,
+      "relativeMedian": 0.1237,
+      "relativeP90": 0.2313,
+      "relativeP95": 0.2683,
       "relativeMaximum": 0.5256,
-      "absoluteMedian": 2.08,
-      "absoluteP95": 8.39,
+      "absoluteMedian": 2.09,
+      "absoluteP95": 8.97,
       "absoluteMaximum": 46.48
     },
     "illustrationValidationRecords": 487,
