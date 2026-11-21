@@ -452,7 +452,8 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-04-01,Archive Quote,50,false,Zurich,Life,70,20,50000,0,11.86,11.86,0,0.00,None,ba8099297ce6a0081076e963a12325e3ff70c9b2f061b8189deae704257dab12
 2026-04-14,Archive Quote,45,false,Zurich,Life,60,15,200000,0,31.12,22.32,0,8.80,Additional benefits,b494bffb11aee6616a78ecaa8553085baa44f2710b7081fd39a19a942463dfbb
 2026-06-01,Archive Quote,64,false,Zurich,Life,84,20,20000,0,20.27,20.27,0,0.00,None,454f6f69594cd681b24fcc1db7249e3cc5734e3ec82d3470b5c9d5046bb02fca
-2026-08-25,Recovered Quote,39,true,Legal & General,Life & CI Standard,64,25,50000,10000,10.71,0,10.60,0.11,Waiver of Premium,e832b382a5b839bd7af7485cfc8abcaf3c8cbdd9655ae9bf27750ff41bb92307
+2026-08-25,Recovered Quote,39,true,Legal & General,Life,64,25,50000,0,10.71,10.60,0,0.11,Waiver of Premium,e832b382a5b839bd7af7485cfc8abcaf3c8cbdd9655ae9bf27750ff41bb92307
+2026-08-25,Recovered Quote,39,true,Legal & General,Life & CI Standard,64,25,10000,10000,9.60,0,9.37,0.23,TPD; Waiver of Premium,e832b382a5b839bd7af7485cfc8abcaf3c8cbdd9655ae9bf27750ff41bb92307
 2026-08-22,Recovered Quote,45,false,Zurich,Life & CI Standard,65,20,10000,10000,9.69,0,9.69,0.00,Multi-policy discount reflected,b84610109db9183606c007f250484af492f152995df69a7a09d36672e3680221
 2025-12-08,Recovered Quote,50,false,Zurich,Life,65,15,100000,0,19.24,18.32,0,0.92,Additional benefits,a1752eab3c69175723f3bdc60be7c3e5b600d401280bdc2cf16dd3b5d2686649
 2026-03-19,Recovered Quote,47,false,Zurich,Life & CI Standard,70,23,10000,10000,20.06,0,13.31,6.75,Additional benefits,a172babf271a4f1ed6085606cf16c1df782f26ea6883be387e9d556bc756b108
