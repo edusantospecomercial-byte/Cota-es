@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -34,6 +34,40 @@ for (const [filename, field, allowed] of fields) {
   }
 }
 
+const forbiddenHeaders = new Set([
+  "name",
+  "full_name",
+  "first_name",
+  "last_name",
+  "dob",
+  "date_of_birth",
+  "address",
+  "postcode",
+  "phone",
+  "telephone",
+  "mobile",
+  "email",
+  "nhs_number",
+]);
+const sensitiveValuePatterns = [
+  ["email", /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i],
+  ["UK telephone", /(?:\+44|0044)\s*\d/],
+  ["UK postcode", /\b(?:GIR\s?0AA|[A-Z]{1,2}\d[A-Z\d]?\s?\d[A-Z]{2})\b/i],
+];
+const publicCsvFiles = readdirSync(dataDir).filter((name) => name.endsWith(".csv"));
+for (const filename of publicCsvFiles) {
+  const content = readFileSync(join(dataDir, filename), "utf8");
+  const [header] = content.trim().split(/\r?\n/);
+  const exposedHeaders = header.split(",").filter((column) =>
+    forbiddenHeaders.has(column.trim().toLowerCase()),
+  );
+  if (exposedHeaders.length)
+    failures.push({ filename, issue: "direct personal-data columns", exposedHeaders });
+  for (const [kind, pattern] of sensitiveValuePatterns) {
+    if (pattern.test(content)) failures.push({ filename, issue: `possible ${kind}` });
+  }
+}
+
 if (failures.length) {
   console.error(JSON.stringify({ ok: false, failures }, null, 2));
   process.exit(1);
@@ -42,6 +76,7 @@ if (failures.length) {
 console.log(JSON.stringify({
   ok: true,
   checkedFiles: fields.length,
+  publicCsvFiles: publicCsvFiles.length,
   checkedRows,
   allowedLabels: ["Archive Quote", "Calibration Profile", "Comparison Report Archive"],
 }, null, 2));
