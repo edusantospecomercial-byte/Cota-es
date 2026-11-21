@@ -13,6 +13,7 @@ const fields = [
   ["solutionbuilder-priority-provider-gaps-2026-11-20.csv", "profile", new Set(["Calibration Profile"])],
   ["solutionbuilder-priority-provider-gap-archive-2026-11-21.csv", "profile", new Set(["Comparison Report Archive"])],
   ["solutionbuilder-calibracao-2026-11-18.csv", "source_client", new Set(["Calibration Profile"])],
+  ["solutionbuilder-calibracao-2026-11-18.csv", "engagement", new Set(["Calibration Engagement"])],
   ["solutionbuilder-profile-a-minimos-2026-11-18.csv", "source_client", new Set(["Calibration Profile"])],
 ];
 
@@ -53,6 +54,7 @@ const sensitiveValuePatterns = [
   ["email", /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i],
   ["UK telephone", /(?:\+44|0044)\s*\d/],
   ["UK postcode", /\b(?:GIR\s?0AA|[A-Z]{1,2}\d[A-Z\d]?\s?\d[A-Z]{2})\b/i],
+  ["ConcertHub engagement id", /\bCE-\d+\b/i],
 ];
 const publicCsvFiles = readdirSync(dataDir).filter((name) => name.endsWith(".csv"));
 for (const filename of publicCsvFiles) {
