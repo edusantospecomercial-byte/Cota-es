@@ -9,9 +9,7 @@ const csvPath = join(
   "data",
   "solutionbuilder-priority-providers-2026-11-20.csv",
 );
-const [header, ...lines] = readFileSync(csvPath, "utf8")
-  .trim()
-  .split(/\r?\n/);
+const [header, ...lines] = readFileSync(csvPath, "utf8").trim().split(/\r?\n/);
 const columns = header.split(",");
 const rows = lines.map((line) => {
   const row = Object.fromEntries(
@@ -81,6 +79,8 @@ if (failures.length) {
 }
 
 const ageInterpolationSegments = new Set();
+const capitalInterpolationSegments = new Set();
+const termInterpolationSegments = new Set();
 for (const provider of ["Legal & General", "Zurich", "Aviva"]) {
   const providerRows = rows.filter((row) => row.provider === provider);
   const groups = new Map();
@@ -104,8 +104,48 @@ for (const provider of ["Legal & General", "Zurich", "Aviva"]) {
         );
     }
   }
+
+  const capitalGroups = new Map();
+  const termGroups = new Map();
+  for (const row of providerRows) {
+    const capitalKey = [
+      row.smoker,
+      row.age,
+      row.to_age,
+      row.critical_illness_cover,
+    ].join("|");
+    const capitals = capitalGroups.get(capitalKey) ?? new Set();
+    capitals.add(row.life_cover);
+    capitalGroups.set(capitalKey, capitals);
+
+    const termKey = [
+      row.smoker,
+      row.age,
+      row.life_cover,
+      row.critical_illness_cover,
+    ].join("|");
+    const terms = termGroups.get(termKey) ?? new Set();
+    terms.add(row.to_age);
+    termGroups.set(termKey, terms);
+  }
+  for (const [key, capitals] of capitalGroups) {
+    const sorted = [...capitals].sort((a, b) => a - b);
+    for (let index = 1; index < sorted.length; index += 1)
+      capitalInterpolationSegments.add(
+        `${provider}|${key}|${sorted[index - 1]}-${sorted[index]}`,
+      );
+  }
+  for (const [key, terms] of termGroups) {
+    const sorted = [...terms].sort((a, b) => a - b);
+    for (let index = 1; index < sorted.length; index += 1) {
+      if (sorted[index] - sorted[index - 1] <= 10)
+        termInterpolationSegments.add(
+          `${provider}|${key}|${sorted[index - 1]}-${sorted[index]}`,
+        );
+    }
+  }
 }
 
 console.log(
-  `Priority-provider curves passed: ${rows.length} prices, ${ageInterpolationSegments.size} safe age-interpolation segments.`,
+  `Priority-provider curves passed: ${rows.length} prices, ${ageInterpolationSegments.size} age, ${capitalInterpolationSegments.size} capital and ${termInterpolationSegments.size} term interpolation segments.`,
 );

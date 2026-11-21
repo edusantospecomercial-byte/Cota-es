@@ -49,7 +49,7 @@ function parsePriorityCsv(csv) {
 }
 function priorityQuotesFor(p) {
   let expectedSmoker = p.smoker === "smoker" ? "Yes" : "No";
-  let candidates = priorityRows
+  let rawCandidates = priorityRows
     .filter(
       (row) =>
         row.available === "true" &&
@@ -66,6 +66,14 @@ function priorityQuotesFor(p) {
       toAge: Number(row.to_age),
     }))
     .filter((row) => Number.isFinite(row.premium));
+  let latestByAnchor = new Map();
+  for (const row of rawCandidates) {
+    let key = [row.provider, row.age, row.toAge, row.life].join("|"),
+      previous = latestByAnchor.get(key);
+    if (!previous || Number(row.modelId) > Number(previous.modelId))
+      latestByAnchor.set(key, row);
+  }
+  let candidates = [...latestByAnchor.values()];
   let exact = candidates
     .filter(
       (row) =>
@@ -115,18 +123,11 @@ function priorityQuotesFor(p) {
                 .filter(Boolean),
               exactAge = ageValues.find((row) => row.age === p.age);
             if (exactAge) return exactAge;
-            let belowAge = ageValues
-                .filter((row) => row.age < p.age)
-                .at(-1),
+            let belowAge = ageValues.filter((row) => row.age < p.age).at(-1),
               aboveAge = ageValues.find((row) => row.age > p.age);
-            if (
-              !belowAge ||
-              !aboveAge ||
-              aboveAge.age - belowAge.age > 10
-            )
+            if (!belowAge || !aboveAge || aboveAge.age - belowAge.age > 10)
               return null;
-            let ratio =
-              (p.age - belowAge.age) / (aboveAge.age - belowAge.age);
+            let ratio = (p.age - belowAge.age) / (aboveAge.age - belowAge.age);
             return {
               provider,
               product:
@@ -147,15 +148,10 @@ function priorityQuotesFor(p) {
       if (exactTerm) return exactTerm;
       let belowTerm = termValues.filter((row) => row.toAge < p.toAge).at(-1),
         aboveTerm = termValues.find((row) => row.toAge > p.toAge);
-      if (
-        !belowTerm ||
-        !aboveTerm ||
-        aboveTerm.toAge - belowTerm.toAge > 10
-      )
+      if (!belowTerm || !aboveTerm || aboveTerm.toAge - belowTerm.toAge > 10)
         return null;
       let ratio =
-        (p.toAge - belowTerm.toAge) /
-        (aboveTerm.toAge - belowTerm.toAge);
+        (p.toAge - belowTerm.toAge) / (aboveTerm.toAge - belowTerm.toAge);
       return {
         provider,
         product:
@@ -163,8 +159,7 @@ function priorityQuotesFor(p) {
             ? belowTerm.product
             : aboveTerm.product,
         premium:
-          belowTerm.premium +
-          (aboveTerm.premium - belowTerm.premium) * ratio,
+          belowTerm.premium + (aboveTerm.premium - belowTerm.premium) * ratio,
         modelId: `${belowTerm.modelId}-${aboveTerm.modelId}`,
         age: p.age,
         life: p.life,
@@ -172,7 +167,10 @@ function priorityQuotesFor(p) {
       };
     });
   return interpolated.every(Boolean)
-    ? { quotes: interpolated.sort((a, b) => a.premium - b.premium), exact: false }
+    ? {
+        quotes: interpolated.sort((a, b) => a.premium - b.premium),
+        exact: false,
+      }
     : { quotes: [], exact: false };
 }
 function toAge() {
@@ -310,9 +308,7 @@ function makeSummary(p, r) {
   if (r.supported)
     lines.push(`Faixa provável: ${gbp(r.low)}–${gbp(r.high)}/mês`);
   if (r.provider)
-    lines.push(
-      `Referência prioritária: ${r.provider} — ${gbp(r.main)}/mês`,
-    );
+    lines.push(`Referência prioritária: ${r.provider} — ${gbp(r.main)}/mês`);
   if (m.c)
     lines.push(
       "",
