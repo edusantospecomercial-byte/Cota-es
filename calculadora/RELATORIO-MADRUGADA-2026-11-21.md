@@ -53,6 +53,6 @@ O monitor consulta continuamente o GitHub Pages, a contagem publicada e a chegad
 
 Uma bateria adicional de 20 requisições consecutivas ao GitHub Pages retornou HTTP 200 em todas elas, com média de 0,632 segundo e máximo de 0,674 segundo no momento do teste.
 
-O comando `node calculadora/scripts/audit-live-calculator.mjs` compara a versão pública com a release local e falha se a versão do JavaScript, a quantidade de registros, os preços prioritários ou a amostra temporal divergirem. Ele também compara o SHA-256 de sete assets críticos — motor, calibração, catálogo e quatro CSVs oficiais — para detectar qualquer publicação parcial mesmo quando as contagens coincidem.
+O comando `node calculadora/scripts/audit-live-calculator.mjs` compara a versão pública com a release local e falha se a versão do JavaScript, a quantidade de registros, os preços prioritários ou a amostra temporal divergirem. Ele também compara o SHA-256 de nove assets críticos — página, estilos, motor, calibração, catálogo e quatro CSVs oficiais — para detectar qualquer publicação parcial mesmo quando as contagens coincidem.
 
 Os 26 validadores e as 35 verificações sintáticas continuam sendo executados localmente antes de cada publicação. A instalação de um workflow no GitHub exigiria um token com permissão `workflow`, que não foi ampliada durante esta execução.

@@ -10,6 +10,8 @@ const localIndex = readFileSync(join(calculatorDir, "index.html"), "utf8");
 const localCatalog = JSON.parse(readFileSync(join(calculatorDir, "data/models.json"), "utf8"));
 const expectedAppVersion = localIndex.match(/app\.js\?v=([a-f0-9]+)/)?.[1];
 const criticalAssets = [
+  "index.html",
+  "style.css",
   "app.js",
   "calibration.js",
   "data/models.json",
