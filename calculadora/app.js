@@ -67,9 +67,11 @@ async function init() {
       catalog.calibratedRecords ||
       Object.values(catalog.models).reduce((s, m) => s + (m.records || 0), 0),
     priority = catalog.audit?.priorityProviderPrices || 0,
+    partialPriority =
+      catalog.audit?.comparisonReportArchivePartialPrices || 0,
     crossValidation = catalog.audit?.priorityProviderCrossValidation;
   $("baseStatus").textContent = n
-    ? `${records} registros confiáveis · ${priority} preços prioritários · ${n} famílias calibradas${crossValidation ? ` · validação: ${Number(crossValidation.mape * 100).toFixed(2)}% MAPE (n=${crossValidation.tested})` : ""}`
+    ? `${records} registros confiáveis · ${priority} preços prioritários completos${partialPriority ? ` + ${partialPriority} parciais` : ""} · ${n} famílias calibradas${crossValidation ? ` · validação: ${Number(crossValidation.mape * 100).toFixed(2)}% MAPE (n=${crossValidation.tested})` : ""}`
     : "Base histórica · cotação oficial necessária";
   updateProfile();
   updateMetlife();
