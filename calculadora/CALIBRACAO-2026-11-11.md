@@ -76,12 +76,12 @@ A calculadora fornece uma estimativa indicativa, sem underwriting. Peso, altura,
 
 ## Consolidação prioritária de 20/11/2026
 
-- 288 preços oficiais completos de Zurich, Legal & General e Aviva, distribuídos por 96 cenários comparáveis; quatro dos novos cenários são de fumante aos 35 anos.
+- 294 preços oficiais completos de Zurich, Legal & General e Aviva, distribuídos por 98 cenários comparáveis; quatro dos novos cenários são de fumante aos 35 anos e dois são âncoras de alto capital (£500k e £1m) aos 46 anos.
 - 12 cenários adicionais foram preservados como lacunas e excluídos da calibração completa porque a Legal & General não retornou preço.
 - Em 8 lacunas de vida pura, a interface pode mostrar os valores oficiais exatos de Zurich e Aviva e identifica a Legal & General como indisponível; nenhum preço ausente é interpolado.
 - Lacunas com doenças graves não reutilizam preços parciais, pois podem envolver TPD ou estruturas de cobertura diferentes.
 - 43 illustrations recentes possuem validação explícita por SHA-256, com reconciliação entre prêmio-base, opcionais e total. A base inclui combinações de vida + doenças graves e âncoras de vida pura de Zurich, Legal & General e Aviva, com capital auditado de até £500k e prazo até 85 anos. O prazo aceita idade atual ou idade no próximo aniversário, conforme a convenção registrada pela seguradora.
-- Todos os cenários incompletos permanecem fora do conjunto oficial de 288 preços e passam por validação contra duplicidade e prêmio inválido.
+- Todos os cenários incompletos permanecem fora do conjunto oficial de 294 preços e passam por validação contra duplicidade e prêmio inválido.
 
 ## Expansão do arquivo local — 21/11/2026
 
@@ -97,8 +97,8 @@ A calculadora fornece uma estimativa indicativa, sem underwriting. Peso, altura,
 - Doenças graves Enhanced, Enhanced Plus, Upgraded e Child não foram misturadas com Standard/Core.
 - A cobertura por chave chegou a 100% dos 317 registros históricos comparáveis de vida pura e dos 135 registros de vida + CI Standard/Core. O validador agora impede publicação se uma combinação conhecida deixar de ter lookup direto. Como uma chave pode refletir o mínimo calibrado entre várias cotações comparáveis, isso mede retenção de cenários, não reprodução literal de cada PDF, precisão fora da amostra ou garantia de underwriting.
 - O alinhamento de preço foi auditado em 215 chaves únicas de vida e 77 de vida + CI Standard/Core, excluindo produtos multipolicy/discounted. Nenhum lookup pode superar em mais de 20% o menor prêmio-base histórico comparável; valores menores continuam válidos quando sustentados por uma âncora oficial mais competitiva do SolutionBuilder.
-- Uma validação cruzada leave-one-anchor-out conseguiu reconstruir 177 preços de **seguro de vida** da malha prioritária usando somente os pontos vizinhos. A interpolação linear por capital e logarítmica por idade e prazo produziu MAPE de 3,08% e 100% dos pontos dentro de ±20%. O MAPE final por seguradora foi 3,77% para Legal & General, 1,74% para Zurich e 3,72% para Aviva.
-- Por segmento, vida para não fumantes possui 171 pontos testáveis, MAPE de 3,04% e 100% dentro de ±20%. Vida para fumantes possui somente 6 pontos testáveis, MAPE de 4,20% e 100% dentro de ±20%; essa amostra é pequena e é identificada como tal na interface. Ainda não há pontos leave-one-out testáveis para CI, fumante ou não fumante, portanto a interface não atribui o MAPE de vida a esses resultados.
+- Uma validação cruzada leave-one-anchor-out conseguiu reconstruir 180 preços de **seguro de vida** da malha prioritária usando somente os pontos vizinhos. A interpolação linear por capital e logarítmica por idade e prazo produziu MAPE de 3,23% e 100% dos pontos dentro de ±20%. O MAPE final por seguradora foi 3,76% para Legal & General, 2,11% para Zurich e 3,83% para Aviva.
+- Por segmento, vida para não fumantes possui 174 pontos testáveis, MAPE de 3,20% e 100% dentro de ±20%. Vida para fumantes possui somente 6 pontos testáveis, MAPE de 4,20% e 100% dentro de ±20%; essa amostra é pequena e é identificada como tal na interface. Ainda não há pontos leave-one-out testáveis para CI, fumante ou não fumante, portanto a interface não atribui o MAPE de vida a esses resultados.
 - O controle automatizado reprova a publicação se essa bateria cair abaixo de 90 pontos testáveis, ultrapassar 13% de MAPE ou tiver menos de 80% dos pontos dentro de ±20%.
 - Esses números medem interpolação dentro da malha oficial disponível; não medem underwriting médico, ocupacional ou extrapolação fora das combinações observadas.
 - Na grade estratégica de idades 25–63, capitais de £20k–£200k e idades finais 65/70/75/85, a malha completa das três seguradoras cobre por interpolação 33,23% dos cenários de vida para não fumantes. A cobertura ainda é de 2,46% para CI £10k, 0,75% para CI £20k e 0,43% para vida de fumantes; fumante + CI permanece sem malha completa. Por isso, as próximas coletas devem concentrar-se em fumantes e CI, não repetir a região já densa de vida não fumante.

@@ -13866,15 +13866,15 @@
     "approvedUniqueRecords": 207,
     "officialSolutionBuilderPrices": 1179,
     "officialMinimumAnchors": 217,
-    "priorityProviderPrices": 288,
-    "priorityProviderScenarios": 96,
+    "priorityProviderPrices": 294,
+    "priorityProviderScenarios": 98,
     "priorityProviderCrossValidation": {
-      "tested": 177,
-      "mape": 0.0308,
+      "tested": 180,
+      "mape": 0.0323,
       "within20": 1,
       "method": "leave-one-anchor-out",
       "bySegment": {
-        "nonSmokerLife": { "tested": 171, "mape": 0.0304, "within20": 1 },
+        "nonSmokerLife": { "tested": 174, "mape": 0.032, "within20": 1 },
         "nonSmokerCI": { "tested": 0, "mape": null, "within20": null },
         "smokerLife": { "tested": 6, "mape": 0.042, "within20": 1 },
         "smokerCI": { "tested": 0, "mape": null, "within20": null }

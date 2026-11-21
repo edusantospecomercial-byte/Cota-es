@@ -3,6 +3,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
+const reportOnly = process.argv.includes("--report-only");
 const catalog = JSON.parse(
   readFileSync(join(scriptDir, "../data/models.json"), "utf8"),
 );
@@ -141,7 +142,7 @@ if (results.length < 90 || overallMape > 0.13 || overallWithin20 < 0.8) {
 }
 
 const published = catalog.audit?.priorityProviderCrossValidation;
-if (
+if (!reportOnly && (
   published?.tested !== results.length ||
   Math.abs(published?.mape - Number(overallMape.toFixed(4))) > 0.00001 ||
   Math.abs(published?.within20 - Number(overallWithin20.toFixed(4))) > 0.00001 ||
@@ -155,7 +156,7 @@ if (
         ? saved?.within20 !== null
         : Math.abs(saved?.within20 - Number(metrics.within20.toFixed(4))) > 0.00001);
   })
-) {
+)) {
   throw new Error(JSON.stringify({
     issue: "published cross-validation metrics are stale",
     published,

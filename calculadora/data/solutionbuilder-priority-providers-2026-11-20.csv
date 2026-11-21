@@ -35,6 +35,12 @@ source_date,model_id,profile,age,sex,smoker,to_age,life_cover,critical_illness_c
 2026-11-20,34984405,Calibration Profile,46,F,No,75,100000,20000,Legal & General,Legal & General Life + CI (Standard),37.15,true,Indicative non-underwritten result
 2026-11-20,34984405,Calibration Profile,46,F,No,75,100000,20000,Zurich,Zurich Life & CI,39.84,true,Indicative non-underwritten result
 2026-11-20,34984405,Calibration Profile,46,F,No,75,100000,20000,Aviva,Aviva Multi-Product with Core CI,41.88,true,Indicative non-underwritten result
+2026-11-20,1084785861,Calibration Profile,46,F,No,65,500000,0,Legal & General,Legal & General Life,48.96,true,Recovered from official comparison report reference 1084785861
+2026-11-20,1084785861,Calibration Profile,46,F,No,65,500000,0,Zurich,Zurich Life,49.28,true,Recovered from official comparison report reference 1084785861
+2026-11-20,1084785861,Calibration Profile,46,F,No,65,500000,0,Aviva,Aviva Life Insurance+,51.32,true,Recovered from official comparison report reference 1084785861
+2026-11-20,1084787417,Calibration Profile,46,F,No,65,1000000,0,Legal & General,Legal & General Life,92.17,true,Recovered from official comparison report reference 1084787417
+2026-11-20,1084787417,Calibration Profile,46,F,No,65,1000000,0,Zurich,Zurich Life,114.31,true,Recovered from official comparison report reference 1084787417
+2026-11-20,1084787417,Calibration Profile,46,F,No,65,1000000,0,Aviva,Aviva Life Insurance+,94.50,true,Recovered from official comparison report reference 1084787417
 2026-11-19,34962032,Calibration Profile,34,F,No,65,50000,10000,Legal & General,Legal & General Life + CI (Standard),10.67,true,Recovered from SolutionBuilder client history
 2026-11-19,34962032,Calibration Profile,34,F,No,65,50000,10000,Zurich,Zurich Life & CI,10.43,true,Recovered from SolutionBuilder client history
 2026-11-19,34962032,Calibration Profile,34,F,No,65,50000,10000,Aviva,Aviva Multi-Product with Core CI,10.23,true,Recovered from SolutionBuilder client history
