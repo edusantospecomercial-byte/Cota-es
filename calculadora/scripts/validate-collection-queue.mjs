@@ -12,6 +12,24 @@ const rows = lines.map((line) => Object.fromEntries(
   line.split(",").map((value, index) => [columns[index], value]),
 ));
 
+const [priorityHeader, ...priorityLines] = readFileSync(
+  join(here, "../data/solutionbuilder-priority-providers-2026-11-20.csv"),
+  "utf8",
+).trim().split(/\r?\n/);
+const priorityColumns = priorityHeader.split(",");
+const collectedScenarioKeys = new Set(priorityLines.map((line) => {
+  const row = Object.fromEntries(
+    line.split(",").map((value, index) => [priorityColumns[index], value]),
+  );
+  return [
+    row.age,
+    row.smoker,
+    row.to_age,
+    row.life_cover,
+    row.critical_illness_cover,
+  ].join("|");
+}));
+
 const scenarioKeys = rows.map((row) => [
   row.age,
   row.smoker,
@@ -21,6 +39,8 @@ const scenarioKeys = rows.map((row) => [
 ].join("|"));
 const problems = [];
 if (new Set(scenarioKeys).size !== rows.length) problems.push("duplicate scenarios");
+const alreadyCollected = scenarioKeys.filter((key) => collectedScenarioKeys.has(key));
+if (alreadyCollected.length) problems.push({ alreadyCollected });
 if (rows.some((row, index) => Number(row.priority) !== index + 1)) problems.push("non-sequential priorities");
 if (rows.some((row) => row.providers !== "Legal & General|Zurich|Aviva")) problems.push("wrong provider priority");
 if (rows.some((row) => row.status !== "pending_authentication")) problems.push("unexpected queue status");
@@ -37,4 +57,10 @@ if (problems.length) {
   process.exit(1);
 }
 
-console.log(JSON.stringify({ ok: true, queuedScenarios: rows.length, maximumPrices: rows.length * 3, mix }, null, 2));
+console.log(JSON.stringify({
+  ok: true,
+  queuedScenarios: rows.length,
+  maximumPrices: rows.length * 3,
+  existingScenariosChecked: collectedScenarioKeys.size,
+  mix,
+}, null, 2));
