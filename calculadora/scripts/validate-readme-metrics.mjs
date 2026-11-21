@@ -32,6 +32,18 @@ const requiredClaims = [
   ["MAPE temporal", percentPt(temporal.mape)],
   ["menor MAPE temporal móvel", percentPt(Math.min(...rolling.map((report) => report.mape)))],
   ["maior MAPE temporal móvel", percentPt(Math.max(...rolling.map((report) => report.mape)))],
+  ["testes abaixo de £10", integerPt(validation.byPremiumBand?.under10?.tested)],
+  ["MAPE abaixo de £10", percentPt(validation.byPremiumBand?.under10?.mape)],
+  ["testes de £10 a £24,99", integerPt(validation.byPremiumBand?.from10To25?.tested)],
+  ["MAPE de £10 a £24,99", percentPt(validation.byPremiumBand?.from10To25?.mape)],
+  ["testes a partir de £25", integerPt(validation.byPremiumBand?.atLeast25?.tested)],
+  ["MAPE a partir de £25", percentPt(validation.byPremiumBand?.atLeast25?.mape)],
+  ["testes abaixo de 40 anos", integerPt(validation.byAgeBand?.under40?.tested)],
+  ["MAPE abaixo de 40 anos", percentPt(validation.byAgeBand?.under40?.mape)],
+  ["testes de 40 a 54 anos", integerPt(validation.byAgeBand?.from40To54?.tested)],
+  ["MAPE de 40 a 54 anos", percentPt(validation.byAgeBand?.from40To54?.mape)],
+  ["testes a partir de 55 anos", integerPt(validation.byAgeBand?.atLeast55?.tested)],
+  ["MAPE a partir de 55 anos", percentPt(validation.byAgeBand?.atLeast55?.mape)],
 ];
 
 const missing = Object.entries(documents).flatMap(([document, content]) =>
