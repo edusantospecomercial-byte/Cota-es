@@ -29,3 +29,5 @@ A calculadora sempre retorna uma estimativa. Fora das faixas validadas ela usa e
 Situação em 20/11/2026: a base prioritária contém 270 preços oficiais completos em 90 cenários. Onze cenários incompletos são mantidos em um arquivo separado; sete lacunas de vida pura permitem exibir apenas os preços oficiais disponíveis de Zurich e Aviva, com a Legal & General marcada como indisponível. A base de auditoria recente contém 23 illustrations com hashes únicos e prêmios reconciliados.
 
 Os dados preenchidos não são enviados a servidor. As simulações salvas ficam no `localStorage` do navegador utilizado.
+
+Antes de publicar qualquer alteração na calculadora, execute `node calculadora/scripts/validate-all.mjs`. O comando verifica a sintaxe do aplicativo, a estrutura dos CSVs, as âncoras, os cenários prioritários, as lacunas conhecidas e as interpolações.
