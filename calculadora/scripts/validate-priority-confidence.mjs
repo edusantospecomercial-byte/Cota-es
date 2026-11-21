@@ -14,6 +14,8 @@ const checks = {
     /bySegment\?\.nonSmokerLife\?\.mape \* 100/.test(app),
   smokerLimitedSample: /bySegment\?\.smokerLife\?\.tested/.test(app),
   ciValidationPending: /validação pendente para CI/.test(app),
+  ciBannerWarning: /malha de CI ainda não possui validação leave-one-out/.test(app),
+  smokerSampleWarning: /validação de vida para fumantes ainda usa amostra limitada/.test(app),
   confidenceRenderedSafely:
     /confiança \$\{escapeHtml\(confidenceLabel\)\}/.test(app),
 };

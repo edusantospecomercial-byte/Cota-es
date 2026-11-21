@@ -495,6 +495,20 @@ function render(p) {
     warnings = warnings.filter(
       (warning) => !warning.startsWith("Baixa confiança:"),
     );
+    if (!priorityMatch.exact && !priorityMatch.partial && p.ci > 0)
+      warnings.push(
+        "A malha de CI ainda não possui validação leave-one-out; confirme no SolutionBuilder.",
+      );
+    else if (
+      !priorityMatch.exact &&
+      !priorityMatch.partial &&
+      p.smoker === "smoker" &&
+      (catalog.audit?.priorityProviderCrossValidation?.bySegment?.smokerLife
+        ?.tested || 0) < 30
+    )
+      warnings.push(
+        `A validação de vida para fumantes ainda usa amostra limitada (n=${catalog.audit?.priorityProviderCrossValidation?.bySegment?.smokerLife?.tested || 0}).`,
+      );
     warnings.unshift(
       priorityMatch.partial
         ? `Preços oficiais exatos disponíveis para ${priorityQuotes.map((quote) => quote.provider).join(" e ")}; ${priorityMatch.gap.provider} ficou indisponível neste cenário.`
