@@ -20,7 +20,7 @@ const families = {
   life: {
     model: catalog.models.life_only,
     rows: rows.filter((row) => Number(row.life_component) > 0 && Number(row.critical_illness_component) === 0),
-    minimumCoverage: 0.95,
+    minimumCoverage: 1,
   },
   standardCombined: {
     model: catalog.models["life_plus_standalone_ci:standard_core_ci"],
@@ -29,7 +29,7 @@ const families = {
       && Number(row.critical_illness_component) > 0
       && !/enhanced|upgraded|extra|child/i.test(row.product)
     ),
-    minimumCoverage: 0.93,
+    minimumCoverage: 1,
   },
 };
 

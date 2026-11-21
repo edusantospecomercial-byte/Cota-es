@@ -90,7 +90,7 @@ A calculadora fornece uma estimativa indicativa, sem underwriting. Peso, altura,
 - Novas âncoras exatas foram incorporadas apenas quando produto, fumante, idade, capital e prazo eram comparáveis ao modelo publicado.
 - Valores de vida pura foram separados dos opcionais; descontos multiproduto foram identificados quando o prêmio total era inferior ao prêmio bruto mostrado no detalhamento.
 - Doenças graves Enhanced, Enhanced Plus, Upgraded e Child não foram misturadas com Standard/Core.
-- A cobertura exata dos próprios registros históricos comparáveis passou de 93% para vida pura e vida + CI Standard/Core; isso mede presença de âncora no acervo, não precisão fora da amostra nem garantia de underwriting.
+- A cobertura exata chegou a 100% dos 317 registros históricos comparáveis de vida pura e dos 135 registros de vida + CI Standard/Core. O validador agora impede publicação se qualquer uma dessas âncoras desaparecer; isso mede retenção do acervo conhecido, não precisão fora da amostra nem garantia de underwriting.
 - Uma validação cruzada leave-one-anchor-out conseguiu reconstruir 177 preços da malha prioritária usando somente os pontos vizinhos. A interpolação logarítmica por idade e prazo melhorou o MAPE de 3,32% para 3,08% e levou os pontos dentro de ±20% de 99,44% para 100%. O MAPE final por seguradora foi 3,77% para Legal & General, 1,74% para Zurich e 3,72% para Aviva.
 - O controle automatizado reprova a publicação se essa bateria cair abaixo de 90 pontos testáveis, ultrapassar 13% de MAPE ou tiver menos de 80% dos pontos dentro de ±20%.
 - Esses números medem interpolação dentro da malha oficial disponível; não medem underwriting médico, ocupacional ou extrapolação fora das combinações observadas.

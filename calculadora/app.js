@@ -17,7 +17,7 @@ function toast(s) {
 }
 async function init() {
   [catalog, priorityRows, priorityGapRows] = await Promise.all([
-    fetch("./data/models.json?v=20261120-110")
+    fetch("./data/models.json?v=20261121-113")
       .then((r) => r.json())
       .catch(() => ({ models: {} })),
     fetch(
