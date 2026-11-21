@@ -20,6 +20,7 @@ const official = parseCsv(
 );
 const officialModels = new Set(official.map((row) => row.model_id));
 const seen = new Set();
+const lifeOnlyScenarios = new Set();
 const failures = [];
 
 for (const row of gaps) {
@@ -30,8 +31,20 @@ for (const row of gaps) {
     failures.push({ model_id: row.model_id, issue: "excluded model leaked into official calibration" });
   if (row.missing_provider !== "Legal & General")
     failures.push({ model_id: row.model_id, issue: "unexpected missing provider" });
-  if (!row.reason || !Number.isFinite(Number(row.zurich_premium)) || !Number.isFinite(Number(row.aviva_premium)))
+  if (
+    !row.reason
+    || !Number.isFinite(Number(row.zurich_premium))
+    || Number(row.zurich_premium) <= 0
+    || !Number.isFinite(Number(row.aviva_premium))
+    || Number(row.aviva_premium) <= 0
+  )
     failures.push({ model_id: row.model_id, issue: "incomplete exclusion evidence" });
+  if (Number(row.critical_illness_cover) === 0) {
+    const scenario = [row.age, row.smoker, row.to_age, row.life_cover].join("|");
+    if (lifeOnlyScenarios.has(scenario))
+      failures.push({ model_id: row.model_id, issue: "duplicate life-only gap scenario" });
+    lifeOnlyScenarios.add(scenario);
+  }
 }
 
 if (failures.length) {
@@ -39,4 +52,6 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log(`Priority-provider exclusions passed: ${gaps.length} incomplete scenarios kept out of calibration.`);
+console.log(
+  `Priority-provider exclusions passed: ${gaps.length} incomplete scenarios kept out of calibration; ${lifeOnlyScenarios.size} life-only gaps safe for exact partial display.`,
+);
