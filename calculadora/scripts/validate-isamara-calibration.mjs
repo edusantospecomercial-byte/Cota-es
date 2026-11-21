@@ -99,17 +99,28 @@ if (catalog.calibratedRecords !== 1384 || model.records !== 521 || catalog.model
 }
 
 const hashes = illustrationRows.map((row) => row.sha256);
+const illustrationFingerprints = illustrationRows.map((row) => [
+  row.sha256,
+  row.provider,
+  row.product,
+  row.to_age,
+  row.life_component,
+  row.critical_illness_component,
+  row.total_monthly,
+].join('|'));
 if (
-  illustrationRows.length !== 77
+  illustrationRows.length !== 82
   || new Set(hashes).size !== 77
+  || new Set(illustrationFingerprints).size !== illustrationRows.length
   || hashes.some((hash) => !/^[a-f0-9]{64}$/.test(hash))
-  || catalog.audit?.illustrationValidationRecords !== 77
+  || catalog.audit?.illustrationValidationRecords !== 82
 ) {
   failures.push({
-    expectedIllustrationValidation: { rows: 77, uniqueHashes: 77, auditCount: 77 },
+    expectedIllustrationValidation: { rows: 82, uniqueDocuments: 77, uniqueRecords: 82, auditCount: 82 },
     actualIllustrationValidation: {
       rows: illustrationRows.length,
-      uniqueHashes: new Set(hashes).size,
+      uniqueDocuments: new Set(hashes).size,
+      uniqueRecords: new Set(illustrationFingerprints).size,
       auditCount: catalog.audit?.illustrationValidationRecords,
     },
   });
