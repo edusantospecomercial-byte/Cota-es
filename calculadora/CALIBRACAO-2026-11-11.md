@@ -85,7 +85,7 @@ A calculadora fornece uma estimativa indicativa, sem underwriting. Peso, altura,
 
 ## Expansão do arquivo local — 21/11/2026
 
-- 449 registros de validação histórica foram reconciliados a partir de 355 PDFs oficiais únicos.
+- 452 registros de validação histórica foram reconciliados a partir de 358 PDFs oficiais únicos.
 - A varredura recuperou illustrations de Zurich, Legal & General e Aviva tanto das pastas de downloads quanto de pastas genéricas de clientes.
 - Novas âncoras exatas foram incorporadas apenas quando produto, fumante, idade, capital e prazo eram comparáveis ao modelo publicado.
 - Valores de vida pura foram separados dos opcionais; descontos multiproduto foram identificados quando o prêmio total era inferior ao prêmio bruto mostrado no detalhamento.

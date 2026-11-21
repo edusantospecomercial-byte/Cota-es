@@ -448,3 +448,6 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-08-11,Archive Quote,37,true,Legal & General,Life & CI Standard,64,27,30000,10000,6.32,0,6.25,0.07,Waiver of Premium,b80a7b5d49662b4afd7d7960bf542f2eb3c260f57bf29cc934cce74f2160f62e
 2026-05-19,Archive Quote,41,false,Zurich,Life & CI Standard,70,29,20000,20000,25.10,0,17.37,7.73,Additional benefits,62e35d3b92a24997f90ca7f3fe97eadc93e9b9512a5e99610a91a536dd52ad53
 2026-07-14,Archive Quote,40,false,Legal & General,Life & CI Standard,69,29,200000,20000,17.71,0,17.53,0.18,Waiver of Premium,baacf554e9189a19c14d86b522f897bcfa52c0a59bb69a6a8e12b8f0af42c1a2
+2026-04-01,Archive Quote,50,false,Zurich,Life,70,20,50000,0,11.86,11.86,0,0.00,None,ba8099297ce6a0081076e963a12325e3ff70c9b2f061b8189deae704257dab12
+2026-04-14,Archive Quote,45,false,Zurich,Life,60,15,200000,0,31.12,22.32,0,8.80,Additional benefits,b494bffb11aee6616a78ecaa8553085baa44f2710b7081fd39a19a942463dfbb
+2026-06-01,Archive Quote,64,false,Zurich,Life,84,20,20000,0,20.27,20.27,0,0.00,None,454f6f69594cd681b24fcc1db7249e3cc5734e3ec82d3470b5c9d5046bb02fca
