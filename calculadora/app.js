@@ -17,7 +17,11 @@ const $ = (id) => document.getElementById(id),
       style: "currency",
       currency: "GBP",
       minimumFractionDigits: 2,
-    }).format(n);
+    }).format(n),
+  confidencePt = (value) =>
+    ({ low: "baixa", medium: "média", high: "alta" })[value] ||
+    value ||
+    "não classificada";
 function toast(s) {
   $("toast").textContent = s;
   $("toast").classList.add("show");
@@ -603,7 +607,7 @@ function render(p) {
         ? "oficial exata"
         : `${(confidenceMetrics.tested || 0) < 30 ? "amostra limitada" : "validada"} (${Number(confidenceMetrics.mape * 100 || 0).toFixed(2)}% MAPE · P95 ${Number(confidenceMetrics.p95 * 100 || 0).toFixed(2)}% · n=${confidenceMetrics.tested || 0})`
     : model
-      ? `modelo histórico agregado (${model.confidence || "não classificada"})`
+      ? `modelo histórico agregado (${confidencePt(model.confidence)})`
       : "insuficiente";
   let priorityDetail = r.providerQuotes?.length
     ? `<dt>Seguradoras prioritárias</dt><dd>${r.providerQuotes.map((quote) => `${escapeHtml(quote.provider)} ${gbp(quote.premium)}`).join(" · ")}${r.providerGap ? ` · ${escapeHtml(r.providerGap.provider)} indisponível` : ""}</dd><dt>Referência usada</dt><dd>${escapeHtml(r.provider)} · ${escapeHtml(r.product)}</dd>`

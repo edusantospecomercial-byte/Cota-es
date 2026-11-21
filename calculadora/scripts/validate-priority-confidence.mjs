@@ -26,6 +26,10 @@ const checks = {
   aggregateFallbackWarning:
     /Estimativa do modelo histórico agregado; ainda sem interpolação validada das três seguradoras prioritárias/.test(app),
   aggregateFallbackLabel: /modelo histórico agregado/.test(app),
+  aggregateFallbackTranslated:
+    /low: "baixa"/.test(app) &&
+    /medium: "média"/.test(app) &&
+    /high: "alta"/.test(app),
   confidenceRenderedSafely:
     /confiança \$\{escapeHtml\(confidenceLabel\)\}/.test(app),
   underwritingInputsDisclosed:
