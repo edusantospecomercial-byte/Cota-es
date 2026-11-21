@@ -73,9 +73,10 @@ async function init() {
     priority = catalog.audit?.priorityProviderPrices || 0,
     partialPriority =
       catalog.audit?.comparisonReportArchivePartialPrices || 0,
-    crossValidation = catalog.audit?.priorityProviderCrossValidation;
+    crossValidation = catalog.audit?.priorityProviderCrossValidation,
+    temporalHoldout = catalog.audit?.priorityProviderTemporalHoldout;
   $("baseStatus").textContent = n
-    ? `${records} registros confiáveis · ${priority} preços prioritários completos${partialPriority ? ` + ${partialPriority} parciais` : ""} · ${n} famílias calibradas${crossValidation ? ` · validação: ${Number(crossValidation.mape * 100).toFixed(2)}% MAPE (n=${crossValidation.tested})` : ""}`
+    ? `${records} registros confiáveis · ${priority} preços prioritários completos${partialPriority ? ` + ${partialPriority} parciais` : ""} · ${n} famílias calibradas${crossValidation ? ` · validação: ${Number(crossValidation.mape * 100).toFixed(2)}% MAPE (n=${crossValidation.tested})` : ""}${temporalHoldout ? ` · temporal: ${Number(temporalHoldout.mape * 100).toFixed(2)}% (n=${temporalHoldout.predicted})` : ""}`
     : "Base histórica · cotação oficial necessária";
   updateProfile();
   updateMetlife();

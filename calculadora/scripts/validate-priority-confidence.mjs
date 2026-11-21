@@ -21,6 +21,9 @@ const checks = {
     /"nonSmokerLife"/.test(app),
   validatedMapeLabel: /confidenceMetrics\.mape \* 100/.test(app),
   validatedP95Label: /confidenceMetrics\.p95 \* 100/.test(app),
+  temporalHoldoutStatus:
+    /priorityProviderTemporalHoldout/.test(app) &&
+    /temporal: \$\{Number\(temporalHoldout\.mape \* 100\)/.test(app),
   limitedSampleThreshold: /confidenceMetrics\.tested \|\| 0\) < 30/.test(app),
   limitedSampleWarning: /A validação deste segmento ainda usa amostra limitada/.test(app),
   aggregateFallbackWarning:
