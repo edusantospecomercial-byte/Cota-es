@@ -87,9 +87,9 @@ if (rows.length !== 11) {
   failures.push({ expectedRows: 11, actualRows: rows.length });
 }
 
-if (catalog.calibratedRecords !== 1392 || model.records !== 522 || catalog.models?.life_only?.records !== 822) {
+if (catalog.calibratedRecords !== 1393 || model.records !== 522 || catalog.models?.life_only?.records !== 823) {
   failures.push({
-    expectedCounts: { calibratedRecords: 1392, lifeRecords: 822, combinedRecords: 522 },
+    expectedCounts: { calibratedRecords: 1393, lifeRecords: 823, combinedRecords: 522 },
     actualCounts: {
       calibratedRecords: catalog.calibratedRecords,
       lifeRecords: catalog.models?.life_only?.records,
@@ -109,14 +109,14 @@ const illustrationFingerprints = illustrationRows.map((row) => [
   row.total_monthly,
 ].join('|'));
 if (
-  illustrationRows.length !== 486
-  || new Set(hashes).size !== 386
+  illustrationRows.length !== 487
+  || new Set(hashes).size !== 387
   || new Set(illustrationFingerprints).size !== illustrationRows.length
   || hashes.some((hash) => !/^[a-f0-9]{64}$/.test(hash))
-  || catalog.audit?.illustrationValidationRecords !== 486
+  || catalog.audit?.illustrationValidationRecords !== 487
 ) {
   failures.push({
-    expectedIllustrationValidation: { rows: 486, uniqueDocuments: 386, uniqueRecords: 486, auditCount: 486 },
+    expectedIllustrationValidation: { rows: 487, uniqueDocuments: 387, uniqueRecords: 487, auditCount: 487 },
     actualIllustrationValidation: {
       rows: illustrationRows.length,
       uniqueDocuments: new Set(hashes).size,

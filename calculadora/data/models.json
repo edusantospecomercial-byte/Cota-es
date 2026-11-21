@@ -676,6 +676,7 @@
         "65|80|20000|0|0": 18.16,
         "65|80|25000|0|0": 22.06,
         "65|80|50000|0|0": 40.60,
+        "65|85|120000|0|0": 121.60,
         "51|65|300000|0|0": 48.62,
         "49|65|100000|0|0": 17.21,
         "35|70|100000|0|0": 8.77,
@@ -1996,7 +1997,7 @@
         "waiver",
         "child"
       ],
-      "records": 822,
+      "records": 823,
       "dateMin": "2025-11-10",
       "dateMax": "2026-11-20",
       "ageMin": 20,
@@ -13857,7 +13858,7 @@
       "updateNote": "Calibrated through 2026-11-20 with exact non-smoker life anchors at age 55 for £50k and £100k through ages 65 and 75, plus combined life and standalone critical illness anchors at ages 34, 45, 51 and 60. Live term batteries cover ages 45 and 60 through ages 65, 70, 75 and 85, including complete age-45 £50k through £250k life plus £30k CI term curves."
     }
   },
-  "calibratedRecords": 1392,
+  "calibratedRecords": 1393,
   "audit": {
     "pdfsScanned": 1763,
     "candidateFiles": 918,
@@ -13879,7 +13880,7 @@
         "smokerCI": { "tested": 0, "mape": null, "within20": null }
       }
     },
-    "illustrationValidationRecords": 486,
+    "illustrationValidationRecords": 487,
     "solutionBuilderHistoryValidationRecords": 171,
     "solutionBuilderHistoryUniqueRecords": 170,
     "manualReviewRecords": 187,
