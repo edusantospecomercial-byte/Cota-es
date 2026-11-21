@@ -209,3 +209,9 @@ source_date,model_id,profile,age,sex,smoker,to_age,life_cover,critical_illness_c
 2026-11-19,34968397,Isamara Cotacao,34,F,No,65,20000,20000,Legal & General,Legal & General Life + CI (Standard),13.42,true,Recovered from SolutionBuilder client history
 2026-11-19,34968397,Isamara Cotacao,34,F,No,65,20000,20000,Zurich,Zurich Life & CI,13.98,true,Recovered from SolutionBuilder client history
 2026-11-19,34968397,Isamara Cotacao,34,F,No,65,20000,20000,Aviva,Aviva Multi-Product with Core CI,15.33,true,Recovered from SolutionBuilder client history
+2026-11-18,34937503,Wendel Cotacao,35,F,No,65,50000,0,Legal & General,Legal & General Life,6.00,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-18,34937503,Wendel Cotacao,35,F,No,65,50000,0,Zurich,Zurich Life,5.66,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-18,34937503,Wendel Cotacao,35,F,No,65,50000,0,Aviva,Aviva Life Insurance+,5.56,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-18,34937530,Wendel Cotacao,35,F,No,65,100000,0,Legal & General,Legal & General Life,6.92,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-18,34937530,Wendel Cotacao,35,F,No,65,100000,0,Zurich,Zurich Life,7.91,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
+2026-11-18,34937530,Wendel Cotacao,35,F,No,65,100000,0,Aviva,Aviva Life Insurance+,8.40,true,Recovered from SolutionBuilder client history; parameters confirmed in Full Details
