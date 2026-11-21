@@ -158,6 +158,18 @@ const queuedAnchors = rows.flatMap((row) => row.providers.split("|").map((provid
 const projectedTestable = countTestable([...currentAnchors, ...queuedAnchors]);
 const currentCoverage = coverageReport(currentAnchors);
 const projectedCoverage = coverageReport([...currentAnchors, ...queuedAnchors]);
+const prefixGains = [4, 8, 12, 16, 20, 24, 26, 29, 33, 37].map((scenarios) => {
+  const anchors = [
+    ...currentAnchors,
+    ...queuedAnchors.slice(0, scenarios * providers.length),
+  ];
+  return {
+    scenarios,
+    prices: scenarios * providers.length,
+    testable: countTestable(anchors),
+    coverage: coverageReport(anchors),
+  };
+});
 if (
   (projectedTestable.smokerLife || 0) < 24 ||
   (projectedTestable.nonSmokerCI || 0) < 21 ||
@@ -170,6 +182,18 @@ if (
   projectedCoverage.nonSmoker_ci10000.coverage < 0.0363 ||
   projectedCoverage.nonSmoker_ci20000.coverage < 0.0171
 ) problems.push({ insufficientCoverageGain: projectedCoverage });
+const prefix4 = prefixGains.find((row) => row.scenarios === 4);
+const prefix24 = prefixGains.find((row) => row.scenarios === 24);
+const prefix26 = prefixGains.find((row) => row.scenarios === 26);
+const prefix33 = prefixGains.find((row) => row.scenarios === 33);
+if (
+  prefix4.coverage.smoker_ci0.complete < 14 ||
+  (prefix4.testable.smokerLife || 0) < 12 ||
+  prefix24.coverage.smoker_ci10000.complete < 63 ||
+  prefix24.coverage.smoker_ci20000.complete < 63 ||
+  (prefix26.testable.smokerCI || 0) < 6 ||
+  (prefix33.testable.nonSmokerCI || 0) < 21
+) problems.push({ inefficientQueueOrder: prefixGains });
 
 if (problems.length) {
   console.error(JSON.stringify({ ok: false, problems, mix }, null, 2));
@@ -184,5 +208,6 @@ console.log(JSON.stringify({
   projectedTestable,
   currentCoverage,
   projectedCoverage,
+  prefixGains,
   mix,
 }, null, 2));

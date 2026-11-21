@@ -65,6 +65,8 @@ Executar em ordem crescente de `priority` no arquivo `data/next-priority-collect
 
 Os 37 cenários podem produzir até 111 preços oficiais.
 
+A ordem também é parte do controle de qualidade: os quatro primeiros cenários já devem elevar a cobertura de vida fumante; até o cenário 24, as duas faixas de CI fumante devem abrir 63 combinações cada; os cenários 25–26 criam os primeiros holdouts desse segmento; e até o cenário 33 devem existir 21 holdouts de CI não fumante. O validador rejeita uma reordenação que perca esses marcos.
+
 ## Validação antes de publicar
 
 1. Preservar os dados novos em CSV com uma linha por provedor e cenário.
