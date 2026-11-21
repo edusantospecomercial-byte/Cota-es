@@ -28,6 +28,8 @@ A calculadora sempre retorna uma estimativa. Fora das faixas validadas ela usa e
 
 Situação em 21/11/2026: a base prioritária contém 288 preços oficiais completos em 96 cenários, incluindo os primeiros quatro cenários completos de fumante com Zurich, Legal & General e Aviva. Doze cenários incompletos são mantidos em um arquivo separado; oito lacunas de vida pura permitem exibir apenas os preços oficiais disponíveis de Zurich e Aviva, com a Legal & General marcada como indisponível. A base de validação histórica contém 478 registros reconciliados provenientes de 379 PDFs oficiais únicos. O arquivo cobre vida pura e vida + doenças graves Standard/Core, capitais de até £571k, idades de 20 a 64 anos e prazos até 84/85; produtos Enhanced permanecem separados para não contaminar o preço Standard.
 
+Validação de interpolação em 21/11/2026: ao retirar uma âncora oficial por vez e tentar reconstruí-la apenas pelas âncoras vizinhas, 177 preços prioritários puderam ser testados. O erro percentual absoluto médio foi de 3,32%, e 99,44% ficaram dentro de ±20%. Por seguradora, o erro médio foi 3,99% na Legal & General, 1,87% na Zurich e 4,10% na Aviva. É uma validação interna da malha observada, não uma promessa de precisão para underwriting, perfis médicos ou extrapolações fora dessa malha.
+
 Os dados preenchidos não são enviados a servidor. As simulações salvas ficam no `localStorage` do navegador utilizado.
 
-Antes de publicar qualquer alteração na calculadora, execute `node calculadora/scripts/validate-all.mjs`. O comando verifica a sintaxe do aplicativo, a estrutura dos CSVs, as âncoras, os cenários prioritários, as lacunas conhecidas e as interpolações.
+Antes de publicar qualquer alteração na calculadora, execute `node calculadora/scripts/validate-all.mjs`. O comando verifica a sintaxe do aplicativo, a estrutura dos CSVs, as âncoras, os cenários prioritários, as lacunas conhecidas, as interpolações e a validação cruzada leave-one-anchor-out.
