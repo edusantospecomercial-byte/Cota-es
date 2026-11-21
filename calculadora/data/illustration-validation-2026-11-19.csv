@@ -151,3 +151,10 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-10-19,Aline Rovaris Cotao,30,false,Legal & General,Life,64,34,100000,0,5.67,5.63,0,0.04,Waiver of Premium,cd5741f16004da9511a55a2feb75502380ab3af049c73bf13b449fd20f670448
 2026-10-19,Aline Rovaris Cotao,30,false,Legal & General,Life + CI Standard,64,34,10000,10000,5.03,0,5.00,0.03,Waiver of Premium,cd5741f16004da9511a55a2feb75502380ab3af049c73bf13b449fd20f670448
 2026-10-27,Luiz Cotao,61,false,Zurich,Life,85,24,50000,0,40.86,40.86,0,0,None,86784c5287fa22b1c996647e17d7dc52a1b2fc9f6d769af1156e7fbff9b3683f
+2026-08-26,Mae da Katia Cotao,59,true,Legal & General,Life,69,10,20000,0,23.30,22.62,0,0.68,Waiver of Premium,2030a71f350e8499a7928a827ae9cbc6be62b19f7e7216f60ad12bb89a437b49
+2026-08-26,Mae da Katia Cotao,59,true,Aviva,Life Insurance+,70,11,20000,0,24.58,24.32,0,0.26,Waiver of Premium,815fb7e5e9f6d186df9999869e4b565a5ae6f638b628c0a436e9e315ac762561
+2026-08-26,Mae da Katia Cotao,59,true,Aviva,Life Insurance+ with Core CI,70,11,10000,10000,35.96,0,35.31,0.65,TPD and Waiver of Premium,815fb7e5e9f6d186df9999869e4b565a5ae6f638b628c0a436e9e315ac762561
+2026-09-23,Joice Cotao,56,false,Aviva,Life Insurance+,70,14,35000,0,13.47,13.33,0,0.14,Waiver of Premium,fe41413a0eec0ef7d9fa623cbc69beba71bd7889c1b8b5f8647292f9a3f1b3a5
+2026-09-14,Gabriel Cotao,32,true,Legal & General,Life,64,32,200000,0,20.57,20.37,0,0.20,Waiver of Premium,851769949d316445f178ab9a0e0e0d9b69e6728bcffa6d93cb9978e180167bf4
+2026-09-02,Andreia Cotao,50,false,Aviva,Life Insurance+,70,20,30000,0,8.35,8.27,0,0.08,Waiver of Premium,e6c4f88b0608fa920e746506e036d88259b5546f5996f3eac25aef67076f5e4a
+2026-09-02,Andreia Cotao,50,false,Aviva,Life Insurance+ with Core CI,70,20,10000,10000,11.68,0,11.47,0.21,TPD and Waiver of Premium,e6c4f88b0608fa920e746506e036d88259b5546f5996f3eac25aef67076f5e4a

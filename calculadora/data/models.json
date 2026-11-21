@@ -596,6 +596,8 @@
     "life_only": {
       "modelType": "knn",
       "lookup": {
+        "56|70|35000|0|0": 13.33,
+        "32|64|200000|0|1": 20.37,
         "40|65|50000|0|0": 6.17,
         "43|65|30000|0|0": 5.10,
         "37|65|100000|0|0": 8.52,
@@ -13677,7 +13679,7 @@
     "officialMinimumAnchors": 217,
     "priorityProviderPrices": 288,
     "priorityProviderScenarios": 96,
-    "illustrationValidationRecords": 152,
+    "illustrationValidationRecords": 159,
     "solutionBuilderHistoryValidationRecords": 171,
     "solutionBuilderHistoryUniqueRecords": 170,
     "manualReviewRecords": 187,
