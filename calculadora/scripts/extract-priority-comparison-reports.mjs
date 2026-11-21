@@ -2,14 +2,15 @@ import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
+import { homedir } from "node:os";
 import { fileURLToPath } from "node:url";
 
 const here = dirname(fileURLToPath(import.meta.url));
 
 const roots = [
-  "/Users/eduardosantos/Desktop",
-  "/Users/eduardosantos/Downloads",
-  "/Users/eduardosantos/Documents/Codex",
+  join(homedir(), "Desktop"),
+  join(homedir(), "Downloads"),
+  join(homedir(), "Documents", "Codex"),
 ].filter(existsSync);
 
 function pdfText(file) {

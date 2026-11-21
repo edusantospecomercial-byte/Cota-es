@@ -78,6 +78,26 @@ for (const filename of publicStructuredFiles) {
   }
 }
 
+const calculatorDir = join(here, "..");
+const publicTextExtensions = /\.(?:js|mjs|md|html|css)$/;
+function textFiles(directory) {
+  return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const path = join(directory, entry.name);
+    if (entry.isDirectory()) return entry.name === "node_modules" ? [] : textFiles(path);
+    return publicTextExtensions.test(entry.name) ? [path] : [];
+  });
+}
+const publicTextFiles = textFiles(calculatorDir).filter(
+  (path) => path !== fileURLToPath(import.meta.url),
+);
+for (const path of publicTextFiles) {
+  const content = readFileSync(path, "utf8");
+  if (/\/Users\/[A-Za-z0-9._-]+\//.test(content))
+    failures.push({ filename: path.slice(calculatorDir.length + 1), issue: "absolute macOS user path" });
+  if (/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i.test(content))
+    failures.push({ filename: path.slice(calculatorDir.length + 1), issue: "possible email" });
+}
+
 if (failures.length) {
   console.error(JSON.stringify({ ok: false, failures }, null, 2));
   process.exit(1);
@@ -88,6 +108,7 @@ console.log(JSON.stringify({
   checkedFiles: fields.length,
   publicCsvFiles: publicCsvFiles.length,
   publicStructuredFiles: publicStructuredFiles.length,
+  publicTextFiles: publicTextFiles.length,
   checkedRows,
   allowedLabels: ["Archive Quote", "Calibration Profile", "Comparison Report Archive"],
 }, null, 2));
