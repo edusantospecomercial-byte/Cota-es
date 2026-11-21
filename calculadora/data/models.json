@@ -13868,6 +13868,8 @@
     "officialMinimumAnchors": 217,
     "priorityProviderPrices": 1161,
     "priorityProviderScenarios": 387,
+    "comparisonReportArchiveReports": 289,
+    "comparisonReportArchivePrices": 867,
     "priorityProviderCrossValidation": {
       "tested": 609,
       "mape": 0.0301,

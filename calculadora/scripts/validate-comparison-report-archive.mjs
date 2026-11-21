@@ -71,6 +71,19 @@ if (rows.length !== 867 || scenarios.size !== 289)
     scenarios: scenarios.size,
   });
 
+const catalog = JSON.parse(readFileSync(join(here, "../data/models.json"), "utf8"));
+if (
+  catalog.audit?.comparisonReportArchiveReports !== scenarios.size ||
+  catalog.audit?.comparisonReportArchivePrices !== rows.length
+)
+  failures.push({
+    issue: "published archive audit is stale",
+    publishedReports: catalog.audit?.comparisonReportArchiveReports,
+    publishedPrices: catalog.audit?.comparisonReportArchivePrices,
+    reports: scenarios.size,
+    prices: rows.length,
+  });
+
 if (failures.length) {
   console.error(JSON.stringify({ ok: false, failures }, null, 2));
   process.exit(1);
