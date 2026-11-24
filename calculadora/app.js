@@ -130,8 +130,13 @@ function interpolateRiskPremium(below, above, ratio) {
     return Math.exp(Math.log(below) + (Math.log(above) - Math.log(below)) * ratio);
   return below + (above - below) * ratio;
 }
+function capitalAxis(lower, upper) {
+  return Number(lower.life_cover) === Number(upper.life_cover) ? "critical_illness_cover" : "life_cover";
+}
+
 function priceAlongCapital(lower, upper, capital) {
-  const fraction = (capital - Number(lower.life_cover)) / (Number(upper.life_cover) - Number(lower.life_cover));
+  const axis = capitalAxis(lower, upper);
+  const fraction = (capital - Number(lower[axis])) / (Number(upper[axis]) - Number(lower[axis]));
   return Number(lower.monthly_premium) + fraction * (Number(upper.monthly_premium) - Number(lower.monthly_premium));
 }
 
@@ -144,15 +149,17 @@ function buildCapitalRanges(reports, holdout) {
     if (![lower, upper, check].every(row => row?.available === "true" && Number(row.monthly_premium) > 0)) continue;
     if ([lower, upper, check].some(row => row.quoted_life_cover !== row.life_cover ||
       row.quoted_critical_illness_cover !== row.critical_illness_cover)) continue;
-    if (["source_date", "age", "smoker", "to_age", "critical_illness_cover", "product", "quoted_term", "occupation_rated"]
+    const axis = capitalAxis(lower, upper);
+    const fixedAxis = axis === "life_cover" ? "critical_illness_cover" : "life_cover";
+    if (["source_date", "age", "smoker", "to_age", fixedAxis, "product", "quoted_term", "occupation_rated"]
       .some(field => lower[field] !== upper[field] || lower[field] !== check[field])) continue;
-    const capital = Number(check.life_cover);
-    if (!(Number(lower.life_cover) < capital && capital < Number(upper.life_cover))) continue;
+    const capital = Number(check[axis]);
+    if (!(Number(lower[axis]) < capital && capital < Number(upper[axis]))) continue;
     const estimate = priceAlongCapital(lower, upper, capital);
     const error = Math.abs(estimate - Number(check.monthly_premium));
     if (!Number.isFinite(Number(trial.predicted_monthly)) || Math.abs(estimate - Number(trial.predicted_monthly)) > 0.000051 ||
         error > 1 || error / Number(check.monthly_premium) > 0.05) continue;
-    ranges.push({ lower, upper, check });
+    ranges.push({ lower, upper, check, axis });
   }
   return ranges;
 }
@@ -160,24 +167,26 @@ function buildCapitalRanges(reports, holdout) {
 function validatedCapitalQuotes(p) {
   const smoker = p.smoker === "smoker" ? "Yes" : "No";
   const groups = new Map();
-  for (const { lower, upper, check } of validatedCapitalRanges) {
+  for (const { lower, upper, check, axis } of validatedCapitalRanges) {
+    const varyingLife = axis === "life_cover";
+    const capital = varyingLife ? p.life : p.ci;
+    const fixedMatches = varyingLife ? Number(lower.critical_illness_cover) === p.ci : Number(lower.life_cover) === p.life;
     if (Number(lower.age) !== p.age || lower.smoker !== smoker || Number(lower.to_age) !== p.toAge ||
-        Number(lower.critical_illness_cover) !== p.ci || p.life <= Number(lower.life_cover) ||
-        p.life >= Number(upper.life_cover)) continue;
+        !fixedMatches || capital <= Number(lower[axis]) || capital >= Number(upper[axis])) continue;
     const key = [lower.model_id, upper.model_id, check.model_id].join("|");
-    if (!groups.has(key)) groups.set(key, { lower, upper, check, quotes: [] });
+    if (!groups.has(key)) groups.set(key, { lower, upper, check, axis, width: Number(upper[axis]) - Number(lower[axis]), quotes: [] });
     groups.get(key).quotes.push({ provider: lower.provider, product: lower.product, term: lower.quoted_term,
-      sourceDate: lower.source_date, premium: priceAlongCapital(lower, upper, p.life),
+      sourceDate: lower.source_date, premium: priceAlongCapital(lower, upper, capital),
       occupationRated: lower.occupation_rated === "Yes" });
   }
   const compatible = [...groups.values()].filter(group => group.quotes.length === 3 &&
     new Set(group.quotes.map(q => q.provider)).size === 3);
   compatible.sort((a, b) => b.check.source_date.localeCompare(a.check.source_date) ||
-    (Number(a.upper.life_cover) - Number(a.lower.life_cover)) - (Number(b.upper.life_cover) - Number(b.lower.life_cover)));
+    a.width - b.width);
   const range = compatible[0];
   if (!range) return null;
   const quotes = range.quotes.sort((a, b) => a.premium - b.premium);
-  const sameEndAge = quotes.filter(q => q.term === `To Age ${p.toAge}`);
+  const sameEndAge = quotes.filter(q => !q.occupationRated && q.term === `To Age ${p.toAge}`);
   return { quotes, exact: false, capitalRange: range, sameEndAge: sameEndAge.length ? sameEndAge : undefined,
     termPending: !sameEndAge.length, sourceDate: range.check.source_date };
 }
@@ -206,7 +215,7 @@ function capturedReportFor(p) {
       row.unavailable_reason === "end_age_not_supported" ? "idade final fora do limite do produto" : "produto sem preço no relatório";
     return `${row.provider} · ${reason}`;
   });
-  const exactTerms = quotes.filter(q => !q.differentCapital && q.term === `To Age ${p.toAge}`);
+  const exactTerms = quotes.filter(q => !q.differentCapital && !q.occupationRated && q.term === `To Age ${p.toAge}`);
   return { quotes, exact: true, reported: true, sourceDate: latest.source_date, modelId: latest.model_id,
     sameEndAge: exactTerms.length ? exactTerms : undefined, termPending: !exactTerms.length,
     partial: Boolean(missing.length), gap: missing.length ? {
@@ -587,12 +596,12 @@ function makeSummary(p, r) {
       `Isenção de mensalidade incluída · comparativo de ${r.providerQuotes[0].sourceDate}`);
   lines.push(
     r.supported
-      ? `${r.waiverPending || (r.reportNote && !r.providerQuotes?.length) ? "Referência geral para a proteção principal" : "Estimativa"}: ${gbp(r.main)}/mês`
+      ? `${r.waiverPending || r.termPending || (r.reportNote && !r.providerQuotes?.length) ? "Referência geral para a proteção principal" : "Estimativa"}: ${gbp(r.main)}/mês`
       : "Estimativa principal: requer cotação oficial",
   );
   if (r.supported)
     lines.push(
-      `${r.detailed && !r.termPending ? "Faixa para a idade final solicitada" : r.providerQuotes?.length ? r.providerGap ? "Faixa observada entre seguradoras disponíveis" : r.priorityExact ? "Faixa observada entre seguradoras" : "Faixa estimada entre seguradoras" : "Faixa provável"}: ${gbp(r.low)}–${gbp(r.high)}/mês`,
+      `${r.detailed && r.termPending ? "Faixa das alternativas devolvidas" : r.detailed ? "Faixa para a idade final solicitada" : r.providerQuotes?.length ? r.providerGap ? "Faixa observada entre seguradoras disponíveis" : r.priorityExact ? "Faixa observada entre seguradoras" : "Faixa estimada entre seguradoras" : "Faixa provável"}: ${gbp(r.low)}–${gbp(r.high)}/mês`,
     );
   if (r.provider)
     lines.push(`Referência prioritária: ${r.provider} — ${gbp(r.main)}/mês`);
@@ -697,17 +706,17 @@ function render(p) {
   r.capitalRange = Boolean(priorityMatch.capitalRange);
   r.detailed = r.withWaiver || r.capitalRange || Boolean(priorityMatch.reported && priorityQuotes.length);
   if (r.capitalRange) {
-    const { lower, upper, check } = priorityMatch.capitalRange;
-    r.reportNote = `Estimativa entre capitais de ${gbp(Number(lower.life_cover))} e ${gbp(Number(upper.life_cover))}. O cálculo foi conferido com uma cotação independente de ${gbp(Number(check.life_cover))} para este perfil e prazo.`;
+    const { lower, upper, check, axis } = priorityMatch.capitalRange;
+    r.reportNote = `Estimativa entre capitais de ${axis === "life_cover" ? "vida" : "doenças graves"} de ${gbp(Number(lower[axis]))} e ${gbp(Number(upper[axis]))}. O cálculo foi conferido com uma cotação independente de ${gbp(Number(check[axis]))} para este perfil e prazo.`;
     warnings.unshift(r.reportNote);
   }
   if (priorityMatch.reported) {
     r.reportNote = `Comparativo indicativo de ${priorityMatch.sourceDate}`;
     if (priorityMatch.gap) r.reportNote += `. ${priorityMatch.gap.reason}`;
     if (priorityMatch.termPending && priorityQuotes.length)
-      r.reportNote += ". Confirme o capital e o prazo devolvidos para esta solicitação.";
+      r.reportNote += ". As alternativas exigem conferência do capital, do prazo ou da profissão antes de fechar o total.";
     if (!priorityQuotes.length)
-      r.reportNote += ". As três seguradoras ficaram sem preço. O valor de referência vem do modelo geral.";
+      r.reportNote += ". As três seguradoras ficaram sem preço." + (r.supported ? " O valor de referência vem do modelo geral." : "");
     warnings.unshift(r.reportNote);
   }
   if (priorityMatch.gap && !priorityMatch.reported)
@@ -739,6 +748,8 @@ function render(p) {
     r.priorityExact = priorityMatch.exact;
     warnings = warnings.filter(
       (warning) =>
+        !warning.startsWith("Doenças graves sem seguro de vida") &&
+        !warning.startsWith("Esta combinação ainda não passou") &&
         !warning.startsWith("Baixa confiança:") &&
         !warning.startsWith("Perfil fora da faixa principal da base:") &&
         !warning.startsWith("Perfil ou capital fora da faixa validada"),
@@ -777,7 +788,7 @@ function render(p) {
     ? `${gbp(r.main)}/mês`
     : "Não publicado";
   $("range").textContent = r.supported
-    ? `${r.detailed && !r.termPending ? "Faixa para a idade final solicitada" : r.providerQuotes?.length ? r.providerGap ? "Faixa observada entre seguradoras disponíveis" : r.priorityExact ? "Faixa observada entre seguradoras" : "Faixa estimada entre seguradoras" : "Faixa provável"}: ${gbp(r.low)} a ${gbp(r.high)}/mês`
+    ? `${r.detailed && r.termPending ? "Faixa das alternativas devolvidas" : r.detailed ? "Faixa para a idade final solicitada" : r.providerQuotes?.length ? r.providerGap ? "Faixa observada entre seguradoras disponíveis" : r.priorityExact ? "Faixa observada entre seguradoras" : "Faixa estimada entre seguradoras" : "Faixa provável"}: ${gbp(r.low)} a ${gbp(r.high)}/mês`
     : "O motor não publica um preço sem validação suficiente.";
   $("totalPrice").textContent = r.complete
     ? `${gbp(r.main + m.total)}/mês`

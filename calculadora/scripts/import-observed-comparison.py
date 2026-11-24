@@ -16,9 +16,9 @@ FIELDS = ("source_date", "model_id", "age", "smoker", "to_age", "life_cover",
           "available", "quoted_term", "occupation_rated", "sha256", "unavailable_reason",
           "quoted_life_cover", "quoted_critical_illness_cover")
 PRODUCTS = {
-    "Zurich": ("Zurich Life", "Zurich Life & CI"),
-    "Legal & General": ("Legal & General Life", "Legal & General Life + CI (Standard)"),
-    "Aviva": ("Aviva Life Insurance+", "Aviva Multi-Product with Core CI"),
+    "Zurich": ("Zurich Life", "Zurich Life & CI", "Zurich Critical Illness"),
+    "Legal & General": ("Legal & General Life", "Legal & General Life + CI (Standard)", "Legal & General CI (Standard)"),
+    "Aviva": ("Aviva Life Insurance+", "Aviva Multi-Product with Core CI", "Aviva Critical Illness+ Core"),
 }
 
 
@@ -29,8 +29,11 @@ def extract(path, model_id, age, smoker, to_age, life, ci):
     summary = re.findall(r"^\s*•\s*([^\n]+)", cover, re.M)
     pattern = (r"Level Term Assurance: 1st life, £([\d,]+) life"
                r"(?: & £([\d,]+) critical illness)? cover, policy duration is to age (\d+), premiums are guaranteed")
+    if not life and ci > 0:
+        pattern = (r"Level Term Assurance: 1st life, £([\d,]+) critical illness cover, policy duration is to age (\d+),"
+                   r" premiums are guaranteed")
     benefit = re.fullmatch(pattern, summary[0].strip()) if len(summary) == 1 else None
-    if not benefit or [int((v or "0").replace(",", "")) for v in benefit.groups()] != [life, ci, to_age]:
+    if not benefit or [int((v or "0").replace(",", "")) for v in benefit.groups()] != ([life, ci, to_age] if life else [ci, to_age]):
         raise ValueError("Benefit structure or requested capital/term differs from the report.")
     if not all(re.search(p, cover) for p in (r"Quotation basis:\s*Benefit-led", r"Premium frequency:\s*Monthly")):
         raise ValueError("Unexpected quote basis or frequency.")
@@ -47,7 +50,7 @@ def extract(path, model_id, age, smoker, to_age, life, ci):
     digest = hashlib.sha256(path.read_bytes()).hexdigest()
     data = []
     for provider, products in PRODUCTS.items():
-        product = products[bool(ci)]
+        product = products[2 if not life else int(bool(ci))]
         prefix = r"^[ \t]*" + re.escape(product) + r"[ \t]{2,}"
         lines = re.findall(prefix + r"(£[^\n]+)", result, re.M)
         base = [date.isoformat(), model_id, age, smoker, to_age, life, ci, provider, product]
@@ -67,6 +70,8 @@ def extract(path, model_id, age, smoker, to_age, life, ci):
         if len(set(lines)) != 1:
             raise ValueError(f"Conflicting prices for {provider}.")
         capitals = r"£([\d,]+)" + (r"\s+£([\d,]+)\s+No data" if ci else "")
+        if not life:
+            capitals = r"£([\d,]+)\s+No data"
         entry = re.fullmatch(
             r"£([\d,]+\.\d{2})\s+Guaranteed\s+(Yes|No)\s+Monthly\s+" + capitals
             + r"\s+(To Age \d+|\d+ years?)\s+Level\s+None\s+No\s*", lines[0])
@@ -76,7 +81,9 @@ def extract(path, model_id, age, smoker, to_age, life, ci):
         returned = [int(v.replace(",", "")) for v in sums]
         if not ci:
             returned.append(0)
-        if returned[0] <= 0 or (ci and returned[1] <= 0):
+        if not life:
+            returned.insert(0, 0)
+        if (life and returned[0] <= 0) or (ci and returned[1] <= 0):
             raise ValueError(f"Invalid returned capital for {provider}.")
         if term.startswith("To Age"):
             valid_term = term == f"To Age {to_age}"

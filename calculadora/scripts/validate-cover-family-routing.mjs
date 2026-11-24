@@ -17,4 +17,4 @@ if (Object.values(checks).some((value) => !value)) {
   process.exit(1);
 }
 
-console.log(JSON.stringify({ ok: true, supportedFamilies: ["life_only", "life_plus_standalone_ci:standard_core_ci"], ciOnly: "official quote required" }, null, 2));
+console.log(JSON.stringify({ ok: true, supportedFamilies: ["life_only", "life_plus_standalone_ci:standard_core_ci"], ciOnly: "verified provider comparisons when available" }, null, 2));
