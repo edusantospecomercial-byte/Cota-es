@@ -2,6 +2,10 @@
 
 Estimador indicativo, non-underwritten, calibrado com illustrations históricos anonimizados.
 
+Desde 24/11/2026, a opção **Incluir isenção de mensalidade por incapacidade** consulta comparativos mensais de vida com *Waiver of Premium*. A referência mais recente deve coincidir em idade, tabagismo, idade final solicitada e capital. A tela e o resumo mostram o prazo devolvido por cada seguradora e o total com a configuração escolhida da MetLife. Se faltar o preço com isenção, a referência geral continua visível e o total do pacote fica pendente.
+
+O arquivo `data/comparisons-with-waiver.csv` contém preços garantidos, capital constante, sem TPD, sem low start e sem tarifação baseada na ocupação na linha do produto. Os três produtos vêm do mesmo relatório. O identificador SHA-256 permite reconferir o PDF local. Para reproduzir a extração, execute `python3 scripts/extract-waiver-comparisons.py PASTA_DOS_RELATORIOS` no diretório da calculadora. Vários relatórios também integram o acervo anterior e entram uma única vez em cada comparação. A validação temporal histórica mede a interpolação geral. Ela não estima o efeito de condições médicas ou a precisão do adicional.
+
 Privacidade: nomes usados durante a coleta local não são publicados. Os CSVs públicos usam apenas `Archive Quote` ou `Calibration Profile`, e um validador bloqueia qualquer publicação que reintroduza nomes nos campos de perfil/origem.
 
 - 1.763 PDFs auditados em todo o acervo local indexado
@@ -17,6 +21,8 @@ Privacidade: nomes usados durante a coleta local não são publicados. Os CSVs p
 Atualização de 11/11/2026: o modelo de Vida foi recalibrado com todos os registros novos que passaram nos controles. Os modelos de CI anteriores foram preservados porque a inclusão automática dos novos documentos piorou a precisão fora da amostra; esses casos permanecem disponíveis para revisão e futura classificação manual.
 
 Atualização de 16/11/2026: incorporado o caso Zurich de 63 anos, não fumante, £30.000 de vida até os 85 anos por £29,03/mês. Esse perfil agora retorna o valor histórico exato.
+
+As 39 mensalidades registradas em 22/11 também estão disponíveis para os 13 cenários exatos da coleta. Interpolações em outros cenários continuam usando a base da validação histórica. Nos comparativos com isenção, o total usa o menor preço que explicita a idade final solicitada. O resultado mostra à parte os prazos que a seguradora devolveu em anos.
 
 ## Prioridade de provedores a partir de 20/11/2026
 
@@ -40,7 +46,7 @@ A recência da malha também é bloqueante. Em relação à geração do catálo
 
 A dispersão entre as três seguradoras é validada em 339 âncoras demográficas únicas e completas. A diferença relativa entre o menor e o maior prêmio tem mediana de 12,37%, P90 de 23,13%, P95 de 26,83% e máximo de 52,56%; em libras, a mediana é £2,09, o P95 £8,97 e o máximo £46,48. O maior caso foi confirmado dentro de um único relatório oficial comparável. A publicação falha se o P95 ultrapassar 35% ou o máximo, 60%, limites destinados a detectar mistura de produto ou preço incompatível.
 
-Situação em 21/11/2026: a base prioritária contém 1.173 preços oficiais completos em 391 execuções comparáveis, com Zurich, Legal & General e Aviva. Desses, 879 preços foram recuperados de 293 relatórios oficiais de comparação e mantêm referência e SHA-256 do PDF de origem. A seleção por âncora sempre prioriza a cotação mais recente, evitando que um relatório antigo substitua a bateria atual. Outros 75 cenários incompletos permanecem separados da interpolação; 63 vieram do arquivo de relatórios e acrescentam 126 preços oficiais parciais de Zurich e Aviva. Em 33 combinações únicas de vida pura, a interface pode mostrar esses valores exatos e marcar a Legal & General como indisponível, sem inventar o preço ausente. A base de validação histórica contém 487 registros reconciliados provenientes de 387 PDFs oficiais únicos. O arquivo cobre vida pura e vida + doenças graves Standard/Core, capitais de até £1m, idades de 20 a 65 anos e prazos até 85; produtos Enhanced permanecem separados para não contaminar o preço Standard.
+Situação em 24/11/2026: a base prioritária contém 1.173 preços oficiais completos em 391 execuções comparáveis, com Zurich, Legal & General e Aviva. Desses, 879 preços foram recuperados de 293 relatórios oficiais de comparação e mantêm referência e SHA-256 do PDF de origem. A seleção por âncora sempre prioriza a cotação mais recente, evitando que um relatório antigo substitua a bateria atual. Outros 75 cenários incompletos permanecem separados da interpolação; 63 vieram do arquivo de relatórios e acrescentam 126 preços oficiais parciais de Zurich e Aviva. Em 33 combinações únicas de vida pura, a interface pode mostrar esses valores exatos e marcar a Legal & General como indisponível, sem inventar o preço ausente. A base de validação histórica contém 488 registros reconciliados provenientes de 388 PDFs oficiais únicos. O arquivo cobre vida pura e vida + doenças graves Standard/Core, capitais de até £1m, idades de 20 a 65 anos e prazos até 85; produtos Enhanced permanecem separados para não contaminar o preço Standard.
 
 A extração reconhece as duas formulações oficiais usadas nos relatórios para vida + CI (`critical illness cover` e `life or earlier critical illness cover` após um capital de vida separado), além de capitais formatados com separadores de milhar. A correção recuperou três trios oficiais completos e um cenário parcial; os demais relatórios de income protection, CI acelerada/isolada ou produto Enhanced continuam deliberadamente fora desta malha.
 

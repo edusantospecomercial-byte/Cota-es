@@ -1,40 +1,40 @@
 priority,batch,age,smoker,to_age,life_cover,critical_illness_cover,provider,product,monthly_premium,available,source_model_id,status,notes
-1,smoker_life_term,35,Yes,75,20000,0,Legal & General,,,,,pending_authentication,
-1,smoker_life_term,35,Yes,75,20000,0,Zurich,,,,,pending_authentication,
-1,smoker_life_term,35,Yes,75,20000,0,Aviva,,,,,pending_authentication,
-2,smoker_life_term,35,Yes,75,50000,0,Legal & General,,,,,pending_authentication,
-2,smoker_life_term,35,Yes,75,50000,0,Zurich,,,,,pending_authentication,
-2,smoker_life_term,35,Yes,75,50000,0,Aviva,,,,,pending_authentication,
-3,smoker_life_term,35,Yes,75,100000,0,Legal & General,,,,,pending_authentication,
-3,smoker_life_term,35,Yes,75,100000,0,Zurich,,,,,pending_authentication,
-3,smoker_life_term,35,Yes,75,100000,0,Aviva,,,,,pending_authentication,
-4,smoker_life_term,35,Yes,75,200000,0,Legal & General,,,,,pending_authentication,
-4,smoker_life_term,35,Yes,75,200000,0,Zurich,,,,,pending_authentication,
-4,smoker_life_term,35,Yes,75,200000,0,Aviva,,,,,pending_authentication,
-5,smoker_life_age,55,Yes,65,20000,0,Legal & General,,,,,pending_authentication,
-5,smoker_life_age,55,Yes,65,20000,0,Zurich,,,,,pending_authentication,
-5,smoker_life_age,55,Yes,65,20000,0,Aviva,,,,,pending_authentication,
-6,smoker_life_age,55,Yes,65,50000,0,Legal & General,,,,,pending_authentication,
-6,smoker_life_age,55,Yes,65,50000,0,Zurich,,,,,pending_authentication,
-6,smoker_life_age,55,Yes,65,50000,0,Aviva,,,,,pending_authentication,
-7,smoker_life_age,55,Yes,65,100000,0,Legal & General,,,,,pending_authentication,
-7,smoker_life_age,55,Yes,65,100000,0,Zurich,,,,,pending_authentication,
-7,smoker_life_age,55,Yes,65,100000,0,Aviva,,,,,pending_authentication,
-8,smoker_life_age,55,Yes,65,200000,0,Legal & General,,,,,pending_authentication,
-8,smoker_life_age,55,Yes,65,200000,0,Zurich,,,,,pending_authentication,
-8,smoker_life_age,55,Yes,65,200000,0,Aviva,,,,,pending_authentication,
-9,smoker_life_rectangle,55,Yes,75,20000,0,Legal & General,,,,,pending_authentication,
-9,smoker_life_rectangle,55,Yes,75,20000,0,Zurich,,,,,pending_authentication,
-9,smoker_life_rectangle,55,Yes,75,20000,0,Aviva,,,,,pending_authentication,
-10,smoker_life_rectangle,55,Yes,75,50000,0,Legal & General,,,,,pending_authentication,
-10,smoker_life_rectangle,55,Yes,75,50000,0,Zurich,,,,,pending_authentication,
-10,smoker_life_rectangle,55,Yes,75,50000,0,Aviva,,,,,pending_authentication,
-11,smoker_life_rectangle,55,Yes,75,100000,0,Legal & General,,,,,pending_authentication,
-11,smoker_life_rectangle,55,Yes,75,100000,0,Zurich,,,,,pending_authentication,
-11,smoker_life_rectangle,55,Yes,75,100000,0,Aviva,,,,,pending_authentication,
-12,smoker_life_rectangle,55,Yes,75,200000,0,Legal & General,,,,,pending_authentication,
-12,smoker_life_rectangle,55,Yes,75,200000,0,Zurich,,,,,pending_authentication,
-12,smoker_life_rectangle,55,Yes,75,200000,0,Aviva,,,,,pending_authentication,
+1,smoker_life_term,35,Yes,75,20000,0,Legal & General,Legal & General Life,6.01,true,34987822,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+1,smoker_life_term,35,Yes,75,20000,0,Zurich,Zurich Life,6.23,true,34987822,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+1,smoker_life_term,35,Yes,75,20000,0,Aviva,Aviva Life Insurance+,5.39,true,34987822,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2,smoker_life_term,35,Yes,75,50000,0,Legal & General,Legal & General Life,10.10,true,34987826,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2,smoker_life_term,35,Yes,75,50000,0,Zurich,Zurich Life,11.38,true,34987826,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2,smoker_life_term,35,Yes,75,50000,0,Aviva,Aviva Life Insurance+,10.88,true,34987826,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+3,smoker_life_term,35,Yes,75,100000,0,Legal & General,Legal & General Life,18.23,true,34987829,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+3,smoker_life_term,35,Yes,75,100000,0,Zurich,Zurich Life,19.41,true,34987829,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+3,smoker_life_term,35,Yes,75,100000,0,Aviva,Aviva Life Insurance+,17.17,true,34987829,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+4,smoker_life_term,35,Yes,75,200000,0,Legal & General,Legal & General Life,31.82,true,34987842,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+4,smoker_life_term,35,Yes,75,200000,0,Zurich,Zurich Life,32.72,true,34987842,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+4,smoker_life_term,35,Yes,75,200000,0,Aviva,Aviva Life Insurance+,33.22,true,34987842,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+5,smoker_life_age,55,Yes,65,20000,0,Legal & General,Legal & General Life,14.91,true,34987870,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+5,smoker_life_age,55,Yes,65,20000,0,Zurich,Zurich Life,19.49,true,34987870,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+5,smoker_life_age,55,Yes,65,20000,0,Aviva,Aviva Life Insurance+,16.12,true,34987870,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+6,smoker_life_age,55,Yes,65,50000,0,Legal & General,Legal & General Life,32.15,true,34987878,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+6,smoker_life_age,55,Yes,65,50000,0,Zurich,Zurich Life,44.52,true,34987878,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+6,smoker_life_age,55,Yes,65,50000,0,Aviva,Aviva Life Insurance+,36.30,true,34987878,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+7,smoker_life_age,55,Yes,65,100000,0,Legal & General,Legal & General Life,57.24,true,34987882,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+7,smoker_life_age,55,Yes,65,100000,0,Zurich,Zurich Life,83.23,true,34987882,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+7,smoker_life_age,55,Yes,65,100000,0,Aviva,Aviva Life Insurance+,72.59,true,34987882,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+8,smoker_life_age,55,Yes,65,200000,0,Legal & General,Legal & General Life,90.69,true,34987885,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+8,smoker_life_age,55,Yes,65,200000,0,Zurich,Zurich Life,156.07,true,34987885,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+8,smoker_life_age,55,Yes,65,200000,0,Aviva,Aviva Life Insurance+,127.66,true,34987885,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+9,smoker_life_rectangle,55,Yes,75,20000,0,Legal & General,Legal & General Life,19.89,true,34987889,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+9,smoker_life_rectangle,55,Yes,75,20000,0,Zurich,Zurich Life,25.41,true,34987889,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+9,smoker_life_rectangle,55,Yes,75,20000,0,Aviva,Aviva Life Insurance+,22.09,true,34987889,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+10,smoker_life_rectangle,55,Yes,75,50000,0,Legal & General,Legal & General Life,43.74,true,34987891,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+10,smoker_life_rectangle,55,Yes,75,50000,0,Zurich,Zurich Life,59.34,true,34987891,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+10,smoker_life_rectangle,55,Yes,75,50000,0,Aviva,Aviva Life Insurance+,46.37,true,34987891,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+11,smoker_life_rectangle,55,Yes,75,100000,0,Legal & General,Legal & General Life,80.27,true,34987908,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+11,smoker_life_rectangle,55,Yes,75,100000,0,Zurich,Zurich Life,115.14,true,34987908,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+11,smoker_life_rectangle,55,Yes,75,100000,0,Aviva,Aviva Life Insurance+,92.73,true,34987908,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+12,smoker_life_rectangle,55,Yes,75,200000,0,Legal & General,Legal & General Life,132.20,true,34987920,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+12,smoker_life_rectangle,55,Yes,75,200000,0,Zurich,Zurich Life,221.10,true,34987920,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+12,smoker_life_rectangle,55,Yes,75,200000,0,Aviva,Aviva Life Insurance+,173.87,true,34987920,captured,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
 13,smoker_ci_seed,35,Yes,65,50000,10000,Legal & General,,,,,pending_authentication,
 13,smoker_ci_seed,35,Yes,65,50000,10000,Zurich,,,,,pending_authentication,
 13,smoker_ci_seed,35,Yes,65,50000,10000,Aviva,,,,,pending_authentication,

@@ -486,3 +486,4 @@ source_date,profile,age,smoker,provider,product,to_age,term_years,life_component
 2026-05-26,Archive Quote,54,false,Aviva,Life Insurance+ with Core CI,70,16,10000,10000,14.33,0,14.07,0.26,TPD + Waiver of Premium,46f73b0227fe45843e8131829dc847f662bda0474444c30114228429874e631e
 2026-05-26,Archive Quote,54,false,Aviva,Life Insurance+,70,16,20000,0,7.17,7.10,0,0.07,Waiver of Premium,46f73b0227fe45843e8131829dc847f662bda0474444c30114228429874e631e
 2025-10-10,Archive Quote,65,false,Zurich,Level Life Cover,85,20,120000,0,121.60,121.60,0,0,None,d49dd6777c065be841e76013e3a32e779b3458c204c3bedf67d7a19c8d9c6172
+2026-11-24,Archive Quote,50,false,Aviva,Life Insurance+,65,15,50000,0,11.07,10.96,0,0.11,Waiver of Premium,0354473307545752f9cc0a0e21243ef73cfa827d4efd954ded0376b20a8e05d3

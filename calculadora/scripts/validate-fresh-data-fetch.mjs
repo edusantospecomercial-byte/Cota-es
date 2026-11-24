@@ -6,6 +6,8 @@ const here = dirname(fileURLToPath(import.meta.url));
 const source = readFileSync(join(here, "../app.js"), "utf8");
 const dataFiles = [
   "./data/models.json",
+  "./data/comparisons-with-waiver.csv",
+  "./data/live-captures-2026-11-22.csv",
   "./data/solutionbuilder-priority-providers-2026-11-20.csv",
   "./data/solutionbuilder-priority-provider-archive-2026-11-21.csv",
   "./data/solutionbuilder-priority-provider-gaps-2026-11-20.csv",

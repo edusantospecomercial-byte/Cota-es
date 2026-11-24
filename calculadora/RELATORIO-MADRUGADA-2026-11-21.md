@@ -5,7 +5,7 @@
 - Site: `https://edusantospecomercial-byte.github.io/Cota-es/calculadora/`
 - Preços oficiais prioritários completos: 1.173
 - Preços oficiais prioritários parciais: 126
-- Registros calibrados: 1.393
+- Registros calibrados em 21/11: 1.393
 - Cenários oficiais completos: 391
 - Seguradoras prioritárias: Legal & General, Zurich e Aviva
 - MetLife: 1 cota com luxações permanece o padrão da interface

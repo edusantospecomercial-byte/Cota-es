@@ -1,0 +1,163 @@
+source_date,age,smoker,to_age,life_cover,provider,product,monthly_premium,quoted_term,waiver_to,sha256
+2025-08-22,43,False,65,150000,Legal & General,Legal & General Life,16.38,21 years,Expiry,aaf4dcfe12e1ff1d3f8682dc3f2c8864019a0bb94a9e198641ec77a3a0e42707
+2025-08-22,43,False,65,150000,Aviva,Aviva Life Insurance+,19.18,To Age 65,70,aaf4dcfe12e1ff1d3f8682dc3f2c8864019a0bb94a9e198641ec77a3a0e42707
+2025-08-22,43,False,65,150000,Zurich,Zurich Life,16.89,To Age 65,70,aaf4dcfe12e1ff1d3f8682dc3f2c8864019a0bb94a9e198641ec77a3a0e42707
+2025-08-23,36,False,65,150000,Legal & General,Legal & General Life,10.49,28 years,Expiry,85d516bb87e2c8def240f793fbb795ff4a20fd4f1e69744615c62b3e6e67decb
+2025-08-23,36,False,65,150000,Aviva,Aviva Life Insurance+,13.15,To Age 65,70,85d516bb87e2c8def240f793fbb795ff4a20fd4f1e69744615c62b3e6e67decb
+2025-08-23,36,False,65,150000,Zurich,Zurich Life,10.76,To Age 65,70,85d516bb87e2c8def240f793fbb795ff4a20fd4f1e69744615c62b3e6e67decb
+2025-12-08,50,False,65,100000,Legal & General,Legal & General Life,17.51,14 years,Expiry,4253794524cf493442d598bd42f3c2542c4ce8be5dea4f9a0928313b28ccb7b2
+2025-12-08,50,False,65,100000,Aviva,Aviva Life Insurance+,20.77,To Age 65,70,4253794524cf493442d598bd42f3c2542c4ce8be5dea4f9a0928313b28ccb7b2
+2025-12-08,50,False,65,100000,Zurich,Zurich Life,19.24,To Age 65,70,4253794524cf493442d598bd42f3c2542c4ce8be5dea4f9a0928313b28ccb7b2
+2025-12-23,54,False,65,100000,Legal & General,Legal & General Life,21.31,10 years,Expiry,2cc209b459c52bada71857413aeb55a358d430e7cadfea68fade2ee16ee3529b
+2025-12-23,54,False,65,100000,Aviva,Aviva Life Insurance+,23.32,To Age 65,70,2cc209b459c52bada71857413aeb55a358d430e7cadfea68fade2ee16ee3529b
+2025-12-23,54,False,65,100000,Zurich,Zurich Life,24.00,To Age 65,70,2cc209b459c52bada71857413aeb55a358d430e7cadfea68fade2ee16ee3529b
+2025-12-23,54,False,65,70000,Legal & General,Legal & General Life,15.73,10 years,Expiry,c91b4c8d2af848c37098f398384284975fb3ee4bf33edcd93cf0f946a68d5658
+2025-12-23,54,False,65,70000,Aviva,Aviva Life Insurance+,17.53,To Age 65,70,c91b4c8d2af848c37098f398384284975fb3ee4bf33edcd93cf0f946a68d5658
+2025-12-23,54,False,65,70000,Zurich,Zurich Life,17.85,To Age 65,70,c91b4c8d2af848c37098f398384284975fb3ee4bf33edcd93cf0f946a68d5658
+2026-09-07,51,False,70,50000,Legal & General,Legal & General Life,12.87,18 years,Expiry,3dc596f38626f4709504f151a088d3b435105db1690b1af5e9b94fd2dc4c1ae6
+2026-09-07,51,False,70,50000,Aviva,Aviva Life Insurance+,13.22,To Age 70,70,3dc596f38626f4709504f151a088d3b435105db1690b1af5e9b94fd2dc4c1ae6
+2026-09-07,51,False,70,50000,Zurich,Zurich Life,13.60,To Age 70,70,3dc596f38626f4709504f151a088d3b435105db1690b1af5e9b94fd2dc4c1ae6
+2026-09-14,43,True,65,50000,Legal & General,Legal & General Life,14.69,21 years,Expiry,130ea2ba4faca75d3da6a9977badf2fb7a0efb5540cb363d6af4ffae9c712c5f
+2026-09-14,43,True,65,50000,Aviva,Aviva Life Insurance+,15.30,To Age 65,70,130ea2ba4faca75d3da6a9977badf2fb7a0efb5540cb363d6af4ffae9c712c5f
+2026-09-14,43,True,65,50000,Zurich,Zurich Life,17.20,To Age 65,70,130ea2ba4faca75d3da6a9977badf2fb7a0efb5540cb363d6af4ffae9c712c5f
+2026-09-14,31,False,65,200000,Legal & General,Legal & General Life,10.34,33 years,Expiry,ce622cbb4e6c7f3ef2ddf7dd1d10f5cbe4fc9666d0c6e896abbd792a24c6de8f
+2026-09-14,31,False,65,200000,Aviva,Aviva Life Insurance+,12.59,To Age 65,70,ce622cbb4e6c7f3ef2ddf7dd1d10f5cbe4fc9666d0c6e896abbd792a24c6de8f
+2026-09-14,31,False,65,200000,Zurich,Zurich Life,10.50,To Age 65,70,ce622cbb4e6c7f3ef2ddf7dd1d10f5cbe4fc9666d0c6e896abbd792a24c6de8f
+2026-09-14,31,False,65,200000,Legal & General,Legal & General Life,10.40,33 years,Expiry,f3ec1dd6655fa2666e9fed79eab0656ab97cf633c55a4cc01876f66b31dbb66c
+2026-09-14,31,False,65,200000,Aviva,Aviva Life Insurance+,12.59,To Age 65,70,f3ec1dd6655fa2666e9fed79eab0656ab97cf633c55a4cc01876f66b31dbb66c
+2026-09-14,31,False,65,200000,Zurich,Zurich Life,10.49,To Age 65,70,f3ec1dd6655fa2666e9fed79eab0656ab97cf633c55a4cc01876f66b31dbb66c
+2026-09-14,32,True,65,200000,Legal & General,Legal & General Life,20.57,32 years,Expiry,ffd75f04452e3b05d32b61335ebedf6d337a68a39a5b31e1499e3b10640fca5a
+2026-09-14,32,True,65,200000,Aviva,Aviva Life Insurance+,23.60,To Age 65,70,ffd75f04452e3b05d32b61335ebedf6d337a68a39a5b31e1499e3b10640fca5a
+2026-09-14,32,True,65,200000,Zurich,Zurich Life,20.79,To Age 65,70,ffd75f04452e3b05d32b61335ebedf6d337a68a39a5b31e1499e3b10640fca5a
+2026-09-18,31,False,65,100000,Legal & General,Legal & General Life,6.40,33 years,Expiry,c4330d39394f5c96e1e620b60bedc871f61df0e41170aa45fbb7d6632e3b397a
+2026-09-18,31,False,65,100000,Aviva,Aviva Life Insurance+,6.60,To Age 65,70,c4330d39394f5c96e1e620b60bedc871f61df0e41170aa45fbb7d6632e3b397a
+2026-09-18,31,False,65,100000,Zurich,Zurich Life,6.86,To Age 65,70,c4330d39394f5c96e1e620b60bedc871f61df0e41170aa45fbb7d6632e3b397a
+2026-09-23,53,True,70,30000,Legal & General,Legal & General Life,21.63,16 years,Expiry,b872967931af7898e8d4c03d3d951a555b85832d2caa413db6abdea12801cb87
+2026-09-23,53,True,70,30000,Aviva,Aviva Life Insurance+,23.43,To Age 70,70,b872967931af7898e8d4c03d3d951a555b85832d2caa413db6abdea12801cb87
+2026-09-23,53,True,70,30000,Zurich,Zurich Life,29.51,To Age 70,70,b872967931af7898e8d4c03d3d951a555b85832d2caa413db6abdea12801cb87
+2026-09-25,53,True,65,30000,Legal & General,Legal & General Life,18.94,11 years,Expiry,0c87d3656d7a6d099fe2129105b94cf4e7818fcb134077352d4d2c1733d18e68
+2026-09-25,53,True,65,30000,Aviva,Aviva Life Insurance+,20.78,To Age 65,70,0c87d3656d7a6d099fe2129105b94cf4e7818fcb134077352d4d2c1733d18e68
+2026-09-25,53,True,65,30000,Zurich,Zurich Life,25.75,To Age 65,70,0c87d3656d7a6d099fe2129105b94cf4e7818fcb134077352d4d2c1733d18e68
+2026-09-25,46,True,65,50000,Legal & General,Legal & General Life,17.95,18 years,Expiry,e9a2019b2ede63a9df5d85b111efa77ceb07e24488a12005dfad8f8dc6042555
+2026-09-25,46,True,65,50000,Aviva,Aviva Life Insurance+,18.97,To Age 65,70,e9a2019b2ede63a9df5d85b111efa77ceb07e24488a12005dfad8f8dc6042555
+2026-09-25,46,True,65,50000,Zurich,Zurich Life,22.07,To Age 65,70,e9a2019b2ede63a9df5d85b111efa77ceb07e24488a12005dfad8f8dc6042555
+2026-09-26,52,False,65,50000,Legal & General,Legal & General Life,11.75,12 years,Expiry,99ecca1b2e427bf70cbfa8b8c46b82c449ccade644cd91744335915dfc978d7c
+2026-09-26,52,False,65,50000,Aviva,Aviva Life Insurance+,12.45,To Age 65,70,99ecca1b2e427bf70cbfa8b8c46b82c449ccade644cd91744335915dfc978d7c
+2026-09-26,52,False,65,50000,Zurich,Zurich Life,12.44,To Age 65,70,99ecca1b2e427bf70cbfa8b8c46b82c449ccade644cd91744335915dfc978d7c
+2026-09-26,44,False,65,100000,Legal & General,Legal & General Life,12.42,20 years,Expiry,d4783601e5a6ff14e2e732950ef55ed27933301991f67acb74c3be04d87aafb1
+2026-09-26,44,False,65,100000,Aviva,Aviva Life Insurance+,14.49,To Age 65,70,d4783601e5a6ff14e2e732950ef55ed27933301991f67acb74c3be04d87aafb1
+2026-09-26,44,False,65,100000,Zurich,Zurich Life,13.07,To Age 65,70,d4783601e5a6ff14e2e732950ef55ed27933301991f67acb74c3be04d87aafb1
+2026-09-28,44,False,70,100000,Legal & General,Legal & General Life,13.99,25 years,Expiry,21b15b8705551a68f752e0f5fec1e68d542c1fa64c621a8c85b80627266bb08a
+2026-09-28,44,False,70,100000,Aviva,Aviva Life Insurance+,16.49,To Age 70,70,21b15b8705551a68f752e0f5fec1e68d542c1fa64c621a8c85b80627266bb08a
+2026-09-28,44,False,70,100000,Zurich,Zurich Life,14.74,To Age 70,70,21b15b8705551a68f752e0f5fec1e68d542c1fa64c621a8c85b80627266bb08a
+2026-09-28,44,False,70,60000,Legal & General,Legal & General Life,9.25,25 years,Expiry,38f72f3d8ebb63a2d3a53692ebd6e910eaaac63200c915d180e29a512b31f042
+2026-09-28,44,False,70,60000,Aviva,Aviva Life Insurance+,10.86,To Age 70,70,38f72f3d8ebb63a2d3a53692ebd6e910eaaac63200c915d180e29a512b31f042
+2026-09-28,44,False,70,60000,Zurich,Zurich Life,9.98,To Age 70,70,38f72f3d8ebb63a2d3a53692ebd6e910eaaac63200c915d180e29a512b31f042
+2026-09-28,44,False,70,150000,Legal & General,Legal & General Life,19.33,25 years,Expiry,877bbd2a114f064d7448100f7fedc5d41d1154b46b395680417896f309c861a5
+2026-09-28,44,False,70,150000,Aviva,Aviva Life Insurance+,22.93,To Age 70,70,877bbd2a114f064d7448100f7fedc5d41d1154b46b395680417896f309c861a5
+2026-09-28,44,False,70,150000,Zurich,Zurich Life,20.08,To Age 70,70,877bbd2a114f064d7448100f7fedc5d41d1154b46b395680417896f309c861a5
+2026-09-29,36,False,65,150000,Legal & General,Legal & General Life,10.49,28 years,Expiry,32438c9719d93b2cd1cb0a06de061c5bea75618392d1257686327f35f75b9d0a
+2026-09-29,36,False,65,150000,Aviva,Aviva Life Insurance+,13.15,To Age 65,70,32438c9719d93b2cd1cb0a06de061c5bea75618392d1257686327f35f75b9d0a
+2026-09-29,36,False,65,150000,Zurich,Zurich Life,11.03,To Age 65,70,32438c9719d93b2cd1cb0a06de061c5bea75618392d1257686327f35f75b9d0a
+2026-09-29,36,False,65,150000,Legal & General,Legal & General Life,10.49,28 years,Expiry,77631d585546c55a6f86a949860e553443a0c521a8ad6d0676a466664cb0c93f
+2026-09-29,36,False,65,150000,Aviva,Aviva Life Insurance+,13.15,To Age 65,70,77631d585546c55a6f86a949860e553443a0c521a8ad6d0676a466664cb0c93f
+2026-09-29,36,False,65,150000,Zurich,Zurich Life,11.03,To Age 65,70,77631d585546c55a6f86a949860e553443a0c521a8ad6d0676a466664cb0c93f
+2026-09-29,36,False,65,100000,Legal & General,Legal & General Life,8.09,28 years,Expiry,9e54c67d76684ce476cb17f931e1f3324d8ebf68b81b48ef415904251731be4e
+2026-09-29,36,False,65,100000,Aviva,Aviva Life Insurance+,9.24,To Age 65,70,9e54c67d76684ce476cb17f931e1f3324d8ebf68b81b48ef415904251731be4e
+2026-09-29,36,False,65,100000,Zurich,Zurich Life,8.48,To Age 65,70,9e54c67d76684ce476cb17f931e1f3324d8ebf68b81b48ef415904251731be4e
+2026-10-05,54,True,70,30000,Legal & General,Legal & General Life,23.44,15 years,Expiry,bb89a9fcf54fc9d3f369178c5948e5d40e6dd8a317ee416744923d23406906e4
+2026-10-05,54,True,70,30000,Aviva,Aviva Life Insurance+,25.02,To Age 70,70,bb89a9fcf54fc9d3f369178c5948e5d40e6dd8a317ee416744923d23406906e4
+2026-10-05,54,True,70,30000,Zurich,Zurich Life,31.37,To Age 70,70,bb89a9fcf54fc9d3f369178c5948e5d40e6dd8a317ee416744923d23406906e4
+2026-10-05,54,True,70,50000,Legal & General,Legal & General Life,37.70,15 years,Expiry,c4648b43d767ae2d50d819f46cfe8010e2ab925fc81d15ede3a4c28544b2be16
+2026-10-05,54,True,70,50000,Aviva,Aviva Life Insurance+,39.65,To Age 70,70,c4648b43d767ae2d50d819f46cfe8010e2ab925fc81d15ede3a4c28544b2be16
+2026-10-05,54,True,70,50000,Zurich,Zurich Life,50.35,To Age 70,70,c4648b43d767ae2d50d819f46cfe8010e2ab925fc81d15ede3a4c28544b2be16
+2026-10-06,41,False,65,120000,Legal & General,Legal & General Life,11.45,23 years,Expiry,0548790140298cb74e7e7cde213e0554123c2879d089abdffdf2f327e4890dd1
+2026-10-06,41,False,65,120000,Aviva,Aviva Life Insurance+,14.15,To Age 65,70,0548790140298cb74e7e7cde213e0554123c2879d089abdffdf2f327e4890dd1
+2026-10-06,41,False,65,120000,Zurich,Zurich Life,12.29,To Age 65,70,0548790140298cb74e7e7cde213e0554123c2879d089abdffdf2f327e4890dd1
+2026-10-07,45,False,65,200000,Legal & General,Legal & General Life,21.48,19 years,Expiry,49bbe5026cf5c5625cecdcc435ae3aaef9b46fc978277e4b97d3136abc5de46e
+2026-10-07,45,False,65,200000,Aviva,Aviva Life Insurance+,26.34,To Age 65,70,49bbe5026cf5c5625cecdcc435ae3aaef9b46fc978277e4b97d3136abc5de46e
+2026-10-07,45,False,65,200000,Zurich,Zurich Life,23.73,To Age 65,70,49bbe5026cf5c5625cecdcc435ae3aaef9b46fc978277e4b97d3136abc5de46e
+2026-10-12,43,False,65,100000,Legal & General,Legal & General Life,11.49,21 years,Expiry,365103c9a8d6bad14539645c2fe9346ff0eafa74f69d0ea353eb08ad34eaeff9
+2026-10-12,43,False,65,100000,Aviva,Aviva Life Insurance+,13.58,To Age 65,70,365103c9a8d6bad14539645c2fe9346ff0eafa74f69d0ea353eb08ad34eaeff9
+2026-10-12,43,False,65,100000,Zurich,Zurich Life,12.14,To Age 65,70,365103c9a8d6bad14539645c2fe9346ff0eafa74f69d0ea353eb08ad34eaeff9
+2026-10-13,37,False,65,100000,Legal & General,Legal & General Life,8.28,27 years,Expiry,3360eaa0ae2abfba0c2f5bae871e95d0a162085fe86b0577383677b8bcf29e6f
+2026-10-13,37,False,65,100000,Aviva,Aviva Life Insurance+,9.65,To Age 65,70,3360eaa0ae2abfba0c2f5bae871e95d0a162085fe86b0577383677b8bcf29e6f
+2026-10-13,37,False,65,100000,Zurich,Zurich Life,8.73,To Age 65,70,3360eaa0ae2abfba0c2f5bae871e95d0a162085fe86b0577383677b8bcf29e6f
+2026-10-13,48,False,65,50000,Legal & General,Legal & General Life,9.33,16 years,Expiry,ba759cfd7a905e8cf95e16fc287918eb6be64246ac89d0190c4f3e355bc56b5a
+2026-10-13,48,False,65,50000,Aviva,Aviva Life Insurance+,10.15,To Age 65,70,ba759cfd7a905e8cf95e16fc287918eb6be64246ac89d0190c4f3e355bc56b5a
+2026-10-13,48,False,65,50000,Zurich,Zurich Life,9.92,To Age 65,70,ba759cfd7a905e8cf95e16fc287918eb6be64246ac89d0190c4f3e355bc56b5a
+2026-10-14,27,False,65,200000,Legal & General,Legal & General Life,8.52,37 years,Expiry,a756f828a9b5fda42ecb57d9bfbc9f36c7a023400548242cdb73a26c849b16d9
+2026-10-14,27,False,65,200000,Aviva,Aviva Life Insurance+,10.75,To Age 65,70,a756f828a9b5fda42ecb57d9bfbc9f36c7a023400548242cdb73a26c849b16d9
+2026-10-14,27,False,65,200000,Zurich,Zurich Life,8.91,To Age 65,70,a756f828a9b5fda42ecb57d9bfbc9f36c7a023400548242cdb73a26c849b16d9
+2026-10-15,32,False,65,200000,Legal & General,Legal & General Life,11.06,32 years,Expiry,1decc63de64568e3ef88c0db7030964e46370d964dbc4be1ad4641f8fbabe551
+2026-10-15,32,False,65,200000,Aviva,Aviva Life Insurance+,13.96,To Age 65,70,1decc63de64568e3ef88c0db7030964e46370d964dbc4be1ad4641f8fbabe551
+2026-10-15,32,False,65,200000,Zurich,Zurich Life,11.35,To Age 65,70,1decc63de64568e3ef88c0db7030964e46370d964dbc4be1ad4641f8fbabe551
+2026-10-19,44,False,65,100000,Legal & General,Legal & General Life,12.17,20 years,Expiry,2161becf9f73e9326f5b88fd1e415c07bc81e193e760c9126534b50399d02f17
+2026-10-19,44,False,65,100000,Aviva,Aviva Life Insurance+,14.31,To Age 65,70,2161becf9f73e9326f5b88fd1e415c07bc81e193e760c9126534b50399d02f17
+2026-10-19,44,False,65,100000,Zurich,Zurich Life,12.88,To Age 65,70,2161becf9f73e9326f5b88fd1e415c07bc81e193e760c9126534b50399d02f17
+2026-10-19,48,False,65,50000,Legal & General,Legal & General Life,9.28,16 years,Expiry,9ab22348a4bf7b1ab16fc78154fbd8b3d4507dd07b38722aec135119b5aa1241
+2026-10-19,48,False,65,50000,Aviva,Aviva Life Insurance+,10.15,To Age 65,70,9ab22348a4bf7b1ab16fc78154fbd8b3d4507dd07b38722aec135119b5aa1241
+2026-10-19,48,False,65,50000,Zurich,Zurich Life,9.92,To Age 65,70,9ab22348a4bf7b1ab16fc78154fbd8b3d4507dd07b38722aec135119b5aa1241
+2026-10-19,54,False,70,50000,Legal & General,Legal & General Life,14.24,15 years,Expiry,d4aefd83d8f39c2517394cb04cf39ddd9a816e0d821190ac81b7873324eb20a6
+2026-10-19,54,False,70,50000,Aviva,Aviva Life Insurance+,15.25,To Age 70,70,d4aefd83d8f39c2517394cb04cf39ddd9a816e0d821190ac81b7873324eb20a6
+2026-10-19,54,False,70,50000,Zurich,Zurich Life,15.61,To Age 70,70,d4aefd83d8f39c2517394cb04cf39ddd9a816e0d821190ac81b7873324eb20a6
+2026-10-20,42,False,65,100000,Legal & General,Legal & General Life,10.77,22 years,Expiry,0eaaac4d076868c3a495b2da8a0539c26042301dd3e4bb80aed6fe65aff646ae
+2026-10-20,42,False,65,100000,Aviva,Aviva Life Insurance+,12.83,To Age 65,70,0eaaac4d076868c3a495b2da8a0539c26042301dd3e4bb80aed6fe65aff646ae
+2026-10-20,42,False,65,100000,Zurich,Zurich Life,11.46,To Age 65,70,0eaaac4d076868c3a495b2da8a0539c26042301dd3e4bb80aed6fe65aff646ae
+2026-10-22,54,False,70,100000,Legal & General,Legal & General Life,27.31,15 years,Expiry,4ab8d01066e768a615ad860ab23a9a179d2f40872c3eb99808356e72fb360ad1
+2026-10-22,54,False,70,100000,Aviva,Aviva Life Insurance+,31.35,To Age 70,70,4ab8d01066e768a615ad860ab23a9a179d2f40872c3eb99808356e72fb360ad1
+2026-10-22,54,False,70,100000,Zurich,Zurich Life,29.24,To Age 70,70,4ab8d01066e768a615ad860ab23a9a179d2f40872c3eb99808356e72fb360ad1
+2026-10-27,42,False,65,100000,Legal & General,Legal & General Life,11.46,22 years,Expiry,66f5f50e3e8ba55c7fdb0380e5e6f6e56d97479c8309da03b3f494c0c1fe9036
+2026-10-27,42,False,65,100000,Aviva,Aviva Life Insurance+,13.43,To Age 65,70,66f5f50e3e8ba55c7fdb0380e5e6f6e56d97479c8309da03b3f494c0c1fe9036
+2026-10-27,42,False,65,100000,Zurich,Zurich Life,11.97,To Age 65,70,66f5f50e3e8ba55c7fdb0380e5e6f6e56d97479c8309da03b3f494c0c1fe9036
+2026-10-28,36,False,65,100000,Legal & General,Legal & General Life,8.16,28 years,Expiry,59525a09ec1ca5ddc436bdec1e6761dcf83d28ddd9fd5b7a5e4ba936f03dff12
+2026-10-28,36,False,65,100000,Aviva,Aviva Life Insurance+,9.52,To Age 65,70,59525a09ec1ca5ddc436bdec1e6761dcf83d28ddd9fd5b7a5e4ba936f03dff12
+2026-10-28,36,False,65,100000,Zurich,Zurich Life,8.65,To Age 65,70,59525a09ec1ca5ddc436bdec1e6761dcf83d28ddd9fd5b7a5e4ba936f03dff12
+2026-11-04,41,False,65,100000,Legal & General,Legal & General Life,10.77,23 years,Expiry,0c14d463dbee3e4728571f97c503701371e8e9970354e2b43a23f6df6d4a7b5f
+2026-11-04,41,False,65,100000,Aviva,Aviva Life Insurance+,12.72,To Age 65,70,0c14d463dbee3e4728571f97c503701371e8e9970354e2b43a23f6df6d4a7b5f
+2026-11-04,41,False,65,100000,Zurich,Zurich Life,11.28,To Age 65,70,0c14d463dbee3e4728571f97c503701371e8e9970354e2b43a23f6df6d4a7b5f
+2026-11-09,47,False,70,100000,Legal & General,Legal & General Life,17.50,22 years,Expiry,d4e4f05ee9849949cab2742e6f8dbfdff197db7d08d3a5399356cd6ba61b8ad4
+2026-11-09,47,False,70,100000,Aviva,Aviva Life Insurance+,20.41,To Age 70,70,d4e4f05ee9849949cab2742e6f8dbfdff197db7d08d3a5399356cd6ba61b8ad4
+2026-11-09,47,False,70,100000,Zurich,Zurich Life,18.61,To Age 70,70,d4e4f05ee9849949cab2742e6f8dbfdff197db7d08d3a5399356cd6ba61b8ad4
+2026-11-09,47,False,70,80000,Legal & General,Legal & General Life,14.41,22 years,Expiry,fda4ba0e3acf5335549b886f678579f89e4dd03c7aa549471e688505523358a2
+2026-11-09,47,False,70,80000,Aviva,Aviva Life Insurance+,16.59,To Age 70,70,fda4ba0e3acf5335549b886f678579f89e4dd03c7aa549471e688505523358a2
+2026-11-09,47,False,70,80000,Zurich,Zurich Life,15.49,To Age 70,70,fda4ba0e3acf5335549b886f678579f89e4dd03c7aa549471e688505523358a2
+2026-11-10,54,False,65,50000,Legal & General,Legal & General Life,13.27,10 years,Expiry,128d54a9f4f06d4e4ae1b10f3ad11c16d1e649b092d09e3b395a98c05cd50ecc
+2026-11-10,54,False,65,50000,Aviva,Aviva Life Insurance+,15.28,To Age 65,70,128d54a9f4f06d4e4ae1b10f3ad11c16d1e649b092d09e3b395a98c05cd50ecc
+2026-11-10,54,False,65,50000,Zurich,Zurich Life,14.05,To Age 65,70,128d54a9f4f06d4e4ae1b10f3ad11c16d1e649b092d09e3b395a98c05cd50ecc
+2026-11-11,54,False,75,50000,Legal & General,Legal & General Life,17.52,20 years,Expiry,043912f5b66a297001ebfbba268d644563c9c10e19648129b6dc56f33755b6e5
+2026-11-11,54,False,75,50000,Aviva,Aviva Life Insurance+,17.97,To Age 75,70,043912f5b66a297001ebfbba268d644563c9c10e19648129b6dc56f33755b6e5
+2026-11-11,54,False,75,50000,Zurich,Zurich Life,18.55,To Age 75,70,043912f5b66a297001ebfbba268d644563c9c10e19648129b6dc56f33755b6e5
+2026-11-16,45,True,65,30000,Legal & General,Legal & General Life,11.44,19 years,Expiry,019176b2838bdf3f117fa7e576fddbe38ab544836b39ca6e29fea9f74e5fd090
+2026-11-16,45,True,65,30000,Aviva,Aviva Life Insurance+,12.45,To Age 65,70,019176b2838bdf3f117fa7e576fddbe38ab544836b39ca6e29fea9f74e5fd090
+2026-11-16,45,True,65,30000,Zurich,Zurich Life,13.88,To Age 65,70,019176b2838bdf3f117fa7e576fddbe38ab544836b39ca6e29fea9f74e5fd090
+2026-11-16,45,True,65,60000,Legal & General,Legal & General Life,20.76,19 years,Expiry,0c3be4c32db1445f0ccce1e52101fe7663dbd68c81db4acfcc8c0857377f7f6d
+2026-11-16,45,True,65,60000,Aviva,Aviva Life Insurance+,22.03,To Age 65,70,0c3be4c32db1445f0ccce1e52101fe7663dbd68c81db4acfcc8c0857377f7f6d
+2026-11-16,45,True,65,60000,Zurich,Zurich Life,24.15,To Age 65,70,0c3be4c32db1445f0ccce1e52101fe7663dbd68c81db4acfcc8c0857377f7f6d
+2026-11-16,46,True,65,40000,Legal & General,Legal & General Life,15.48,18 years,Expiry,1a2197226ae4be55b60ac5f8a418993b47453889f9af2cf078491cd842b4e399
+2026-11-16,46,True,65,40000,Aviva,Aviva Life Insurance+,15.95,To Age 65,70,1a2197226ae4be55b60ac5f8a418993b47453889f9af2cf078491cd842b4e399
+2026-11-16,46,True,65,40000,Zurich,Zurich Life,18.95,To Age 65,70,1a2197226ae4be55b60ac5f8a418993b47453889f9af2cf078491cd842b4e399
+2026-11-17,32,False,65,100000,Legal & General,Legal & General Life,6.79,32 years,Expiry,73851965e60719a8282ea57322318c4e66e01bf5bf3854baf0f3abc7fd63930b
+2026-11-17,32,False,65,100000,Aviva,Aviva Life Insurance+,7.63,To Age 65,70,73851965e60719a8282ea57322318c4e66e01bf5bf3854baf0f3abc7fd63930b
+2026-11-17,32,False,65,100000,Zurich,Zurich Life,7.31,To Age 65,70,73851965e60719a8282ea57322318c4e66e01bf5bf3854baf0f3abc7fd63930b
+2026-11-17,42,False,65,100000,Legal & General,Legal & General Life,11.66,22 years,Expiry,a95be503307f456abe456fbf517d6fd49143c3e9a07c64ff49c0ad08b2e3cb9e
+2026-11-17,42,False,65,100000,Aviva,Aviva Life Insurance+,13.43,To Age 65,70,a95be503307f456abe456fbf517d6fd49143c3e9a07c64ff49c0ad08b2e3cb9e
+2026-11-17,42,False,65,100000,Zurich,Zurich Life,11.95,To Age 65,70,a95be503307f456abe456fbf517d6fd49143c3e9a07c64ff49c0ad08b2e3cb9e
+2026-11-18,50,False,65,70000,Legal & General,Legal & General Life,12.92,14 years,Expiry,804663559e5e27154b8bd5f42938bb957aa863e0f8e9c99e19620a7fe8d90336
+2026-11-18,50,False,65,70000,Aviva,Aviva Life Insurance+,14.61,To Age 65,70,804663559e5e27154b8bd5f42938bb957aa863e0f8e9c99e19620a7fe8d90336
+2026-11-18,50,False,65,70000,Zurich,Zurich Life,14.44,To Age 65,70,804663559e5e27154b8bd5f42938bb957aa863e0f8e9c99e19620a7fe8d90336
+2026-11-18,49,False,65,50000,Legal & General,Legal & General Life,9.77,15 years,Expiry,895d29c823a8458cb25da7542e5e79a182d4797665ca6d75e043b5c33adb5c26
+2026-11-18,49,False,65,50000,Aviva,Aviva Life Insurance+,10.51,To Age 65,70,895d29c823a8458cb25da7542e5e79a182d4797665ca6d75e043b5c33adb5c26
+2026-11-18,49,False,65,50000,Zurich,Zurich Life,10.55,To Age 65,70,895d29c823a8458cb25da7542e5e79a182d4797665ca6d75e043b5c33adb5c26
+2026-11-20,46,False,65,1000000,Legal & General,Legal & General Life,92.17,18 years,Expiry,cc9fc648d6987363e66e5b8517a42564300274ee3a2d0f11cba914dd54b25a5c
+2026-11-20,46,False,65,1000000,Aviva,Aviva Life Insurance+,94.50,To Age 65,70,cc9fc648d6987363e66e5b8517a42564300274ee3a2d0f11cba914dd54b25a5c
+2026-11-20,46,False,65,1000000,Zurich,Zurich Life,114.31,To Age 65,70,cc9fc648d6987363e66e5b8517a42564300274ee3a2d0f11cba914dd54b25a5c
+2026-11-21,46,False,65,500000,Legal & General,Legal & General Life,49.94,18 years,Expiry,b985c33d3145622e81e22d66bf18f57c59dabedf58224ad441e786fe1e82f944
+2026-11-21,46,False,65,500000,Aviva,Aviva Life Insurance+,51.70,To Age 65,70,b985c33d3145622e81e22d66bf18f57c59dabedf58224ad441e786fe1e82f944
+2026-11-21,46,False,65,500000,Zurich,Zurich Life,51.00,To Age 65,70,b985c33d3145622e81e22d66bf18f57c59dabedf58224ad441e786fe1e82f944
+2026-11-22,49,True,65,30000,Legal & General,Legal & General Life,13.37,15 years,Expiry,e0c69e49cc3f768d50dbce15b204515b6af3b2efc38e38fc99bf694b98cd4eec
+2026-11-22,49,True,65,30000,Aviva,Aviva Life Insurance+,15.37,To Age 65,70,e0c69e49cc3f768d50dbce15b204515b6af3b2efc38e38fc99bf694b98cd4eec
+2026-11-22,49,True,65,30000,Zurich,Zurich Life,19.48,To Age 65,70,e0c69e49cc3f768d50dbce15b204515b6af3b2efc38e38fc99bf694b98cd4eec
+2026-11-24,50,False,65,50000,Legal & General,Legal & General Life,10.72,14 years,Expiry,f5191a20993a9d2e92037880d7b5700d576cce937bdf38386cd415d35a22f360
+2026-11-24,50,False,65,50000,Aviva,Aviva Life Insurance+,11.07,To Age 65,70,f5191a20993a9d2e92037880d7b5700d576cce937bdf38386cd415d35a22f360
+2026-11-24,50,False,65,50000,Zurich,Zurich Life,11.46,To Age 65,70,f5191a20993a9d2e92037880d7b5700d576cce937bdf38386cd415d35a22f360

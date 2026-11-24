@@ -1,0 +1,40 @@
+source_date,model_id,profile,age,sex,smoker,to_age,life_cover,critical_illness_cover,provider,product,monthly_premium,available,notes
+2026-11-22,34987679,Calibration Profile,46,F,No,75,20000,0,Legal & General,Legal & General Life,6.00,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987679,Calibration Profile,46,F,No,75,20000,0,Zurich,Zurich Life,5.87,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987679,Calibration Profile,46,F,No,75,20000,0,Aviva,Aviva Life Insurance+,5.37,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987822,Calibration Profile,35,F,Yes,75,20000,0,Legal & General,Legal & General Life,6.01,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987822,Calibration Profile,35,F,Yes,75,20000,0,Zurich,Zurich Life,6.23,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987822,Calibration Profile,35,F,Yes,75,20000,0,Aviva,Aviva Life Insurance+,5.39,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987826,Calibration Profile,35,F,Yes,75,50000,0,Legal & General,Legal & General Life,10.10,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987826,Calibration Profile,35,F,Yes,75,50000,0,Zurich,Zurich Life,11.38,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987826,Calibration Profile,35,F,Yes,75,50000,0,Aviva,Aviva Life Insurance+,10.88,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987829,Calibration Profile,35,F,Yes,75,100000,0,Legal & General,Legal & General Life,18.23,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987829,Calibration Profile,35,F,Yes,75,100000,0,Zurich,Zurich Life,19.41,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987829,Calibration Profile,35,F,Yes,75,100000,0,Aviva,Aviva Life Insurance+,17.17,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987842,Calibration Profile,35,F,Yes,75,200000,0,Legal & General,Legal & General Life,31.82,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987842,Calibration Profile,35,F,Yes,75,200000,0,Zurich,Zurich Life,32.72,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987842,Calibration Profile,35,F,Yes,75,200000,0,Aviva,Aviva Life Insurance+,33.22,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987870,Calibration Profile,55,F,Yes,65,20000,0,Legal & General,Legal & General Life,14.91,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987870,Calibration Profile,55,F,Yes,65,20000,0,Zurich,Zurich Life,19.49,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987870,Calibration Profile,55,F,Yes,65,20000,0,Aviva,Aviva Life Insurance+,16.12,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987878,Calibration Profile,55,F,Yes,65,50000,0,Legal & General,Legal & General Life,32.15,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987878,Calibration Profile,55,F,Yes,65,50000,0,Zurich,Zurich Life,44.52,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987878,Calibration Profile,55,F,Yes,65,50000,0,Aviva,Aviva Life Insurance+,36.30,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987882,Calibration Profile,55,F,Yes,65,100000,0,Legal & General,Legal & General Life,57.24,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987882,Calibration Profile,55,F,Yes,65,100000,0,Zurich,Zurich Life,83.23,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987882,Calibration Profile,55,F,Yes,65,100000,0,Aviva,Aviva Life Insurance+,72.59,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987885,Calibration Profile,55,F,Yes,65,200000,0,Legal & General,Legal & General Life,90.69,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987885,Calibration Profile,55,F,Yes,65,200000,0,Zurich,Zurich Life,156.07,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987885,Calibration Profile,55,F,Yes,65,200000,0,Aviva,Aviva Life Insurance+,127.66,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987889,Calibration Profile,55,F,Yes,75,20000,0,Legal & General,Legal & General Life,19.89,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987889,Calibration Profile,55,F,Yes,75,20000,0,Zurich,Zurich Life,25.41,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987889,Calibration Profile,55,F,Yes,75,20000,0,Aviva,Aviva Life Insurance+,22.09,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987891,Calibration Profile,55,F,Yes,75,50000,0,Legal & General,Legal & General Life,43.74,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987891,Calibration Profile,55,F,Yes,75,50000,0,Zurich,Zurich Life,59.34,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987891,Calibration Profile,55,F,Yes,75,50000,0,Aviva,Aviva Life Insurance+,46.37,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987908,Calibration Profile,55,F,Yes,75,100000,0,Legal & General,Legal & General Life,80.27,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987908,Calibration Profile,55,F,Yes,75,100000,0,Zurich,Zurich Life,115.14,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987908,Calibration Profile,55,F,Yes,75,100000,0,Aviva,Aviva Life Insurance+,92.73,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987920,Calibration Profile,55,F,Yes,75,200000,0,Legal & General,Legal & General Life,132.20,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987920,Calibration Profile,55,F,Yes,75,200000,0,Zurich,Zurich Life,221.10,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
+2026-11-22,34987920,Calibration Profile,55,F,Yes,75,200000,0,Aviva,Aviva Life Insurance+,173.87,true,Live SolutionBuilder capture; guaranteed premium; low start included; level indexation
