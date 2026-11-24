@@ -139,3 +139,67 @@ console.log(JSON.stringify({ verifiedReportsWithWaiver: reports.size, resolvedPr
   previouslyComparablePrices: historicComparison.length,
   previousMapeOnComparableCaptures: historicComparison.length ?
     historicComparison.reduce((a, b) => a + b, 0) / historicComparison.length : null }));
+
+const reported = run("reportedRows");
+const verifiedReports = group(reported, "model_id");
+const keys = new Set();
+for (const [id, rows] of verifiedReports) {
+  const first = rows[0];
+  const key = [first.age, first.smoker, first.to_age, first.life_cover, first.critical_illness_cover].join("|");
+  assert.ok(!keys.has(key), "Duplicate scenario " + key);
+  keys.add(key);
+  assert.deepEqual(Array.from(rows, r => r.provider).sort(), ["Aviva", "Legal & General", "Zurich"]);
+  assert.equal(new Set(rows.map(r => r.sha256)).size, 1);
+  assert.match(first.sha256, /^[a-f0-9]{64}$/);
+  ctx.profile = { age: +first.age, smoker: first.smoker === "Yes" ? "smoker" : "non_smoker",
+    toAge: +first.to_age, life: +first.life_cover, ci: +first.critical_illness_cover };
+  const result = run("capturedReportFor(profile)");
+  assert.equal(result.modelId, id);
+  assert.equal(result.quotes.length, rows.filter(r => r.available === "true").length);
+  for (const q of result.quotes) {
+    const r = rows.find(row => row.provider === q.provider);
+    assert.equal(q.premium, +r.monthly_premium);
+    assert.equal(q.differentCapital, +r.quoted_life_cover !== +r.life_cover ||
+      +r.quoted_critical_illness_cover !== +r.critical_illness_cover);
+    if (q.differentCapital) assert.ok(!result.sameEndAge?.includes(q));
+  }
+  for (const row of rows.filter(r => r.available === "false")) {
+    assert.ok(row.unavailable_reason);
+    assert.equal(row.monthly_premium, "");
+    assert.ok(result.gap.reason.includes(row.provider));
+  }
+}
+
+const calculate = (toAge, life, ci, extra = {}) => {
+  ctx.inputs = { age: 50, smoker: "non_smoker", toAge, term: toAge - 50, life, ci, ...extra };
+  run("render({...payload(), ...inputs})");
+  return run("lastPayload.result");
+};
+const liveExact = calculate(75, 50000, 10000);
+assert.equal(liveExact.main, 27.04);
+assert.equal(liveExact.priorityExact, true);
+assert.ok(liveExact.text.includes("24 anos de prazo"));
+const alteredCapital = calculate(65, 50000, 5000);
+assert.ok(alteredCapital.text.includes("£5,068.00"));
+assert.notEqual(alteredCapital.provider, "Aviva");
+const allUnavailable = calculate(85, 50000, 10000);
+assert.equal(allUnavailable.complete, false);
+assert.ok(allUnavailable.text.includes("três seguradoras ficaram sem preço"));
+assert.equal(node("totalPrice").textContent, "A confirmar");
+const interpolated = calculate(85, 62873, 0);
+assert.equal(interpolated.capitalRange, true);
+assert.equal(interpolated.priorityExact, false);
+assert.ok(interpolated.text.includes("cotação independente"));
+assert.ok(interpolated.text.includes("34 anos de prazo"));
+assert.ok(!calculate(85, 62873, 0, {smoker: "smoker"}).capitalRange);
+assert.ok(!calculate(85, 62873, 0, {age: 51, term: 34}).capitalRange);
+assert.ok(!calculate(85, 1950, 0).capitalRange);
+const heldOut = run("validatedCapitalRanges");
+assert.ok(heldOut.length >= 36);
+const errors = heldOut.map(({lower, upper, check}) => {
+  const predict = run("priceAlongCapital")(lower, upper, +check.life_cover);
+  return Math.abs(predict - +check.monthly_premium);
+});
+console.log(JSON.stringify({comparisonReports: keys.size, actualPrices: reported.filter(r => r.available === "true").length,
+  providerHoldoutsInUse: heldOut.length, meanAbsoluteErrorGBP: errors.reduce((a, b) => a + b, 0) / errors.length,
+  maximumAbsoluteErrorGBP: Math.max(...errors)}));

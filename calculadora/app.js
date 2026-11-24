@@ -2,6 +2,8 @@ let catalog = { models: {} },
   priorityRows = [],
   priorityGapRows = [],
   observedRows = [],
+  reportedRows = [],
+  validatedCapitalRanges = [],
   waiverRows = null,
   lastPayload = null;
 const $ = (id) => document.getElementById(id),
@@ -38,6 +40,8 @@ async function init() {
     archiveGapRows,
     loadedWaiverRows,
     loadedObservedRows,
+    loadedReports,
+    capitalHoldout,
   ] = await Promise.all([
     fetch("./data/models.json", { cache: "no-store" })
       .then((r) => r.json())
@@ -80,7 +84,17 @@ async function init() {
       })
       .then(parsePriorityCsv)
       .catch(() => []),
+    fetch("./data/solutionbuilder-observed-2026-11-24.csv", { cache: "no-store" })
+      .then(response => response.ok ? response.text() : "")
+      .then(parsePriorityCsv)
+      .catch(() => []),
+    fetch("./data/capital-validation-holdout.csv", { cache: "no-store" })
+      .then(response => response.ok ? response.text() : "")
+      .then(parsePriorityCsv)
+      .catch(() => []),
   ]);
+  reportedRows = loadedReports;
+  validatedCapitalRanges = buildCapitalRanges(loadedReports, capitalHoldout);
   observedRows = loadedObservedRows;
   waiverRows = loadedWaiverRows;
   catalog = loadedCatalog;
@@ -96,7 +110,7 @@ async function init() {
     crossValidation = catalog.audit?.priorityProviderCrossValidation,
     temporalHoldout = catalog.audit?.priorityProviderTemporalHoldout;
   $("baseStatus").textContent = n
-    ? `${records} registros no catálogo · ${priority} preços na validação histórica · ${observedRows.length} preços adicionais para consulta exata${partialPriority ? ` + ${partialPriority} parciais` : ""} · ${n} famílias calibradas${crossValidation ? ` · validação: ${Number(crossValidation.mape * 100).toFixed(2)}% MAPE (n=${crossValidation.tested})` : ""}${temporalHoldout ? ` · temporal: ${Number(temporalHoldout.mape * 100).toFixed(2)}% MAPE · cobertura ${Number(temporalHoldout.coverage * 100).toFixed(2)}% (n=${temporalHoldout.predicted})` : ""}`
+    ? `${records} registros no catálogo · ${priority} preços na validação histórica · ${observedRows.length + reportedRows.filter(row => row.available === "true").length} preços adicionais para consulta exata${partialPriority ? ` + ${partialPriority} parciais` : ""} · ${n} famílias calibradas${crossValidation ? ` · validação: ${Number(crossValidation.mape * 100).toFixed(2)}% MAPE (n=${crossValidation.tested})` : ""}${temporalHoldout ? ` · temporal: ${Number(temporalHoldout.mape * 100).toFixed(2)}% MAPE · cobertura ${Number(temporalHoldout.coverage * 100).toFixed(2)}% (n=${temporalHoldout.predicted})` : ""}`
     : "Base histórica · cotação oficial necessária";
   updateProfile();
   updateMetlife();
@@ -116,7 +130,92 @@ function interpolateRiskPremium(below, above, ratio) {
     return Math.exp(Math.log(below) + (Math.log(above) - Math.log(below)) * ratio);
   return below + (above - below) * ratio;
 }
+function priceAlongCapital(lower, upper, capital) {
+  const fraction = (capital - Number(lower.life_cover)) / (Number(upper.life_cover) - Number(lower.life_cover));
+  return Number(lower.monthly_premium) + fraction * (Number(upper.monthly_premium) - Number(lower.monthly_premium));
+}
+
+function buildCapitalRanges(reports, holdout) {
+  const byId = new Map(reports.map(row => [[row.model_id, row.provider].join("|"), row]));
+  const ranges = [];
+  for (const trial of holdout) {
+    const [lower, upper, check] = [trial.lower_model_id, trial.upper_model_id, trial.holdout_model_id]
+      .map(id => byId.get([id, trial.provider].join("|")));
+    if (![lower, upper, check].every(row => row?.available === "true" && Number(row.monthly_premium) > 0)) continue;
+    if ([lower, upper, check].some(row => row.quoted_life_cover !== row.life_cover ||
+      row.quoted_critical_illness_cover !== row.critical_illness_cover)) continue;
+    if (["source_date", "age", "smoker", "to_age", "critical_illness_cover", "product", "quoted_term", "occupation_rated"]
+      .some(field => lower[field] !== upper[field] || lower[field] !== check[field])) continue;
+    const capital = Number(check.life_cover);
+    if (!(Number(lower.life_cover) < capital && capital < Number(upper.life_cover))) continue;
+    const estimate = priceAlongCapital(lower, upper, capital);
+    const error = Math.abs(estimate - Number(check.monthly_premium));
+    if (!Number.isFinite(Number(trial.predicted_monthly)) || Math.abs(estimate - Number(trial.predicted_monthly)) > 0.000051 ||
+        error > 1 || error / Number(check.monthly_premium) > 0.05) continue;
+    ranges.push({ lower, upper, check });
+  }
+  return ranges;
+}
+
+function validatedCapitalQuotes(p) {
+  const smoker = p.smoker === "smoker" ? "Yes" : "No";
+  const groups = new Map();
+  for (const { lower, upper, check } of validatedCapitalRanges) {
+    if (Number(lower.age) !== p.age || lower.smoker !== smoker || Number(lower.to_age) !== p.toAge ||
+        Number(lower.critical_illness_cover) !== p.ci || p.life <= Number(lower.life_cover) ||
+        p.life >= Number(upper.life_cover)) continue;
+    const key = [lower.model_id, upper.model_id, check.model_id].join("|");
+    if (!groups.has(key)) groups.set(key, { lower, upper, check, quotes: [] });
+    groups.get(key).quotes.push({ provider: lower.provider, product: lower.product, term: lower.quoted_term,
+      sourceDate: lower.source_date, premium: priceAlongCapital(lower, upper, p.life),
+      occupationRated: lower.occupation_rated === "Yes" });
+  }
+  const compatible = [...groups.values()].filter(group => group.quotes.length === 3 &&
+    new Set(group.quotes.map(q => q.provider)).size === 3);
+  compatible.sort((a, b) => b.check.source_date.localeCompare(a.check.source_date) ||
+    (Number(a.upper.life_cover) - Number(a.lower.life_cover)) - (Number(b.upper.life_cover) - Number(b.lower.life_cover)));
+  const range = compatible[0];
+  if (!range) return null;
+  const quotes = range.quotes.sort((a, b) => a.premium - b.premium);
+  const sameEndAge = quotes.filter(q => q.term === `To Age ${p.toAge}`);
+  return { quotes, exact: false, capitalRange: range, sameEndAge: sameEndAge.length ? sameEndAge : undefined,
+    termPending: !sameEndAge.length, sourceDate: range.check.source_date };
+}
+
+function capturedReportFor(p) {
+  const matching = reportedRows.filter(row =>
+    Number(row.age) === p.age && Number(row.to_age) === p.toAge &&
+    Number(row.life_cover) === p.life && Number(row.critical_illness_cover) === p.ci &&
+    row.smoker === (p.smoker === "smoker" ? "Yes" : "No"));
+  if (!matching.length) return null;
+  const latest = matching.reduce((a, b) => a.source_date > b.source_date ||
+    (a.source_date === b.source_date && Number(a.model_id) > Number(b.model_id)) ? a : b);
+  const rows = matching.filter(row => row.model_id === latest.model_id);
+  if (rows.length !== 3 || new Set(rows.map(row => row.provider)).size !== 3) return null;
+  const quotes = rows.filter(row => row.available === "true" && Number(row.monthly_premium) > 0)
+    .map(row => ({ provider: row.provider, product: row.product, premium: Number(row.monthly_premium),
+      sourceDate: row.source_date, modelId: row.model_id, term: row.quoted_term,
+      differentCapital: Number(row.quoted_life_cover) !== p.life || Number(row.quoted_critical_illness_cover) !== p.ci,
+      quotedLife: Number(row.quoted_life_cover), quotedCi: Number(row.quoted_critical_illness_cover),
+      occupationRated: row.occupation_rated === "Yes" })).sort((a, b) => a.premium - b.premium);
+  const missing = rows.filter(row => row.available === "false");
+  if (quotes.length + missing.length !== 3) return null;
+  const reasons = missing.map(row => {
+    const limit = /^maximum_end_age_(\d+)$/.exec(row.unavailable_reason);
+    const reason = limit ? `idade final máxima de ${limit[1]} anos` :
+      row.unavailable_reason === "end_age_not_supported" ? "idade final fora do limite do produto" : "produto sem preço no relatório";
+    return `${row.provider} · ${reason}`;
+  });
+  const exactTerms = quotes.filter(q => !q.differentCapital && q.term === `To Age ${p.toAge}`);
+  return { quotes, exact: true, reported: true, sourceDate: latest.source_date, modelId: latest.model_id,
+    sameEndAge: exactTerms.length ? exactTerms : undefined, termPending: !exactTerms.length,
+    partial: Boolean(missing.length), gap: missing.length ? {
+      provider: missing.map(row => row.provider).join(", "), reason: reasons.join(". "), modelId: latest.model_id,
+    } : null };
+}
 function priorityQuotesFor(p) {
+  const report = capturedReportFor(p);
+  if (report) return report;
   let expectedSmoker = p.smoker === "smoker" ? "Yes" : "No";
   const newExact = observedRows.filter(row =>
     row.smoker === expectedSmoker && Number(row.age) === p.age && Number(row.to_age) === p.toAge &&
@@ -215,6 +314,8 @@ function priorityQuotesFor(p) {
   }
   if (new Set(exact.map((row) => row.provider)).size === 3)
     return { quotes: exact, exact: true };
+  const capitalMatch = validatedCapitalQuotes(p);
+  if (capitalMatch) return capitalMatch;
   let providers = ["Legal & General", "Zurich", "Aviva"],
     interpolated = providers.map((provider) => {
       let rows = candidates.filter((row) => row.provider === provider),
@@ -383,9 +484,12 @@ function waiverComparisonFor(p) {
   return { quotes, sameEndAge, exact: true };
 }
 function quotedTerm(quote) {
-  return quote.term.startsWith("To Age ")
+  const term = quote.term.startsWith("To Age ")
     ? `até ${quote.term.slice(7)} anos`
     : `${parseInt(quote.term, 10)} anos de prazo`;
+  return quote.differentCapital
+    ? `${term} · capital oferecido: vida ${gbp(quote.quotedLife)} e doenças graves ${gbp(quote.quotedCi)}`
+    : term;
 }
 function payload() {
   let age = num("age"),
@@ -483,16 +587,16 @@ function makeSummary(p, r) {
       `Isenção de mensalidade incluída · comparativo de ${r.providerQuotes[0].sourceDate}`);
   lines.push(
     r.supported
-      ? `${r.waiverPending ? "Referência geral para a proteção principal" : "Estimativa"}: ${gbp(r.main)}/mês`
+      ? `${r.waiverPending || (r.reportNote && !r.providerQuotes?.length) ? "Referência geral para a proteção principal" : "Estimativa"}: ${gbp(r.main)}/mês`
       : "Estimativa principal: requer cotação oficial",
   );
   if (r.supported)
     lines.push(
-      `${r.withWaiver ? "Faixa para a idade final solicitada" : r.providerQuotes?.length ? r.providerGap ? "Faixa observada entre seguradoras disponíveis" : r.priorityExact ? "Faixa observada entre seguradoras" : "Faixa estimada entre seguradoras" : "Faixa provável"}: ${gbp(r.low)}–${gbp(r.high)}/mês`,
+      `${r.detailed && !r.termPending ? "Faixa para a idade final solicitada" : r.providerQuotes?.length ? r.providerGap ? "Faixa observada entre seguradoras disponíveis" : r.priorityExact ? "Faixa observada entre seguradoras" : "Faixa estimada entre seguradoras" : "Faixa provável"}: ${gbp(r.low)}–${gbp(r.high)}/mês`,
     );
   if (r.provider)
     lines.push(`Referência prioritária: ${r.provider} — ${gbp(r.main)}/mês`);
-  if (r.providerQuotes?.length && !r.withWaiver)
+  if (r.providerQuotes?.length && !r.detailed)
     lines.push(
       `Seguradoras prioritárias: ${r.providerQuotes.map((quote) => `${quote.provider} ${gbp(quote.premium)}`).join(" · ")}${r.providerGap ? ` · ${r.providerGap.provider} indisponível` : ""}`,
     );
@@ -507,9 +611,10 @@ function makeSummary(p, r) {
       `MetLife MultiProtect: ${m.c} Cota${m.c > 1 ? "s" : ""}${m.lux ? " + Luxações" : ""}${m.child ? " + Crianças" : ""}`,
       `${gbp(m.total)}/mês (${gbp(m.base)} Essencial${m.lux ? " + " + gbp(m.lux) + " Luxações" : ""}${m.child ? " + " + gbp(m.child) + " Crianças" : ""})`,
     );
-  if (r.withWaiver)
+  if (r.detailed)
     for (const q of r.providerQuotes)
-      lines.push(`${q.provider} · ${quotedTerm(q)} · ${gbp(q.premium)}/mês${m.c ? ` · com MetLife ${gbp(q.premium + m.total)}/mês` : ""}`);
+      lines.push(`${q.provider} · ${quotedTerm(q)} · ${gbp(q.premium)}/mês${m.c ? ` · com MetLife ${gbp(q.premium + m.total)}/mês` : ""}${q.occupationRated ? " · preço do perfil profissional de referência" : ""}`);
+  if (r.reportNote) lines.push(r.reportNote);
   if (r.complete)
     lines.push("", `Total estimado: ${gbp(r.main + m.total)}/mês`);
   else lines.push("", "Total do pacote a confirmar.");
@@ -588,7 +693,24 @@ function render(p) {
   r.waiverPending = Boolean(waiverMatch && !r.withWaiver);
   let priorityMatch = r.withWaiver ? waiverMatch : priorityQuotesFor(p),
     priorityQuotes = priorityMatch.quotes;
-  if (priorityMatch.gap)
+  r.termPending = Boolean(priorityMatch.termPending);
+  r.capitalRange = Boolean(priorityMatch.capitalRange);
+  r.detailed = r.withWaiver || r.capitalRange || Boolean(priorityMatch.reported && priorityQuotes.length);
+  if (r.capitalRange) {
+    const { lower, upper, check } = priorityMatch.capitalRange;
+    r.reportNote = `Estimativa entre capitais de ${gbp(Number(lower.life_cover))} e ${gbp(Number(upper.life_cover))}. O cálculo foi conferido com uma cotação independente de ${gbp(Number(check.life_cover))} para este perfil e prazo.`;
+    warnings.unshift(r.reportNote);
+  }
+  if (priorityMatch.reported) {
+    r.reportNote = `Comparativo indicativo de ${priorityMatch.sourceDate}`;
+    if (priorityMatch.gap) r.reportNote += `. ${priorityMatch.gap.reason}`;
+    if (priorityMatch.termPending && priorityQuotes.length)
+      r.reportNote += ". Confirme o capital e o prazo devolvidos para esta solicitação.";
+    if (!priorityQuotes.length)
+      r.reportNote += ". As três seguradoras ficaram sem preço. O valor de referência vem do modelo geral.";
+    warnings.unshift(r.reportNote);
+  }
+  if (priorityMatch.gap && !priorityMatch.reported)
     warnings.unshift(
       priorityMatch.partial
         ? `Cotação oficial ${priorityMatch.gap.modelId}: ${priorityMatch.gap.provider} não retornou preço (${priorityMatch.gap.reason}). Os preços oficiais disponíveis foram preservados sem inventar o valor ausente.`
@@ -623,7 +745,7 @@ function render(p) {
     );
     if (
       !priorityMatch.exact &&
-      !priorityMatch.partial &&
+      !priorityMatch.partial && !r.capitalRange &&
       (segmentValidation.tested || 0) < 30
     )
       warnings.push(
@@ -644,7 +766,7 @@ function render(p) {
       "Estimativa do modelo histórico agregado; ainda sem interpolação validada das três seguradoras prioritárias para esta combinação.",
     );
   if (r.waiverPending) warnings.unshift(waiverMatch.note + " O preço-base apresentado é a estimativa geral.");
-  r.complete = r.supported && !r.waiverPending && !m.unavailable;
+  r.complete = r.supported && !r.waiverPending && !m.unavailable && !priorityMatch.termPending;
   $("results").classList.remove("hidden");
   $("quoteCount").textContent = r.supported ? 1 : 0;
   $("unsupportedCount").textContent = r.complete ? 0 : 1;
@@ -655,7 +777,7 @@ function render(p) {
     ? `${gbp(r.main)}/mês`
     : "Não publicado";
   $("range").textContent = r.supported
-    ? `${r.withWaiver ? "Faixa para a idade final solicitada" : r.providerQuotes?.length ? r.providerGap ? "Faixa observada entre seguradoras disponíveis" : r.priorityExact ? "Faixa observada entre seguradoras" : "Faixa estimada entre seguradoras" : "Faixa provável"}: ${gbp(r.low)} a ${gbp(r.high)}/mês`
+    ? `${r.detailed && !r.termPending ? "Faixa para a idade final solicitada" : r.providerQuotes?.length ? r.providerGap ? "Faixa observada entre seguradoras disponíveis" : r.priorityExact ? "Faixa observada entre seguradoras" : "Faixa estimada entre seguradoras" : "Faixa provável"}: ${gbp(r.low)} a ${gbp(r.high)}/mês`
     : "O motor não publica um preço sem validação suficiente.";
   $("totalPrice").textContent = r.complete
     ? `${gbp(r.main + m.total)}/mês`
@@ -691,12 +813,14 @@ function render(p) {
   let priorityDetail = r.providerQuotes?.length
     ? `<dt>Seguradoras prioritárias</dt><dd>${r.providerQuotes.map((quote) => `${escapeHtml(quote.provider)} ${gbp(quote.premium)}`).join(" · ")}${r.providerGap ? ` · ${escapeHtml(r.providerGap.provider)} indisponível` : ""}</dd><dt>Preço-base usado</dt><dd>${escapeHtml(r.provider)} · ${escapeHtml(r.product)}</dd><dt>Origem do preço</dt><dd>${r.priorityExact ? `SolutionBuilder ref. ${escapeHtml(r.providerQuotes[0].modelId)}${r.providerQuotes[0].sourceDate ? ` · ${escapeHtml(r.providerQuotes[0].sourceDate)}` : ""}` : "Interpolação de múltiplas âncoras oficiais do SolutionBuilder"}</dd>`
     : "";
-  if (r.withWaiver) {
-    const rows = r.providerQuotes.map(q => `<dt>${escapeHtml(q.provider)}</dt><dd>${gbp(q.premium)}/mês · ${escapeHtml(quotedTerm(q))}${m.c ? ` · com MetLife ${gbp(q.premium + m.total)}/mês` : ""}</dd>`).join("");
-    priorityDetail = `<dt>Comparativo com isenção</dt><dd>SolutionBuilder · ${escapeHtml(r.providerQuotes[0].sourceDate)}</dd>${rows}<dt>Preço usado no total</dt><dd>${escapeHtml(r.provider)} · até ${p.toAge} anos</dd>`;
+  if (r.detailed) {
+    const rows = r.providerQuotes.map(q => `<dt>${escapeHtml(q.provider)}</dt><dd>${gbp(q.premium)}/mês · ${escapeHtml(quotedTerm(q))}${m.c ? ` · com MetLife ${gbp(q.premium + m.total)}/mês` : ""}${q.occupationRated ? " · depende da profissão de referência" : ""}</dd>`).join("");
+    priorityDetail = `<dt>${r.capitalRange ? "Estimativa por capital" : r.withWaiver ? "Comparativo com isenção" : "Comparativo sem isenção"}</dt><dd>SolutionBuilder · ${escapeHtml(r.providerQuotes[0].sourceDate)}</dd>${rows}`;
+    if (r.complete)
+      priorityDetail += `<dt>Preço usado no total</dt><dd>${escapeHtml(r.provider)} · até ${p.toAge} anos</dd>`;
   }
-  const evidence = r.withWaiver
-    ? "1 comparativo · 3 preços históricos"
+  const evidence = r.detailed
+    ? r.capitalRange ? "2 capitais de referência · 1 capital de teste · 3 seguradoras" : `1 comparativo · ${r.providerQuotes.length} preços históricos`
     : `${model?.records || 0} registros na família · confiança ${escapeHtml(confidenceLabel)}`;
   $("details").innerHTML =
     `<dt>Perfil</dt><dd>${p.age} anos · ${p.smoker === "smoker" ? "fumante" : "não fumante"}</dd><dt>Profissão</dt><dd>${escapeHtml(p.occupation)}</dd><dt>Peso · altura · IMC</dt><dd>${p.weight}kg · ${p.height}cm · ${bmi}</dd><dt>Cobertura solicitada</dt><dd>até ${p.toAge} · ${p.term} anos</dd><dt>Vida</dt><dd>${gbp(p.life)}</dd><dt>Doenças Graves</dt><dd>${gbp(p.ci)}</dd><dt>Premium</dt><dd>Garantido</dd>${priorityDetail}<dt>Base de referência</dt><dd>${evidence}</dd>`;
