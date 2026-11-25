@@ -56,7 +56,7 @@ A base histórica existente permanece publicada até que haja volume suficiente 
 
 A calculadora retorna estimativa para vida e vida + CI Standard/Core quando existe uma família compatível. Fora das faixas validadas ela usa extrapolação, amplia o intervalo e sinaliza baixa confiança. Doenças graves isoladas usam apenas o comparativo correspondente ou uma faixa de capitais testada para esse benefício. Fora dessas condições, a tela indica a necessidade de cotação oficial. Os valores não constituem cotação ou garantia de aceitação. Confirme sempre o resultado final no SolutionBuilder e com a seguradora.
 
-Quando a combinação possui lookup histórico direto, a faixa provável usa a margem percentual da família do modelo, em vez de reutilizar um resíduo absoluto maior que o próprio prêmio. Isso evita intervalos artificiais começando em £0 sem reduzir a margem ampliada aplicada a interpolações e extrapolações.
+A faixa reduzida do modelo exige correspondência entre seus parâmetros, seu preço e uma mensalidade documentada para aquele perfil. Uma chave gerada na tabela de estimativas mantém a margem do modelo quando essa correspondência falta. A estimativa agregada de vida com doenças graves também identifica a incerteza sobre a estrutura do pagamento presente nos arquivos antigos.
 
 Quando não existe uma malha interpolável com Zurich, Legal & General e Aviva para a combinação solicitada, a calculadora continua entregando a estimativa pedida, mas identifica explicitamente o resultado como “modelo histórico agregado”. Esse fallback não é apresentado como validação específica das três seguradoras prioritárias.
 

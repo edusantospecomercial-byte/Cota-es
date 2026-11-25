@@ -320,3 +320,10 @@ for (const rows of profileGroups.values()) {
 assert.ok(individualMatches && multiPolicyReferences);
 console.log(JSON.stringify({itemisedLifeRecords: illustratedRows.length, matchedIndividualProfiles: individualMatches,
   matchedMultiPolicyReferences: multiPolicyReferences}));
+
+ctx.inputs = { age: 65, smoker: "non_smoker", life: 20000, ci: 0, toAge: 80 };
+assert.equal(run("documentedLookupPrice(inputs, 17.92)"), true);
+assert.equal(run("documentedLookupPrice(inputs, 18.52)"), false);
+ctx.inputs = { age: 50, smoker: "non_smoker", life: 50000, ci: 10000, toAge: 75 };
+assert.equal(run("documentedLookupPrice(inputs, 27.04)"), true);
+assert.equal(run("documentedLookupPrice(inputs, 0.99)"), false);

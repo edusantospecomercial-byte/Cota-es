@@ -208,6 +208,19 @@ function validatedCapitalQuotes(p) {
     termPending: !sameEndAge.length, sourceDate: range.check.source_date };
 }
 
+function documentedLookupPrice(p, amount) {
+  if (!(amount > 0)) return false;
+  const smoker = p.smoker === "smoker" ? "Yes" : "No";
+  const matches = row => Number(row.age) === p.age && row.smoker === smoker &&
+    Number(row.to_age) === p.toAge && Number(row.life_cover) === p.life;
+  if (!p.ci && illustratedLifeRows.some(row => matches(row) && Number(row.base_monthly) === amount))
+    return true;
+  return reportedRows.concat(verifiedArchiveRows).some(row => matches(row) && row.available === "true" &&
+    Number(row.critical_illness_cover) === p.ci && row.life_cover === row.quoted_life_cover &&
+    row.critical_illness_cover === row.quoted_critical_illness_cover && row.occupation_rated === "No" &&
+    row.quoted_term === `To Age ${p.toAge}` && Number(row.monthly_premium) === amount);
+}
+
 function illustratedLifeFor(p) {
   if (!p.life || p.ci || p.waiver === "Yes") return null;
   const smoker = p.smoker === "smoker" ? "Yes" : "No";
@@ -697,7 +710,7 @@ function render(p) {
   }
   if (model) {
     let lookupKey = `${p.age}|${p.toAge}|${p.life}|${p.ci}|${p.smoker === "smoker" ? 1 : 0}`,
-      directLookup = model.lookup?.[lookupKey] != null,
+      directLookup = documentedLookupPrice(p, model.lookup?.[lookupKey]),
       outside =
         p.age < model.ageMin ||
         p.age > model.ageMax ||
@@ -832,6 +845,10 @@ function render(p) {
     warnings.unshift(
       "Estimativa do modelo histórico agregado; ainda sem interpolação validada das três seguradoras prioritárias para esta combinação.",
     );
+  if (p.life && p.ci && !r.providerQuotes?.length && !priorityMatch.reported && r.supported) {
+    r.reportNote = "A base histórica inclui coberturas em que o diagnóstico antecipa o pagamento de vida. Confirme o preço do pagamento independente no SolutionBuilder.";
+    warnings.push(r.reportNote);
+  }
   if (r.waiverPending) warnings.unshift(waiverMatch.note + " O preço-base apresentado é a estimativa geral.");
   r.complete = r.supported && !r.waiverPending && !m.unavailable && !priorityMatch.termPending;
   $("results").classList.remove("hidden");
