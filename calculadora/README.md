@@ -36,6 +36,16 @@ Atualização de 16/11/2026: incorporado o caso Zurich de 63 anos, não fumante,
 
 As 39 mensalidades registradas em 22/11 também estão disponíveis para os 13 cenários exatos da coleta. Interpolações em outros cenários continuam usando a base da validação histórica. Nos comparativos com isenção, o total usa o menor preço que explicita a idade final solicitada. O resultado mostra à parte os prazos que a seguradora devolveu em anos.
 
+### Resultado da coleta de 24 e 25 de novembro
+
+A primeira bateria para o perfil de 50 anos, não fumante, reuniu 179 cenários distintos. Houve 176 mensalidades da Zurich, 176 da Legal & General e 176 da Aviva. Outros nove resultados documentam indisponibilidade. São 53 cenários de vida, 94 de vida com doenças graves independentes e 32 de doenças graves isoladas. Algumas respostas oferecem outro capital ou prazo. A interface discrimina esses casos.
+
+Antes de consultar 99 desses cenários, registramos 285 previsões por seguradora entre capitais conhecidos. O erro absoluto médio sobre todas as previsões comparáveis foi **£0,09/mês**, com erro percentual absoluto médio de **0,39%**. Em 284 das 285 previsões, o desvio ficou em até £1. O maior desvio foi £1,025 antes do arredondamento. Esse resultado mede o perfil e os intervalos testados.
+
+A versão anterior (`804dc0a`) produzia um preço para a mesma seguradora em 72 desses testes. Nesses mesmos 72, o erro absoluto médio passou de **£0,44 para £0,09/mês**. Nos demais, a comparação entre as duas versões ficaria sem uma mensalidade específica da seguradora como ponto de partida. Execute `node calculadora/scripts/audit-prior-version.mjs` para reproduzir a comparação usando o histórico Git.
+
+No teste de orçamento, somamos £13 de MetLife ao menor preço das três seguradoras que respeitou integralmente o capital e o prazo pedidos. Das oito configurações selecionadas para ficar abaixo de £28, seis ficaram abaixo e duas fecharam em £28,00. O resultado mostra por que um cenário no limite do orçamento merece conferência na seguradora.
+
 ## Prioridade de provedores a partir de 20/11/2026
 
 As próximas coletas no Solution Builder devem priorizar **Zurich, Legal & General e Aviva**. O resultado mais barato do mercado deixa de ser o critério principal: os preços dessas três seguradoras devem ser registrados mesmo quando forem superiores ao `Quick Quote Solution` ou ao preço de outro provedor.
