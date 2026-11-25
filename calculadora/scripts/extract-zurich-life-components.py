@@ -6,6 +6,7 @@ import hashlib
 import re
 import subprocess
 import sys
+import zipfile
 from collections import defaultdict
 from datetime import datetime
 from decimal import Decimal
@@ -77,31 +78,46 @@ def parse_illustration(text, digest):
     return ref[1], rows
 
 
+def illustrations(source):
+    if source.suffix.lower() == ".pdf":
+        yield source.read_bytes()
+        return
+    # SolutionBuilder also delivers these PDFs inside Supporting Documents ZIPs.
+    with zipfile.ZipFile(source) as archive:
+        for member in archive.infolist():
+            name = member.filename.replace("\\", "/").rsplit("/", 1)[-1].lower()
+            if ("illustration" in name and name.endswith(".pdf")
+                    and 0 < member.file_size <= 12_000_000 and not member.flag_bits & 1):
+                yield archive.read(member)
+
+
 def main():
     cli = argparse.ArgumentParser(description=__doc__)
     cli.add_argument("folders", type=Path, nargs="+")
     args = cli.parse_args()
     listing = subprocess.run(["rg", "--files", "--null", "--hidden", "--no-ignore",
                               "--glob", "!**/.git/**", "--glob", "!**/node_modules/**",
-                              "--iglob", "*illustration*.pdf", *map(str, args.folders)],
+                              "--iglob", "*illustration*.pdf", "--iglob", "*supporting documents*.zip",
+                              *map(str, args.folders)],
                              capture_output=True)
     if listing.returncode not in (0, 1):
         sys.exit(listing.stderr.decode())
     seen_digests = set()
     by_reference = defaultdict(dict)
     for name in sorted(filter(None, listing.stdout.decode().split("\0"))):
-        digest = hashlib.sha256(Path(name).read_bytes()).hexdigest()
-        if digest in seen_digests:
-            continue
-        seen_digests.add(digest)
-        extracted = subprocess.run(["pdftotext", "-layout", name, "-"], capture_output=True, text=True)
-        if extracted.returncode:
-            continue
-        parsed = parse_illustration(extracted.stdout, digest)
-        if parsed:
-            ref, rows = parsed
-            if rows:
-                by_reference[ref][digest] = rows
+        for pdf in illustrations(Path(name)):
+            digest = hashlib.sha256(pdf).hexdigest()
+            if digest in seen_digests:
+                continue
+            seen_digests.add(digest)
+            extracted = subprocess.run(["pdftotext", "-layout", "-", "-"], input=pdf, capture_output=True)
+            if extracted.returncode:
+                continue
+            parsed = parse_illustration(extracted.stdout.decode("utf-8"), digest)
+            if parsed:
+                ref, rows = parsed
+                if rows:
+                    by_reference[ref][digest] = rows
     unique = {}
     conflicting = 0
     for versions in by_reference.values():
