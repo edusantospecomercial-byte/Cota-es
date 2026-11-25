@@ -6,6 +6,7 @@ let catalog = { models: {} },
   verifiedArchiveRows = [],
   validatedCapitalRanges = [],
   waiverRows = null,
+  individualWaivers = [],
   illustratedLifeRows = [],
   acceleratedOffers = [],
   lastPayload = null;
@@ -46,6 +47,7 @@ async function init() {
     capitalHoldout,
     illustratedLife,
     loadedAccelerated,
+    loadedIndividualWaivers,
   ] = await Promise.all([
     fetch("./data/models.json", { cache: "no-store" })
       .then((r) => r.json())
@@ -98,7 +100,12 @@ async function init() {
       .then(response => response.ok ? response.text() : "")
       .then(parsePriorityCsv)
       .catch(() => []),
+    fetch("./data/waiver-individual-offers.csv", { cache: "no-store" })
+      .then(response => response.ok ? response.text() : "")
+      .then(parsePriorityCsv)
+      .catch(() => []),
   ]);
+  individualWaivers = loadedIndividualWaivers;
   acceleratedOffers = loadedAccelerated;
   illustratedLifeRows = illustratedLife;
   reportedRows = loadedReports;
@@ -269,7 +276,7 @@ function renderAcceleratedComparison(p) {
     .sort((a, b) => Number(a.monthly_premium) - Number(b.monthly_premium));
   const entries = prices.map(row => {
     const waiver = row.waiver_to === "Expiry" ? "isenção até o fim do contrato" :
-      /^\d+$/.test(row.waiver_to) ? "isenção até os " + row.waiver_to + " anos" :
+      /^\d+$/.test(row.waiver_to) ? "isenção durante a vigência, com idade-limite informada de " + row.waiver_to + " anos" :
       "prazo de isenção sem confirmação";
     const term = row.quoted_term.startsWith("To Age ") ? "até os " + row.quoted_term.slice(7) + " anos" :
       row.quoted_term.split(" ")[0] + " anos de prazo";
@@ -573,8 +580,9 @@ function updateMetlife() {
       : "Não incluído";
 }
 function waiverComparisonFor(p) {
-  if (!waiverRows) return { note: "Os comparativos com isenção não carregaram." };
-  const matching = waiverRows.filter(row =>
+  if (!waiverRows && !individualWaivers.length)
+    return { note: "Os comparativos com isenção não carregaram." };
+  const matching = (waiverRows || []).concat(individualWaivers).filter(row =>
     p.ci === 0 && Number(row.age) === p.age && Number(row.to_age) === p.toAge &&
     Number(row.life_cover) === p.life && row.smoker === (p.smoker === "smoker" ? "True" : "False")
   );
@@ -591,7 +599,7 @@ function waiverComparisonFor(p) {
   let fingerprint, quotes;
   for (const report of reports.values()) {
     report.sort((a, b) => a.provider.localeCompare(b.provider));
-    if (report.length !== 3 || new Set(report.map(q => q.provider)).size !== 3 ||
+    if (!report.length || report.length > 3 || new Set(report.map(q => q.provider)).size !== report.length ||
         report.some(q => !Number.isFinite(q.premium) || q.premium <= 0))
       return { note: "O comparativo com isenção está incompleto." };
     const prices = JSON.stringify(report.map(q => [q.provider, q.product, q.premium, q.term, q.waiverTo]));
@@ -609,6 +617,11 @@ function quotedTerm(quote) {
   const term = quote.term.startsWith("To Age ")
     ? `até ${quote.term.slice(7)} anos`
     : `${parseInt(quote.term, 10)} anos de prazo`;
+  if (quote.waiverTo) {
+    const waiver = quote.waiverTo === "Expiry" ? "isenção até o fim do contrato" :
+      "isenção durante a vigência, com idade-limite informada de " + quote.waiverTo + " anos";
+    return term + " · " + waiver;
+  }
   return quote.differentCapital
     ? `${term} · capital oferecido: vida ${gbp(quote.quotedLife)} e doenças graves ${gbp(quote.quotedCi)}`
     : term;
@@ -817,6 +830,12 @@ function render(p) {
   r.waiverPending = Boolean(waiverMatch && !r.withWaiver);
   let priorityMatch = r.withWaiver ? waiverMatch : priorityQuotesFor(p),
     priorityQuotes = priorityMatch.quotes;
+  if (r.withWaiver && priorityQuotes.length < 3) {
+    const missing = ["Zurich", "Legal & General", "Aviva"].filter(provider =>
+      !priorityQuotes.some(quote => quote.provider === provider));
+    warnings.unshift("Nesse comparativo há preço com isenção confirmado para " +
+      priorityQuotes.map(quote => quote.provider).join(" e ") + ". A confirmar para " + missing.join(" e ") + ".");
+  }
   r.termPending = Boolean(priorityMatch.termPending);
   r.capitalRange = Boolean(priorityMatch.capitalRange);
   r.detailed = r.withWaiver || r.capitalRange || Boolean(priorityMatch.reported && priorityQuotes.length);
@@ -845,7 +864,7 @@ function render(p) {
         ? `Cotação oficial ${priorityMatch.gap.modelId}: ${priorityMatch.gap.provider} não retornou preço (${priorityMatch.gap.reason}). Os preços oficiais disponíveis foram preservados sem inventar o valor ausente.`
         : `Cotação oficial ${priorityMatch.gap.modelId}: ${priorityMatch.gap.provider} não retornou preço (${priorityMatch.gap.reason}). A estimativa geral permanece disponível, sem inventar preço específico dessa seguradora.`,
     );
-  if (priorityQuotes.length === 3 || ((r.capitalRange || priorityMatch.partial) && priorityQuotes.length)) {
+  if (priorityQuotes.length === 3 || ((r.capitalRange || r.withWaiver || priorityMatch.partial) && priorityQuotes.length)) {
     const comparable = priorityMatch.sameEndAge || priorityQuotes;
     let selected = comparable[0];
     const segmentKey = p.ci > 0

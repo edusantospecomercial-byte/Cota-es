@@ -1,5 +1,6 @@
 """Export comparable UK level-life quotes with an explicit waiver from local PDFs."""
 
+import argparse
 import csv
 import hashlib
 import re
@@ -18,14 +19,15 @@ COLUMNS = ("source_date", "age", "smoker", "to_age", "life_cover", "provider",
            "product", "monthly_premium", "quoted_term", "waiver_to", "sha256")
 
 
-def read_comparison(path):
+def read_comparison(path, partial=False):
     pages = subprocess.check_output(
-        ["pdftotext", "-layout", "-f", "1", "-l", "2", str(path), "-"],
+        ["pdftotext", "-layout", str(path), "-"],
         encoding="utf-8",
     ).split("\f")
     if len(pages) < 2:
         return None
-    cover, results = pages[:2]
+    cover = pages[0]
+    results = "\n".join(pages[1:]).partition("Products Not Quoting:")[0]
     benefits = re.findall(r"^\s*•\s*([^\n]+)", cover, re.M)
     if len(benefits) != 1 or not re.search(r"Quotation basis:\s*Benefit-led", cover):
         return None
@@ -50,19 +52,25 @@ def read_comparison(path):
                    + r"\s+£(\d+\.\d{2})\s+Guaranteed\s+No\s+Monthly\s+£([\d,]+)"
                      r"\s+(To Age \d+|\d+ years?)\s+Level\s+(Expiry|\d+)\s+None\s+No[ \t]*$")
         matches = re.findall(pattern, results.split("Non Underwritten Results", 1)[1], re.M)
-        if len(matches) != 1:
+        if not matches and partial:
+            continue
+        if len(set(matches)) != 1:
             return None
         price, amount, term, waiver = matches[0]
         duration = int(re.search(r"\d+", term)[0])
         valid_term = duration == end if term.startswith("To Age") else duration in (end - age, end - age - 1)
-        if int(amount.replace(",", "")) != life or not valid_term or float(price) <= 0:
+        if not valid_term or float(price) <= 0:
+            return None
+        if int(amount.replace(",", "")) != life:
+            if partial:
+                continue
             return None
         rows.append((requested.isoformat(), age, client[1].lower() == "smoker", end,
                      life, provider, product, price, term, waiver, digest))
-    return reference[1], rows
+    return (reference[1], rows) if rows else None
 
 
-def main(roots):
+def main(roots, supplemental=False):
     paths = subprocess.run(
         ["rg", "--files", "--hidden", "--no-ignore", "-0", "-g", "!**/.git/**",
          "-g", "Comparison Report - without commission.pdf", *roots],
@@ -71,8 +79,18 @@ def main(roots):
     if paths.returncode not in (0, 1):
         raise SystemExit(paths.stderr.decode())
     reports = {}
+    represented = set()
+    if supplemental:
+        with (Path(__file__).resolve().parent.parent / "data/comparisons-with-waiver.csv").open() as source:
+            represented = {row["sha256"] for row in csv.DictReader(source)}
+    seen = set()
     for filename in sorted(set(paths.stdout.decode().split("\0")) - {""}):
-        result = read_comparison(Path(filename))
+        path = Path(filename)
+        digest = hashlib.sha256(path.read_bytes()).hexdigest()
+        if digest in seen or digest in represented:
+            continue
+        seen.add(digest)
+        result = read_comparison(path, partial=supplemental)
         if result is None:
             continue
         reference, rows = result
@@ -88,6 +106,8 @@ def main(roots):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        raise SystemExit("Pass one or more directories holding Comparison Reports.")
-    main(sys.argv[1:])
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("roots", nargs="+", type=Path)
+    parser.add_argument("--supplemental", action="store_true", help="Include individually verified offers outside the complete-report dataset.")
+    options = parser.parse_args()
+    main(options.roots, options.supplemental)

@@ -49,7 +49,8 @@ for (const value of ["£23.72", "£24.07", "£24.46", "14 anos de prazo", "até 
   assert.ok(quoted.text.includes(value), value);
   assert.ok(node("details").innerHTML.includes(value), value);
 }
-const evidence = run("waiverRows");
+const completeEvidence = run("waiverRows");
+const evidence = run("waiverRows.concat(individualWaivers)");
 const captures = run("observedRows");
 const group = (rows, key) => {
   const groups = new Map();
@@ -63,7 +64,14 @@ const reports = group(evidence, "sha256");
 assert.ok(reports.size > 0);
 for (const [hash, rows] of reports) {
   assert.match(hash, /^[a-f0-9]{64}$/);
-  assert.deepEqual(Array.from(rows, r => r.provider).sort(), ["Aviva", "Legal & General", "Zurich"]);
+  const providers = Array.from(rows, r => r.provider).sort();
+  if (completeEvidence.some(row => row.sha256 === hash)) {
+    assert.deepEqual(providers, ["Aviva", "Legal & General", "Zurich"]);
+  } else {
+    assert.ok(providers.length >= 1 && providers.length <= 3);
+    assert.equal(new Set(providers).size, providers.length);
+    assert.ok(providers.every(provider => ["Aviva", "Legal & General", "Zurich"].includes(provider)));
+  }
   assert.equal(new Set(rows.map(r => [r.source_date,r.age,r.to_age,r.life_cover,r.smoker].join("|"))).size, 1);
   for (const r of rows) {
     assert.ok(Number(r.monthly_premium) > 0);
@@ -85,6 +93,9 @@ for (const key of profiles) {
     [r.provider, r.monthly_premium, r.quoted_term, r.waiver_to].join("|")).sort().join(";")));
   if (signatures.size > 1) {
     assert.match(match.note, /divergem/);
+    assert.equal(match.quotes, undefined);
+  } else if (![...reportsOnDate.values()].flat().some(row => row.quoted_term === `To Age ${end}`)) {
+    assert.match(match.note, /idade de término/);
     assert.equal(match.quotes, undefined);
   } else {
     assert.equal(match.exact, true);
@@ -138,7 +149,7 @@ for (const rows of scenarios.values()) {
   }
 }
 console.log(JSON.stringify({ verifiedReportsWithWaiver: reports.size, resolvedProfiles,
-  conflictingProfiles: profiles.size - resolvedProfiles, verifiedAdditionalCaptures: captures.length,
+  profilesRequiringConfirmation: profiles.size - resolvedProfiles, verifiedAdditionalCaptures: captures.length,
   previouslyComparablePrices: historicComparison.length,
   previousMapeOnComparableCaptures: historicComparison.length ?
     historicComparison.reduce((a, b) => a + b, 0) / historicComparison.length : null }));
