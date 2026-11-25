@@ -7,6 +7,7 @@ let catalog = { models: {} },
   validatedCapitalRanges = [],
   waiverRows = null,
   illustratedLifeRows = [],
+  acceleratedOffers = [],
   lastPayload = null;
 const $ = (id) => document.getElementById(id),
   num = (id) => Number($(id).value || 0),
@@ -44,6 +45,7 @@ async function init() {
     loadedReports,
     capitalHoldout,
     illustratedLife,
+    loadedAccelerated,
   ] = await Promise.all([
     fetch("./data/models.json", { cache: "no-store" })
       .then((r) => r.json())
@@ -92,7 +94,12 @@ async function init() {
       .then(response => response.ok ? response.text() : "")
       .then(parsePriorityCsv)
       .catch(() => []),
+    fetch("./data/accelerated-comparisons.csv", { cache: "no-store" })
+      .then(response => response.ok ? response.text() : "")
+      .then(parsePriorityCsv)
+      .catch(() => []),
   ]);
+  acceleratedOffers = loadedAccelerated;
   illustratedLifeRows = illustratedLife;
   reportedRows = loadedReports;
   validatedCapitalRanges = buildCapitalRanges(loadedReports, capitalHoldout);
@@ -194,6 +201,7 @@ function validatedCapitalQuotes(p) {
     if (!groups.has(key)) groups.set(key, { lower, upper, check, axis, width: Number(upper[axis]) - Number(lower[axis]), quotes: [] });
     groups.get(key).quotes.push({ provider: lower.provider, product: lower.product, term: lower.quoted_term,
       sourceDate: check.source_date, premium: priceAlongCapital(lower, upper, capital),
+      testErrorGBP: Math.abs(priceAlongCapital(lower, upper, Number(check[axis])) - Number(check.monthly_premium)),
       occupationRated: lower.occupation_rated === "Yes" });
   }
   const compatible = [...groups.values()].filter(group =>
@@ -220,6 +228,38 @@ function documentedLookupPrice(p, amount) {
     Number(row.critical_illness_cover) === p.ci && row.life_cover === row.quoted_life_cover &&
     row.critical_illness_cover === row.quoted_critical_illness_cover && row.occupation_rated === "No" &&
     row.quoted_term === `To Age ${p.toAge}` && Number(row.monthly_premium) === amount);
+}
+
+function renderAcceleratedComparison(p) {
+  const panel = $("acceleratedComparison");
+  panel.hidden = true;
+  panel.open = false;
+  $("acceleratedOffers").textContent = "";
+  if (!p.life || !p.ci) return;
+  const smoker = p.smoker === "smoker" ? "Yes" : "No";
+  const matching = acceleratedOffers.filter(row => row.smoker === smoker &&
+    Number(row.age) === p.age && Number(row.to_age) === p.toAge &&
+    Number(row.life_cover) === p.life && Number(row.earlier_ci_cover) === p.ci);
+  if (!matching.length) return;
+  const latest = matching.reduce((a, b) => a.source_date > b.source_date ||
+    (a.source_date === b.source_date && Number(a.reference) > Number(b.reference)) ? a : b);
+  const prices = matching.filter(row => row.reference === latest.reference)
+    .sort((a, b) => Number(a.monthly_premium) - Number(b.monthly_premium));
+  const entries = prices.map(row => {
+    const waiver = row.waiver_to === "Expiry" ? "isenção até o fim do contrato" :
+      /^\d+$/.test(row.waiver_to) ? "isenção até os " + row.waiver_to + " anos" :
+      "prazo de isenção sem confirmação";
+    const term = row.quoted_term.startsWith("To Age ") ? "até os " + row.quoted_term.slice(7) + " anos" :
+      row.quoted_term.split(" ")[0] + " anos de prazo";
+    const detail = [term, "vida " + gbp(Number(row.quoted_life_cover)),
+      "vida ou diagnóstico " + gbp(Number(row.quoted_earlier_ci_cover)), waiver, "TPD " + row.tpd_basis];
+    if (row.occupation_rated === "Yes") detail.push("preço depende da profissão");
+    return `<dt>${escapeHtml(row.provider)}</dt><dd><b>${gbp(Number(row.monthly_premium))}/mês</b> · ${escapeHtml(detail.join(" · "))}</dd>`;
+  });
+  $("acceleratedSource").textContent = "Comparativo de " + latest.source_date +
+    " · referência " + latest.reference + " · mensalidades antes da MetLife.";
+  $("acceleratedOffers").innerHTML = entries.join("");
+  panel.hidden = false;
 }
 
 function illustratedLifeFor(p) {
@@ -686,6 +726,7 @@ function makeSummary(p, r) {
   return lines.join("\n");
 }
 function render(p) {
+  renderAcceleratedComparison(p);
   $("coverError").textContent = "";
   if (p.toAge <= p.age)
     throw Error(`A cobertura até ${p.toAge} anos exige idade atual menor.`);
@@ -760,6 +801,8 @@ function render(p) {
   if (r.capitalRange) {
     const { lower, upper, check, axis } = priorityMatch.capitalRange;
     r.reportNote = `Estimativa entre capitais de ${axis === "life_cover" ? "vida" : "doenças graves"} de ${gbp(Number(lower[axis]))} e ${gbp(Number(upper[axis]))}. O cálculo foi conferido com uma cotação independente de ${gbp(Number(check[axis]))} para este perfil e prazo em ${check.source_date}.`;
+    const maximumError = Math.max(...priorityQuotes.map(quote => quote.testErrorGBP));
+    r.reportNote += " Nesse capital de teste, a maior diferença entre a previsão e o preço do relatório foi de " + gbp(maximumError) + "/mês.";
     const missing = ["Zurich", "Legal & General", "Aviva"].filter(provider =>
       !priorityQuotes.some(quote => quote.provider === provider));
     if (missing.length) r.reportNote += " Sem estimativa validada nesse intervalo para " + missing.join(" e ") + ".";

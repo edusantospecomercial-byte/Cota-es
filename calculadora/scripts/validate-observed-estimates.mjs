@@ -228,6 +228,30 @@ const twoCarriers = calculate(65, 83000, 10000, age31);
 assert.equal(twoCarriers.capitalRange, true);
 assert.deepEqual(Array.from(twoCarriers.providerQuotes, q => q.provider).sort(), ["Legal & General", "Zurich"]);
 assert.equal(twoCarriers.provider, "Zurich");
+const variantRows = run("acceleratedOffers");
+const variantKeys = new Set();
+for (const row of variantRows) {
+  const key = [row.reference, row.provider].join("|");
+  assert.ok(!variantKeys.has(key));
+  variantKeys.add(key);
+  assert.match(row.sha256, /^[0-9a-f]{64}$/);
+  assert.ok(["Zurich", "Legal & General", "Aviva"].includes(row.provider));
+  assert.ok(Number(row.age) < Number(row.to_age) && Number(row.quoted_earlier_ci_cover) > 0 &&
+    Number(row.quoted_life_cover) > 0 && Number(row.monthly_premium) > 0);
+  assert.ok(["Own", "Specified", "FATs"].includes(row.tpd_basis));
+}
+const independent = calculate(65, 100000, 10000, age31);
+assert.equal(independent.main, 11.08);
+assert.equal(node("acceleratedComparison").hidden, false);
+for (const label of ["£11.21", "£11.69", "£13.33", "£10,557.00", "preço depende da profissão"]) {
+  assert.ok(node("acceleratedOffers").innerHTML.includes(label), label);
+}
+assert.ok(!independent.text.includes("£11.21"));
+calculate(65, 50000, 10000, {age: 49, term: 16});
+assert.ok(node("acceleratedOffers").innerHTML.includes("£20.41"));
+assert.ok(node("acceleratedSource").textContent.includes("2026-11-25"));
+calculate(65, 50000, 0, age31);
+assert.equal(node("acceleratedComparison").hidden, true);
 const heldOut = run("validatedCapitalRanges");
 assert.ok(heldOut.length >= 36);
 const errors = heldOut.map(({lower, upper, check, axis}) => {
