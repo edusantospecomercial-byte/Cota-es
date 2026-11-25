@@ -10,7 +10,9 @@ Registrar cada resultado em `data/next-priority-results-2026-11-21.csv`. O arqui
 2. Abrir o perfil de calibração autorizado já existente. Não usar cliente real novo.
 3. No registro, revisar as abas **Client**, **KYC**, **Protection** e **Property** somente quando necessário para atualizar idade/fumante.
 4. Abrir a aba **Quotes**.
-5. Clicar em **Source Quotes**. Esse é o caminho correto para o Solution Builder; não usar atalhos externos ou uma aba independente do Unipass.
+5. Clicar em **Source Quotes** para abrir **M&P Sourcing**.
+6. Na aba **Protection**, em **Protection Quotes**, clicar em **Launch**. A mensagem *Launching Protection Sourcing* indica que o ConcertHub iniciou a abertura do SolutionBuilder. Conferir o caso, a idade e o tabagismo na aba resultante.
+7. Se o portal expirar, reabrir o caso por esse mesmo caminho. Se a Microsoft solicitar confirmação de identidade no dispositivo, retomar as consultas depois da autenticação. Conferir o último relatório salvo para evitar repetir o cenário interrompido.
 
 ## Perfil e parâmetros padronizados
 
