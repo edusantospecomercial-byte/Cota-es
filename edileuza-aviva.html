@@ -85,9 +85,10 @@ h2 em{font-style:normal;color:var(--accent)}
 .total-card .v{display:flex;align-items:baseline;gap:10px;margin:8px 0 14px}
 .total-card .v strong{font-size:62px;line-height:1.05;color:#fff}
 .total-card .v span{font-size:14px;color:#b9cada}
-.sum{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;padding:0;margin:14px 0 16px;list-style:none;font-size:15px;color:#d7e6f3}
-.sum li{display:flex;align-items:center;gap:8px}
-.sum b{font-family:var(--num);font-weight:800;padding:7px 11px;border-radius:12px;background:#0609115c;border:1px solid #ffffff1f}
+.sum{display:flex;flex-wrap:nowrap;align-items:center;gap:4px;padding:0;margin:14px 0 16px;list-style:none;font-size:clamp(11px,3.4vw,15px);color:#d7e6f3}
+.sum li{display:flex;flex:1 1 auto;align-items:center;gap:4px;min-width:0}
+.sum li.eq{flex-grow:1.15}
+.sum b{flex:1;text-align:center;white-space:nowrap;font-family:var(--num);font-weight:800;padding:8px 3px;border-radius:12px;background:#0609115c;border:1px solid #ffffff1f}
 .sum .eq b{background:var(--accent);color:#04131a;border-color:transparent}
 .total-card p{font-size:14px;line-height:1.6;color:#c9d8e8}
 .total-card p b{color:#fff;font-weight:700}
@@ -141,6 +142,11 @@ h2 em{font-style:normal;color:var(--accent)}
 .jobs img{width:100%;height:100%;object-fit:cover}
 .jobs li:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,#060911e6)}
 .jobs span{position:absolute;z-index:1;left:12px;bottom:11px;font-size:13px;font-weight:700}
+.jobs li.any{display:flex;flex-direction:column;justify-content:flex-end;padding:14px;background:linear-gradient(165deg,#7fd8ff3d,#74dfc524 55%,#0d1420);border:1px solid #7fd8ff4d;box-shadow:inset 0 1px 0 #ffffff40}
+.jobs li.any:after{display:none}
+.jobs li.any b{font:800 40px/1 var(--num);letter-spacing:-.05em;color:var(--accent)}
+.jobs li.any strong{display:block;font-size:16px;line-height:1.2;margin-top:10px;color:#fff}
+.jobs li.any p{font-size:12px;line-height:1.45;color:#d2dfec;margin-top:6px}
 
 /* Acordeões */
 details{margin-top:14px;border-top:1px solid var(--line)}
@@ -357,6 +363,7 @@ footer{padding:40px 22px 150px;font-size:11.5px;line-height:1.6;color:#7f8ea3}
     <li><img src="img/limpeza.jpg" alt="Mulher de avental e luvas limpando a bancada de uma cozinha" width="602" height="799" loading="lazy"><span>Na limpeza</span></li>
     <li><img src="https://images.unsplash.com/photo-1636414722386-a73bd3fc368c?w=500&h=667&q=65&auto=format&fit=crop" alt="Dois trabalhadores de colete refletivo e capacete em uma obra" width="500" height="667" loading="lazy"><span>Na obra</span></li>
     <li><img src="https://images.unsplash.com/photo-1689728318937-17d24bc0a65c?w=500&h=667&q=65&auto=format&fit=crop" alt="Jardineiro aparando a grama" width="500" height="667" loading="lazy"><span>No jardim</span></li>
+    <li class="any"><b>24h</b><strong>Em qualquer lugar</strong><p>No trabalho, em casa ou na rua. De dia ou de noite, o seguro vale.</p></li>
   </ul>
   <div class="card pay rv">
     <span class="k">Fratura de osso principal</span>
