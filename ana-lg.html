@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#060911">
+<meta name="robots" content="noindex,nofollow">
+<title>Ana · Sua proposta de proteção</title>
+<meta name="description" content="Ana, conheça suas 2 coberturas com a Legal &amp; General por £34,84 por mês.">
+<meta property="og:title" content="Ana, sua proposta de proteção está pronta">
+<meta property="og:description" content="2 coberturas · £34,84/mês · Eduardo Santos">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://images.unsplash.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060911;--surface:#0f1622;--text:#f6f8fb;--muted:#b5c0d1;--dim:#93a2b7;
+  --accent:#7fd8ff;--teal:#74dfc5;--amber:#e2b575;--line:#ffffff14;
+  --num:'Manrope','Plus Jakarta Sans',sans-serif;
+  --ease:cubic-bezier(.2,.8,.2,1);
+  interpolate-size:allow-keywords;
+}
+*{box-sizing:border-box}
+html{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;scroll-behavior:smooth;scroll-padding-top:24px}
+body{margin:0;overflow-x:hidden}
+h1,h2,h3,p,figure,dl,dd{margin:0}
+a{color:inherit}
+img{display:block;max-width:100%}
+button,a,summary{-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:3px solid #ffc98a;outline-offset:4px;border-radius:6px}
+.num{font-family:var(--num);font-weight:800;letter-spacing:-.045em;font-variant-numeric:lining-nums tabular-nums}
+
+/* Fundo aurora: só gradientes e transform, leve em Android intermediário */
+.aurora{position:fixed;inset:-20% -40%;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(38% 30% at 22% 28%,#17506b70,transparent 70%),
+    radial-gradient(34% 28% at 80% 58%,#1b4a4a66,transparent 70%),
+    radial-gradient(30% 24% at 40% 88%,#3a2f1a55,transparent 70%)}
+
+/* Barra de progresso guiada pela rolagem */
+.progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:30;background:linear-gradient(90deg,var(--accent),var(--teal));transform-origin:0 50%;transform:scaleX(0)}
+
+.wrap{max-width:480px;margin:0 auto;position:relative}
+section{padding:72px 22px 8px}
+.eyebrow{display:block;font-size:11px;font-weight:700;line-height:1.5;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+h2{font-size:clamp(28px,8.2vw,36px);font-weight:800;line-height:1.1;letter-spacing:-.045em;margin-top:10px;text-wrap:balance}
+h2 em{font-style:normal;color:var(--accent)}
+.lead{font-size:17px;line-height:1.5;color:#dfe8f3;margin-top:14px;text-wrap:pretty}
+.body{font-size:15px;line-height:1.6;color:var(--muted);margin-top:14px;text-wrap:pretty}
+.small{font-size:12.5px;line-height:1.6;color:var(--dim)}
+
+/* ---------- Capa ---------- */
+.hero{position:relative;min-height:100svh;padding:0;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
+.hero-photo{position:absolute;inset:0 0 auto 0;height:66%;z-index:-1;overflow:hidden}
+.hero-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 58%}
+.hero-photo:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,#060911bf 0,#06091100 17%,#06091100 42%,#06091180 60%,#060911e6 80%,#060911 100%)}
+.hero-top{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;gap:12px;padding:max(20px,env(safe-area-inset-top)) 22px 0;font-size:10px;font-weight:700;letter-spacing:.12em;color:#e6eef8}
+.hero-in{position:relative;padding:76px 22px 118px;background:linear-gradient(180deg,#06091100 0,#060911b8 70px,#060911f2 150px,#060911 230px)}.hero h1,.hero-price strong,.hero .lead{text-shadow:0 2px 18px #060911,0 0 2px #06091180}
+.hero h1{font-size:clamp(26px,7.4vw,32px);font-weight:600;line-height:1.15;letter-spacing:-.035em;color:#e6eef8;text-wrap:balance}
+.hero-price{display:flex;align-items:baseline;gap:10px;margin:6px 0 2px;line-height:1}
+.hero-price strong{font-size:clamp(84px,26.5vw,120px);letter-spacing:-.06em;color:#fff}
+.hero-price span{font-size:17px;font-weight:600;color:var(--muted)}
+.hero .lead{max-width:340px;font-size:16px}.hero .lead b{color:#fff;font-weight:800}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;padding:0;list-style:none}
+.chips li{padding:8px 12px;border-radius:99px;font-size:12px;font-weight:600;color:#d9ecf7;background:#ffffff0f;border:1px solid #ffffff24;box-shadow:inset 0 1px 0 #ffffff30}
+.scroll-hint{display:flex;align-items:center;gap:8px;margin-top:26px;font-size:12px;color:var(--dim)}
+.scroll-hint i{width:18px;height:28px;border:1.5px solid #ffffff55;border-radius:10px;position:relative}
+.scroll-hint i:after{content:'';position:absolute;left:50%;top:5px;width:3px;height:6px;margin-left:-1.5px;border-radius:2px;background:var(--accent)}
+
+/* ---------- Vidro ---------- */
+.glass{position:relative;isolation:isolate;overflow:hidden;border-radius:28px;border:1px solid #d7efff3d;
+  background:linear-gradient(135deg,#cee9ff1f,#8cceff0a 45%,#9fffe514);
+  box-shadow:inset 0 1px 0 #ffffff66,inset 0 -1px 0 #7fd8ff2b,inset 0 0 28px #7fd8ff10,0 24px 60px #00000040;
+  -webkit-backdrop-filter:blur(22px) saturate(160%);backdrop-filter:blur(22px) saturate(160%)}
+.glass:before{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;border-radius:inherit;
+  background:linear-gradient(115deg,#ffffff24 0,transparent 28%,transparent 68%,#c2ffed12)}
+.glass:after{content:'';position:absolute;z-index:-1;pointer-events:none;top:-60%;left:-30%;width:60%;height:220%;transform:rotate(18deg);
+  background:linear-gradient(90deg,transparent,#ffffff14,transparent)}
+.card{border-radius:24px;border:1px solid #ffffff1c;background:linear-gradient(160deg,#ffffff0d,#ffffff04 60%);box-shadow:inset 0 1px 0 #ffffff1f}
+
+/* ---------- Seu plano ---------- */
+.total-card{padding:26px 22px;margin-top:26px}
+.total-card .k{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#d9e9f5}
+.total-card .v{display:flex;align-items:baseline;gap:10px;margin:8px 0 14px}
+.total-card .v strong{font-size:62px;line-height:1.05;color:#fff}
+.total-card .v span{font-size:14px;color:#b9cada}
+.sum{display:flex;flex-wrap:nowrap;align-items:center;gap:4px;padding:0;margin:14px 0 16px;list-style:none;font-size:clamp(11px,3.4vw,15px);color:#d7e6f3}
+.sum li{display:flex;flex:1 1 auto;align-items:center;gap:4px;min-width:0}
+.sum li.eq{flex-grow:1.15}
+.sum b{flex:1;text-align:center;white-space:nowrap;font-family:var(--num);font-weight:800;padding:8px 3px;border-radius:12px;background:#0609115c;border:1px solid #ffffff1f}
+.sum .eq b{background:var(--accent);color:#04131a;border-color:transparent}
+.total-card p{font-size:14px;line-height:1.6;color:#c9d8e8}
+.total-card p b{color:#fff;font-weight:700}
+.lock{display:flex;gap:12px;margin-top:18px;padding-top:16px;border-top:1px solid #d5eeff24}
+.lock svg{flex:0 0 20px;height:22px;color:#a9e6ff}
+.lock b{display:block;font-size:14px;color:#e3f5ff}
+.lock span{display:block;font-size:12.5px;line-height:1.6;color:#b7c9dc;margin-top:3px}
+
+.plan{list-style:none;padding:0;margin:18px 0 0;display:grid;gap:10px}
+.plan a{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:16px;text-decoration:none;transition:transform .25s var(--ease),border-color .25s}
+.plan a:active{transform:scale(.98)}
+.plan .n{width:34px;height:34px;display:grid;place-items:center;border-radius:11px;font:800 14px var(--num);color:var(--accent);background:#7fd8ff17;border:1px solid #7fd8ff33}
+.plan h3{font-size:13px;font-weight:600;color:var(--muted)}
+.plan strong{display:block;font-size:19px;line-height:1.25;color:#fff;margin-top:2px}
+.plan small{display:block;font-size:12px;line-height:1.45;color:var(--dim);margin-top:3px}
+.plan .p{text-align:right;font:800 15px var(--num);color:var(--accent);white-space:nowrap}
+.plan .p small{font:500 10.5px 'Plus Jakarta Sans',sans-serif;color:var(--dim);letter-spacing:0}
+
+/* ---------- Coberturas ---------- */
+.cov{padding-top:64px}
+.cov-photo{position:relative;border-radius:26px;overflow:hidden;aspect-ratio:4/3;background:#0d1420}
+.cov-photo img{width:100%;height:100%;object-fit:cover}
+.cov-photo:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,#060911d9)}
+.badge{position:absolute;z-index:1;left:14px;bottom:14px;display:flex;align-items:center;gap:10px}
+.badge b{width:40px;height:40px;display:grid;place-items:center;border-radius:13px;font:800 20px var(--num);color:#04131a;background:var(--accent)}
+.badge span,.pill{padding:8px 12px;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#e8f6ff;background:#0609118c;border:1px solid #ffffff30;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.cov h2{margin-top:22px}
+.pay{margin-top:22px;padding:22px}
+.pay .k{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.pay .big{display:block;font-size:clamp(46px,14vw,58px);line-height:1.1;color:var(--accent);margin:6px 0 16px}
+.pay .big small{font-size:.42em;letter-spacing:-.02em;color:#bfe9fb}
+.pay .row{display:flex;justify-content:space-between;align-items:center;gap:14px;padding-top:14px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+.pay .row strong{font:800 24px var(--num);color:#fff;white-space:nowrap}
+.pay .row strong small{font:500 12px 'Plus Jakarta Sans',sans-serif;color:var(--muted);margin-left:4px}
+.pay .note{font-size:12.5px;line-height:1.55;color:var(--dim);margin-top:12px}
+.notice{margin-top:16px;padding:14px 16px;border-radius:16px;font-size:13.5px;line-height:1.55;color:#f0dcbd;background:#e2b57514;border:1px solid #e2b57540}
+.notice b{color:#ffe7c2}
+.amounts{list-style:none;padding:0;margin:16px 0 0;overflow:hidden}
+.amounts li{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line);font-size:13.5px;line-height:1.45;color:#d6e0ec}
+.amounts li:last-child{border:0}
+.amounts strong{font:800 15px var(--num);color:var(--teal);white-space:nowrap}
+.example{margin-top:16px;padding:18px 20px}
+.example span{font-size:12.5px;color:var(--muted)}
+.example strong{display:block;font:800 30px/1.2 var(--num);letter-spacing:-.04em;color:var(--accent);margin:6px 0}
+.example p{font-size:12.5px;color:var(--dim)}
+
+/* Faixa de profissões */
+.jobs{display:flex;gap:10px;margin:18px -22px 0;padding:0 22px 6px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;list-style:none}
+.jobs::-webkit-scrollbar{display:none}
+.jobs li{position:relative;flex:0 0 46%;aspect-ratio:3/4;border-radius:20px;overflow:hidden;scroll-snap-align:start;background:#0d1420}
+.jobs img{width:100%;height:100%;object-fit:cover}
+.jobs li:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,#060911e6)}
+.jobs span{position:absolute;z-index:1;left:12px;bottom:11px;font-size:13px;font-weight:700}
+.jobs li.any{border:1px solid #7fd8ff4d}
+.jobs li.any:after{background:linear-gradient(180deg,#06091126 0,#06091173 38%,#060911f5 100%)}
+.jobs li.any div{position:absolute;z-index:1;left:13px;right:11px;bottom:13px}
+.jobs li.any b{font:800 40px/1 var(--num);letter-spacing:-.05em;color:var(--accent);text-shadow:0 2px 14px #060911}
+.jobs li.any strong{display:block;font-size:16px;line-height:1.2;margin-top:8px;color:#fff}
+.jobs li.any p{font-size:12px;line-height:1.45;color:#dbe6f1;margin-top:5px}
+
+/* Acordeões */
+details{margin-top:14px;border-top:1px solid var(--line)}
+details+details{margin-top:0}
+summary{min-height:52px;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;list-style:none;font-size:14px;font-weight:600;color:#c6d4e4}
+summary::-webkit-details-marker{display:none}
+summary:after{content:'';flex:0 0 12px;height:12px;border-right:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:rotate(45deg) translate(-2px,-2px);transition:transform .3s var(--ease)}
+details[open]>summary:after{transform:rotate(225deg) translate(-2px,-2px)}
+details p{font-size:13.5px;line-height:1.65;color:var(--muted);padding-bottom:14px}
+details a{color:var(--accent);text-underline-offset:3px}
+details::details-content{block-size:0;overflow:hidden;transition:block-size .35s var(--ease),content-visibility .35s allow-discrete}
+details[open]::details-content{block-size:auto}
+.daily{display:grid;margin:0 0 14px;overflow:hidden}
+.daily div{display:flex;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line);font-size:13px;color:#d6e0ec}
+.daily div:last-child{border:0}
+.daily div:first-child{background:#7fd8ff12}
+.daily strong{font:800 15px var(--num);color:var(--accent)}
+
+/* ---------- Incluído ---------- */
+.bento{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px}
+.tile{padding:20px 18px}
+.tile.wide{grid-column:1/-1}
+.tile .sym{font:800 58px/1 var(--num);letter-spacing:-.06em;color:#fff}
+.tile .sym small{font:600 13px/1.3 'Plus Jakarta Sans',sans-serif;letter-spacing:0;color:var(--accent);display:block;margin-top:6px}
+.tile h3{font-size:16px;font-weight:700;margin-top:14px}
+.tile p{font-size:13px;line-height:1.55;color:var(--muted);margin-top:6px}
+.free{display:inline-block;margin-top:12px;padding:6px 10px;border-radius:99px;font-size:11px;font-weight:700;color:#04131a;background:var(--teal)}
+
+/* ---------- Resumo ---------- */
+.receipt{margin-top:24px;overflow:hidden}
+.receipt .r{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:16px 18px;border-bottom:1px dashed #ffffff1f}
+.receipt .r b{display:block;font-size:14px;font-weight:600}
+.receipt .r span{display:block;font-size:12px;color:var(--muted);margin-top:3px}
+.receipt .r strong{font:800 17px var(--num);color:var(--accent);white-space:nowrap}
+.receipt .t{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:20px 18px;background:#7fd8ff17}
+.receipt .t span{font-size:13px;color:#cfe0ee}
+.receipt .t strong{font:800 40px var(--num);letter-spacing:-.05em}
+.cta{display:flex;align-items:center;justify-content:center;gap:10px;min-height:60px;margin-top:18px;padding:16px 20px;border-radius:18px;text-decoration:none;font-size:16px;font-weight:800;color:#04131a;background:linear-gradient(180deg,#a8e6ff,var(--accent));box-shadow:inset 0 1px 0 #ffffffb0,0 14px 34px #7fd8ff3d;transition:transform .2s var(--ease)}
+.cta:active{transform:scale(.97)}
+.cta svg{width:22px;height:22px}
+
+/* ---------- Eduardo ---------- */
+.adviser-card{margin-top:24px;overflow:hidden}
+.adviser-card img{width:100%;height:300px;object-fit:cover;object-position:center top}
+.adviser-card div{padding:18px}
+.adviser-card h3{font-size:21px}
+.adviser-card p{font-size:13.5px;color:var(--muted);margin-top:4px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.stats div{padding:18px}
+.stats strong{display:block;font:800 32px var(--num);letter-spacing:-.04em;color:var(--accent)}
+.stats span{display:block;font-size:12px;line-height:1.5;color:var(--muted);margin-top:4px}
+
+/* ---------- Empresas ---------- */
+.tabs{display:flex;gap:4px;margin-top:24px;padding:4px;border-radius:16px;background:#ffffff0a;border:1px solid var(--line)}
+.tabs button{flex:1;min-width:0;min-height:46px;padding:8px 6px;border:0;border-radius:12px;background:transparent;color:var(--muted);font:600 12px/1.3 'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:background .25s,color .25s}
+.tabs button[aria-selected=true]{background:#7fd8ff22;color:var(--accent);box-shadow:inset 0 1px 0 #ffffff26}
+.panel{margin-top:20px;font-size:14px;line-height:1.65;color:var(--muted);view-transition-name:panel}
+.panel[hidden]{display:none}
+.panel h3{font-size:19px;color:var(--text);margin-bottom:6px}
+.panel b{color:#e6eef8}
+.panel p+p{margin-top:14px}
+.panel dl{margin:20px 0}
+.panel dt{font-size:11.5px;color:var(--dim);margin-top:16px}
+.panel dd{font-size:14px;color:var(--text);margin-top:3px}
+.reg{font:800 28px/1.2 var(--num)!important;letter-spacing:-.03em;color:var(--accent)!important;padding:12px 14px;border-radius:14px;background:#7fd8ff0f;border:1px solid #7fd8ff30}
+.reg small{display:block;font:500 11.5px/1.5 'Plus Jakarta Sans',sans-serif;letter-spacing:0;color:var(--muted);margin-top:4px}
+.links{display:grid;margin-top:12px}
+.links a{display:flex;align-items:center;min-height:46px;font-size:13.5px;color:var(--accent);text-underline-offset:4px;border-bottom:1px solid var(--line)}
+.panel hr{border:0;border-top:1px solid var(--line);margin:26px 0}
+footer{padding:40px 22px 150px;font-size:11.5px;line-height:1.6;color:#7f8ea3}
+
+/* ---------- Barra fixa de vidro ---------- */
+.dock{position:fixed;z-index:20;left:50%;bottom:max(12px,env(safe-area-inset-bottom));width:min(calc(100% - 24px),456px);transform:translateX(-50%);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 10px 10px 20px;border-radius:99px}
+.dock .k{display:block;font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#cfe0ee}
+.dock strong{display:block;font:800 24px/1.1 var(--num);letter-spacing:-.04em}
+.dock strong small{font:500 12px 'Plus Jakarta Sans',sans-serif;letter-spacing:0;color:#cfe0ee;margin-left:3px}
+.dock a{display:flex;align-items:center;gap:8px;min-height:48px;padding:0 18px;border-radius:99px;text-decoration:none;font-size:14px;font-weight:800;color:#04131a;background:linear-gradient(180deg,#a8e6ff,var(--accent));box-shadow:inset 0 1px 0 #ffffffb0;transition:transform .2s var(--ease)}
+.dock a:active{transform:scale(.95)}
+.dock svg{width:18px;height:18px}
+
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.glass{background:#15212ff2}}
+@media(prefers-reduced-transparency:reduce){.glass{-webkit-backdrop-filter:none;backdrop-filter:none;background:#15212f}}
+
+/* ---------- Movimento ---------- */
+@media(prefers-reduced-motion:no-preference){
+  .aurora{animation:drift 26s ease-in-out infinite alternate}
+  @keyframes drift{to{transform:translate3d(6%,-4%,0) rotate(6deg) scale(1.08)}}
+  .hero-photo img{animation:zoom 16s ease-out both}
+  @keyframes zoom{from{transform:scale(1.14)}}
+  .hero-in>*{animation:up .9s var(--ease) both}
+  .hero-in>:nth-child(2){animation-delay:.08s}.hero-in>:nth-child(3){animation-delay:.16s}.hero-in>:nth-child(4){animation-delay:.24s}.hero-in>:nth-child(5){animation-delay:.32s}.hero-in>:nth-child(6){animation-delay:.5s}
+  @keyframes up{from{opacity:0;transform:translateY(22px)}}
+  .scroll-hint i:after{animation:wheel 1.6s ease-in-out infinite}
+  @keyframes wheel{50%{transform:translateY(9px);opacity:.3}}
+  .glass:after{animation:sheen 7s ease-in-out infinite}
+  @keyframes sheen{0%,55%{transform:translateX(-120%) rotate(18deg)}100%{transform:translateX(420%) rotate(18deg)}}
+  .dock{animation:dockin .8s .9s var(--ease) both}
+  @keyframes dockin{from{opacity:0;transform:translate(-50%,120%)}}
+  .js .sum:not(.in) li{opacity:0}
+  .sum.in li{animation:pop .55s var(--ease) both;animation-delay:calc(var(--i)*.16s)}
+  @keyframes pop{from{opacity:0;transform:translateY(10px) scale(.9)}}
+  .panel{animation:up .3s var(--ease)}
+  @supports (animation-timeline:view()){
+    .progress{animation:grow linear both;animation-timeline:scroll(root)}
+    @keyframes grow{to{transform:scaleX(1)}}
+    .rv{animation:rise linear both;animation-timeline:view();animation-range:entry 0% entry 55%}
+    @keyframes rise{from{opacity:0;transform:translateY(34px) scale(.97)}}
+    .cov-photo img{animation:par linear both;animation-timeline:view()}
+    @keyframes par{from{transform:scale(1.18) translateY(-4%)}to{transform:scale(1.18) translateY(4%)}}
+  }
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media(max-width:360px){section{padding-left:18px;padding-right:18px}.hero-in{padding-left:18px;padding-right:18px}.total-card .v strong{font-size:54px}.dock{padding-left:16px}.dock a{padding:0 14px}.jobs{margin:18px -18px 0;padding:0 18px 6px}}
+@media print{.dock,.progress,.aurora,.scroll-hint{display:none}.hero{min-height:0}body{background:#fff;color:#111}*{color:#111!important;background:none!important;box-shadow:none!important}details::details-content{block-size:auto}}
+</style>
+</head>
+<body>
+<div class="aurora" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"></div>
+
+<main class="wrap" aria-label="Proposta personalizada de Ana">
+
+<!-- 1. CAPA -->
+<section class="hero" id="topo">
+  <div class="hero-photo"><img src="https://images.unsplash.com/photo-1652918711329-4b33cc5ee34a?w=900&q=72&auto=format&fit=crop" alt="Ônibus vermelho de dois andares passando sob a Tower Bridge, em Londres, à noite" width="900" height="1350" fetchpriority="high"></div>
+  <div class="hero-top"><span>EDUARDO SANTOS</span><span>PARA EDILEUZA</span></div>
+  <div class="hero-in">
+    <h1>Ana, seus 2 seguros juntos custam</h1>
+    <div class="hero-price"><strong class="num" data-count="34.84">£34.84</strong></div>
+    <p class="lead"><b>por mês.</b> Seguro de vida e seguro de doenças graves, pela Legal &amp; General.</p>
+    <div class="scroll-hint"><i aria-hidden="true"></i>Role para ver o que cada seguro paga</div>
+  </div>
+</section>
+
+<!-- 2. SEU PLANO -->
+<section id="plano">
+  <div class="rv">
+    <span class="eyebrow">Seu plano</span>
+    <h2>Duas coberturas.<br><em>Uma conta simples.</em></h2>
+  </div>
+  <div class="glass total-card rv">
+    <span class="k">Como chega nos £34.84</span>
+    <ul class="sum" aria-label="£19.83 mais £15.01 é igual a £34.84">
+      <li style="--i:0"><b>£19.83</b>+</li>
+      <li style="--i:1"><b>£15.01</b>=</li>
+      <li style="--i:3" class="eq"><b>£34.84</b></li>
+    </ul>
+    <p>São duas cobranças por mês, as duas da Legal &amp; General. <b>Não há outra mensalidade nesta proposta.</b></p>
+    <div class="lock">
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+      <div><b>Mensalidade fixa.</b><span>O preço é garantido pelos 13 anos do contrato. Só muda se você alterar o plano ou o valor da cobertura.</span></div>
+    </div>
+  </div>
+  <ul class="plan">
+    <li class="rv"><a class="card" href="#vida"><span class="n">1</span><div><h3>Seguro de vida</h3><strong class="num">£100,000</strong><small>Para sua família, se você falecer.</small></div><span class="p">£19.83<small><br>por mês</small></span></a></li>
+    <li class="rv"><a class="card" href="#doencas"><span class="n">2</span><div><h3>Doenças graves</h3><strong class="num">£10,000</strong><small>Para você, após um diagnóstico coberto.</small></div><span class="p">£15.01<small><br>por mês</small></span></a></li>
+  </ul>
+</section>
+
+<!-- 3. VIDA -->
+<section class="cov" id="vida">
+  <figure class="cov-photo rv">
+    <img src="img/vida.jpg" alt="Mãe abraçando o filho na porta de casa, ao anoitecer, em uma rua inglesa" width="1200" height="904" loading="lazy">
+    <figcaption class="badge"><b>1</b><span>Legal &amp; General</span></figcaption>
+  </figure>
+  <div class="rv">
+    <h2>Seguro de vida</h2>
+    <p class="lead">Se você falecer, sua família recebe.</p>
+  </div>
+  <div class="card pay rv">
+    <span class="k">Sua família recebe</span>
+    <strong class="num big">£100,000</strong>
+    <div class="row"><span>Você paga</span><strong>£19.83<small>/ mês</small></strong></div>
+    <p class="note">Prazo: 13 anos.</p>
+  </div>
+  <p class="body rv">O valor é pago às pessoas indicadas no seguro, durante o período contratado. Elas podem usar o dinheiro para pagar o funeral, o aluguel, o envio do corpo ao Brasil, contas e outras despesas.</p>
+  <details><summary>Outras coberturas e impostos</summary><p>O seguro paga o valor contratado; o envio do corpo ao Brasil não é um serviço de repatriação incluído. Também há pagamento por doença terminal conforme as regras do contrato; o pagamento integral acontece uma vez e encerra o seguro. A isenção de mensalidades está incluída, conforme as regras do contrato. Normalmente, o pagamento não tem imposto de renda; imposto sobre herança depende de como o seguro foi organizado.</p></details>
+</section>
+
+<!-- 4. DOENÇAS GRAVES -->
+<section class="cov" id="doencas">
+  <figure class="cov-photo rv">
+    <img src="img/doencas.jpg" alt="Mulher se recuperando em casa, no sofá, com uma caneca nas mãos e a mão de um familiar no ombro" width="1200" height="904" loading="lazy">
+    <figcaption class="badge"><b>2</b><span>Legal &amp; General</span></figcaption>
+  </figure>
+  <div class="rv">
+    <h2>Seguro de doenças graves</h2>
+    <p class="lead">Recebeu um diagnóstico coberto? Você recebe.</p>
+  </div>
+  <div class="card pay rv">
+    <span class="k">Você recebe</span>
+    <strong class="num big">£10,000</strong>
+    <div class="row"><span>Você paga</span><strong>£15.01<small>/ mês</small></strong></div>
+    <p class="note">Prazo: 13 anos.</p>
+  </div>
+  <p class="body rv">Se a doença atender aos critérios do seguro, o dinheiro é seu, para usar como precisar.</p>
+  <p class="notice rv"><b>O pagamento integral acontece uma vez.</b> Depois, este seguro termina. Nem toda doença está coberta.</p>
+  <details><summary>Este seguro também inclui vida</summary><p>O mesmo seguro de £10,000 também cobre falecimento e doença terminal, conforme o contrato. Não são £10,000 para cada situação. Inclui doenças graves infantis, incapacidade permanente total e isenção de mensalidades, com critérios e limites próprios.</p></details>
+</section>
+
+<!-- 5. INCLUÍDO -->
+<section id="incluido">
+  <div class="rv">
+    <span class="eyebrow">Incluído na Legal &amp; General</span>
+    <h2>Três proteções.<br><em>Já dentro dos £34.84.</em></h2>
+  </div>
+  <div class="bento">
+    <div class="card tile wide rv">
+      <h3 style="margin-top:0">Isenção das mensalidades</h3>
+      <p>Incluída nos dois seguros. Se você ficar incapacitada e a seguradora aceitar o pedido, as mensalidades deixam de ser cobradas, conforme as regras do contrato.</p>
+    </div>
+    <div class="card tile rv">
+      <h3 style="margin-top:0">Incapacidade permanente total</h3>
+      <p>Incluída no seguro de £10,000. O pagamento segue a definição do contrato.</p>
+    </div>
+    <div class="card tile rv">
+      <h3 style="margin-top:0">Doenças graves dos filhos</h3>
+      <p>Cobertura incluída no seguro de £10,000, com limites próprios.</p>
+    </div>
+  </div>
+  <details><summary>Regras destes benefícios</summary><p>A isenção custa £0.39 no seguro de vida e £0.23 no seguro de doenças graves, e a incapacidade permanente total custa £0.18: os três já estão somados nos £34.84. A seguradora pode retirar esses adicionais, e o custo deles, depois de analisar seus dados. A incapacidade permanente total não é um valor extra: faz parte dos mesmos £10,000. Os dois seguros também incluem a opção de aumentar a cobertura em situações previstas no contrato, sem custo adicional.</p></details>
+</section>
+
+<!-- 9. EDUARDO -->
+<section id="eduardo">
+  <div class="rv">
+    <span class="eyebrow">Seu atendimento</span>
+    <h2>Você contrata<br><em>com Eduardo Santos.</em></h2>
+  </div>
+  <div class="card adviser-card rv">
+    <img src="https://edusantospecomercial-byte.github.io/Cota-es/img/eduardo-apresentacao.png" alt="Foto de apresentação enviada por Eduardo Santos" width="400" height="500" loading="lazy">
+    <div><h3>Eduardo Santos</h3><p>Casado e pai de dois filhos.</p></div>
+  </div>
+  <div class="stats">
+    <div class="card rv"><strong>7+</strong><span>anos de experiência no mercado</span></div>
+    <div class="card rv"><strong>2 mil+</strong><span>famílias atendidas por nós</span></div>
+  </div>
+  <p class="body rv">Eu explico as coberturas, tiro suas dúvidas e acompanho a contratação. O contrato do seguro é com a seguradora indicada.</p>
+  <a class="cta rv" href="https://wa.me/447719215856?text=Eduardo%2C%20sou%20a%20Ana%20e%20quero%20conversar%20sobre%20a%20proposta%20de%20%C2%A334%2C84%20por%20mes." target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.2-5A8.5 8.5 0 1 1 21 11.5Z"/></svg>
+    Conversar sobre esta proposta
+  </a>
+  <details><summary>Antes de contratar</summary><p>Vamos conferir seus dados antes de enviar a proposta. Valores da cotação de 25/11/2026, válidos por 30 dias e sujeitos à confirmação pela Legal &amp; General depois da análise dos seus dados. O seguro só começa após a aceitação e a confirmação da data de início.</p></details>
+</section>
+
+<!-- 10. EMPRESAS E DOCUMENTOS -->
+<section id="empresas">
+  <div class="rv">
+    <span class="eyebrow">Empresas e documentos</span>
+    <h2>Saiba quem está<br><em>no seu contrato.</em></h2>
+  </div>
+  <div class="tabs" role="tablist" aria-label="Informações das empresas">
+    <button role="tab" aria-selected="true" id="tab-owl" aria-controls="panel-owl">Quem é a Owl</button>
+    <button role="tab" aria-selected="false" id="tab-insurers" aria-controls="panel-insurers" tabindex="-1">Seguradoras</button>
+    <button role="tab" aria-selected="false" id="tab-docs" aria-controls="panel-docs" tabindex="-1">Documentos</button>
+  </div>
+  <div class="panel" role="tabpanel" id="panel-owl" aria-labelledby="tab-owl">
+    <p>A Owl Financial é a marca de seguros da Openwork Limited. Ela faz parte da rede pela qual seu atendimento é realizado. <b>Quem paga os benefícios é a seguradora de cada contrato.</b></p>
+    <dl><dt>Empresa</dt><dd>Openwork Limited · marca Owl Financial</dd><dt>Registro da empresa</dt><dd class="reg">04399725 <small>Company Number · Inglaterra</small></dd><dt>Regulador</dt><dd class="reg">408285 <small>Registro FCA · Financial Conduct Authority</small></dd><dt>Endereço registrado</dt><dd>Auckland House, Lydiard Fields, Swindon, SN5 8UB</dd></dl>
+    <div class="links"><a href="https://www.owlfinancial.co.uk/about-us/who-we-are/" target="_blank" rel="noopener">Conhecer a Owl ↗</a><a href="https://www.owlfinancial.co.uk/terms-and-conditions/" target="_blank" rel="noopener">Dados legais oficiais ↗</a><a href="https://company-information.service.gov.uk/company/04399725" target="_blank" rel="noopener">Consultar Companies House ↗</a><a href="https://register.fca.org.uk/" target="_blank" rel="noopener">Consultar FCA · pesquisar 408285 ↗</a><a href="https://www.owlfinancial.co.uk/privacy-and-cookie-notice/" target="_blank" rel="noopener">Privacidade ↗</a></div>
+  </div>
+  <div class="panel" role="tabpanel" id="panel-insurers" aria-labelledby="tab-insurers" hidden>
+    <h3>Legal &amp; General</h3><p>Responsável pelos seguros de vida e doenças graves desta proposta.</p>
+    <dl><dt>Empresa</dt><dd>Legal and General Assurance Society Limited</dd><dt>Registro da empresa</dt><dd>00166055 · Inglaterra e País de Gales</dd><dt>Registro financeiro</dt><dd>FCA nº 117659 · autorizada pela PRA e regulada pela FCA e PRA</dd><dt>Endereço</dt><dd>One Coleman Street, London, EC2R 5AA</dd></dl>
+    <div class="links"><a href="https://www.legalandgeneral.com/legal-information/" target="_blank" rel="noopener">Informações oficiais L&amp;G ↗</a><a href="https://company-information.service.gov.uk/company/00166055" target="_blank" rel="noopener">Registro da empresa L&amp;G ↗</a></div>
+  </div>
+  <div class="panel" role="tabpanel" id="panel-docs" aria-labelledby="tab-docs" hidden>
+    <p>Esta página resume a cotação de 25/11/2026. Não substitui os documentos da seguradora. Referência L&amp;G: 0164436178605579.</p>
+    <p>Os valores e a aceitação precisam ser confirmados antes da contratação. Nenhum seguro está ativo só por você abrir ou aceitar esta página.</p>
+    <p>O seguro L&amp;G de £10,000 cobre vida ou doenças graves: o pagamento integral encerra esse contrato. Os preços já incluem o desconto por contratar os dois seguros juntos; se um deles for retirado, o desconto muda.</p>
+    <div class="links"><a href="https://wa.me/447719215856?text=Eduardo%2C%20sou%20a%20Ana.%20Pode%20me%20enviar%20a%20cotacao%20individual%20da%20L%26G%3F" target="_blank" rel="noopener">Solicitar cotação individual L&amp;G ↗</a></div>
+  </div>
+</section>
+
+<footer>Dados de Eduardo sobre experiência, família e atendimentos fornecidos por ele. Dados institucionais consultados em 25/11/2026. As fotos são ilustrativas e não mostram clientes.</footer>
+</main>
+
+<!-- Barra fixa: o preço nunca sai da tela -->
+<aside class="glass dock" aria-label="Total mensal">
+  <div><span class="k">Total por mês</span><strong>£34.84<small>/ mês</small></strong></div>
+  <a href="https://wa.me/447719215856?text=Eduardo%2C%20sou%20a%20Ana%20e%20quero%20conversar%20sobre%20a%20proposta%20de%20%C2%A334%2C84%20por%20mes." target="_blank" rel="noopener" aria-label="Falar com Eduardo no WhatsApp">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.2-5A8.5 8.5 0 1 1 21 11.5Z"/></svg>
+    <span>Falar com Eduardo</span>
+  </a>
+</aside>
+
+<script>
+document.documentElement.classList.add('js');
+const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Contagem do preço na capa (uma vez só)
+const price=document.querySelector('[data-count]');
+if(price&&!calm){
+  const end=+price.dataset.count,t0=performance.now(),dur=1400;
+  const tick=t=>{const p=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-p,4);price.textContent='£'+(end*e).toFixed(2);if(p<1)requestAnimationFrame(tick)};
+  price.textContent='£0.00';requestAnimationFrame(tick);
+  // Garantia: o valor final aparece mesmo se a animação for interrompida
+  setTimeout(()=>{price.textContent='£'+end.toFixed(2)},1800);
+}
+
+// Soma animada quando o cartão do total aparece
+const sum=document.querySelector('.sum');
+if(sum){
+  if('IntersectionObserver' in window){
+    const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){sum.classList.add('in');io.disconnect()}}),{threshold:.6});
+    io.observe(sum);
+  }else sum.classList.add('in');
+}
+
+// Abas com View Transitions quando o navegador suporta
+const tabs=[...document.querySelectorAll('[role=tab]')];
+function selectTab(t){
+  const run=()=>tabs.forEach(b=>{const on=b===t;b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1;document.getElementById(b.getAttribute('aria-controls')).hidden=!on});
+  document.startViewTransition&&!calm?document.startViewTransition(run):run();
+}
+tabs.forEach((t,i)=>{
+  t.onclick=()=>selectTab(t);
+  t.onkeydown=e=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();const j=e.key==='Home'?0:e.key==='End'?tabs.length-1:(i+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;selectTab(tabs[j]);tabs[j].focus()}};
+});
+</script>
+</body>
+</html>
