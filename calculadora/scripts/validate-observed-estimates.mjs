@@ -145,6 +145,8 @@ console.log(JSON.stringify({ verifiedReportsWithWaiver: reports.size, resolvedPr
 
 const reported = run("reportedRows");
 const verifiedReports = group(reported, "model_id");
+assert.ok(node("baseStatus").textContent.includes(verifiedReports.size + " cenários"));
+assert.ok(node("baseStatus").textContent.includes(reported.filter(r => r.available === "true").length + " mensalidades"));
 const keys = new Set();
 for (const [id, rows] of verifiedReports) {
   const first = rows[0];

@@ -102,18 +102,21 @@ async function init() {
   priorityRows = currentPriorityRows;
   priorityGapRows = loadedGapRows;
   verifiedArchiveRows = verifiedArchive;
-  let n = Object.keys(catalog.models).length,
-    records =
-      catalog.calibratedRecords ||
-      Object.values(catalog.models).reduce((s, m) => s + (m.records || 0), 0),
-    priority = catalog.audit?.priorityProviderPrices || 0,
-    partialPriority =
-      catalog.audit?.comparisonReportArchivePartialPrices || 0,
-    crossValidation = catalog.audit?.priorityProviderCrossValidation,
-    temporalHoldout = catalog.audit?.priorityProviderTemporalHoldout;
-  $("baseStatus").textContent = n
-    ? `${records} registros no catálogo · ${priority} preços na validação histórica · ${observedRows.length + reportedRows.filter(row => row.available === "true").length} preços adicionais para consulta exata${partialPriority ? ` + ${partialPriority} parciais` : ""} · ${n} famílias calibradas${crossValidation ? ` · validação histórica: ${Number(crossValidation.mape * 100).toFixed(2)}% MAPE (n=${crossValidation.tested})` : ""}${temporalHoldout ? ` · arquivo histórico, temporal: ${Number(temporalHoldout.mape * 100).toFixed(2)}% MAPE · cobertura ${Number(temporalHoldout.coverage * 100).toFixed(2)}% (n=${temporalHoldout.predicted})` : ""}`
-    : "Base histórica · cotação oficial necessária";
+  const reportCount = new Set(reportedRows.map(row => row.model_id)).size;
+  const priceCount = reportedRows.filter(row => row.available === "true").length;
+  const unavailableCount = reportedRows.filter(row => row.available === "false").length;
+  const baseStatus = reportCount
+    ? [`Coleta iniciada em 24/11/2026 · ${reportCount} cenários · ${priceCount} mensalidades · ${unavailableCount} respostas sem preço`]
+    : ["Comparativos da coleta de novembro indisponíveis"];
+  if (catalog.calibratedRecords) {
+    const count = new Intl.NumberFormat("pt-BR").format(catalog.calibratedRecords);
+    baseStatus.push(`Catálogo histórico com ${count} registros`);
+  }
+  const temporalHoldout = catalog.audit?.priorityProviderTemporalHoldout;
+  if (temporalHoldout) {
+    baseStatus.push(`Arquivo histórico · teste temporal: ${Number(temporalHoldout.mape * 100).toFixed(2)}% de erro médio percentual absoluto em ${temporalHoldout.predicted} preços · cobertura ${Number(temporalHoldout.coverage * 100).toFixed(2)}%`);
+  }
+  $("baseStatus").textContent = baseStatus.join(". ");
   updateProfile();
   updateMetlife();
   loadSaved();
