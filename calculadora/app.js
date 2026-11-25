@@ -3,6 +3,7 @@ let catalog = { models: {} },
   priorityGapRows = [],
   observedRows = [],
   reportedRows = [],
+  verifiedArchiveRows = [],
   validatedCapitalRanges = [],
   waiverRows = null,
   lastPayload = null;
@@ -35,9 +36,8 @@ async function init() {
   const [
     loadedCatalog,
     currentPriorityRows,
-    archivePriorityRows,
+    verifiedArchive,
     loadedGapRows,
-    archiveGapRows,
     loadedWaiverRows,
     loadedObservedRows,
     loadedReports,
@@ -52,19 +52,13 @@ async function init() {
       .then((r) => r.text())
       .then(parsePriorityCsv)
       .catch(() => []),
-    fetch("./data/solutionbuilder-priority-provider-archive-2026-11-21.csv", {
+    fetch("./data/verified-archive-terms.csv", {
       cache: "no-store",
     })
       .then((r) => r.text())
       .then(parsePriorityCsv)
       .catch(() => []),
     fetch("./data/solutionbuilder-priority-provider-gaps-2026-11-20.csv", {
-      cache: "no-store",
-    })
-      .then((r) => r.text())
-      .then(parsePriorityCsv)
-      .catch(() => []),
-    fetch("./data/solutionbuilder-priority-provider-gap-archive-2026-11-21.csv", {
       cache: "no-store",
     })
       .then((r) => r.text())
@@ -98,8 +92,9 @@ async function init() {
   observedRows = loadedObservedRows;
   waiverRows = loadedWaiverRows;
   catalog = loadedCatalog;
-  priorityRows = [...currentPriorityRows, ...archivePriorityRows];
-  priorityGapRows = [...loadedGapRows, ...archiveGapRows];
+  priorityRows = currentPriorityRows;
+  priorityGapRows = loadedGapRows;
+  verifiedArchiveRows = verifiedArchive;
   let n = Object.keys(catalog.models).length,
     records =
       catalog.calibratedRecords ||
@@ -110,7 +105,7 @@ async function init() {
     crossValidation = catalog.audit?.priorityProviderCrossValidation,
     temporalHoldout = catalog.audit?.priorityProviderTemporalHoldout;
   $("baseStatus").textContent = n
-    ? `${records} registros no catálogo · ${priority} preços na validação histórica · ${observedRows.length + reportedRows.filter(row => row.available === "true").length} preços adicionais para consulta exata${partialPriority ? ` + ${partialPriority} parciais` : ""} · ${n} famílias calibradas${crossValidation ? ` · validação: ${Number(crossValidation.mape * 100).toFixed(2)}% MAPE (n=${crossValidation.tested})` : ""}${temporalHoldout ? ` · temporal: ${Number(temporalHoldout.mape * 100).toFixed(2)}% MAPE · cobertura ${Number(temporalHoldout.coverage * 100).toFixed(2)}% (n=${temporalHoldout.predicted})` : ""}`
+    ? `${records} registros no catálogo · ${priority} preços na validação histórica · ${observedRows.length + reportedRows.filter(row => row.available === "true").length} preços adicionais para consulta exata${partialPriority ? ` + ${partialPriority} parciais` : ""} · ${n} famílias calibradas${crossValidation ? ` · validação histórica: ${Number(crossValidation.mape * 100).toFixed(2)}% MAPE (n=${crossValidation.tested})` : ""}${temporalHoldout ? ` · arquivo histórico, temporal: ${Number(temporalHoldout.mape * 100).toFixed(2)}% MAPE · cobertura ${Number(temporalHoldout.coverage * 100).toFixed(2)}% (n=${temporalHoldout.predicted})` : ""}`
     : "Base histórica · cotação oficial necessária";
   updateProfile();
   updateMetlife();
@@ -151,7 +146,12 @@ function buildCapitalRanges(reports, holdout) {
       row.quoted_critical_illness_cover !== row.critical_illness_cover)) continue;
     const axis = capitalAxis(lower, upper);
     const fixedAxis = axis === "life_cover" ? "critical_illness_cover" : "life_cover";
-    if (["source_date", "age", "smoker", "to_age", fixedAxis, "product", "quoted_term", "occupation_rated"]
+    // A capture session can cross midnight. Both anchors must predate the blind
+    // test and come from the same day or two consecutive calendar days.
+    const anchorDaysApart = Math.abs(Date.parse(lower.source_date) - Date.parse(upper.source_date)) / 86_400_000;
+    if (!(anchorDaysApart <= 1) || check.source_date < lower.source_date || check.source_date < upper.source_date ||
+        Number(check.model_id) <= Math.max(Number(lower.model_id), Number(upper.model_id))) continue;
+    if (["age", "smoker", "to_age", fixedAxis, "product", "quoted_term", "occupation_rated"]
       .some(field => lower[field] !== upper[field] || lower[field] !== check[field])) continue;
     const capital = Number(check[axis]);
     if (!(Number(lower[axis]) < capital && capital < Number(upper[axis]))) continue;
@@ -161,7 +161,14 @@ function buildCapitalRanges(reports, holdout) {
         error > 1 || error / Number(check.monthly_premium) > 0.05) continue;
     ranges.push({ lower, upper, check, axis });
   }
-  return ranges;
+  const keyOf = (lower, upper, provider) => [lower, upper, provider].join("|");
+  const passing = new Set(ranges.map(({ lower, upper, check }) => keyOf(lower.model_id, upper.model_id, check.provider) + "|" + check.model_id));
+  const rejected = new Set();
+  for (const trial of holdout) {
+    const key = keyOf(trial.lower_model_id, trial.upper_model_id, trial.provider);
+    if (!passing.has(key + "|" + trial.holdout_model_id)) rejected.add(key);
+  }
+  return ranges.filter(({ lower, upper, check }) => !rejected.has(keyOf(lower.model_id, upper.model_id, check.provider)));
 }
 
 function validatedCapitalQuotes(p) {
@@ -176,7 +183,7 @@ function validatedCapitalQuotes(p) {
     const key = [lower.model_id, upper.model_id, check.model_id].join("|");
     if (!groups.has(key)) groups.set(key, { lower, upper, check, axis, width: Number(upper[axis]) - Number(lower[axis]), quotes: [] });
     groups.get(key).quotes.push({ provider: lower.provider, product: lower.product, term: lower.quoted_term,
-      sourceDate: lower.source_date, premium: priceAlongCapital(lower, upper, capital),
+      sourceDate: check.source_date, premium: priceAlongCapital(lower, upper, capital),
       occupationRated: lower.occupation_rated === "Yes" });
   }
   const compatible = [...groups.values()].filter(group => group.quotes.length === 3 &&
@@ -191,8 +198,8 @@ function validatedCapitalQuotes(p) {
     termPending: !sameEndAge.length, sourceDate: range.check.source_date };
 }
 
-function capturedReportFor(p) {
-  const matching = reportedRows.filter(row =>
+function capturedReportFor(p, source = reportedRows) {
+  const matching = source.filter(row =>
     Number(row.age) === p.age && Number(row.to_age) === p.toAge &&
     Number(row.life_cover) === p.life && Number(row.critical_illness_cover) === p.ci &&
     row.smoker === (p.smoker === "smoker" ? "Yes" : "No"));
@@ -200,6 +207,12 @@ function capturedReportFor(p) {
   const latest = matching.reduce((a, b) => a.source_date > b.source_date ||
     (a.source_date === b.source_date && Number(a.model_id) > Number(b.model_id)) ? a : b);
   const rows = matching.filter(row => row.model_id === latest.model_id);
+  if (source === verifiedArchiveRows) {
+    const signature = row => [row.available, row.monthly_premium, row.quoted_term, row.quoted_life_cover,
+      row.quoted_critical_illness_cover, row.occupation_rated].join("|");
+    if (matching.some(row => row.source_date === latest.source_date &&
+        !rows.some(latestRow => latestRow.provider === row.provider && signature(latestRow) === signature(row)))) return null;
+  }
   if (rows.length !== 3 || new Set(rows.map(row => row.provider)).size !== 3) return null;
   const quotes = rows.filter(row => row.available === "true" && Number(row.monthly_premium) > 0)
     .map(row => ({ provider: row.provider, product: row.product, premium: Number(row.monthly_premium),
@@ -323,6 +336,8 @@ function priorityQuotesFor(p) {
   }
   if (new Set(exact.map((row) => row.provider)).size === 3)
     return { quotes: exact, exact: true };
+  const archived = capturedReportFor(p, verifiedArchiveRows);
+  if (archived) return archived;
   const capitalMatch = validatedCapitalQuotes(p);
   if (capitalMatch) return capitalMatch;
   let providers = ["Legal & General", "Zurich", "Aviva"],
@@ -707,7 +722,7 @@ function render(p) {
   r.detailed = r.withWaiver || r.capitalRange || Boolean(priorityMatch.reported && priorityQuotes.length);
   if (r.capitalRange) {
     const { lower, upper, check, axis } = priorityMatch.capitalRange;
-    r.reportNote = `Estimativa entre capitais de ${axis === "life_cover" ? "vida" : "doenças graves"} de ${gbp(Number(lower[axis]))} e ${gbp(Number(upper[axis]))}. O cálculo foi conferido com uma cotação independente de ${gbp(Number(check[axis]))} para este perfil e prazo.`;
+    r.reportNote = `Estimativa entre capitais de ${axis === "life_cover" ? "vida" : "doenças graves"} de ${gbp(Number(lower[axis]))} e ${gbp(Number(upper[axis]))}. O cálculo foi conferido com uma cotação independente de ${gbp(Number(check[axis]))} para este perfil e prazo em ${check.source_date}.`;
     warnings.unshift(r.reportNote);
   }
   if (priorityMatch.reported) {
@@ -810,14 +825,14 @@ function render(p) {
   const forwardSegmentMetrics =
     forwardMetrics.bySegment?.[confidenceSegmentKey] || {};
   const forwardEvidence = (forwardSegmentMetrics.predicted || 0) >= 30
-    ? ` · validação futura do segmento ${Number(forwardSegmentMetrics.mape * 100).toFixed(2)}% MAPE · P95 ${Number(forwardSegmentMetrics.p95 * 100).toFixed(2)}% · n=${forwardSegmentMetrics.predicted}`
-    : ` · validação futura do segmento ainda limitada (n=${forwardSegmentMetrics.predicted || 0})`;
+    ? ` · validação futura do segmento histórico ${Number(forwardSegmentMetrics.mape * 100).toFixed(2)}% MAPE · P95 ${Number(forwardSegmentMetrics.p95 * 100).toFixed(2)}% · n=${forwardSegmentMetrics.predicted}`
+    : ` · validação futura do segmento histórico ainda limitada (n=${forwardSegmentMetrics.predicted || 0})`;
   let confidenceLabel = r.providerQuotes?.length
     ? r.providerGap
       ? "oficial parcial"
       : r.priorityExact
         ? "oficial exata"
-        : `${(confidenceMetrics.tested || 0) < 30 ? "amostra limitada" : "validada"} (${Number(confidenceMetrics.mape * 100 || 0).toFixed(2)}% MAPE · P95 ${Number(confidenceMetrics.p95 * 100 || 0).toFixed(2)}% · n=${confidenceMetrics.tested || 0}${forwardEvidence})`
+        : `interpolação indicativa · arquivo histórico ${(confidenceMetrics.tested || 0) < 30 ? "com amostra limitada" : "avaliado"} (${Number(confidenceMetrics.mape * 100 || 0).toFixed(2)}% MAPE · P95 ${Number(confidenceMetrics.p95 * 100 || 0).toFixed(2)}% · n=${confidenceMetrics.tested || 0}${forwardEvidence})`
     : model
       ? `modelo histórico agregado (${confidencePt(model.confidence)})`
       : "insuficiente";

@@ -39,7 +39,7 @@ def extract(path, model_id, age, smoker, to_age, life, ci):
         raise ValueError("Unexpected quote basis or frequency.")
     if "Non Underwritten Results" not in result or not re.fullmatch(r"\d+", model_id):
         raise ValueError("Missing indicative results or reference.")
-    client = re.search(r"^Client:.*?\ba (?:Male|Female) (non-smoker|smoker), born on ([\d/]+)", cover, re.M | re.I)
+    client = re.search(r"^Client:.*?\ba (?:Male|Female) (non-smoker|smoker)(?: who has never smoked)?, born on ([\d/]+)", cover, re.M | re.I)
     quoted = re.search(r"Date Requested:\s*([\d/]+)", cover)
     if not (quoted and client):
         raise ValueError("Report does not specify the age and smoking profile.")

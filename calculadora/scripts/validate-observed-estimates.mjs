@@ -173,6 +173,10 @@ for (const [id, rows] of verifiedReports) {
   }
 }
 
+const verifiedArchive = run("verifiedArchiveRows");
+assert.ok(verifiedArchive.length > 0 && verifiedArchive.every(r => r.quoted_term && /^[a-f0-9]{64}$/.test(r.sha256)));
+assert.ok(run("priorityRows").every(r => r.profile !== "Comparison Report Archive"));
+assert.ok(run("priorityGapRows").every(r => r.profile !== "Comparison Report Archive"));
 const calculate = (toAge, life, ci, extra = {}) => {
   ctx.inputs = { age: 50, smoker: "non_smoker", toAge, term: toAge - 50, life, ci, ...extra };
   run("render({...payload(), ...inputs})");
@@ -218,3 +222,58 @@ const errors = heldOut.map(({lower, upper, check, axis}) => {
 console.log(JSON.stringify({comparisonReports: keys.size, actualPrices: reported.filter(r => r.available === "true").length,
   providerHoldoutsInUse: heldOut.length, meanAbsoluteErrorGBP: errors.reduce((a, b) => a + b, 0) / errors.length,
   maximumAbsoluteErrorGBP: Math.max(...errors)}));
+
+const frozen = run("parsePriorityCsv")(readFileSync(
+  new URL("../data/capital-validation-holdout.csv", import.meta.url), "utf8"));
+const reportFor = new Map(reported.map(r => [r.model_id + "|" + r.provider, r]));
+const allErrors = [];
+const distinctTests = new Set();
+let changedOffer = 0;
+for (const trial of frozen) {
+  const entries = [trial.lower_model_id, trial.upper_model_id, trial.holdout_model_id]
+    .map(id => reportFor.get(id + "|" + trial.provider));
+  const [lower, upper, actual] = entries;
+  assert.ok(entries.every(Boolean), "Each prediction must link to all three original reports");
+  const key = [trial.lower_model_id, trial.upper_model_id, trial.holdout_model_id, trial.provider].join("|");
+  assert.ok(!distinctTests.has(key), "Duplicate prospective test " + key);
+  distinctTests.add(key);
+  assert.ok(+actual.model_id > Math.max(+lower.model_id, +upper.model_id));
+  assert.ok(actual.source_date >= lower.source_date && actual.source_date >= upper.source_date);
+  const axis = run("capitalAxis")(lower, upper);
+  const fixed = axis === "life_cover" ? "critical_illness_cover" : "life_cover";
+  assert.ok(+lower[axis] < +actual[axis] && +actual[axis] < +upper[axis]);
+  for (const field of ["age", "smoker", "to_age", fixed, "provider"]) {
+    assert.equal(lower[field], actual[field]);
+    assert.equal(upper[field], actual[field]);
+  }
+  const prediction = Number(trial.predicted_monthly);
+  assert.ok(Number.isFinite(prediction) && prediction > 0);
+  assert.ok(Math.abs(run("priceAlongCapital")(lower, upper, +actual[axis]) - prediction) <= .000051);
+  if (entries.some(r => r.available !== "true" || r.quoted_life_cover !== r.life_cover ||
+      r.quoted_critical_illness_cover !== r.critical_illness_cover ||
+      ["product", "quoted_term", "occupation_rated"].some(field => r[field] !== lower[field]))) {
+    changedOffer++;
+    continue;
+  }
+  const error = Math.abs(prediction - Number(actual.monthly_premium));
+  allErrors.push({ error, relative: error / Number(actual.monthly_premium), actual });
+}
+function measure(trials) {
+  return {
+    n: trials.length,
+    maeGBP: trials.reduce((sum, t) => sum + t.error, 0) / trials.length,
+    mapePercent: 100 * trials.reduce((sum, t) => sum + t.relative, 0) / trials.length,
+    withinOnePound: trials.filter(t => t.error <= 1).length,
+    withinFivePercent: trials.filter(t => t.relative <= .05).length,
+    withinBoth: trials.filter(t => t.error <= 1 && t.relative <= .05).length,
+    maxErrorGBP: Math.max(...trials.map(t => t.error)),
+  };
+}
+assert.equal(allErrors.length + changedOffer, frozen.length);
+console.log(JSON.stringify({
+  predictionsRecordedBeforeCollection: frozen.length, changedOffer,
+  distinctQuotedScenarios: new Set(allErrors.map(t => t.actual.model_id)).size,
+  allComparablePredictions: measure(allErrors),
+  byInsurer: Object.fromEntries(["Zurich", "Legal & General", "Aviva"].map(provider =>
+    [provider, measure(allErrors.filter(t => t.actual.provider === provider))])),
+}));

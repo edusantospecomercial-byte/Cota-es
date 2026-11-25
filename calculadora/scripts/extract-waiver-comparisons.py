@@ -33,7 +33,7 @@ def read_comparison(path):
         r"Level Term Assurance: 1st life, £([\d,]+) life cover, "
         r"policy duration is to age (\d+), premiums are guaranteed", benefits[0].strip(),
     )
-    client = re.search(r"^Client:.*?\ba (?:Male|Female) (non-smoker|smoker), born on ([\d/]+)", cover, re.M | re.I)
+    client = re.search(r"^Client:.*?\ba (?:Male|Female) (non-smoker|smoker)(?: who has never smoked)?, born on ([\d/]+)", cover, re.M | re.I)
     date = re.search(r"Date Requested:\s*([\d/]+)", cover)
     reference = re.search(r"Your Reference:\s*(\d+)", cover)
     if not all((benefit, client, date, reference)) or "Non Underwritten Results" not in results:
