@@ -218,6 +218,10 @@ assert.ok(!calculate(85, 1950, 0).capitalRange);
 // The £75k life-only holdout verified Zurich. The other two providers
 // raised the sum insured at the £50k anchor, so their prices cannot be inferred.
 const age31 = {age: 31, term: 34};
+const liveReportRows = run("reportedRows");
+const liveCapitalRanges = run("validatedCapitalRanges");
+ctx.partialRangeIds = ["35041241", "35041242", "35041247", "35041273", "35041288", "35041304"];
+run("reportedRows = reportedRows.filter(row => partialRangeIds.includes(row.model_id)); validatedCapitalRanges = validatedCapitalRanges.filter(r => partialRangeIds.includes(r.check.model_id));");
 const oneCarrier = calculate(65, 65000, 0, age31);
 assert.equal(oneCarrier.capitalRange, true);
 assert.equal(oneCarrier.complete, true);
@@ -228,6 +232,9 @@ const twoCarriers = calculate(65, 83000, 10000, age31);
 assert.equal(twoCarriers.capitalRange, true);
 assert.deepEqual(Array.from(twoCarriers.providerQuotes, q => q.provider).sort(), ["Legal & General", "Zurich"]);
 assert.equal(twoCarriers.provider, "Zurich");
+ctx.savedReported = liveReportRows;
+ctx.savedRanges = liveCapitalRanges;
+run("reportedRows = savedReported; validatedCapitalRanges = savedRanges;");
 const variantRows = run("acceleratedOffers");
 const variantKeys = new Set();
 for (const row of variantRows) {
@@ -252,6 +259,11 @@ assert.ok(node("acceleratedOffers").innerHTML.includes("£20.41"));
 assert.ok(node("acceleratedSource").textContent.includes("2026-11-25"));
 calculate(65, 50000, 0, age31);
 assert.equal(node("acceleratedComparison").hidden, true);
+assert.equal(node("capitalAccuracy").hidden, false);
+assert.ok(node("capitalAccuracyScope").textContent.includes("31 anos, não fumante"));
+assert.ok(node("capitalAccuracyScope").textContent.includes("50 anos, não fumante"));
+const denominators = node("capitalAccuracySummary").textContent.match(/^(\d+) de (\d+) previsões/);
+assert.ok(denominators && Number(denominators[1]) < Number(denominators[2]));
 const heldOut = run("validatedCapitalRanges");
 assert.ok(heldOut.length >= 36);
 const errors = heldOut.map(({lower, upper, check, axis}) => {

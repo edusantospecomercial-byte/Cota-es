@@ -102,7 +102,9 @@ async function init() {
   acceleratedOffers = loadedAccelerated;
   illustratedLifeRows = illustratedLife;
   reportedRows = loadedReports;
-  validatedCapitalRanges = buildCapitalRanges(loadedReports, capitalHoldout);
+  const trials = evaluateCapitalTrials(loadedReports, capitalHoldout);
+  validatedCapitalRanges = buildCapitalRanges(trials, capitalHoldout);
+  showCapitalAccuracy(trials, capitalHoldout.length);
   observedRows = loadedObservedRows;
   waiverRows = loadedWaiverRows;
   catalog = loadedCatalog;
@@ -152,9 +154,9 @@ function priceAlongCapital(lower, upper, capital) {
   return Number(lower.monthly_premium) + fraction * (Number(upper.monthly_premium) - Number(lower.monthly_premium));
 }
 
-function buildCapitalRanges(reports, holdout) {
+function evaluateCapitalTrials(reports, holdout) {
   const byId = new Map(reports.map(row => [[row.model_id, row.provider].join("|"), row]));
-  const ranges = [];
+  const comparable = [];
   for (const trial of holdout) {
     const [lower, upper, check] = [trial.lower_model_id, trial.upper_model_id, trial.holdout_model_id]
       .map(id => byId.get([id, trial.provider].join("|")));
@@ -174,10 +176,30 @@ function buildCapitalRanges(reports, holdout) {
     if (!(Number(lower[axis]) < capital && capital < Number(upper[axis]))) continue;
     const estimate = priceAlongCapital(lower, upper, capital);
     const error = Math.abs(estimate - Number(check.monthly_premium));
-    if (!Number.isFinite(Number(trial.predicted_monthly)) || Math.abs(estimate - Number(trial.predicted_monthly)) > 0.000051 ||
-        error > 1 || error / Number(check.monthly_premium) > 0.05) continue;
-    ranges.push({ lower, upper, check, axis });
+    if (!Number.isFinite(Number(trial.predicted_monthly)) || Math.abs(estimate - Number(trial.predicted_monthly)) > 0.000051) continue;
+    comparable.push({ lower, upper, check, axis, error, passed: error <= 1 && error / Number(check.monthly_premium) <= 0.05 });
   }
+  return comparable;
+}
+
+function showCapitalAccuracy(trials, registered) {
+  const panel = $("capitalAccuracy");
+  panel.hidden = !trials.length;
+  if (!trials.length) return;
+  const matched = trials.filter(trial => trial.passed).length;
+  const pct = new Intl.NumberFormat("pt-BR", { style: "percent", maximumFractionDigits: 1 }).format(matched / trials.length);
+  const mean = trials.reduce((sum, trial) => sum + trial.error, 0) / trials.length;
+  const profiles = [...new Set(trials.map(({ check }) =>
+    check.age + " anos, " + (check.smoker === "Yes" ? "fumante" : "não fumante")))].sort();
+  $("capitalAccuracySummary").textContent =
+    `${matched} de ${trials.length} previsões comparáveis (${pct}) ficaram a até £1 e 5% da mensalidade oficial. Diferença média absoluta de ${gbp(mean)}/mês.`;
+  const scenarios = new Set(trials.map(({ check }) => check.model_id)).size;
+  $("capitalAccuracyScope").textContent =
+    `${registered} previsões registradas antes da consulta. Os preços comparáveis vieram de ${scenarios} simulações com capitais intermediários. Os perfis testados foram ${profiles.join(" · ")}. A medição cobre somente esses intervalos de capital e as condições registradas no relatório.`;
+}
+
+function buildCapitalRanges(comparable, holdout) {
+  const ranges = comparable.filter(trial => trial.passed);
   const keyOf = (lower, upper, provider) => [lower, upper, provider].join("|");
   const passing = new Set(ranges.map(({ lower, upper, check }) => keyOf(lower.model_id, upper.model_id, check.provider) + "|" + check.model_id));
   const rejected = new Set();
