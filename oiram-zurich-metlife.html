@@ -68,6 +68,15 @@ h2 em{font-style:normal;color:var(--accent)}
 .scroll-hint i{width:18px;height:28px;border:1.5px solid #ffffff55;border-radius:10px;position:relative}
 .scroll-hint i:after{content:'';position:absolute;left:50%;top:5px;width:3px;height:6px;margin-left:-1.5px;border-radius:2px;background:var(--accent)}
 
+
+/* v2: nome em destaque e preço mais forte */
+.hero-top b{font-weight:800;color:var(--accent)}
+.hero h1 .who{position:relative;display:inline-block;font-weight:800;color:#fff}
+.hero h1 .who:after{content:'';position:absolute;left:0;right:0;bottom:-2px;height:3px;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--teal));transform-origin:0 50%}
+.hero-price strong{letter-spacing:-.075em;-webkit-text-stroke:1.6px #fff;paint-order:stroke fill}
+.swipe{display:flex;align-items:center;gap:6px;margin-top:10px}
+.swipe i{font-style:normal;color:var(--accent)}
+
 /* ---------- Vidro ---------- */
 .glass{position:relative;isolation:isolate;overflow:hidden;border-radius:28px;border:1px solid #d7efff3d;
   background:linear-gradient(135deg,#cee9ff1f,#8cceff0a 45%,#9fffe514);
@@ -260,6 +269,28 @@ footer{padding:40px 22px 150px;font-size:11.5px;line-height:1.6;color:#7f8ea3}
     @keyframes par{from{transform:scale(1.18) translateY(-4%)}to{transform:scale(1.18) translateY(4%)}}
   }
 }
+
+/* v2: movimento extra */
+@media(prefers-reduced-motion:no-preference){
+  .hero h1 .who:after{animation:underline .7s .75s var(--ease) both}
+  @keyframes underline{from{transform:scaleX(0)}}
+  .hero-price strong.done{animation:priceglow 1.8s ease-out}
+  @keyframes priceglow{30%{text-shadow:0 0 38px #7fd8ffc0,0 2px 18px #060911}}
+  .dock a{animation:ctaglow 3.4s 3s ease-in-out infinite}
+  @keyframes ctaglow{50%{box-shadow:inset 0 1px 0 #ffffffb0,0 0 22px #7fd8ffb8}}
+  .swipe i{animation:nudge 1.4s ease-in-out infinite}
+  @keyframes nudge{50%{transform:translateX(6px)}}
+  .io .rv{opacity:0;transform:translateY(28px) scale(.98);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+  .io .rv.in{opacity:1;transform:none}
+  @supports (animation-timeline:view()){
+    .hero-in{animation:heroout linear both;animation-timeline:scroll(root);animation-range:0 70vh}
+    @keyframes heroout{to{opacity:.12;transform:translateY(-46px)}}
+    .hero-photo{animation:photoout linear both;animation-timeline:scroll(root);animation-range:0 90vh}
+    @keyframes photoout{to{opacity:.35;transform:translateY(70px) scale(1.06)}}
+    .lock svg *{stroke-dasharray:64;animation:draw linear both;animation-timeline:view();animation-range:entry 30% cover 35%}
+    @keyframes draw{from{stroke-dashoffset:64}to{stroke-dashoffset:0}}
+  }
+}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 @media(max-width:360px){section{padding-left:18px;padding-right:18px}.hero-in{padding-left:18px;padding-right:18px}.total-card .v strong{font-size:54px}.dock{padding-left:16px}.dock a{padding:0 14px}.jobs{margin:18px -18px 0;padding:0 18px 6px}}
 @media print{.dock,.progress,.aurora,.scroll-hint{display:none}.hero{min-height:0}body{background:#fff;color:#111}*{color:#111!important;background:none!important;box-shadow:none!important}details::details-content{block-size:auto}}
@@ -274,9 +305,9 @@ footer{padding:40px 22px 150px;font-size:11.5px;line-height:1.6;color:#7f8ea3}
 <!-- 1. CAPA -->
 <section class="hero" id="topo">
   <div class="hero-photo"><img src="https://images.unsplash.com/photo-1652918711329-4b33cc5ee34a?w=900&q=72&auto=format&fit=crop" alt="Ônibus vermelho de dois andares passando sob a Tower Bridge, em Londres, à noite" width="900" height="1350" fetchpriority="high"></div>
-  <div class="hero-top"><span>SEGURO UK</span><span>PARA OIRAM</span></div>
+  <div class="hero-top"><span>SEGURO UK</span><span>PARA <b>OIRAM</b></span></div>
   <div class="hero-in">
-    <h1>Oiram, seus 3 seguros juntos custam</h1>
+    <h1><b class="who">Oiram</b>, seus 3 seguros juntos custam</h1>
     <div class="hero-price"><strong class="num" data-count="27.91">£27.91</strong></div>
     <p class="lead"><b>por mês.</b> Seguro de vida, acidentes e hospitalização.</p>
     <div class="scroll-hint"><i aria-hidden="true"></i>Role para ver o que cada seguro paga</div>
@@ -343,6 +374,7 @@ footer{padding:40px 22px 150px;font-size:11.5px;line-height:1.6;color:#7f8ea3}
     <li><img src="https://images.unsplash.com/photo-1689728318937-17d24bc0a65c?w=500&h=667&q=65&auto=format&fit=crop" alt="Jardineiro aparando a grama" width="500" height="667" loading="lazy"><span>No jardim</span></li>
     <li class="any"><img src="img/qualquer-lugar.jpg" alt="Pessoa voltando para casa a pé em uma rua de Londres, à noite, depois da chuva" width="602" height="799" loading="lazy"><div><b>24h</b><strong>Em qualquer lugar</strong><p>No trabalho, em casa ou na rua. De dia ou de noite, o seguro vale.</p></div></li>
   </ul>
+  <p class="small swipe" aria-hidden="true">Deslize para ver mais <i>→</i></p>
   <div class="card pay rv">
     <span class="k">Fratura de osso principal</span>
     <strong class="num big"><small>Até </small>£1,000</strong>
@@ -489,7 +521,7 @@ if(price&&!calm){
   const tick=t=>{const p=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-p,4);price.textContent='£'+(end*e).toFixed(2);if(p<1)requestAnimationFrame(tick)};
   price.textContent='£0.00';requestAnimationFrame(tick);
   // Garantia: o valor final aparece mesmo se a animação for interrompida
-  setTimeout(()=>{price.textContent='£'+end.toFixed(2)},1800);
+  setTimeout(()=>{price.textContent='£'+end.toFixed(2);price.classList.add('done')},1800);
 }
 
 // Soma animada quando o cartão do total aparece
@@ -499,6 +531,35 @@ if(sum){
     const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){sum.classList.add('in');io.disconnect()}}),{threshold:.6});
     io.observe(sum);
   }else sum.classList.add('in');
+}
+
+
+// v2: aparecer ao rolar em navegadores sem animação por rolagem nativa
+if(!calm&&'IntersectionObserver' in window&&!(window.CSS&&CSS.supports&&CSS.supports('animation-timeline: view()'))){
+  document.documentElement.classList.add('io');
+  const rio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');rio.unobserve(e.target)}}),{threshold:.12,rootMargin:'0px 0px -6% 0px'});
+  document.querySelectorAll('.rv').forEach(el=>rio.observe(el));
+}
+
+// v2: os valores grandes contam quando entram na tela
+if(!calm&&'IntersectionObserver' in window){
+  const cio=new IntersectionObserver(es=>es.forEach(e=>{
+    if(!e.isIntersecting)return;cio.unobserve(e.target);
+    const node=[...e.target.childNodes].reverse().find(n=>n.nodeType===3&&/£[\d,]+/.test(n.nodeValue));
+    if(!node)return;
+    const full=node.nodeValue,m=full.match(/£([\d,]+)/),end=+m[1].replace(/,/g,''),t0=performance.now(),dur=1100;
+    const tick=t=>{const p=Math.min(1,(t-t0)/dur),v=Math.round(end*(1-Math.pow(1-p,4)));node.nodeValue=full.replace(m[0],'£'+v.toLocaleString('en-GB'));if(p<1)requestAnimationFrame(tick)};
+    requestAnimationFrame(tick);
+    setTimeout(()=>{node.nodeValue=full},1500);
+  }),{threshold:.7});
+  document.querySelectorAll('.pay .big').forEach(el=>cio.observe(el));
+}
+
+// v2: a faixa de fotos dá um leve empurrão para mostrar que desliza
+const jobs=document.querySelector('.jobs');
+if(jobs&&!calm&&'IntersectionObserver' in window){
+  const jio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){jio.disconnect();jobs.scrollTo({left:90,behavior:'smooth'});setTimeout(()=>jobs.scrollTo({left:0,behavior:'smooth'}),850)}}),{threshold:.9});
+  jio.observe(jobs);
 }
 
 // Abas com View Transitions quando o navegador suporta
