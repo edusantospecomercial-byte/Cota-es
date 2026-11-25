@@ -142,11 +142,12 @@ h2 em{font-style:normal;color:var(--accent)}
 .jobs img{width:100%;height:100%;object-fit:cover}
 .jobs li:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,#060911e6)}
 .jobs span{position:absolute;z-index:1;left:12px;bottom:11px;font-size:13px;font-weight:700}
-.jobs li.any{display:flex;flex-direction:column;justify-content:flex-end;padding:14px;background:linear-gradient(165deg,#7fd8ff3d,#74dfc524 55%,#0d1420);border:1px solid #7fd8ff4d;box-shadow:inset 0 1px 0 #ffffff40}
-.jobs li.any:after{display:none}
-.jobs li.any b{font:800 40px/1 var(--num);letter-spacing:-.05em;color:var(--accent)}
-.jobs li.any strong{display:block;font-size:16px;line-height:1.2;margin-top:10px;color:#fff}
-.jobs li.any p{font-size:12px;line-height:1.45;color:#d2dfec;margin-top:6px}
+.jobs li.any{border:1px solid #7fd8ff4d}
+.jobs li.any:after{background:linear-gradient(180deg,#06091126 0,#06091173 38%,#060911f5 100%)}
+.jobs li.any div{position:absolute;z-index:1;left:13px;right:11px;bottom:13px}
+.jobs li.any b{font:800 40px/1 var(--num);letter-spacing:-.05em;color:var(--accent);text-shadow:0 2px 14px #060911}
+.jobs li.any strong{display:block;font-size:16px;line-height:1.2;margin-top:8px;color:#fff}
+.jobs li.any p{font-size:12px;line-height:1.45;color:#dbe6f1;margin-top:5px}
 
 /* Acordeões */
 details{margin-top:14px;border-top:1px solid var(--line)}
@@ -363,7 +364,7 @@ footer{padding:40px 22px 150px;font-size:11.5px;line-height:1.6;color:#7f8ea3}
     <li><img src="img/limpeza.jpg" alt="Mulher de avental e luvas limpando a bancada de uma cozinha" width="602" height="799" loading="lazy"><span>Na limpeza</span></li>
     <li><img src="https://images.unsplash.com/photo-1636414722386-a73bd3fc368c?w=500&h=667&q=65&auto=format&fit=crop" alt="Dois trabalhadores de colete refletivo e capacete em uma obra" width="500" height="667" loading="lazy"><span>Na obra</span></li>
     <li><img src="https://images.unsplash.com/photo-1689728318937-17d24bc0a65c?w=500&h=667&q=65&auto=format&fit=crop" alt="Jardineiro aparando a grama" width="500" height="667" loading="lazy"><span>No jardim</span></li>
-    <li class="any"><b>24h</b><strong>Em qualquer lugar</strong><p>No trabalho, em casa ou na rua. De dia ou de noite, o seguro vale.</p></li>
+    <li class="any"><img src="img/qualquer-lugar.jpg" alt="Pessoa voltando para casa a pé em uma rua de Londres, à noite, depois da chuva" width="602" height="799" loading="lazy"><div><b>24h</b><strong>Em qualquer lugar</strong><p>No trabalho, em casa ou na rua. De dia ou de noite, o seguro vale.</p></div></li>
   </ul>
   <div class="card pay rv">
     <span class="k">Fratura de osso principal</span>
