@@ -215,6 +215,19 @@ assert.ok(interpolated.text.includes("34 anos de prazo"));
 assert.ok(!calculate(85, 62873, 0, {smoker: "smoker"}).capitalRange);
 assert.ok(!calculate(85, 62873, 0, {age: 51, term: 34}).capitalRange);
 assert.ok(!calculate(85, 1950, 0).capitalRange);
+// The £75k life-only holdout verified Zurich. The other two providers
+// raised the sum insured at the £50k anchor, so their prices cannot be inferred.
+const age31 = {age: 31, term: 34};
+const oneCarrier = calculate(65, 65000, 0, age31);
+assert.equal(oneCarrier.capitalRange, true);
+assert.equal(oneCarrier.complete, true);
+assert.deepEqual(Array.from(oneCarrier.providerQuotes, q => q.provider), ["Zurich"]);
+assert.equal(oneCarrier.main.toFixed(2), "5.93");
+assert.ok(oneCarrier.text.includes("Sem estimativa validada nesse intervalo para Legal & General e Aviva"));
+const twoCarriers = calculate(65, 83000, 10000, age31);
+assert.equal(twoCarriers.capitalRange, true);
+assert.deepEqual(Array.from(twoCarriers.providerQuotes, q => q.provider).sort(), ["Legal & General", "Zurich"]);
+assert.equal(twoCarriers.provider, "Zurich");
 const heldOut = run("validatedCapitalRanges");
 assert.ok(heldOut.length >= 36);
 const errors = heldOut.map(({lower, upper, check, axis}) => {

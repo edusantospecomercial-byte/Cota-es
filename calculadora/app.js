@@ -196,9 +196,10 @@ function validatedCapitalQuotes(p) {
       sourceDate: check.source_date, premium: priceAlongCapital(lower, upper, capital),
       occupationRated: lower.occupation_rated === "Yes" });
   }
-  const compatible = [...groups.values()].filter(group => group.quotes.length === 3 &&
-    new Set(group.quotes.map(q => q.provider)).size === 3);
-  compatible.sort((a, b) => b.check.source_date.localeCompare(a.check.source_date) ||
+  const compatible = [...groups.values()].filter(group =>
+    new Set(group.quotes.map(q => q.provider)).size === group.quotes.length);
+  compatible.sort((a, b) => b.quotes.length - a.quotes.length ||
+    b.check.source_date.localeCompare(a.check.source_date) ||
     a.width - b.width);
   const range = compatible[0];
   if (!range) return null;
@@ -759,6 +760,9 @@ function render(p) {
   if (r.capitalRange) {
     const { lower, upper, check, axis } = priorityMatch.capitalRange;
     r.reportNote = `Estimativa entre capitais de ${axis === "life_cover" ? "vida" : "doenças graves"} de ${gbp(Number(lower[axis]))} e ${gbp(Number(upper[axis]))}. O cálculo foi conferido com uma cotação independente de ${gbp(Number(check[axis]))} para este perfil e prazo em ${check.source_date}.`;
+    const missing = ["Zurich", "Legal & General", "Aviva"].filter(provider =>
+      !priorityQuotes.some(quote => quote.provider === provider));
+    if (missing.length) r.reportNote += " Sem estimativa validada nesse intervalo para " + missing.join(" e ") + ".";
     warnings.unshift(r.reportNote);
   }
   if (priorityMatch.reported) {
@@ -776,7 +780,7 @@ function render(p) {
         ? `Cotação oficial ${priorityMatch.gap.modelId}: ${priorityMatch.gap.provider} não retornou preço (${priorityMatch.gap.reason}). Os preços oficiais disponíveis foram preservados sem inventar o valor ausente.`
         : `Cotação oficial ${priorityMatch.gap.modelId}: ${priorityMatch.gap.provider} não retornou preço (${priorityMatch.gap.reason}). A estimativa geral permanece disponível, sem inventar preço específico dessa seguradora.`,
     );
-  if (priorityQuotes.length === 3 || (priorityMatch.partial && priorityQuotes.length)) {
+  if (priorityQuotes.length === 3 || ((r.capitalRange || priorityMatch.partial) && priorityQuotes.length)) {
     const comparable = priorityMatch.sameEndAge || priorityQuotes;
     let selected = comparable[0];
     const segmentKey = p.ci > 0
@@ -906,7 +910,7 @@ function render(p) {
   if (r.illustrationNote)
     priorityDetail += `<dt>Prêmio-base documentado</dt><dd>${escapeHtml(r.illustrationNote)}</dd>`;
   const evidence = r.illustratedBase ? "1 illustration Zurich · vida em apólice individual" : r.detailed
-    ? r.capitalRange ? "2 capitais de referência · 1 capital de teste · 3 seguradoras" : `1 comparativo · ${r.providerQuotes.length} preços históricos`
+    ? r.capitalRange ? `2 capitais de referência · 1 capital de teste · ${r.providerQuotes.length} ${r.providerQuotes.length === 1 ? "seguradora" : "seguradoras"}` : `1 comparativo · ${r.providerQuotes.length} preços históricos`
     : `${model?.records || 0} registros na família · confiança ${escapeHtml(confidenceLabel)}`;
   $("details").innerHTML =
     `<dt>Perfil</dt><dd>${p.age} anos · ${p.smoker === "smoker" ? "fumante" : "não fumante"}</dd><dt>Profissão</dt><dd>${escapeHtml(p.occupation)}</dd><dt>Peso · altura · IMC</dt><dd>${p.weight}kg · ${p.height}cm · ${bmi}</dd><dt>Cobertura solicitada</dt><dd>até ${p.toAge} · ${p.term} anos</dd><dt>Vida</dt><dd>${gbp(p.life)}</dd><dt>Doenças Graves</dt><dd>${gbp(p.ci)}</dd><dt>Premium</dt><dd>Garantido</dd>${priorityDetail}<dt>Base de referência</dt><dd>${evidence}</dd>`;
