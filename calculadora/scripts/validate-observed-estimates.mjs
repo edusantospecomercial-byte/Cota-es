@@ -277,3 +277,44 @@ console.log(JSON.stringify({
   byInsurer: Object.fromEntries(["Zurich", "Legal & General", "Aviva"].map(provider =>
     [provider, measure(allErrors.filter(t => t.actual.provider === provider))])),
 }));
+
+const illustratedRows = run("illustratedLifeRows");
+assert.ok(illustratedRows.length > 0);
+for (const row of illustratedRows) {
+  const pennies = field => Math.round(Number(row[field]) * 100);
+  assert.match(row.sha256, /^[a-f0-9]{64}$/);
+  assert.ok(+row.to_age > +row.age && +row.life_cover > 0 && +row.policy_count >= 1);
+  assert.equal(pennies("base_monthly") + pennies("additional_monthly") - pennies("discount_monthly"),
+    pennies("policy_monthly"));
+}
+const profileWithIllustration = { age: 65, smoker: "non_smoker", toAge: 80, life: 20000, ci: 0 };
+ctx.inputs = profileWithIllustration;
+const verifiedLife = run("illustratedLifeFor(inputs)");
+assert.equal(verifiedLife.base_monthly, "17.92");
+assert.equal(verifiedLife.policy_monthly, "18.52");
+assert.equal(verifiedLife.policy_count, "1");
+assert.equal(run('illustratedLifeFor({...inputs, waiver:"Yes"})'), null);
+assert.equal(run("illustratedLifeFor({...inputs, ci:10000})"), null);
+const profileGroups = group(illustratedRows.map(r => ({...r,
+  key: [r.age, r.smoker, r.to_age, r.life_cover].join("|")})), "key");
+let individualMatches = 0, multiPolicyReferences = 0;
+for (const rows of profileGroups.values()) {
+  const first = rows[0];
+  const response = calculate(+first.to_age, +first.life_cover, 0, {
+    age: +first.age, smoker: first.smoker === "Yes" ? "smoker" : "non_smoker", term: +first.to_age - +first.age
+  });
+  if (response.illustratedBase) {
+    assert.equal(response.provider, "Zurich");
+    assert.ok(response.text.includes("antes de adicionais e descontos"));
+    assert.ok(response.illustrationNote);
+    assert.ok(!response.priorityExact);
+    individualMatches++;
+  }
+  if (response.illustrationNote?.includes("outras apólices")) {
+    assert.ok(!response.illustratedBase);
+    multiPolicyReferences++;
+  }
+}
+assert.ok(individualMatches && multiPolicyReferences);
+console.log(JSON.stringify({itemisedLifeRecords: illustratedRows.length, matchedIndividualProfiles: individualMatches,
+  matchedMultiPolicyReferences: multiPolicyReferences}));
