@@ -56,6 +56,7 @@ async function init() {
     loadedTpdOffers,
     loadedAvivaBreakdowns,
     loadedZurichBreakdowns,
+    loadedLgBreakdowns,
   ] = await Promise.all([
     fetch("./data/models.json", { cache: "no-store" })
       .then((r) => r.json())
@@ -132,10 +133,15 @@ async function init() {
       .then(response => response.ok ? response.text() : "")
       .then(parsePriorityCsv)
       .catch(() => []),
+    fetch("./data/lg-core-breakdowns.csv", { cache: "no-store" })
+      .then(response => response.ok ? response.text() : "")
+      .then(parsePriorityCsv)
+      .catch(() => []),
   ]);
   coreBreakdowns = new Map([
     ...loadedAvivaBreakdowns.map(row => ["Aviva|" + row.comparison_sha256, row]),
     ...loadedZurichBreakdowns.map(row => ["Zurich|" + row.comparison_sha256, row]),
+    ...loadedLgBreakdowns.map(row => ["Legal & General|" + row.comparison_sha256, row]),
   ]);
   tpdOffers = loadedTpdOffers;
   lgIllustratedTerms = loadedLgTerms;
@@ -297,6 +303,23 @@ function documentedLookupPrice(p, amount) {
     row.quoted_term === `To Age ${p.toAge}` && Number(row.monthly_premium) === amount);
 }
 
+function itemisedCiPremium(row, breakdown) {
+  if (!breakdown || breakdown.reference !== row.reference || breakdown.total_monthly !== row.monthly_premium) return "";
+  if (breakdown.earlier_ci_policy_monthly) {
+    const policies = [];
+    if (Number(breakdown.life_policy_monthly) > 0) policies.push("vida adicional " + gbp(Number(breakdown.life_policy_monthly)));
+    policies.push("vida ou diagnóstico " + gbp(Number(breakdown.earlier_ci_policy_monthly)));
+    return "<br>Mensalidade cobrada por apólice neste pacote · " + policies.join(" + ") + ".";
+  }
+  const charges = [["vida adicional", breakdown.life_monthly], ["vida ou diagnóstico", breakdown.earlier_ci_monthly],
+    ["isenção", breakdown.waiver_monthly], ["incapacidade permanente", breakdown.tpd_monthly]];
+  const listed = charges.filter(([, value]) => Number(value) > 0)
+    .map(([label, value]) => label + " " + gbp(Number(value))).join(" + ");
+  const discount = Number(breakdown.discount_monthly || 0);
+  return "<br>Na illustration, a mensalidade reúne " + listed +
+    (discount > 0 ? " − desconto por múltiplas apólices " + gbp(discount) : "") + ".";
+}
+
 function renderCiComparison(p, independentTpd = false) {
   const prefix = independentTpd ? "tpd" : "accelerated";
   const offers = independentTpd ? tpdOffers : acceleratedOffers;
@@ -334,16 +357,7 @@ function renderCiComparison(p, independentTpd = false) {
     detail.push(waiver, "TPD " + row.tpd_basis);
     if (row.occupation_rated === "Yes") detail.push("preço depende da profissão");
     const breakdown = independentTpd ? null : coreBreakdowns.get(row.provider + "|" + row.sha256);
-    let itemised = "";
-    if (breakdown && breakdown.reference === row.reference && breakdown.total_monthly === row.monthly_premium) {
-      const charges = [["vida adicional", breakdown.life_monthly], ["vida ou diagnóstico", breakdown.earlier_ci_monthly],
-        ["isenção", breakdown.waiver_monthly], ["incapacidade permanente", breakdown.tpd_monthly]];
-      const listed = charges.filter(([, value]) => Number(value) > 0)
-        .map(([label, value]) => label + " " + gbp(Number(value))).join(" + ");
-      const discount = Number(breakdown.discount_monthly || 0);
-      itemised = "<br>Na illustration, a mensalidade reúne " + listed +
-        (discount > 0 ? " − desconto por múltiplas apólices " + gbp(discount) : "") + ".";
-    }
+    const itemised = itemisedCiPremium(row, breakdown);
     return `<dt>${escapeHtml(row.provider)}</dt><dd><b>${gbp(Number(row.monthly_premium))}/mês</b> · ${escapeHtml(detail.join(" · "))}${itemised}</dd>`;
   });
   $(prefix + "Source").textContent = "Comparativo de " + latest.source_date +

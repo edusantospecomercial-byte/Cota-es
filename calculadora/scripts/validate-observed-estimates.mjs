@@ -303,12 +303,20 @@ for (const [key, part] of breakdowns) {
   assert.equal(part.life_cover, offer.quoted_life_cover);
   assert.equal(part.earlier_ci_cover, offer.quoted_earlier_ci_cover);
   assert.equal(part.total_monthly, offer.monthly_premium);
+  if (offer.provider === "Legal & General") {
+    assert.equal(offer.quoted_term, part.term_years + " years");
+    assert.equal(penny(part.life_policy_monthly) + penny(part.earlier_ci_policy_monthly), penny(offer.monthly_premium));
+    continue;
+  }
   assert.equal(penny(part.life_monthly) + penny(part.earlier_ci_monthly) + penny(part.waiver_monthly) + penny(part.tpd_monthly) - penny(part.discount_monthly || 0),
     penny(offer.monthly_premium));
 }
 calculate(65, 50000, 20000, {age: 40, term: 25});
 assert.ok(node("acceleratedSource").textContent.includes("1075018233"));
 assert.ok(node("acceleratedOffers").innerHTML.includes("vida adicional £6.25 + vida ou diagnóstico £13.94 + isenção £0.62 + incapacidade permanente £0.28 − desconto por múltiplas apólices £2.50"));
+calculate(65, 50000, 10000, {age: 40, smoker: "smoker", term: 25});
+assert.ok(node("acceleratedSource").textContent.includes("1081288679"));
+assert.ok(node("acceleratedOffers").innerHTML.includes("Mensalidade cobrada por apólice neste pacote · vida adicional £11.63 + vida ou diagnóstico £10.64"));
 const variantKeys = new Set();
 for (const row of variantRows) {
   const key = [row.reference, row.provider].join("|");

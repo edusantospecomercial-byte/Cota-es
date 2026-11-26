@@ -12,6 +12,7 @@ const expectedAppVersion = localIndex.match(/app\.js\?v=([a-f0-9]+)/)?.[1];
 const criticalAssets = [
   "data/aviva-core-breakdowns.csv",
   "data/zurich-core-breakdowns.csv",
+  "data/lg-core-breakdowns.csv",
   "index.html",
   "style.css",
   "app.js",
