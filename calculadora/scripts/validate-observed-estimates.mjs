@@ -542,6 +542,9 @@ const upgradedAviva = "Aviva Multi-Product Upgraded CI/No Child Upgrade";
 const panelAge30 = node("acceleratedOffers").innerHTML;
 for (const clue of ["Comparar versões de Aviva",upgradedAviva,"£14.34/mês","£27.34/mês","Zurich Life &amp; CI Enhanced","£27.79/mês"])
   assert.ok(panelAge30.includes(clue),clue);
+for (const text of ["Zurich Life &amp; CI + Child · £14.14/mês · com a MetLife £27.14/mês",
+  "£0.62 a mais que Zurich Life &amp; CI (£13.52/mês)", "Aviva Multi-Product Upgraded CI with Child Upgrade · £18.74/mês",
+  "£4.40 a mais que Aviva Multi-Product Upgraded CI/No Child Upgrade (£14.34/mês)"]) assert.ok(panelAge30.includes(text),text);
 assert.equal(node("totalPrice").textContent,"A confirmar");
 assert.ok(firstEvent30.alternativePackage.includes(upgradedAviva + " por £27.34/mês"));
 assert.ok(firstEvent30.text.includes(firstEvent30.alternativePackage));

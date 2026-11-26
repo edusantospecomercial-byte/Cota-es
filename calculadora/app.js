@@ -838,7 +838,13 @@ function renderCiComparison(p, independentTpd = false) {
     const otherPrices = variants.map(v => {
       const charge = Number(v.monthly_premium);
       const total = metlife.c && !metlife.unavailable ? " · com a MetLife " + gbp(monthlyTotal(charge, metlife.total)) + "/mês" : "";
-      return "<li>" + escapeHtml(v.product) + " · " + gbp(charge) + "/mês" + total + "</li>";
+      const companion = companionProducts.get(v.product);
+      let comparison = "";
+      if (companion && v.occupation_rated === "No") {
+        const equivalent = companion === row.product ? row : variants.find(other => other.product === companion);
+        if (equivalent) comparison = childPriceDifference(v.monthly_premium, companion, equivalent.monthly_premium);
+      }
+      return "<li>" + escapeHtml(v.product) + " · " + gbp(charge) + "/mês" + total + escapeHtml(comparison) + "</li>";
     });
     const fixedYears = variants.length && variants[0].quoted_term ? Number(variants[0].quoted_term.split(" ")[0]) : 0;
     const fixedTermNote = fixedYears ? "<p>Prazo de " + fixedYears + " anos na oferta. O pedido até os " +
@@ -1379,8 +1385,11 @@ function familyCiPriceDifference(row, otherVersions = exactCapitalVariants) {
     const prices = new Set(comparable.map(other => other.monthly_premium));
     if (prices.size === 1) reference = comparable[0].monthly_premium;
   }
+  return childPriceDifference(row.monthly_premium, product, reference);
+}
+function childPriceDifference(familyPremium, product, reference) {
   if (!/^\d+\.\d{2}$/.test(reference || "") || Number(reference) <= 0) return "";
-  const difference = displayedPence(Number(row.monthly_premium)) - displayedPence(Number(reference));
+  const difference = displayedPence(Number(familyPremium)) - displayedPence(Number(reference));
   if (!Number.isSafeInteger(difference)) return "";
   return difference === 0 ? ". Mesmo preço de " + product + " no comparativo" :
     ". Diferença de " + gbp(Math.abs(difference) / 100) + (difference > 0 ? " a mais que " : " a menos que ") +

@@ -50,3 +50,37 @@ source_date,sha256,provider,standard_product,standard_monthly,product,age,smoker
 2026-11-22,008d09b641baed756c4b854a5d15350551bbdce91d84bb19bd1808382409dc38,Aviva,Aviva Multi-Product with Core CI,32.34,Aviva Multi-Product Upgraded CI/No Child Upgrade,49,Yes,65,30000,10000,37.45,No,70,Own
 2026-11-22,008d09b641baed756c4b854a5d15350551bbdce91d84bb19bd1808382409dc38,Zurich,Zurich Life & CI,40.74,Zurich Life & CI Enhanced,49,Yes,65,30000,10000,42.87,No,70,Own
 2026-11-22,008d09b641baed756c4b854a5d15350551bbdce91d84bb19bd1808382409dc38,Zurich,Zurich Life & CI,40.74,Zurich Life & CI Enhanced Plus,49,Yes,65,30000,10000,44.33,No,70,Own
+2026-04-28,1f12c00bf93b3636b0a3633a2c4a54a626008b6dd59827fc0a35397745ca4df4,Aviva,Aviva Multi-Product with Core CI,27.30,Aviva Multi-Product Upgraded CI with Child Upgrade,46,Yes,65,30000,10000,43.23,No,70,Own
+2026-04-28,1f12c00bf93b3636b0a3633a2c4a54a626008b6dd59827fc0a35397745ca4df4,Zurich,Zurich Life & CI,30.92,Zurich Life & CI + Child,46,Yes,65,30000,10000,31.54,No,70,Own
+2026-04-28,8c2a1852814629fcb535ac250027fef07d2de8c52b8fa3624587e74a44e47874,Aviva,Aviva Multi-Product with Core CI,22.65,Aviva Multi-Product Upgraded CI with Child Upgrade,40,Yes,65,50000,10000,33.73,No,70,Own
+2026-04-28,8c2a1852814629fcb535ac250027fef07d2de8c52b8fa3624587e74a44e47874,Zurich,Zurich Life & CI,23.90,Zurich Life & CI + Child,40,Yes,65,50000,10000,24.52,No,70,Own
+2026-07-16,46eda28007c03d04082cac3969f01946828cca524b7865946d8e908805ea6c0c,Aviva,Aviva Multi-Product with Core CI,28.64,Aviva Multi-Product Upgraded CI with Child Upgrade,44,Yes,65,50000,10000,42.32,No,70,Own
+2026-07-16,46eda28007c03d04082cac3969f01946828cca524b7865946d8e908805ea6c0c,Zurich,Zurich Life & CI,32.58,Zurich Life & CI + Child,44,Yes,65,50000,10000,33.20,No,70,Specified
+2026-07-29,b37f42ac2062c9c6869e8d15f72de65a7b1cc9228bd051b688af4a5954b01b1b,Aviva,Aviva Multi-Product with Core CI,22.57,Aviva Multi-Product Upgraded CI with Child Upgrade,40,Yes,65,50000,10000,33.83,No,70,Own
+2026-07-29,b37f42ac2062c9c6869e8d15f72de65a7b1cc9228bd051b688af4a5954b01b1b,Zurich,Zurich Life & CI,24.45,Zurich Life & CI + Child,40,Yes,65,50000,10000,25.07,No,70,Specified
+2026-08-11,49f2144b3d001b65e456d5d80fe79dbef9df1dd2413c2ae574c452d44eac3c2a,Aviva,Aviva Multi-Product with Core CI,18.46,Aviva Multi-Product Upgraded CI with Child Upgrade,37,Yes,65,50000,10000,27.73,No,70,Own
+2026-08-11,49f2144b3d001b65e456d5d80fe79dbef9df1dd2413c2ae574c452d44eac3c2a,Zurich,Zurich Life & CI,18.97,Zurich Life & CI + Child,37,Yes,65,50000,10000,19.57,No,No data,Specified
+2026-08-11,4ab4e4de022e54df5e028483482d16bc143a30abeccb79d9c68fa06b2443feb3,Aviva,Aviva Multi-Product with Core CI,15.60,Aviva Multi-Product Upgraded CI with Child Upgrade,37,Yes,65,30000,10000,24.87,No,70,Own
+2026-08-11,4ab4e4de022e54df5e028483482d16bc143a30abeccb79d9c68fa06b2443feb3,Zurich,Zurich Life & CI,16.06,Zurich Life & CI + Child,37,Yes,65,30000,10000,16.66,No,No data,Specified
+2026-08-11,4eb2caf854d7095ccfb38df55896d8fd4539c90f2d77616314433b245e5a4105,Aviva,Aviva Multi-Product with Core CI,13.38,Aviva Multi-Product Upgraded CI with Child Upgrade,37,Yes,65,20000,10000,22.65,No,70,Own
+2026-08-11,4eb2caf854d7095ccfb38df55896d8fd4539c90f2d77616314433b245e5a4105,Zurich,Zurich Life & CI,14.60,Zurich Life & CI + Child,37,Yes,65,20000,10000,15.20,No,No data,Specified
+2026-08-11,cbec6d330ae307d1bd9635f110aebc7a8374fb25bdc15462103872f5eaafc847,Aviva,Aviva Multi-Product with Core CI,18.46,Aviva Multi-Product Upgraded CI with Child Upgrade,37,Yes,65,50000,10000,27.73,No,70,Own
+2026-08-11,cbec6d330ae307d1bd9635f110aebc7a8374fb25bdc15462103872f5eaafc847,Zurich,Zurich Life & CI,18.97,Zurich Life & CI + Child,37,Yes,65,50000,10000,19.57,No,No data,Specified
+2026-08-11,ccc6b1abfc7211a25017cc855c589379fff32246ff7cd8b0739e2d8b41b619a9,Aviva,Aviva Multi-Product with Core CI,15.60,Aviva Multi-Product Upgraded CI with Child Upgrade,37,Yes,65,30000,10000,24.87,No,70,Own
+2026-08-11,ccc6b1abfc7211a25017cc855c589379fff32246ff7cd8b0739e2d8b41b619a9,Zurich,Zurich Life & CI,16.06,Zurich Life & CI + Child,37,Yes,65,30000,10000,16.66,No,No data,Specified
+2026-08-25,45fa8dbd4511ecd699e5e07a52411961f90a1e0cbe720b5fce0b1f420d09bdcf,Aviva,Aviva Multi-Product with Core CI,20.62,Aviva Multi-Product Upgraded CI with Child Upgrade,39,Yes,65,50000,10000,30.90,No,70,Own
+2026-08-25,45fa8dbd4511ecd699e5e07a52411961f90a1e0cbe720b5fce0b1f420d09bdcf,Zurich,Zurich Life & CI,21.75,Zurich Life & CI + Child,39,Yes,65,50000,10000,22.37,No,70,Specified
+2026-09-10,74a62a05d9d335bb70323dc8e45d26d844b91d882eedecb064693522b405b8b1,Aviva,Aviva Multi-Product with Core CI,12.59,Aviva Multi-Product Upgraded CI with Child Upgrade,30,Yes,65,50000,10000,18.74,No,70,Own
+2026-09-10,74a62a05d9d335bb70323dc8e45d26d844b91d882eedecb064693522b405b8b1,Zurich,Zurich Life & CI,13.52,Zurich Life & CI + Child,30,Yes,65,50000,10000,14.14,No,70,Specified
+2026-09-14,fde9bab18d0403cdd466cae758d3682b0b597e8fc7beb5a46353e7e60ef35105,Aviva,Aviva Multi-Product with Core CI,25.36,Aviva Multi-Product Upgraded CI with Child Upgrade,26,Yes,65,200000,20000,32.00,No,70,Own
+2026-09-14,fde9bab18d0403cdd466cae758d3682b0b597e8fc7beb5a46353e7e60ef35105,Zurich,Zurich Life & CI,25.11,Zurich Life & CI + Child,26,Yes,65,200000,20000,25.73,No,70,Specified
+2026-09-15,77e748f0b62a6c35674768d4930aaa012bc83beacdb52d57c1d95215121c7e84,Aviva,Aviva Multi-Product with Core CI,25.36,Aviva Multi-Product Upgraded CI with Child Upgrade,26,Yes,65,200000,20000,32.00,No,70,Own
+2026-09-15,77e748f0b62a6c35674768d4930aaa012bc83beacdb52d57c1d95215121c7e84,Zurich,Zurich Life & CI,25.11,Zurich Life & CI + Child,26,Yes,65,200000,20000,25.73,No,70,Specified
+2026-10-09,06a7c3923b086546a0f9038a40527bb1369f3f3ff293204d1dc9766d736bfae6,Aviva,Aviva Multi-Product with Core CI,44.87,Aviva Multi-Product Upgraded CI with Child Upgrade,54,Yes,65,30000,10000,70.91,No,70,Own
+2026-10-09,06a7c3923b086546a0f9038a40527bb1369f3f3ff293204d1dc9766d736bfae6,Zurich,Zurich Life & CI,55.95,Zurich Life & CI + Child,54,Yes,65,30000,10000,56.58,No,70,Specified
+2026-10-09,b83bc4d7b7f0467d4a93612211f543e16f8ff877381857b4f40edb3fc5967b6d,Aviva,Aviva Multi-Product with Core CI,28.13,Aviva Multi-Product Upgraded CI with Child Upgrade,47,Yes,65,30000,10000,44.81,No,70,Own
+2026-10-09,b83bc4d7b7f0467d4a93612211f543e16f8ff877381857b4f40edb3fc5967b6d,Zurich,Zurich Life & CI,32.49,Zurich Life & CI + Child,47,Yes,65,30000,10000,33.11,No,70,Specified
+2026-10-09,e3fe2f560dcae07b62ac928521c00f51109f32ae3b895751a9ef5d48d6a5cefa,Aviva,Aviva Multi-Product with Core CI,28.13,Aviva Multi-Product Upgraded CI with Child Upgrade,47,Yes,65,30000,10000,44.81,No,70,Own
+2026-10-09,e3fe2f560dcae07b62ac928521c00f51109f32ae3b895751a9ef5d48d6a5cefa,Zurich,Zurich Life & CI,32.49,Zurich Life & CI + Child,47,Yes,65,30000,10000,33.11,No,70,Specified
+2026-11-22,008d09b641baed756c4b854a5d15350551bbdce91d84bb19bd1808382409dc38,Aviva,Aviva Multi-Product with Core CI,32.34,Aviva Multi-Product Upgraded CI with Child Upgrade,49,Yes,65,30000,10000,51.14,No,70,Own
+2026-11-22,008d09b641baed756c4b854a5d15350551bbdce91d84bb19bd1808382409dc38,Zurich,Zurich Life & CI,40.74,Zurich Life & CI + Child,49,Yes,65,30000,10000,41.37,No,70,Own
