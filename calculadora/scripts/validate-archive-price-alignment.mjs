@@ -32,7 +32,7 @@ const families = [
     filter: (row) =>
       Number(row.life_component) > 0 &&
       Number(row.critical_illness_component) > 0 &&
-      !/enhanced|upgraded|extra|child|discounted|multipolicy/i.test(row.product),
+      !/earlier|enhanced|upgraded|extra|child|discounted|multipolicy/i.test(row.product),
     comparablePremium: (row) =>
       Number(row.base_life_monthly) + Number(row.base_ci_monthly) ||
       Number(row.total_monthly),

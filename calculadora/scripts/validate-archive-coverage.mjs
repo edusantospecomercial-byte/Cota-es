@@ -19,7 +19,8 @@ const rows = lines.map((line) => {
 const families = {
   life: {
     model: catalog.models.life_only,
-    rows: rows.filter((row) => Number(row.life_component) > 0 && Number(row.critical_illness_component) === 0),
+    rows: rows.filter((row) => Number(row.life_component) > 0 && Number(row.critical_illness_component) === 0
+      && !/discounted|multipolicy/i.test(row.product)),
     minimumCoverage: 1,
   },
   standardCombined: {
@@ -27,7 +28,7 @@ const families = {
     rows: rows.filter((row) =>
       Number(row.life_component) > 0
       && Number(row.critical_illness_component) > 0
-      && !/enhanced|upgraded|extra|child/i.test(row.product)
+      && !/earlier|discounted|multipolicy|enhanced|upgraded|extra|child/i.test(row.product)
     ),
     minimumCoverage: 1,
   },

@@ -100,7 +100,7 @@ if (catalog.calibratedRecords !== 1394 || model.records !== 522 || catalog.model
 
 // The single-policy L&G illustration pays £20,000 for life or earlier critical illness.
 const extraCi = illustrationRows.find(row => row.sha256 === 'd720579e7cc2358cb34640ef807741afdb3d6d3c88c7d576479b5360c690a189');
-if (extraCi?.product !== 'Life + CI Extra' || extraCi.critical_illness_component !== '20000'
+if (extraCi?.product !== 'Life or Earlier CI Extra' || extraCi.critical_illness_component !== '20000'
     || extraCi.base_ci_monthly !== '12.85' || extraCi.optional_monthly !== '0.15'
     || extraCi.total_monthly !== '13.00') {
   failures.push({ issue: 'L&G enhanced critical illness and TPD premium differs from the illustration' });
@@ -110,6 +110,23 @@ const lifeAtSameTerms = illustrationRows.filter(row => row.age === '36' && row.s
 if (!lifeAtSameTerms.length && catalog.models.life_only.lookup['36|64|20000|0|0'] === 13) {
   failures.push({ issue: 'Enhanced L&G premium attached to life-only cover' });
 }
+
+// These billed amounts were previously attached to a different smoking status, capital or benefit.
+const correctedLgPolicies = [
+  ['63fd5e44a3d9faab3ca989bb19bd349a2dad08c1856a0c44a2f40b7b04b0777b', '47.82', 'true', '50000', '0', '1.39'],
+  ['94f5bd7795dade5ed64861c953e04fbc462a5edf5095b9e3bf702f0c89b0eb48', '37.85', 'true', '50000', '0', '0.74'],
+  ['87a10876982d91c0379b0a4419cf376fddab451b50b8c4acd3729923e1ce8de9', '11.22', 'true', '20000', '20000', '0.19'],
+];
+for (const [digest, total, smoker, life, ci, optional] of correctedLgPolicies) {
+  const row = illustrationRows.find(entry => entry.sha256 === digest && entry.total_monthly === total);
+  if (!row || row.smoker !== smoker || row.life_component !== life ||
+      row.critical_illness_component !== ci || row.optional_monthly !== optional)
+    failures.push({ issue: 'L&G policy differs from the original illustrated terms', digest, total });
+}
+if (catalog.models.life_only.lookup['57|69|50000|0|0'] === 46.43 ||
+    model.lookup['41|64|90000|10000|0'] === 16.42 ||
+    model.lookup['26|64|10000|10000|1'] === 11.16)
+  failures.push({ issue: 'Historical L&G premium reused for incompatible benefits or smoking status' });
 
 const hashes = illustrationRows.map((row) => row.sha256);
 const illustrationFingerprints = illustrationRows.map((row) => [
@@ -122,14 +139,15 @@ const illustrationFingerprints = illustrationRows.map((row) => [
   row.total_monthly,
 ].join('|'));
 if (
-  illustrationRows.length !== 490
+  illustrationRows.length !== 500
   || new Set(hashes).size !== 389
+  || catalog.audit?.illustrationValidationDocuments !== new Set(hashes).size
   || new Set(illustrationFingerprints).size !== illustrationRows.length
   || hashes.some((hash) => !/^[a-f0-9]{64}$/.test(hash))
-  || catalog.audit?.illustrationValidationRecords !== 490
+  || catalog.audit?.illustrationValidationRecords !== 500
 ) {
   failures.push({
-    expectedIllustrationValidation: { rows: 490, uniqueDocuments: 389, uniqueRecords: 490, auditCount: 490 },
+    expectedIllustrationValidation: { rows: 500, uniqueDocuments: 389, uniqueRecords: 500, auditCount: 500 },
     actualIllustrationValidation: {
       rows: illustrationRows.length,
       uniqueDocuments: new Set(hashes).size,
@@ -196,7 +214,7 @@ const exactHistoryAnchors = [
   { key: '61|85|80000|0|0', expected: 59.77, actual: lifeModel?.lookup?.['61|85|80000|0|0'] },
   { key: '46|65|500000|0|0', expected: 49.28, actual: lifeModel?.lookup?.['46|65|500000|0|0'] },
   { key: '32|65|160000|10000|0', expected: 14.07, actual: model.lookup['32|65|160000|10000|0'] },
-  { key: '41|64|90000|10000|0', expected: 16.42, actual: model.lookup['41|64|90000|10000|0'] },
+  { key: '57|69|50000|0|1', expected: 46.43, actual: lifeModel?.lookup?.['57|69|50000|0|1'] },
   { key: '56|70|60000|10000|0', expected: 35.77, actual: model.lookup['56|70|60000|10000|0'] },
   { key: '41|65|100000|0|0', expected: 10.90, actual: lifeModel?.lookup?.['41|65|100000|0|0'] },
   { key: '54|64|50000|0|0', expected: 13.01, actual: lifeModel?.lookup?.['54|64|50000|0|0'] },

@@ -157,6 +157,7 @@ console.log(JSON.stringify({ verifiedReportsWithWaiver: reports.size, resolvedPr
 const reported = run("reportedRows");
 const verifiedReports = group(reported, "model_id");
 assert.ok(node("baseStatus").textContent.includes(verifiedReports.size + " cenários"));
+assert.ok(node("baseStatus").textContent.includes("500 registros em 389 illustrations distintas"));
 assert.ok(node("baseStatus").textContent.includes(reported.filter(r => r.available === "true").length + " mensalidades"));
 // The public inventory counts separately by insurer and the printed report identifier.
 const pdfIndex = run("parsePriorityCsv")(readFileSync(new URL("../data/comparison-pdf-index.csv", import.meta.url), "utf8"));

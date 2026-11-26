@@ -218,6 +218,10 @@ async function init() {
     const count = new Intl.NumberFormat("pt-BR").format(catalog.calibratedRecords);
     baseStatus.push(`Catálogo histórico com ${count} registros`);
   }
+  const archive = catalog.audit;
+  if (archive?.illustrationValidationRecords && archive.illustrationValidationDocuments) {
+    baseStatus.push(`Arquivo de validação com ${archive.illustrationValidationRecords} registros em ${archive.illustrationValidationDocuments} illustrations distintas`);
+  }
   const temporalHoldout = catalog.audit?.priorityProviderTemporalHoldout;
   if (temporalHoldout) {
     baseStatus.push(`Arquivo histórico · teste temporal: ${Number(temporalHoldout.mape * 100).toFixed(2)}% de erro médio percentual absoluto em ${temporalHoldout.predicted} preços · cobertura ${Number(temporalHoldout.coverage * 100).toFixed(2)}%`);
