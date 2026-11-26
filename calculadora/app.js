@@ -751,11 +751,13 @@ function supplementalLifeNote(p, m, source = supplementalLifeRows) {
       const premium = Number(row.monthly_premium);
       const metlife = m.c && !m.unavailable ? " Com a MetLife selecionada, esse cenário soma " + gbp(premium + m.total) + "/mês." : "";
       let details = waiver;
-      if (row.quoted_tpd === "Own") {
+      const years = /^(\d+) years?$/.exec(row.quoted_term);
+      if (years && Number(years[1]) < p.toAge - p.age)
+        details += ". O pedido até os " + p.toAge + " anos representa " + (p.toAge - p.age) + " anos pela idade informada";
+      if (row.quoted_tpd === "Own")
         details += ". O relatório indica própria profissão na coluna de incapacidade permanente (TPD)";
-        if (row.waiver_illustration_sha256 && Number(row.illustrated_waiver_monthly) > 0)
-          details += ". A illustration discrimina " + gbp(Number(row.illustrated_waiver_monthly)) + "/mês de isenção dentro do prêmio";
-      }
+      if (row.waiver_illustration_sha256 && Number(row.illustrated_waiver_monthly) > 0)
+        details += ". A illustration discrimina " + gbp(Number(row.illustrated_waiver_monthly)) + "/mês de isenção dentro do prêmio";
       const original = Number(row.life_cover) !== p.life ? "Para um pedido original de " + gbp(Number(row.life_cover)) + ", " : "";
       notes.add(original + row.provider + " ofereceu " + gbp(Number(row.quoted_life_cover)) + " " + term + " por " + gbp(premium) +
         "/mês em " + newest + " (" + details + ")." + metlife);

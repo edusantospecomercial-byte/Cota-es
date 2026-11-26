@@ -23,7 +23,7 @@ def number(value):
     return Decimal(value.replace(",", ""))
 
 
-def read_pair(illustration, comparison, tpd_column="None"):
+def read_pair(illustration, comparison, tpd_column="None", offered_life=None):
     first = layout(illustration).partition("\f")[0]
     report, _, results = layout(comparison).partition("\f")
     if "Life Insurance Quotation" not in first or "Non Underwritten Results" not in results:
@@ -45,7 +45,8 @@ def read_pair(illustration, comparison, tpd_column="None"):
     if not all((benefit, client, date, ref)) or date[1] != issued[1] or birth[0][0] != client[2]:
         return None
     smoker = birth[0][1] == "Smoker"
-    if smoker != (client[1].lower() == "smoker") or number(benefit[1]) != number(amount[1]):
+    expected_life = number(benefit[1]) if offered_life is None else Decimal(offered_life)
+    if smoker != (client[1].lower() == "smoker") or number(amount[1]) != expected_life:
         return None
     offers = set(re.findall(r"^[ \t]*Legal & General Life[ \t]{2,}([^\n]+)",
                             results.partition("Products Not Quoting:")[0], re.M))

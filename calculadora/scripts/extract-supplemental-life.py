@@ -156,7 +156,7 @@ def confirm_aviva_benefits(offers):
 def confirm_lg_waiver(offers, paths):
     """Confirm the actual waiver charge separately from the comparison's TPD column."""
     reader = runpy.run_path(str(Path(__file__).with_name("extract-lg-life-components.py")))["read_pair"]
-    wanted = {r["sha256"]: r for r in offers if r["provider"] == "Legal & General" and r["quoted_tpd"] == "Own"}
+    wanted = {r["sha256"]: r for r in offers if r["provider"] == "Legal & General" and r["waiver_to"] == "Expiry"}
     checked, results = set(), {}
     for illustration, comparison in pairs(paths, "Legal & General Life"):
         source = sha256(comparison).hexdigest()
@@ -166,7 +166,8 @@ def confirm_lg_waiver(offers, paths):
         if (source, proof) in checked:
             continue
         checked.add((source, proof))
-        matched = reader(illustration, comparison, tpd_column="Own")
+        row = wanted[source]
+        matched = reader(illustration, comparison, tpd_column=row["quoted_tpd"], offered_life=row["quoted_life_cover"])
         if not matched:
             continue
         if str(matched[7]) != wanted[source]["monthly_premium"] or matched[6] <= 0:

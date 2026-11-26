@@ -106,7 +106,7 @@ source_date,sha256,provider,product,age,smoker,to_age,life_cover,quoted_life_cov
 2026-10-27,b6dedb21ca7b959a63eb31f4f32ce3baab5d68600f14c88accbb338d5b2d21bf,Zurich,Zurich Life,61,No,85,150000,150000,106.44,To Age 85,No data,No,None,51d810dd70fad55d0be53d8a76b2cdb7cb61e59970ac61b1185035bdd406c02e,,
 2026-10-27,7823b3e1d9afc3320b0fdaa97eaf5c6558c6abb1d6d625e7163640b493394e36,Zurich,Zurich Life,61,No,85,80000,80000,61.81,To Age 85,No data,No,None,,,
 2026-11-04,d0e538c45100bfe5e37e5aef441a9cf7395f5b291bff3f701a77087ee837e177,Zurich,Zurich Life,56,No,70,50000,50000,17.29,To Age 70,No data,No,None,edf7a2b5b35e2df115a6e6027a0c931aeaa2de97f39efd30b3bb467c1cc48b18,,
-2026-11-11,921ed77e8dc69346e92849a99aca378d65ed3f5701ff0c63a79f38afea3aa931,Legal & General,Legal & General Life,20,No,65,100000,144073,6.00,44 years,Expiry,No,None,,,
+2026-11-11,921ed77e8dc69346e92849a99aca378d65ed3f5701ff0c63a79f38afea3aa931,Legal & General,Legal & General Life,20,No,65,100000,144073,6.00,44 years,Expiry,No,None,,0.03,e684c5e278730748ac2a23fa0e281d971c18d95af1e79bc26032f3bcbd8a61f0
 2026-11-11,177c8c07f757ea65a1b5c038786ae633a8e70a748b9961e3fdcf6b9e0bf81961,Zurich,Zurich Life,61,No,85,90000,90000,68.52,To Age 85,No data,No,None,,,
 2026-11-16,877d6aa299785490b425ed0e7f776bf6269941755f7dd8e065ba0f75af0390b3,Zurich,Zurich Life,61,No,85,50000,50000,40.68,To Age 85,No data,No,None,0bc33ec5db43dcab02a27cf2ab158a393f8dcab396083acf2fdcb235374c4ee3,,
 2026-11-16,1e802a847cfabaf22918071f6e38837b88bdbbb593069ddf73530e23824f76cd,Zurich,Zurich Life,61,No,85,30000,30000,25.52,To Age 85,No data,No,None,4cb8c49e382ea7a1379cb3930dbb5b0ad86e6546053422da2183af32addb617f,,

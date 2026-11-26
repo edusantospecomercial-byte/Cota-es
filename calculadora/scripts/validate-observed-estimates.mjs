@@ -337,6 +337,10 @@ for (const clue of ["Legal & General ofereceu £30,000.00 por 27 anos de prazo p
 }
 assert.ok(!subjectToTerms.providerQuotes?.some(q => q.provider === "Legal & General" && q.premium === 6.57));
 const ownRows = run("supplementalLifeRows").filter(row => row.quoted_tpd === "Own");
+const minimumWithWaiver = calculate(65,144073,0,{age:20,term:45,waiver:"No"});
+for (const detail of ["pedido original de £100,000.00", "£144,073.00 por 44 anos de prazo por £6.00",
+  "65 anos representa 45 anos pela idade informada", "£0.03/mês de isenção dentro do prêmio"])
+  assert.ok(minimumWithWaiver.supplementalLifeNote.includes(detail), detail);
 assert.ok(ownRows.length && ownRows.some(r => r.smoker === "Yes") && ownRows.some(r => r.waiver_illustration_sha256));
 for (const row of ownRows) {
   assert.equal(row.provider,"Legal & General");
