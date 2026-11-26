@@ -15,6 +15,7 @@ const dataFiles = [
   "./data/non-smoker-first-event-product-variants.csv",
   "./data/lg-fixed-term-first-event-product-variants.csv",
   "./data/zurich-life-child-variants.csv",
+  "./data/independent-ci-child-options.csv",
   "./data/fracture-breakdowns.csv",
   "./data/aviva-core-breakdowns.csv",
   "./data/zurich-core-breakdowns.csv",

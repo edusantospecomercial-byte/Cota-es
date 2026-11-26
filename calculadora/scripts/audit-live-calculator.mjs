@@ -21,6 +21,7 @@ const criticalAssets = [
   "data/non-smoker-first-event-product-variants.csv",
   "data/lg-fixed-term-first-event-product-variants.csv",
   "data/zurich-life-child-variants.csv",
+  "data/independent-ci-child-options.csv",
   "data/accelerated-comparisons.csv",
   "data/waiver-individual-offers.csv",
   "data/independent-ci-tpd.csv",

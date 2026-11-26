@@ -20,6 +20,7 @@ let catalog = { models: {} },
   firstEventVariants = [],
   fixedTermFirstEventVariants = [],
   lifeChildVariants = [],
+  independentCiChildOptions = [],
   lifeChildSources = new Map(),
   coreBreakdowns = new Map(),
   tpdOffers = [],
@@ -85,6 +86,7 @@ async function init() {
     loadedNonSmokerFirstEventVariants,
     loadedFixedTermFirstEventVariants,
     loadedLifeChildVariants,
+    loadedIndependentCiChildOptions,
     loadedIndividualWaivers,
     avivaLife,
     loadedLgTerms,
@@ -171,6 +173,8 @@ async function init() {
       .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
     fetch("./data/zurich-life-child-variants.csv", { cache: "no-store" })
       .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
+    fetch("./data/independent-ci-child-options.csv", { cache: "no-store" })
+      .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
     fetch("./data/waiver-individual-offers.csv", { cache: "no-store" })
       .then(response => response.ok ? response.text() : "")
       .then(parsePriorityCsv)
@@ -223,6 +227,7 @@ async function init() {
   firstEventVariants = loadedSmokerFirstEventVariants.concat(loadedNonSmokerFirstEventVariants);
   fixedTermFirstEventVariants = loadedFixedTermFirstEventVariants;
   lifeChildVariants = loadedLifeChildVariants;
+  independentCiChildOptions = loadedIndependentCiChildOptions;
   lifeChildSources = loadedWaiverRows && [loadedReports, verifiedArchive, loadedIndividualWaivers, loadedSupplementalLife].every(rows => rows.length)
     ? indexLifeChildSources(loadedReports.concat(verifiedArchive, loadedWaiverRows, loadedIndividualWaivers, loadedSupplementalLife), lifeChildVariants)
     : new Map();
@@ -410,7 +415,8 @@ function showComparisonInventory(index, tables) {
     [firstEventVariants.filter(v => v.smoker === "Yes"), "para fumantes que pediram cobertura por falecimento ou diagnóstico no primeiro evento"],
     [firstEventVariants.filter(v => v.smoker === "No"), "para não fumantes que pediram cobertura por falecimento ou diagnóstico no primeiro evento"],
     [fixedTermFirstEventVariants, "da Legal & General para o primeiro evento, com prazo fixo e preço específico da profissão e do vínculo"],
-    [lifeChildVariants, "Zurich Life + Child nos pedidos de vida individual"]];
+    [lifeChildVariants, "Zurich Life + Child nos pedidos de vida individual"],
+    [independentCiChildOptions, "com opção infantil em pedidos de diagnóstico independente"]];
   const extra = additionalProductInventory(reports, tables, groups);
   const heading = extra ? n(count.prices + extra.prices) + " preços por produto" : n(count.prices) + " preços-base";
   $("comparisonInventoryTitle").textContent = heading + " em " + n(count.reports) + " comparativos";
@@ -1026,12 +1032,13 @@ function indexLifeChildSources(standards, variants) {
       offer.quoted_term === "To Age " + row.to_age && offer.quoted_term === row.quoted_term &&
       offer.occupation_rated === "No" && offer.quoted_tpd === "None" &&
       (!row.available || row.available === "true") && (!row.occupation_rated || row.occupation_rated === "No") &&
-      (!row.quoted_tpd || row.quoted_tpd === "None") && (!row.quoted_life_cover || row.quoted_life_cover === row.life_cover) &&
+      (!row.quoted_tpd || row.quoted_tpd === "None") && /^[1-9]\d*$/.test(offer.quoted_life_cover) &&
+      offer.quoted_life_cover === (row.quoted_life_cover || row.life_cover) &&
       /^\d+\.\d{2}$/.test(offer.monthly_premium) && Number(offer.monthly_premium) > 0;
     const result = matches ? offer : null;
     if (existing?.date === row.source_date) {
       if (existing.row?.monthly_premium !== result?.monthly_premium || existing.row?.waiver_to !== result?.waiver_to ||
-          existing.row?.standard_monthly !== result?.standard_monthly) existing.row = null;
+          existing.row?.standard_monthly !== result?.standard_monthly || existing.row?.quoted_life_cover !== result?.quoted_life_cover) existing.row = null;
     } else latest.set(key, {date:row.source_date, row:result});
   }
   return latest;
@@ -1057,7 +1064,7 @@ function lifeChildNote(p, m, sources = lifeChildSources, asOf = Date.now()) {
     let best;
     for (const {row} of sources.values()) {
       if (!row || row.age !== offer.age || row.smoker !== offer.smoker || row.to_age !== offer.to_age ||
-          row.waiver_to !== offer.waiver_to || Number(row.life_cover) >= p.life) continue;
+          row.waiver_to !== offer.waiver_to || row.quoted_life_cover !== row.life_cover || Number(row.life_cover) >= p.life) continue;
       const ageDays = (asOf - Date.parse(row.source_date)) / 86400000;
       if (!(ageDays >= 0 && ageDays <= 180)) continue;
       const candidate = monthlyTotal(Number(row.monthly_premium), supplement);
@@ -1068,7 +1075,9 @@ function lifeChildNote(p, m, sources = lifeChildSources, asOf = Date.now()) {
       " de vida. É o maior capital que coube no orçamento entre os valores menores que o pedido nos comparativos recentes. A Zurich ficou em " + gbp(Number(best.row.monthly_premium)) +
       "/mês no comparativo de " + best.row.source_date + (supplement ? ", totalizando " + gbp(best.total) + "/mês com a MetLife selecionada." : ".");
   }
-  return "Zurich Life + Child ficou em " + gbp(premium) + "/mês para " + gbp(p.life) + " de vida até os " + p.toAge +
+  const quotedLife = Number(offer.quoted_life_cover);
+  const capitalChange = quotedLife !== p.life ? "Para o pedido de " + gbp(p.life) + ", a Zurich ofereceu " + gbp(quotedLife) + " de vida. " : "";
+  return capitalChange + "Zurich Life + Child ficou em " + gbp(premium) + "/mês para " + gbp(quotedLife) + " de vida até os " + p.toAge +
     " anos, " + term + ". No mesmo comparativo de " + offer.source_date + ", Zurich Life ficou em " + gbp(Number(offer.standard_monthly)) +
     "/mês." + combined + budgetOption;
 }
@@ -1347,9 +1356,40 @@ function estimatedCiVariantNote(p, m, ranges = checkedVariantRanges, asOf = Date
 function standardChangedCapital(row) {
   return row.standard_life_cover !== row.life_cover || row.standard_ci_cover !== row.independent_ci_cover;
 }
-function exactCapitalVariant(p, metlife, report) {
+// Compare the same adult product tier in the same original report.
+const companionProducts = new Map([
+  ["Zurich Life & CI + Child", "Zurich Life & CI"], ["Zurich Critical Illness + Child", "Zurich Critical Illness"],
+  ["Legal & General Life + CI (Standard + Child CI Extra)", "Legal & General Life + CI (Standard)"],
+  ["Legal & General CI (Standard + Child CI Extra)", "Legal & General CI (Standard)"],
+  ["Aviva Multi-Product Upgraded CI with Child Upgrade", "Aviva Multi-Product Upgraded CI/No Child Upgrade"],
+  ["Aviva Critical Illness+ Upgraded with Child Upgrade", "Aviva Critical Illness+ Upgraded/No Child Upgrade"],
+]);
+function familyCiPriceDifference(row, otherVersions = exactCapitalVariants) {
+  const product = companionProducts.get(row.product);
+  if (!product) return "";
+  let reference;
+  if (product === row.standard_product && !standardChangedCapital(row)) reference = row.standard_monthly;
+  else {
+    const comparable = otherVersions.filter(other => other.product === product && other.provider === row.provider &&
+      other.sha256 === row.sha256 && other.source_date === row.source_date && other.age === row.age && other.smoker === row.smoker &&
+      other.life_cover === row.life_cover && other.independent_ci_cover === row.independent_ci_cover &&
+      other.quoted_term === row.quoted_term && other.to_age === row.to_age && other.quoted_tpd === row.quoted_tpd &&
+      other.occupation_rated === row.occupation_rated && other.standard_product === row.standard_product &&
+      other.standard_monthly === row.standard_monthly && other.standard_life_cover === row.standard_life_cover && other.standard_ci_cover === row.standard_ci_cover);
+    const prices = new Set(comparable.map(other => other.monthly_premium));
+    if (prices.size === 1) reference = comparable[0].monthly_premium;
+  }
+  if (!/^\d+\.\d{2}$/.test(reference || "") || Number(reference) <= 0) return "";
+  const difference = displayedPence(Number(row.monthly_premium)) - displayedPence(Number(reference));
+  if (!Number.isSafeInteger(difference)) return "";
+  return difference === 0 ? ". Mesmo preço de " + product + " no comparativo" :
+    ". Diferença de " + gbp(Math.abs(difference) / 100) + (difference > 0 ? " a mais que " : " a menos que ") +
+    product + " (" + gbp(Number(reference)) + "/mês)";
+}
+
+function exactCapitalVariant(p, metlife, report, source = exactCapitalVariants) {
   if (!report.reported || !p.ci || p.waiver === "Yes") return null;
-  const variants = exactCapitalVariants.filter(row => row.sha256 === report.sourceHash && row.source_date === report.sourceDate &&
+  const variants = source.filter(row => row.sha256 === report.sourceHash && row.source_date === report.sourceDate &&
     Number(row.age) === p.age && row.smoker === (p.smoker === "smoker" ? "Yes" : "No") &&
     Number(row.life_cover) === p.life && Number(row.independent_ci_cover) === p.ci && Number(row.to_age) === p.toAge &&
     row.quoted_term === "To Age " + p.toAge && row.quoted_tpd === "None" &&
@@ -1364,7 +1404,7 @@ function exactCapitalVariant(p, metlife, report) {
     let price = row.product + " por " + gbp(premium) + "/mês";
     if (row.occupation_rated === "Yes") price += " para a profissão e o vínculo informados";
     if (metlife.c && !metlife.unavailable) price += " (" + gbp(monthlyTotal(premium, metlife.total)) + "/mês com a MetLife selecionada)";
-    return price;
+    return price + familyCiPriceDifference(row);
   });
   const cover = (p.life ? gbp(p.life) + " de vida e " : "") + gbp(p.ci) + " de diagnóstico independente até os " + p.toAge + " anos";
   return {minimum: Number(variants[0].monthly_premium), text: "No comparativo de " + report.sourceDate + " (ref. " + report.modelId +
@@ -1839,6 +1879,7 @@ function makeSummary(p, r) {
   if (r.lifeChildNote) lines.push(r.lifeChildNote);
   if (r.partialCiNote) lines.push(r.partialCiNote);
   if (r.capitalVariantNote) lines.push(r.capitalVariantNote);
+  if (r.familyCiNote) lines.push(r.familyCiNote);
   if (r.estimatedVariantNote) lines.push(r.estimatedVariantNote);
   if (r.alternativePackage) lines.push(r.alternativePackage);
   if (r.separatePolicyNote) lines.push(r.separatePolicyNote);
@@ -2177,6 +2218,9 @@ function render(p) {
   if (r.supplementalLifeNote) priorityDetail += `<dt>Condições de vida no comparativo</dt><dd>${escapeHtml(r.supplementalLifeNote)}</dd>`;
   const variant = exactCapitalVariant(p, m, priorityMatch);
   r.capitalVariantNote = variant?.text || "";
+  const familyCi = exactCapitalVariant(p, m, priorityMatch, independentCiChildOptions);
+  r.familyCiNote = familyCi ? "Opções infantis das seguradoras. " + familyCi.text : "";
+  if (familyCi) priorityDetail += `<dt>Diagnóstico independente com opção infantil</dt><dd>${escapeHtml(familyCi.text)}</dd>`;
   r.estimatedVariantNote = estimatedCiVariantNote(p, m);
   if (r.estimatedVariantNote) priorityDetail += `<dt>Versões com preço estimado</dt><dd>${escapeHtml(r.estimatedVariantNote)}</dd>`;
   const highlightVariant = variant && (!r.complete || displayedPence(variant.minimum) < displayedPence(r.main));

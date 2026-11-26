@@ -170,7 +170,7 @@ const counts = inventory(pdfIndex, tables);
 assert.ok(counts, "All public source tables must reconcile with the PDF index");
 assert.equal(counts.prices, distinct(withPrice));
 assert.equal(counts.reports, new Set(withPrice.map(r => reportKeys.get(r.sha256))).size);
-const namedVersions = run("exactCapitalVariants.concat(firstEventVariants,fixedTermFirstEventVariants,lifeChildVariants)");
+const namedVersions = run("exactCapitalVariants.concat(firstEventVariants,fixedTermFirstEventVariants,lifeChildVariants,independentCiChildOptions)");
 const productTotal = run("additionalProductInventory");
 const totals = productTotal(reportKeys,tables,[[namedVersions]]);
 assert.ok(totals && totals.prices === new Set(namedVersions.map(r=>[reportKeys.get(r.sha256),r.provider,r.product].join("|"))).size);
@@ -238,11 +238,62 @@ assert.ok(node("comparisonInventoryScope").textContent.includes(counts.legal65Sh
   assert.ok(!describe({...input,monthlyBudget:28},adult,portfolio,dated).includes("Para ficar abaixo"));
   assert.ok(!describe({...expensive,ci:10000},family,portfolio,dated));
   assert.ok(!describe({...expensive,smoker:"smoker"},family,portfolio,dated));
+  const altered = variants.filter(r=>r.quoted_life_cover !== r.life_cover);
+  assert.ok(altered.length >= 4);
+  for (const r of altered) {
+    const ask = {age:+r.age,life:+r.life_cover,toAge:+r.to_age,smoker:r.smoker === "Yes" ? "smoker" : "non_smoker",ci:0,waiver:"unspecified"};
+    const source = build(base.filter(q=>q.sha256 === r.sha256),[r]);
+    const stamp = Date.parse(r.source_date),note=describe(ask,adult,source,stamp);
+    const money=n=>new Intl.NumberFormat("en-GB",{style:"currency",currency:"GBP"}).format(n);
+    assert.ok(note.includes("Para o pedido de "+money(ask.life)+", a Zurich ofereceu "+money(r.quoted_life_cover)));
+    assert.ok(note.includes("£"+r.monthly_premium+"/mês para "+money(r.quoted_life_cover)));
+    assert.ok(!note.includes("£"+r.monthly_premium+"/mês para "+money(r.life_cover)));
+    assert.equal(describe({...ask,life:+r.quoted_life_cover},adult,source,stamp),"");
+    assert.equal(describe(ask,adult,build(base,[{...r,quoted_life_cover:r.life_cover}]),stamp),"");
+  }
   const smoker = variants.find(r=>r.age==="45" && r.life_cover==="30000" && r.to_age==="65" && r.smoker==="Yes" && r.waiver_to==="70");
   const si={age:45,toAge:65,smoker:"smoker",life:30000,ci:0,waiver:"Yes"};
   const sw=build(base.filter(r=>r.sha256===smoker.sha256),[smoker]);
   assert.ok(describe(si,adult,sw,Date.parse(smoker.source_date)).includes("£27.82/mês"));
   assert.equal(describe({...si,waiver:"unspecified"},adult,sw,Date.parse(smoker.source_date)),"");
+}
+
+{
+  const familyCi = run("independentCiChildOptions");
+  const match = run("exactCapitalVariant");
+  assert.ok(new Set(familyCi.map(r=>r.provider)).size === 3);
+  const hashes = new Set();
+  for (const row of familyCi) {
+    const key = row.sha256 + "|" + row.product;
+    assert.ok(!hashes.has(key)); hashes.add(key);
+    assert.equal(row.quoted_term, "To Age " + row.to_age);
+    assert.ok(+row.monthly_premium > 0 && /Child/.test(row.product));
+    const ref = tables[0].concat(tables[1]).find(q=>q.sha256 === row.sha256 && q.provider === row.provider);
+    assert.ok(ref && ref.monthly_premium === row.standard_monthly && ref.quoted_life_cover === row.standard_life_cover &&
+      ref.quoted_critical_illness_cover === row.standard_ci_cover && ref.occupation_rated === row.occupation_rated);
+    if(row.occupation_rated === "Yes") assert.ok(run("reportedOccupations").has(row.sha256));
+  }
+  const test = familyCi.find(r=>r.age==="31" && r.life_cover==="150000" && r.independent_ci_cover==="10000" && r.provider==="Zurich");
+  const input={age:31,toAge:65,life:150000,ci:10000,smoker:"non_smoker",waiver:"No"};
+  const original={reported:true,sourceHash:test.sha256,sourceDate:test.source_date,
+    quotes:[{provider:"Zurich",product:test.standard_product,differentCapital:false,tpd:"None",term:"To Age 65",occupationRated:false,
+      premium:+test.standard_monthly,quotedLife:150000,quotedCi:10000}]};
+  const diff = run("familyCiPriceDifference");
+  assert.ok(diff(test).includes("£1.51 a mais que Zurich Life & CI (£12.92/mês)"));
+  const aviva = familyCi.find(r=>r.sha256===test.sha256 && r.provider==="Aviva");
+  assert.ok(diff(aviva).includes("£3.39 a mais que Aviva Multi-Product Upgraded CI/No Child Upgrade (£16.71/mês)"));
+  assert.equal(diff(aviva,[]),"");
+  const other = run("exactCapitalVariants").find(r=>r.product.endsWith("/No Child Upgrade") && r.sha256===aviva.sha256);
+  for (const changes of [{sha256:"wrong"},{quoted_term:"33 years"},{independent_ci_cover:"11006"},{occupation_rated:"Yes"}])
+    assert.equal(diff(aviva,[{...other,...changes}]),"");
+  assert.equal(diff(aviva,[other,{...other,monthly_premium:"15.00"}]),"");
+  assert.equal(diff({...test,standard_ci_cover:"12000"},[]),"");
+  const actual=match(input,{c:1,total:15},original,familyCi);
+  assert.ok(actual.text.includes("Zurich Life & CI + Child por £14.43/mês (£29.43/mês com a MetLife selecionada)"));
+  assert.equal(match({...input,waiver:"Yes"},{c:1,total:13},original,familyCi),null);
+  assert.equal(match({...input,smoker:"smoker"},{c:1,total:13},original,familyCi),null);
+  assert.equal(match(input,{c:1,total:15},{...original,sourceHash:"unverified"},familyCi),null);
+  assert.equal(match(input,{c:1,total:15},{...original,quotes:[{...original.quotes[0],quotedLife:120000}]},familyCi),null);
 }
 
 const termDescription = run("quotedTerm")({term:"14 years", waiverTo:"Expiry", differentCapital:true, quotedLife:52000, quotedCi:0},{age:50,toAge:65});
