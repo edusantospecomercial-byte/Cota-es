@@ -1225,6 +1225,16 @@ function render(p) {
       r.alternativePackage += " Comparativo de " + alternative.source_date + ".";
     }
   }
+  if (r.complete && r.aggregateOnly && !p.ci && p.waiver !== "Yes") {
+    const withWaiver = waiverComparisonFor(p).sameEndAge?.[0];
+    if (withWaiver) {
+      r.alternativePackage = "Opção com isenção de mensalidade · " + withWaiver.provider + " · vida de " +
+        gbp(p.life) + " " + quotedTerm(withWaiver) + ". No comparativo de " + withWaiver.sourceDate +
+        ", a mensalidade com isenção era " + gbp(withWaiver.premium) + ".";
+      if (m.c) r.alternativePackage += " Com " + gbp(m.total) + " de MetLife, o total dessa opção seria " +
+        gbp(withWaiver.premium + m.total) + "/mês.";
+    }
+  }
   $("alternativePackage").textContent = r.alternativePackage || "";
   $("alternativePackage").hidden = !r.alternativePackage;
   $("metlifeResult").textContent = m.unavailable

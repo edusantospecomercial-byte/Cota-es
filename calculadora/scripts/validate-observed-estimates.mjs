@@ -689,3 +689,23 @@ for (const [life, expected] of [[20000, 15], [30000, 15], [40000, 22.5], [50000,
   assert.equal(run('generalBudgetEstimate(crossing, curveProfile, () => 6)'), expected);
 }
 assert.equal(run('predictBudget(crossing, curveProfile, 19.37)'), 19.37);
+
+const smoker43 = {...smoker40, age: 43, term: 22};
+const smoker43Base = calculate(65, 50000, 0, smoker43);
+assert.ok(smoker43Base.aggregateOnly && smoker43Base.complete);
+assert.equal(smoker43Base.main.toFixed(2), '14.84');
+assert.equal(node('totalPrice').textContent, '£27.84/mês');
+for (const clue of ['Opção com isenção', 'Aviva', '2026-09-14', '£15.30', '£28.30/mês']) {
+  assert.ok(smoker43Base.alternativePackage.includes(clue), clue);
+  assert.ok(node('alternativePackage').textContent.includes(clue), clue);
+  assert.ok(smoker43Base.text.includes(clue), clue);
+}
+assert.ok(!smoker43Base.alternativePackage.includes('£14.69')); // Shorter L&G term.
+assert.notEqual(node('alternativePackage').hidden, true);
+const smoker43WithWaiver = calculate(65, 50000, 0, {...smoker43, waiver: 'Yes'});
+assert.equal(smoker43WithWaiver.provider, 'Aviva');
+assert.equal(smoker43WithWaiver.main, 15.30);
+assert.equal(smoker43WithWaiver.alternativePackage, undefined);
+assert.equal(node('alternativePackage').hidden, true);
+assert.equal(calculate(65, 50001, 0, smoker43).alternativePackage, undefined);
+assert.equal(calculate(65, 50000, 10000, smoker43).alternativePackage, undefined);
