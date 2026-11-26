@@ -794,6 +794,7 @@ function makeSummary(p, r) {
   if (r.illustrationNote) lines.push(r.illustrationNote);
   if (r.componentNote) lines.push(r.componentNote);
   if (r.lgTermNote) lines.push(r.lgTermNote);
+  if (r.alternativePackage) lines.push(r.alternativePackage);
   if (r.complete)
     lines.push("", `Total estimado: ${gbp(r.main + m.total)}/mês`);
   else lines.push("", "Total do pacote a confirmar.");
@@ -1050,6 +1051,19 @@ function render(p) {
     : `${model?.records || 0} registros na família · confiança ${escapeHtml(confidenceLabel)}`;
   $("details").innerHTML =
     `<dt>Perfil</dt><dd>${p.age} anos · ${p.smoker === "smoker" ? "fumante" : "não fumante"}</dd><dt>Profissão</dt><dd>${escapeHtml(p.occupation)}</dd><dt>Peso · altura · IMC</dt><dd>${p.weight}kg · ${p.height}cm · ${bmi}</dd><dt>Cobertura solicitada</dt><dd>até ${p.toAge} · ${p.term} anos</dd><dt>Vida</dt><dd>${gbp(p.life)}</dd><dt>Doenças Graves</dt><dd>${gbp(p.ci)}</dd><dt>Premium</dt><dd>Garantido</dd>${priorityDetail}<dt>Base de referência</dt><dd>${evidence}</dd>`;
+  if (priorityMatch.reported && r.termPending && !r.waiverPending && !m.unavailable) {
+    const alternative = priorityQuotes.find(q => q.differentCapital && !q.occupationRated &&
+      q.term === `To Age ${p.toAge}` && q.quotedLife >= p.life && q.quotedCi >= p.ci);
+    if (alternative) {
+      const cover = [alternative.quotedLife && "vida " + gbp(alternative.quotedLife),
+        alternative.quotedCi && "doenças graves " + gbp(alternative.quotedCi)].filter(Boolean).join(" e ");
+      const total = gbp(alternative.premium + m.total);
+      r.alternativePackage = `Alternativa com capital ajustado · ${alternative.provider} oferece ${cover} até os ${p.toAge} anos. ` +
+        (m.c ? `${gbp(alternative.premium)} + ${gbp(m.total)} de MetLife = ${total}/mês.` : `Mensalidade de ${total}.`);
+    }
+  }
+  $("alternativePackage").textContent = r.alternativePackage || "";
+  $("alternativePackage").hidden = !r.alternativePackage;
   $("metlifeResult").textContent = m.unavailable
     ? "MultiProtect indisponível para nova contratação após 65 anos"
     : m.c

@@ -211,6 +211,17 @@ assert.equal(underMinimum.complete, false);
 assert.ok(underMinimum.providerQuotes.every(q => q.differentCapital));
 assert.ok(underMinimum.text.includes("Faixa das alternativas devolvidas"));
 assert.equal(node("totalPrice").textContent, "A confirmar");
+const budgetAlternative = calculate(65, 30000, 5000, {age:31, term:34, smoker:"non_smoker"});
+assert.equal(budgetAlternative.complete, false);
+assert.equal(node("alternativePackage").hidden, false);
+for (const expected of ["Zurich", "£40,062.00", "£5,570.00", "até os 65 anos", "£7.50", "£13.00", "£20.50/mês"]) {
+  assert.ok(node("alternativePackage").textContent.includes(expected), expected);
+  assert.ok(budgetAlternative.text.includes(expected), expected);
+}
+calculate(65, 55000, 12000, {age:31, term:34, smoker:"non_smoker"});
+assert.equal(node("alternativePackage").hidden, true);
+assert.equal(node("alternativePackage").textContent, "");
+assert.ok(!calculate(65, 30000, 5000, {age:31,term:34,waiver:"Yes"}).alternativePackage);
 const alteredCapital = calculate(65, 50000, 5000);
 assert.ok(alteredCapital.text.includes("£5,068.00"));
 assert.notEqual(alteredCapital.provider, "Aviva");
