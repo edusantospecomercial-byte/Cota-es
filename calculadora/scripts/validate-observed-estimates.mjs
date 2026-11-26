@@ -170,7 +170,7 @@ const counts = inventory(pdfIndex, tables);
 assert.ok(counts, "All public source tables must reconcile with the PDF index");
 assert.equal(counts.prices, distinct(withPrice));
 assert.equal(counts.reports, new Set(withPrice.map(r => reportKeys.get(r.sha256))).size);
-const namedVersions = run("exactCapitalVariants.concat(firstEventVariants,fixedTermFirstEventVariants,lifeChildVariants,independentCiChildOptions)");
+const namedVersions = run("exactCapitalVariants.concat(firstEventVariants,fixedTermFirstEventVariants,lifeChildVariants,independentCiChildOptions,independentTpdVariants)");
 const productTotal = run("additionalProductInventory");
 const totals = productTotal(reportKeys,tables,[[namedVersions]]);
 assert.ok(totals && totals.prices === new Set(namedVersions.map(r=>[reportKeys.get(r.sha256),r.provider,r.product].join("|"))).size);
@@ -537,6 +537,30 @@ for (const [tobacco, label] of [["No","não fumantes"],["Yes","fumantes"]]) {
   assert.ok(count > 0 && node("comparisonInventoryScope").textContent.includes(count + " preços de outras versões do produto para " + label));
 }
 const smokerPackage = {age:30,term:35,toAge:65,life:50000,ci:10000,smoker:"smoker",waiver:"Yes",monthlyBudget:28};
+const firstEventBudget = run("firstEventBudgetOptions");
+const profile37 = {...smokerPackage,age:37,term:28};
+const standard37 = sharedCatalogue.find(r => r.reference === "1081657343" && r.provider === "Aviva");
+const suitable37 = sharedCatalogue.find(r => r.reference === "1081657528" && r.provider === "Aviva");
+const budgetSourceDate = Date.parse("2026-11-26T12:00:00Z");
+const alternatives37 = (budget, fee, rows, changes={}, asOf=budgetSourceDate) =>
+  firstEventBudget({...profile37,monthlyBudget:budget,...changes},standard37,{c:1,total:fee},rows,asOf);
+const choice37 = alternatives37(28,13,sharedCatalogue);
+assert.equal(choice37.length,1);
+assert.equal(choice37[0].row.reference,suitable37.reference);
+assert.equal(choice37[0].amount,20000); assert.equal(choice37[0].total,26.38);
+assert.equal(alternatives37(26.38,13,sharedCatalogue).length,0);
+assert.equal(alternatives37(26.39,13,sharedCatalogue)[0].total,26.38);
+assert.equal(alternatives37(28,15,sharedCatalogue).length,0);
+assert.equal(alternatives37(35,13,sharedCatalogue).length,0);
+for (const change of [{age:38},{smoker:"non_smoker"},{smoker:"unknown"},{life:60000},{ci:20000},{toAge:70}])
+  assert.equal(alternatives37(28,13,sharedCatalogue,change).length,0);
+for (const change of [{smoker:"No"},{provider:"Zurich"},{tpd_basis:"None"},{waiver_to:"not_shown"},{quoted_life_cover:"30000"},
+  {occupation_rated:"Yes"},{quoted_earlier_ci_cover:"5000"},{quoted_term:"28 years"},{product:"Other"}])
+  assert.equal(alternatives37(28,13,[{...suitable37,...change}]).length,0);
+assert.equal(alternatives37(28,13,[suitable37,{...suitable37,monthly_premium:"13.52"}]).length,0);
+assert.equal(alternatives37(28,13,[suitable37,{...suitable37,source_date:"2026-10-11",monthly_premium:"15.09"}]).length,0);
+assert.equal(alternatives37(28,13,[suitable37],{},Date.parse("2027-03-15")).length,0);
+assert.equal(alternatives37(28,13,[suitable37],{},Date.parse("2026-07-10")).length,0);
 const firstEvent30 = calculate(65,50000,10000,smokerPackage);
 const upgradedAviva = "Aviva Multi-Product Upgraded CI/No Child Upgrade";
 const panelAge30 = node("acceleratedOffers").innerHTML;
@@ -868,6 +892,26 @@ assert.match(tpdList, /Zurich<\/dt><dd><b>£50\.19\/mês<\/b>[^<]*diagnóstico i
 assert.ok(tpdList.includes("vida £11.67 + diagnóstico independente £29.31"));
 assert.ok(tpdList.includes("Com £13.00 de MetLife, esta opção soma £53.98/mês."));
 assert.ok(!tpdReference.text.includes("1080433474"));
+const tpdVersions = run("independentTpdVariants"), versionsWithTpd = run("matchedIndependentTpdVariants");
+const tpdSources = run("tpdOffers");
+assert.ok(tpdList.includes("Zurich Life &amp; CI + Child · £50.79/mês · com a MetLife £63.79/mês"));
+assert.ok(tpdList.includes("£25.53 a mais que Aviva Multi-Product Upgraded CI/No Child Upgrade (£50.43/mês)"));
+assert.ok(tpdList.includes("a oferta paga essa parcela uma única vez") && !tpdList.includes("Comparar versões de Legal &amp; General"));
+for (const version of tpdVersions) {
+  const source = tpdSources.find(q => q.sha256 === version.sha256 && q.provider === version.provider);
+  const occupation = run("reportedOccupations").get(version.sha256);
+  assert.ok(source && versionsWithTpd(source,occupation?.occupation + " " + occupation?.employment).includes(version));
+  for (const change of [{quoted_independent_ci_cover:"0"},{quoted_earlier_ci_cover:"10000"},{tpd_basis:"None"},
+    {monthly_premium:"0.01"},{waiver_to:"other"},{quoted_term:"99 years"},{smoker:"unknown"},{sha256:"other"}])
+    assert.equal(versionsWithTpd({...source,...change},occupation?.occupation + " " + occupation?.employment).length,0);
+}
+calculate(65,50000,10000,{age:31,term:34,occupation:"Housekeeper employed"});
+const tpdMinimums = node("tpdOffers").innerHTML;
+for (const text of ["£14.43/mês · oferta de £53,651.00 de vida e £10,000.00 de diagnóstico independente · com a MetLife £27.43/mês",
+  "£3.39 a mais que Aviva Multi-Product Upgraded CI/No Child Upgrade (£11.04/mês)", "prazo fixo de 33 anos",
+  "Legal &amp; General Life + CI (Standard + Child CI Extra) · £11.55/mês"]) assert.ok(tpdMinimums.includes(text),text);
+calculate(65,50000,10000,{age:31,term:34,occupation:"Stock manager"});
+assert.ok(!node("tpdOffers").innerHTML.includes("Comparar versões de Legal &amp; General"));
 node("metlifeChild").checked = true;
 calculate(70,100000,10000,{age:40,term:30});
 assert.ok(node("tpdOffers").innerHTML.includes("vida £9.78 + diagnóstico independente £8.79"));
