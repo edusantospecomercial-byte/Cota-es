@@ -22,7 +22,7 @@ PRODUCTS = {
 }
 
 
-def extract(path, model_id, age, smoker, to_age, life, ci, *, allow_unlisted=False):
+def extract(path, model_id, age, smoker, to_age, life, ci, *, allow_unlisted=False, include_tpd=False):
     text = subprocess.check_output(["pdftotext", "-layout", str(path), "-"], encoding="utf-8")
     cover = text.split("\f", 1)[0]
     result, _, unavailable = text.partition("Products Not Quoting:")
@@ -57,7 +57,8 @@ def extract(path, model_id, age, smoker, to_age, life, ci, *, allow_unlisted=Fal
     for provider, products in PRODUCTS.items():
         product = products[2 if not life else int(bool(ci))]
         prefix = r"^[ \t]*" + re.escape(product) + r"[ \t]{2,}"
-        lines = re.findall(prefix + r"(£[^\n]+)", result, re.M)
+        matches = list(re.finditer(prefix + r"(£[^\n]+)", result, re.M))
+        lines = [match[1] for match in matches]
         base = [date.isoformat(), model_id, age, smoker, to_age, life, ci, provider, product]
         if not lines:
             reason = re.search(prefix + r"(\S[^\n]*)", unavailable, re.M)
@@ -66,7 +67,7 @@ def extract(path, model_id, age, smoker, to_age, life, ci, *, allow_unlisted=Fal
                 # from an insurer explicitly declining to quote or imposing an age limit.
                 if (allow_unlisted and complete_pages and unavailable.strip()
                         and product.casefold() not in " ".join(text.casefold().split())):
-                    data.append(base + ["", "unknown", "", "", digest, "product_not_listed", "", ""])
+                    data.append(base + ["", "unknown", "", "", digest, "product_not_listed", "", ""] + ([""] if include_tpd else []))
                     continue
                 raise ValueError(f"Missing explicit unavailable result for {provider}.")
             limit = re.search(r"(?:maturity age of|expiry exceeds maximum allowed)\s+(\d+)", reason[1], re.I)
@@ -76,16 +77,26 @@ def extract(path, model_id, age, smoker, to_age, life, ci, *, allow_unlisted=Fal
                 code = "end_age_not_supported"
             else:
                 code = "product_not_quoted"
-            data.append(base + ["", "false", "", "", digest, code, "", ""])
+            data.append(base + ["", "false", "", "", digest, code, "", ""] + ([""] if include_tpd else []))
             continue
         if len(set(lines)) != 1:
             raise ValueError(f"Conflicting prices for {provider}.")
         capitals = r"£([\d,]+)" + (r"\s+£([\d,]+)\s+No data" if ci else "")
         if not life:
             capitals = r"£([\d,]+)\s+No data"
+        tpd = "None"
+        if include_tpd and all(re.search(r"\bLevel\s+Own\s+No\s*$", line) for line in lines):
+            # Verify the wrapped word is in the TPD column under Own on the next line.
+            for match in matches:
+                following = result[match.end():].split("\n", 2)
+                position = match.start(1) - match.start() + match[1].rindex("Own")
+                if len(following) < 2 or following[1][position:position+10].strip() != "occupation":
+                    raise ValueError(f"Unconfirmed disability definition for {provider}.")
+            tpd = "Own occupation"
         entry = re.fullmatch(
             r"£([\d,]+\.\d{2})\s+Guaranteed\s+(Yes|No)\s+Monthly\s+" + capitals
-            + r"\s+(To Age \d+|\d+ years?)\s+Level\s+None\s+No\s*", lines[0])
+            + r"\s+(To Age \d+|\d+ years?)\s+Level\s+" + ("Own" if tpd == "Own occupation" else "None")
+            + r"\s+No\s*", lines[0])
         if not entry:
             raise ValueError(f"Unrecognised product terms for {provider}.")
         price, based_on_job, *sums, term = entry.groups()
@@ -102,7 +113,8 @@ def extract(path, model_id, age, smoker, to_age, life, ci, *, allow_unlisted=Fal
             valid_term = int(term.split()[0]) in (to_age - age, to_age - age - 1)
         if not valid_term or float(price.replace(",", "")) <= 0:
             raise ValueError(f"Term mismatch or invalid premium for {provider}.")
-        data.append(base + [price.replace(",", ""), "true", term, based_on_job, digest, "", *returned])
+        data.append(base + [price.replace(",", ""), "true", term, based_on_job, digest, "", *returned]
+                    + ([tpd] if include_tpd else []))
     if any(row[10] == "unknown" for row in data) and sum(row[10] == "true" for row in data) < 2:
         raise ValueError("An unlisted product requires verified prices from both other priority insurers.")
     return data

@@ -278,6 +278,7 @@ function documentedLookupPrice(p, amount) {
   return reportedRows.concat(verifiedArchiveRows).some(row => matches(row) && row.available === "true" &&
     Number(row.critical_illness_cover) === p.ci && row.life_cover === row.quoted_life_cover &&
     row.critical_illness_cover === row.quoted_critical_illness_cover && row.occupation_rated === "No" &&
+    (!row.quoted_tpd || row.quoted_tpd === "None") &&
     row.quoted_term === `To Age ${p.toAge}` && Number(row.monthly_premium) === amount);
 }
 
@@ -371,7 +372,7 @@ function capturedReportFor(p, source = reportedRows) {
   const rows = matching.filter(row => row.model_id === latest.model_id);
   if (source === verifiedArchiveRows) {
     const signature = row => [row.available, row.monthly_premium, row.quoted_term, row.quoted_life_cover,
-      row.quoted_critical_illness_cover, row.occupation_rated].join("|");
+      row.quoted_critical_illness_cover, row.occupation_rated, row.quoted_tpd || "None"].join("|");
     if (matching.some(row => row.source_date === latest.source_date &&
         !rows.some(latestRow => latestRow.provider === row.provider && signature(latestRow) === signature(row)))) return null;
   }
@@ -381,7 +382,7 @@ function capturedReportFor(p, source = reportedRows) {
       sourceDate: row.source_date, modelId: row.model_id, term: row.quoted_term,
       differentCapital: Number(row.quoted_life_cover) !== p.life || Number(row.quoted_critical_illness_cover) !== p.ci,
       quotedLife: Number(row.quoted_life_cover), quotedCi: Number(row.quoted_critical_illness_cover),
-      occupationRated: row.occupation_rated === "Yes" })).sort((a, b) => a.premium - b.premium);
+      tpd: row.quoted_tpd || "None", occupationRated: row.occupation_rated === "Yes" })).sort((a, b) => a.premium - b.premium);
   const missing = rows.filter(row => row.available === "false" ||
     (row.available === "unknown" && row.unavailable_reason === "product_not_listed"));
   if (quotes.length + missing.length !== 3) return null;
@@ -392,7 +393,7 @@ function capturedReportFor(p, source = reportedRows) {
       row.unavailable_reason === "end_age_not_supported" ? "idade final fora do limite do produto" : "produto sem preço no relatório";
     return `${row.provider} · ${reason}`;
   });
-  const exactTerms = quotes.filter(q => !q.differentCapital && !q.occupationRated && q.term === `To Age ${p.toAge}`);
+  const exactTerms = quotes.filter(q => !q.differentCapital && !q.occupationRated && q.tpd === "None" && q.term === `To Age ${p.toAge}`);
   return { quotes, exact: true, reported: true, sourceDate: latest.source_date, modelId: latest.model_id,
     sameEndAge: exactTerms.length ? exactTerms : undefined, termPending: !exactTerms.length,
     partial: Boolean(missing.length), gap: missing.length ? {
@@ -407,10 +408,13 @@ function priorityQuotesFor(p) {
     row.smoker === expectedSmoker && Number(row.age) === p.age && Number(row.to_age) === p.toAge &&
     Number(row.life_cover) === p.life && Number(row.critical_illness_cover) === p.ci
   );
+  const includesDisability = new Set(verifiedArchiveRows.filter(row => row.quoted_tpd === "Own occupation")
+    .map(row => row.model_id + "|" + row.provider));
   let rawCandidates = priorityRows.concat(newExact)
     .filter(
       (row) =>
         row.available === "true" &&
+        !includesDisability.has(row.model_id + "|" + row.provider) &&
         row.smoker === expectedSmoker &&
         Number(row.critical_illness_cover) === p.ci,
     )
@@ -462,6 +466,11 @@ function priorityQuotesFor(p) {
     (latest, row) => (row.sourceDate > latest ? row.sourceDate : latest),
     "",
   );
+  const archived = capturedReportFor(p, verifiedArchiveRows);
+  if (archived && (!knownGap || archived.sourceDate > knownGap.source_date ||
+      (archived.sourceDate === knownGap.source_date && archived.modelId === knownGap.model_id)) &&
+      exact.every(row => archived.sourceDate > row.sourceDate ||
+        (archived.sourceDate === row.sourceDate && archived.modelId === row.modelId))) return archived;
   if (knownGap && (!completeDate || knownGap.source_date >= completeDate)) {
     let exactAvailableQuotes = [
       {
@@ -500,7 +509,6 @@ function priorityQuotesFor(p) {
   }
   if (new Set(exact.map((row) => row.provider)).size === 3)
     return { quotes: exact, exact: true };
-  const archived = capturedReportFor(p, verifiedArchiveRows);
   if (archived) return archived;
   const capitalMatch = validatedCapitalQuotes(p);
   if (capitalMatch) return capitalMatch;
@@ -673,9 +681,10 @@ function waiverComparisonFor(p) {
   return { quotes, sameEndAge, exact: true };
 }
 function quotedTerm(quote) {
-  const term = quote.term.startsWith("To Age ")
+  let term = quote.term.startsWith("To Age ")
     ? `até ${quote.term.slice(7)} anos`
     : `${parseInt(quote.term, 10)} anos de prazo`;
+  if (quote.tpd === "Own occupation") term += " · inclui incapacidade permanente para a própria profissão (TPD)";
   if (quote.waiverTo) {
     const waiver = quote.waiverTo === "Expiry" ? "isenção até o fim do contrato" :
       "isenção durante a vigência, com idade-limite informada de " + quote.waiverTo + " anos";

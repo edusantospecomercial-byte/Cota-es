@@ -202,6 +202,15 @@ const calculate = (toAge, life, ci, extra = {}) => {
   run("render({...payload(), ...inputs})");
   return run("lastPayload.result");
 };
+const archiveWithDisability = calculate(70, 200000, 0, { age: 62, term: 8 });
+assert.equal(archiveWithDisability.provider, "Zurich");
+assert.equal(archiveWithDisability.main, 71.66);
+assert.ok(archiveWithDisability.text.includes("7 anos de prazo · inclui incapacidade permanente para a própria profissão"));
+assert.ok(archiveWithDisability.providerQuotes.some(q => q.provider === "Legal & General" && q.premium === 73.92));
+const comparedArchive = calculate(65, 500000, 0, { age: 46, term: 19 });
+assert.equal(comparedArchive.provider, "Zurich");
+assert.equal(comparedArchive.main, 49.28);
+assert.ok(comparedArchive.text.includes("18 anos de prazo"));
 const liveExact = calculate(75, 50000, 10000);
 assert.equal(liveExact.main, 27.04);
 assert.equal(liveExact.priorityExact, true);
