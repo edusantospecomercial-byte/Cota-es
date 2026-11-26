@@ -415,7 +415,8 @@ function documentedLookupPrice(p, amount) {
   const smoker = p.smoker === "smoker" ? "Yes" : "No";
   const matches = row => Number(row.age) === p.age && row.smoker === smoker &&
     Number(row.to_age) === p.toAge && Number(row.life_cover) === p.life;
-  if (!p.ci && illustratedLifeRows.some(row => matches(row) && Number(row.base_monthly) === amount))
+  if (!p.ci && illustratedLifeRows.some(row => matches(row) && row.policy_count === "1" &&
+      Number(row.discount_monthly) === 0 && Number(row.base_monthly) === amount))
     return true;
   return reportedRows.concat(verifiedArchiveRows).some(row => matches(row) && row.available === "true" &&
     Number(row.critical_illness_cover) === p.ci && row.life_cover === row.quoted_life_cover &&
@@ -679,6 +680,22 @@ function capturedReportFor(p, source = reportedRows) {
       provider: missing.map(row => row.provider).join(", "), reason: reasons.join(". "), modelId: latest.model_id,
     } : null };
 }
+function historicalPartialCiNote(p) {
+  if (!p.ci || !p.life || p.waiver === "Yes") return "";
+  const smoking = p.smoker === "smoker" ? "Yes" : "No";
+  const alternatives = priorityGapRows.filter(row => row.smoker === smoking && Number(row.age) === p.age &&
+    Number(row.to_age) === p.toAge && Number(row.life_only_capital) === p.life &&
+    Number(row.critical_illness_cover) === p.ci && ["accelerated", "unconfirmed"].includes(row.ci_basis));
+  return alternatives.map(row => {
+    const basis = row.ci_basis === "accelerated"
+      ? gbp(p.life) + " de vida mais " + gbp(p.ci) + " por morte ou diagnóstico, no primeiro evento"
+      : gbp(p.life) + " de vida e " + gbp(p.ci) + " de diagnóstico, com forma de pagamento a confirmar";
+    const tpd = row.tpd_basis === "own_occupation" ? " com incapacidade permanente para a própria profissão"
+      : row.tpd_basis === "included" ? " com incapacidade permanente" : "";
+    return "Comparativo parcial de " + row.source_date + " (ref. " + row.model_id + ") para " + basis + tpd +
+      ". Zurich " + gbp(Number(row.zurich_premium)) + " e Aviva " + gbp(Number(row.aviva_premium)) + "/mês.";
+  }).join(" ");
+}
 function priorityQuotesFor(p) {
   const report = capturedReportFor(p);
   if (report) return report;
@@ -727,9 +744,11 @@ function priorityQuotesFor(p) {
         row.age === p.age && row.life === p.life && row.toAge === p.toAge,
     )
     .sort((a, b) => a.premium - b.premium);
+  // Older partial CI captures do not establish a standard independent benefit without riders.
   const knownGap = priorityGapRows
     .filter(
       (row) =>
+        !p.ci &&
         row.smoker === expectedSmoker &&
         Number(row.age) === p.age &&
         Number(row.to_age) === p.toAge &&
@@ -1093,6 +1112,7 @@ function makeSummary(p, r) {
   if (r.ageNote) lines.push(r.ageNote);
   if (r.componentNote) lines.push(r.componentNote);
   if (r.lgTermNote) lines.push(r.lgTermNote);
+  if (r.partialCiNote) lines.push(r.partialCiNote);
   if (r.alternativePackage) lines.push(r.alternativePackage);
   if (r.separatePolicyNote) lines.push(r.separatePolicyNote);
   if (r.complete)
@@ -1302,6 +1322,7 @@ function priceProtection(p, m) {
     }
   }
   r.lgTermNote = lgTermReference(p);
+  r.partialCiNote = historicalPartialCiNote(p);
   const avivaRecord = illustratedLifeFor(p, "Aviva");
   if (avivaRecord) {
     r.componentNote = "Aviva · " + avivaRecord.source_date + " · prêmio-base de vida " +
@@ -1388,12 +1409,16 @@ function render(p) {
   const forwardEvidence = (forwardSegmentMetrics.predicted || 0) >= 30
     ? ` · validação futura do segmento histórico ${Number(forwardSegmentMetrics.mape * 100).toFixed(2)}% MAPE · P95 ${Number(forwardSegmentMetrics.p95 * 100).toFixed(2)}% · n=${forwardSegmentMetrics.predicted}`
     : ` · validação futura do segmento histórico ainda limitada (n=${forwardSegmentMetrics.predicted || 0})`;
+  const measuredErrors = confidenceMetrics.tested > 0 && Number.isFinite(confidenceMetrics.mape) &&
+    Number.isFinite(confidenceMetrics.p95)
+    ? `${Number(confidenceMetrics.mape * 100).toFixed(2)}% MAPE · P95 ${Number(confidenceMetrics.p95 * 100).toFixed(2)}% · n=${confidenceMetrics.tested}`
+    : "erro do segmento ainda sem medição";
   let confidenceLabel = r.providerQuotes?.length
     ? r.providerGap
       ? "oficial parcial"
       : r.priorityExact
         ? "oficial exata"
-        : `interpolação indicativa · arquivo histórico ${(confidenceMetrics.tested || 0) < 30 ? "com amostra limitada" : "avaliado"} (${Number(confidenceMetrics.mape * 100 || 0).toFixed(2)}% MAPE · P95 ${Number(confidenceMetrics.p95 * 100 || 0).toFixed(2)}% · n=${confidenceMetrics.tested || 0}${forwardEvidence})`
+        : `interpolação indicativa · arquivo histórico ${(confidenceMetrics.tested || 0) < 30 ? "com amostra limitada" : "avaliado"} (${measuredErrors}${forwardEvidence})`
     : model
       ? `modelo histórico agregado (${confidencePt(model.confidence)})`
       : "insuficiente";
@@ -1409,6 +1434,7 @@ function render(p) {
   if (r.illustrationNote)
     priorityDetail += `<dt>Prêmio-base documentado</dt><dd>${escapeHtml(r.illustrationNote)}</dd>`;
   if (r.ageNote) priorityDetail += `<dt>Estimativa entre idades</dt><dd>${escapeHtml(r.ageNote)}</dd>`;
+  if (r.partialCiNote) priorityDetail += `<dt>Outras condições encontradas</dt><dd>${escapeHtml(r.partialCiNote)}</dd>`;
   if (r.lgTermNote) priorityDetail += `<dt>Prazo e preço documentados pela L&amp;G</dt><dd>${escapeHtml(r.lgTermNote)}</dd>`;
   if (r.componentNote) priorityDetail += `<dt>Composição da apólice histórica</dt><dd>${escapeHtml(r.componentNote)}</dd>`;
   const evidence = r.composition ? "Prêmios individuais e comparativos de pacotes para os mesmos produtos, perfil e data" : r.ciPending ? "Referência de vida: " + escapeHtml(r.lifeSource) : r.ageEstimate ? "2 idades de referência e conferência com illustration posterior na mesma faixa" : r.illustratedBase ? `1 illustration ${escapeHtml(r.provider)} · vida em apólice individual` : r.detailed

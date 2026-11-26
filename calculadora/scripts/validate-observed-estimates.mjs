@@ -186,6 +186,16 @@ assert.equal(inventory(pdfIndex, includeRow({...duplicate, monthly_premium: "150
 assert.equal(inventory(pdfIndex, includeRow({...duplicate, monthly_premium: "approximate"})), null);
 console.log(JSON.stringify({ documentedComparisonInventory: counts }));
 
+const partialProfile = { age: 47, toAge: 65, life: 50000, ci: 10000, smoker: "non_smoker", waiver: "No" };
+const gapMatch = run("priorityQuotesFor")(partialProfile);
+assert.ok(gapMatch.quotes.every(q => !["34984455", "34984456"].includes(q.modelId)));
+const partialCi = run("historicalPartialCiNote");
+assert.match(partialCi(partialProfile), /34984455.*própria profissão/);
+assert.doesNotMatch(partialCi(partialProfile), /34984456/);
+assert.match(partialCi({...partialProfile, life: 40000}), /34984456.*40,000.*10,000.*primeiro evento/);
+assert.equal(partialCi({...partialProfile, smoker: "smoker"}), "");
+const legacyLifeOnly = run("priorityQuotesFor")({...partialProfile, age: 35, toAge: 70, life: 20000, ci: 0, smoker: "smoker"});
+assert.ok(legacyLifeOnly.quotes.some(q => q.modelId === "34984518"));
 const keys = new Set();
 for (const [id, rows] of verifiedReports) {
   const first = rows[0];
