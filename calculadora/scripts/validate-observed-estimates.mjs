@@ -257,6 +257,21 @@ assert.equal(twoCarriers.provider, "Zurich");
 ctx.savedReported = liveReportRows;
 ctx.savedRanges = liveCapitalRanges;
 run("reportedRows = savedReported; validatedCapitalRanges = savedRanges;");
+const tpdReference = calculate(70, 10000, 10000, {age:57, smoker:"smoker", term:13});
+assert.equal(node("tpdComparison").hidden, false);
+assert.ok(node("tpdSource").textContent.includes("1080433474"));
+const tpdList = node("tpdOffers").innerHTML;
+assert.match(tpdList, /Aviva<\/dt><dd><b>£40\.98\/mês<\/b>[^<]*diagnóstico independente £10,000\.00/);
+assert.match(tpdList, /Legal &amp; General<\/dt><dd><b>£46\.30\/mês<\/b>[^<]*12 anos de prazo[^<]*vida ou diagnóstico £10,000\.00[^<]*preço depende da profissão/);
+assert.match(tpdList, /Zurich<\/dt><dd><b>£50\.19\/mês<\/b>[^<]*diagnóstico independente £10,000\.00/);
+assert.ok(!tpdReference.text.includes("1080433474"));
+calculate(65, 10000, 10000, {age:57, smoker:"smoker", term:8});
+assert.equal(node("tpdComparison").hidden, true);
+const regular = calculate(65, 75000, 15000, {age:31, smoker:"non_smoker", term:34});
+assert.equal(regular.main, 12.09);
+assert.equal(node("tpdComparison").hidden, false);
+for (const price of ["£12.22", "£12.04", "£13.82"]) assert.ok(node("tpdOffers").innerHTML.includes(price));
+
 const variantRows = run("acceleratedOffers");
 const variantKeys = new Set();
 for (const row of variantRows) {
@@ -277,10 +292,10 @@ for (const label of ["£11.21", "£11.69", "£13.33", "£10,557.00", "preço dep
 }
 assert.ok(!independent.text.includes("£11.21"));
 ctx.accelInputs = {age:31, smoker:"non_smoker", toAge:65, life:100000, ci:20000, waiver:"No"};
-run("renderAcceleratedComparison(accelInputs)");
+run("renderCiComparison(accelInputs)");
 assert.ok(node("acceleratedSource").textContent.includes("1084937859"));
 assert.ok(node("acceleratedOffers").innerHTML.includes("£17.77"));
-run('renderAcceleratedComparison({...accelInputs,waiver:"Yes"})');
+run('renderCiComparison({...accelInputs,waiver:"Yes"})');
 assert.ok(node("acceleratedSource").textContent.includes("1084937863"));
 assert.ok(node("acceleratedOffers").innerHTML.includes("£17.81"));
 assert.ok(node("acceleratedOffers").innerHTML.includes("prazo de isenção sem confirmação"));

@@ -9,6 +9,7 @@ let catalog = { models: {} },
   individualWaivers = [],
   illustratedLifeRows = [],
   acceleratedOffers = [],
+  tpdOffers = [],
   lgIllustratedTerms = [],
   lastPayload = null;
 const $ = (id) => document.getElementById(id),
@@ -51,6 +52,7 @@ async function init() {
     loadedIndividualWaivers,
     avivaLife,
     loadedLgTerms,
+    loadedTpdOffers,
   ] = await Promise.all([
     fetch("./data/models.json", { cache: "no-store" })
       .then((r) => r.json())
@@ -115,7 +117,12 @@ async function init() {
       .then(response => response.ok ? response.text() : "")
       .then(parsePriorityCsv)
       .catch(() => []),
+    fetch("./data/independent-ci-tpd.csv", { cache: "no-store" })
+      .then(response => response.ok ? response.text() : "")
+      .then(parsePriorityCsv)
+      .catch(() => []),
   ]);
+  tpdOffers = loadedTpdOffers;
   lgIllustratedTerms = loadedLgTerms;
   individualWaivers = loadedIndividualWaivers;
   acceleratedOffers = loadedAccelerated;
@@ -272,16 +279,19 @@ function documentedLookupPrice(p, amount) {
     row.quoted_term === `To Age ${p.toAge}` && Number(row.monthly_premium) === amount);
 }
 
-function renderAcceleratedComparison(p) {
-  const panel = $("acceleratedComparison");
+function renderCiComparison(p, independentTpd = false) {
+  const prefix = independentTpd ? "tpd" : "accelerated";
+  const offers = independentTpd ? tpdOffers : acceleratedOffers;
+  const requestedCi = independentTpd ? "independent_ci_cover" : "earlier_ci_cover";
+  const panel = $(prefix + "Comparison");
   panel.hidden = true;
   panel.open = false;
-  $("acceleratedOffers").textContent = "";
+  $(prefix + "Offers").textContent = "";
   if (!p.life || !p.ci) return;
   const smoker = p.smoker === "smoker" ? "Yes" : "No";
-  const matching = acceleratedOffers.filter(row => row.smoker === smoker &&
+  const matching = offers.filter(row => row.smoker === smoker &&
     Number(row.age) === p.age && Number(row.to_age) === p.toAge &&
-    Number(row.life_cover) === p.life && Number(row.earlier_ci_cover) === p.ci);
+    Number(row.life_cover) === p.life && Number(row[requestedCi]) === p.ci);
   if (!matching.length) return;
   const referencesWithWaiverColumn = new Set(matching.filter(row => row.waiver_to !== "not_shown").map(row => row.reference));
   const requestedWaiver = p.waiver === "Yes";
@@ -297,16 +307,20 @@ function renderAcceleratedComparison(p) {
       "prazo de isenção sem confirmação";
     const term = row.quoted_term.startsWith("To Age ") ? "até os " + row.quoted_term.slice(7) + " anos" :
       row.quoted_term.split(" ")[0] + " anos de prazo";
-    const detail = [term, "vida " + gbp(Number(row.quoted_life_cover)),
-      "vida ou diagnóstico " + gbp(Number(row.quoted_earlier_ci_cover)), waiver, "TPD " + row.tpd_basis];
+    const detail = [term, "vida " + gbp(Number(row.quoted_life_cover))];
+    if (Number(row.quoted_independent_ci_cover) > 0)
+      detail.push("diagnóstico independente " + gbp(Number(row.quoted_independent_ci_cover)));
+    if (Number(row.quoted_earlier_ci_cover) > 0)
+      detail.push("vida ou diagnóstico " + gbp(Number(row.quoted_earlier_ci_cover)));
+    detail.push(waiver, "TPD " + row.tpd_basis);
     if (row.occupation_rated === "Yes") detail.push("preço depende da profissão");
     return `<dt>${escapeHtml(row.provider)}</dt><dd><b>${gbp(Number(row.monthly_premium))}/mês</b> · ${escapeHtml(detail.join(" · "))}</dd>`;
   });
-  $("acceleratedSource").textContent = "Comparativo de " + latest.source_date +
+  $(prefix + "Source").textContent = "Comparativo de " + latest.source_date +
     " · referência " + latest.reference + " · mensalidades antes da MetLife. " +
     (referencesWithWaiverColumn.has(latest.reference) ? "O relatório traz uma coluna de isenção. Confira a resposta de cada seguradora." :
       "O relatório não informa isenção nas ofertas.");
-  $("acceleratedOffers").innerHTML = entries.join("");
+  $(prefix + "Offers").innerHTML = entries.join("");
   panel.hidden = false;
 }
 
@@ -805,7 +819,8 @@ function makeSummary(p, r) {
   return lines.join("\n");
 }
 function render(p) {
-  renderAcceleratedComparison(p);
+  renderCiComparison(p);
+  renderCiComparison(p, true);
   $("coverError").textContent = "";
   if (p.toAge <= p.age)
     throw Error(`A cobertura até ${p.toAge} anos exige idade atual menor.`);

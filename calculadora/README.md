@@ -108,3 +108,5 @@ Regra operacional de Eduardo: a tela abre com **MetLife MultiProtect · 1 Cota +
 Antes de publicar qualquer alteração na calculadora, execute `node calculadora/scripts/validate-all.mjs`. O comando verifica a sintaxe do aplicativo, a estrutura dos CSVs, as âncoras, os cenários prioritários, as lacunas conhecidas, as interpolações e a validação cruzada leave-one-anchor-out.
 
 Os pares de illustration e comparativo de vida da Legal & General ficam em `data/lg-illustrated-terms.csv`. Para o mesmo perfil, capital e idade final solicitada, a tela e o resumo mostram o prazo em anos que a seguradora efetivamente ofereceu, o preço com isenção e a parcela correspondente à isenção. Essas referências aparecem separadamente do total do pacote.
+
+O arquivo `data/independent-ci-tpd.csv` registra os comparativos que pediram diagnóstico independente com incapacidade permanente total. O extrator aceita essa modalidade com a opção `--independent-tpd` e verifica o capital devolvido nas colunas de diagnóstico independente e antecipado. Nos resultados, a comparação com TPD aparece em um painel próprio, com o prazo e os adicionais de cada seguradora.
