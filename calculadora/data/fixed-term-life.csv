@@ -1,0 +1,7 @@
+source_date,sha256,provider,product,age,smoker,requested_term_years,life_cover,available,monthly_premium,quoted_life_cover,quoted_term,waiver_to,occupation_rated,quoted_tpd,unavailable_reason
+2025-10-10,4d94f920ba6c39912c903958a9869b8316ac4e15e5e4f88d07a4c1b8fcc34af1,Aviva,Aviva Life Insurance+,65,No,20,120000,true,136.40,120000,20 years,not_requested,No,None,
+2025-10-10,4d94f920ba6c39912c903958a9869b8316ac4e15e5e4f88d07a4c1b8fcc34af1,Legal & General,Legal & General Life,65,No,20,120000,true,119.76,120000,20 years,not_requested,No,None,
+2025-10-10,4d94f920ba6c39912c903958a9869b8316ac4e15e5e4f88d07a4c1b8fcc34af1,Zurich,Zurich Life,65,No,20,120000,true,121.60,120000,20 years,not_requested,No,None,
+2026-06-01,5f924637d9938609ba903a5edb399b95c010c7b6290204a6ebe26f430f2a95d2,Aviva,Aviva Life Insurance+,64,No,20,20000,true,24.85,20000,20 years,70,No,None,
+2026-06-01,5f924637d9938609ba903a5edb399b95c010c7b6290204a6ebe26f430f2a95d2,Legal & General,Legal & General Life,64,No,20,20000,false,,,,,,,above_waiver_age_64
+2026-06-01,5f924637d9938609ba903a5edb399b95c010c7b6290204a6ebe26f430f2a95d2,Zurich,Zurich Life,64,No,20,20000,true,20.27,20000,20 years,No data,No,None,

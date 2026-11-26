@@ -161,7 +161,7 @@ assert.ok(node("baseStatus").textContent.includes("508 registros em 392 illustra
 assert.ok(node("baseStatus").textContent.includes(reported.filter(r => r.available === "true").length + " mensalidades"));
 // The public inventory counts separately by insurer and the printed report identifier.
 const pdfIndex = run("parsePriorityCsv")(readFileSync(new URL("../data/comparison-pdf-index.csv", import.meta.url), "utf8"));
-const tables = run("[reportedRows, verifiedArchiveRows, waiverRows, individualWaivers, acceleratedOffers, maturityDeclines, tpdOffers, fractureOffers, supplementalLifeRows]");
+const tables = run("[reportedRows, verifiedArchiveRows, waiverRows, individualWaivers, acceleratedOffers, maturityDeclines, tpdOffers, fractureOffers, fixedTermLifeRows, supplementalLifeRows]");
 const reportKeys = new Map(pdfIndex.map(item => [item.sha256, item.report_key]));
 const withPrice = tables.flat().filter(row => Number(row.monthly_premium) > 0);
 const distinct = rows => new Set(rows.map(row => reportKeys.get(row.sha256) + "|" + row.provider)).size;
@@ -248,6 +248,24 @@ const calculate = (toAge, life, ci, extra = {}) => {
   run("render({...payload(), ...inputs})");
   return run("lastPayload.result");
 };
+const fixedLife = run("fixedTermLifeRows");
+assert.ok(fixedLife.length >= 6);
+const historical64 = calculate(85,20000,0,{age:64,term:21});
+for (const clue of ["20 anos de prazo fixo", "21 anos pela idade informada", "Zurich £20.27", "Aviva £24.85",
+  "£33.27/mês", "£37.85/mês", "isenção até os 70 anos", "limite de idade para a isenção"]) {
+  assert.ok(historical64.supplementalLifeNote.includes(clue), clue);
+  assert.ok(historical64.text.includes(clue), clue);
+}
+const historical65 = calculate(85,120000,0,{age:65,term:20});
+for (const clue of ["Legal & General £119.76", "Zurich £121.60", "Aviva £136.40", "£132.76", "£134.60", "£149.40"])
+  assert.ok(historical65.supplementalLifeNote.includes(clue), clue);
+for (const different of [{ci:10000}, {toAge:80}, {smoker:"smoker"}, {life:19999}])
+  assert.equal(run("fixedLifeComparisonNote")({age:64,life:20000,ci:0,toAge:85,smoker:"non_smoker",...different},{c:1,total:13}),"");
+const fixedSample = fixedLife.find(row => row.available === "true");
+assert.equal(inventory(pdfIndex, includeRow(fixedSample)).prices,counts.prices);
+assert.equal(inventory(pdfIndex, includeRow({...fixedSample,to_age:"85"})),null);
+assert.equal(inventory(pdfIndex, includeRow({...fixedSample,requested_term_years:"21",quoted_term:"21 years"})),null);
+assert.equal(inventory(pdfIndex, includeRow({...fixedSample,available:"false",monthly_premium:"",unavailable_reason:"test"})),null);
 const limitedWaiver = calculate(80,20000,0,{age:62,term:18,waiver:"Yes"});
 assert.equal(limitedWaiver.waiverLimitNote, "Aviva · a isenção de mensalidade termina aos 70 anos. O seguro de vida segue até os 80 anos.");
 assert.ok(limitedWaiver.text.includes(limitedWaiver.waiverLimitNote));
