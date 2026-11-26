@@ -9,6 +9,7 @@ let catalog = { models: {} },
   individualWaivers = [],
   illustratedLifeRows = [],
   acceleratedOffers = [],
+  lgIllustratedTerms = [],
   lastPayload = null;
 const $ = (id) => document.getElementById(id),
   num = (id) => Number($(id).value || 0),
@@ -49,6 +50,7 @@ async function init() {
     loadedAccelerated,
     loadedIndividualWaivers,
     avivaLife,
+    loadedLgTerms,
   ] = await Promise.all([
     fetch("./data/models.json", { cache: "no-store" })
       .then((r) => r.json())
@@ -109,7 +111,12 @@ async function init() {
       .then(response => response.ok ? response.text() : "")
       .then(parsePriorityCsv)
       .catch(() => []),
+    fetch("./data/lg-illustrated-terms.csv", { cache: "no-store" })
+      .then(response => response.ok ? response.text() : "")
+      .then(parsePriorityCsv)
+      .catch(() => []),
   ]);
+  lgIllustratedTerms = loadedLgTerms;
   individualWaivers = loadedIndividualWaivers;
   acceleratedOffers = loadedAccelerated;
   illustratedLifeRows = illustratedLife.map(row => ({ ...row, provider: "Zurich" })).concat(
@@ -313,6 +320,22 @@ function illustratedLifeFor(p, provider) {
   newestByProvider.sort((a, b) => b.source_date.localeCompare(a.source_date) ||
     Number(b.policy_count === "1") - Number(a.policy_count === "1") || Number(a.base_monthly) - Number(b.base_monthly));
   return newestByProvider[0] || null;
+}
+
+function lgTermReference(p) {
+  if (!p.life || p.ci) return "";
+  const smoker = p.smoker === "smoker" ? "Yes" : "No";
+  const matching = lgIllustratedTerms.filter(row => Number(row.age) === p.age && row.smoker === smoker &&
+    Number(row.to_age) === p.toAge && Number(row.life_cover) === p.life);
+  if (!matching.length) return "";
+  const latest = matching.reduce((a, b) => a.source_date >= b.source_date ? a : b);
+  const contemporaries = matching.filter(row => row.source_date === latest.source_date);
+  const signature = row => [row.term_years, row.base_monthly, row.waiver_monthly, row.policy_monthly].join("|");
+  if (contemporaries.some(row => signature(row) !== signature(latest))) return "";
+  return "Legal & General · " + latest.source_date + " · pedido até os " + latest.to_age +
+    " anos. Prazo oferecido de " + latest.term_years + " anos. Vida " + gbp(Number(latest.base_monthly)) +
+    " + isenção " + gbp(Number(latest.waiver_monthly)) + " = " + gbp(Number(latest.policy_monthly)) +
+    "/mês na illustration " + latest.reference + ".";
 }
 
 function capturedReportFor(p, source = reportedRows) {
@@ -764,6 +787,7 @@ function makeSummary(p, r) {
   if (r.reportNote) lines.push(r.reportNote);
   if (r.illustrationNote) lines.push(r.illustrationNote);
   if (r.componentNote) lines.push(r.componentNote);
+  if (r.lgTermNote) lines.push(r.lgTermNote);
   if (r.complete)
     lines.push("", `Total estimado: ${gbp(r.main + m.total)}/mês`);
   else lines.push("", "Total do pacote a confirmar.");
@@ -942,6 +966,7 @@ function render(p) {
       warnings.unshift(r.illustrationNote);
     }
   }
+  r.lgTermNote = lgTermReference(p);
   const avivaRecord = illustratedLifeFor(p, "Aviva");
   if (avivaRecord) {
     r.componentNote = "Aviva · " + avivaRecord.source_date + " · prêmio-base de vida " +
@@ -1012,6 +1037,7 @@ function render(p) {
   }
   if (r.illustrationNote)
     priorityDetail += `<dt>Prêmio-base documentado</dt><dd>${escapeHtml(r.illustrationNote)}</dd>`;
+  if (r.lgTermNote) priorityDetail += `<dt>Prazo e preço documentados pela L&amp;G</dt><dd>${escapeHtml(r.lgTermNote)}</dd>`;
   if (r.componentNote) priorityDetail += `<dt>Composição da apólice histórica</dt><dd>${escapeHtml(r.componentNote)}</dd>`;
   const evidence = r.illustratedBase ? `1 illustration ${escapeHtml(r.provider)} · vida em apólice individual` : r.detailed
     ? r.capitalRange ? `2 capitais de referência · 1 capital de teste · ${r.providerQuotes.length} ${r.providerQuotes.length === 1 ? "seguradora" : "seguradoras"}` : `1 comparativo · ${r.providerQuotes.length} preços históricos`

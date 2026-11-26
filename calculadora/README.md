@@ -106,3 +106,5 @@ Os dados preenchidos não são enviados a servidor. As simulações salvas ficam
 Regra operacional de Eduardo: a tela abre com **MetLife MultiProtect · 1 Cota + Luxações — £13/mês**, discriminado como £11 Essencial + £2 Luxações. O usuário ainda pode alterar a quantidade de cotas, remover o complemento ou acrescentar Crianças; os valores MetLife nunca são interpolados.
 
 Antes de publicar qualquer alteração na calculadora, execute `node calculadora/scripts/validate-all.mjs`. O comando verifica a sintaxe do aplicativo, a estrutura dos CSVs, as âncoras, os cenários prioritários, as lacunas conhecidas, as interpolações e a validação cruzada leave-one-anchor-out.
+
+Os pares de illustration e comparativo de vida da Legal & General ficam em `data/lg-illustrated-terms.csv`. Para o mesmo perfil, capital e idade final solicitada, a tela e o resumo mostram o prazo em anos que a seguradora efetivamente ofereceu, o preço com isenção e a parcela correspondente à isenção. Essas referências aparecem separadamente do total do pacote.

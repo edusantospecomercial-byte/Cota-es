@@ -1,0 +1,55 @@
+"""Read matching insurer PDF pairs from loose folders and original ZIP archives."""
+
+import argparse
+import csv
+import hashlib
+from pathlib import Path
+import subprocess
+import sys
+import zipfile
+
+
+def pairs(paths, folder):
+    for path in paths:
+        if path.suffix.lower() == ".zip":
+            with zipfile.ZipFile(path) as archive:
+                names = {n.replace("\\", "/"): n for n in archive.namelist()}
+                for standard_name, original in names.items():
+                    if tuple(standard_name.lower().split("/")[-2:]) != (folder.lower(), "illustration.pdf"):
+                        continue
+                    report = standard_name.rsplit("/", 1)[0] + "/Comparison Report - without commission.pdf"
+                    if report in names:
+                        yield archive.read(original), archive.read(names[report])
+        elif path.parent.name.lower() == folder.lower():
+            report = path.with_name("Comparison Report - without commission.pdf")
+            if report.exists():
+                yield path.read_bytes(), report.read_bytes()
+
+
+def extract_pairs(folder, fields, read_pair, description):
+    parser = argparse.ArgumentParser(description=description)
+    parser.add_argument("roots", nargs="+", type=Path)
+    args = parser.parse_args()
+    found = subprocess.run(["rg","--files","--hidden","--no-ignore","-0","-g","!**/.git/**",
+                            "-g","!**/node_modules/**","--iglob","*supporting*document*.zip",
+                            "--iglob","Illustration.pdf",*args.roots],capture_output=True)
+    if found.returncode not in (0,1):
+        raise SystemExit(found.stderr.decode())
+    files = sorted(Path(p) for p in found.stdout.decode().split("\0") if p)
+    seen, rows = set(), {}
+    for illustration, comparison in pairs(files, folder):
+        digest = (hashlib.sha256(illustration).digest(),hashlib.sha256(comparison).digest())
+        if digest in seen:
+            continue
+        seen.add(digest)
+        row = read_pair(illustration, comparison)
+        if row:
+            key = row[8]
+            if key in rows and row[:-2] != rows[key][:-2]:
+                raise ValueError(f"Conflicting documents for reference {key}")
+            if key not in rows or row[-2:] < rows[key][-2:]:
+                rows[key] = row
+    writer = csv.writer(sys.stdout, lineterminator="\n")
+    writer.writerow(fields)
+    writer.writerows(sorted(rows.values()))
+    print(f"{len(seen)} unique {folder} document pairs inspected, {len(rows)} reconciled.",file=sys.stderr)

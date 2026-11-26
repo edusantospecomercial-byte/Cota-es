@@ -349,6 +349,22 @@ for (const row of illustratedRows) {
   assert.equal(pennies("base_monthly") + pennies("additional_monthly") - pennies("discount_monthly"),
     pennies("policy_monthly"));
 }
+const lgSmoker = calculate(70, 20000, 0, {age:59, smoker:"smoker", term:11});
+for (const term of ["10 anos", "£23.94", "£0.72", "£24.66", "1082481714"]) {
+  assert.ok(lgSmoker.lgTermNote.includes(term));
+  assert.ok(lgSmoker.text.includes(term));
+  assert.ok(node("details").innerHTML.includes(term));
+}
+assert.ok(!calculate(65, 20000, 0, {age:59, smoker:"smoker", term:6}).lgTermNote?.includes("1082481714"));
+assert.ok(!calculate(70, 20000, 0, {age:59, smoker:"non_smoker", term:11}).lgTermNote?.includes("1082481714"));
+assert.ok(!calculate(70, 20000, 10000, {age:59, smoker:"smoker", term:11}).lgTermNote);
+for (const row of run("lgIllustratedTerms")) {
+  const fee = f => Math.round(100 * Number(row[f]));
+  assert.equal(fee("base_monthly") + fee("waiver_monthly"), fee("policy_monthly"));
+  assert.ok([0, 1].includes(Number(row.to_age) - Number(row.age) - Number(row.term_years)));
+  assert.match(row.comparison_sha256, /^[a-f0-9]{64}$/);
+  assert.match(row.sha256, /^[a-f0-9]{64}$/);
+}
 const avivaSmoker = calculate(70, 20000, 0, {age:57, smoker:"smoker", term:13});
 for (const sum of ["£22.82", "£0.24", "£23.06"]) {
   assert.ok(avivaSmoker.componentNote.includes(sum));
