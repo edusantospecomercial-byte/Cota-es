@@ -374,6 +374,24 @@ const comparedArchive = calculate(65, 500000, 0, { age: 46, term: 19 });
 assert.equal(comparedArchive.provider, "Zurich");
 assert.equal(comparedArchive.main, 49.28);
 assert.ok(comparedArchive.text.includes("18 anos de prazo"));
+// Earlier CI captures with the three matching premiums paid on the first event.
+for (const [age, life, ci, reference] of [
+  [34, 50000, 10000, "1084735012"], [38, 50000, 10000, "1084751490"], [34, 20000, 20000, "1084751726"],
+]) {
+  const result = calculate(65, life, ci, {age, term:65-age});
+  assert.ok(!result.priorityExact);
+  assert.match(result.partialCiNote, /primeiro evento coberto/);
+  assert.ok(result.partialCiNote.includes(reference));
+  assert.ok(result.text.includes(result.partialCiNote));
+  assert.ok(node("details").innerHTML.includes(reference));
+  assert.equal(node("acceleratedComparison").hidden, false);
+}
+const unverifiedCi = calculate(65, 50000, 10000, {age:46, term:19});
+assert.ok(!unverifiedCi.priorityExact);
+assert.ok(unverifiedCi.partialCiNote.includes("34984397"));
+assert.ok(unverifiedCi.partialCiNote.includes("precisam de confirmação"));
+assert.ok(!calculate(65, 75000, 10000, {age:46, term:19}).providerQuotes?.length);
+assert.equal(run("historicalCiPrices")({age:46,toAge:65,life:50000,ci:10000,smoker:"smoker"}), "");
 const liveExact = calculate(75, 50000, 10000);
 assert.equal(liveExact.main, 27.04);
 assert.equal(liveExact.priorityExact, true);

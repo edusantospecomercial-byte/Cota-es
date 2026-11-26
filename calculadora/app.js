@@ -867,6 +867,34 @@ function capturedReportFor(p, source = reportedRows) {
       provider: missing.map(row => row.provider).join(", "), reason: reasons.join(". "), modelId: latest.model_id,
     } : null };
 }
+// The early index stores the requested CI amount but does not identify how it pays.
+function historicalCiPrices(p) {
+  if (!p.life || !p.ci || p.waiver === "Yes") return "";
+  const smoking = p.smoker === "smoker" ? "Yes" : "No";
+  const matches = priorityRows.filter(row => row.available === "true" && row.smoker === smoking &&
+    Number(row.age) === p.age && Number(row.to_age) === p.toAge &&
+    Number(row.life_cover) === p.life && Number(row.critical_illness_cover) === p.ci);
+  if (!matches.length) return "";
+  const newest = matches.reduce((a, b) => b.source_date > a.source_date ||
+    (b.source_date === a.source_date && Number(b.model_id) > Number(a.model_id)) ? b : a);
+  const prices = matches.filter(row => row.model_id === newest.model_id);
+  if (prices.length !== 3 || new Set(prices.map(row => row.provider)).size !== 3) return "";
+  const reports = new Map();
+  for (const row of acceleratedOffers) {
+    if (row.source_date !== newest.source_date || row.smoker !== smoking || Number(row.age) !== p.age ||
+        Number(row.to_age) !== p.toAge || Number(row.life_cover) !== p.life || Number(row.earlier_ci_cover) !== p.ci) continue;
+    if (!reports.has(row.reference)) reports.set(row.reference, []);
+    reports.get(row.reference).push(row);
+  }
+  const matchingRefs = [...reports].filter(([, rows]) => prices.every(price =>
+    rows.some(row => row.provider === price.provider && row.monthly_premium === price.monthly_premium))).map(([ref]) => ref);
+  const amounts = prices.map(row => row.provider + " " + gbp(Number(row.monthly_premium))).join(" · ");
+  const basis = matchingRefs.length ? "Os mesmos três preços aparecem no comparativo " + matchingRefs.sort()[0] +
+    " para pagamento por morte ou diagnóstico, no primeiro evento coberto." :
+    "A forma de pagamento do diagnóstico e os adicionais precisam de confirmação nesse registro.";
+  return "Histórico de " + newest.source_date + " (ref. " + newest.model_id + "). " +
+    amounts + " por mês antes da MetLife. " + basis;
+}
 function historicalPartialCiNote(p) {
   if (!p.ci || !p.life || p.waiver === "Yes") return "";
   const smoking = p.smoker === "smoker" ? "Yes" : "No";
@@ -893,7 +921,9 @@ function priorityQuotesFor(p) {
   );
   const includesDisability = new Set(verifiedArchiveRows.filter(row => row.quoted_tpd === "Own occupation")
     .map(row => row.model_id + "|" + row.provider));
-  let rawCandidates = priorityRows.concat(newExact)
+  // Only captures with verified benefit terms can price independent CI.
+  // Those are handled by capturedReportFor, validatedCapitalQuotes and the paired policy components.
+  let rawCandidates = (p.ci ? [] : priorityRows.concat(newExact))
     .filter(
       (row) =>
         row.available === "true" &&
@@ -1516,7 +1546,7 @@ function priceProtection(p, m) {
   }
   r.lgTermNote = lgTermReference(p);
   r.supplementalLifeNote = supplementalLifeNote(p, m);
-  r.partialCiNote = historicalPartialCiNote(p);
+  r.partialCiNote = [historicalPartialCiNote(p), historicalCiPrices(p)].filter(Boolean).join(" ");
   const avivaRecord = illustratedLifeFor(p, "Aviva");
   if (avivaRecord) {
     r.componentNote = "Aviva · " + avivaRecord.source_date + " · prêmio-base de vida " +
@@ -1613,7 +1643,7 @@ function render(p) {
     ? r.providerGap
       ? "oficial parcial"
       : r.priorityExact
-        ? "oficial exata"
+        ? "preço observado para o pedido"
         : `interpolação indicativa · arquivo histórico ${(confidenceMetrics.tested || 0) < 30 ? "com amostra limitada" : "avaliado"} (${measuredErrors}${forwardEvidence})`
     : model
       ? `modelo histórico agregado (${confidencePt(model.confidence)})`

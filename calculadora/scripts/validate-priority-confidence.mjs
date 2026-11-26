@@ -12,7 +12,7 @@ const checks = {
   removesGenericRangeWarning:
     /!warning\.startsWith\("Perfil fora da faixa principal da base:"\)/.test(app) &&
     /!warning\.startsWith\("Perfil ou capital fora da faixa validada"\)/.test(app),
-  exactOfficialLabel: /"oficial exata"/.test(app),
+  exactRequestLabel: /"preço observado para o pedido"/.test(app),
   partialOfficialLabel: /"oficial parcial"/.test(app),
   segmentSpecificValidation:
     /"smokerCI"/.test(app) &&
@@ -66,7 +66,7 @@ if (Object.values(checks).some((value) => !value)) {
 console.log(JSON.stringify({
   ok: true,
   priorityConfidence: {
-    exact: "oficial exata",
+    exact: "preço observado para o pedido",
     interpolated: "validated MAPE",
     partial: "oficial parcial",
   },
