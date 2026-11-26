@@ -1,5 +1,7 @@
 # Calculadora Seguro UK
 
+Para a Aviva, a calculadora discrimina o prêmio-base de vida, os adicionais e o total da apólice individual quando a illustration e o relatório de comparação concordam em data, perfil, prazo, capital e preço. O extrator `scripts/extract-aviva-life-components.py` lê pares oficiais em pastas e ZIPs e guarda os dois hashes em `data/aviva-illustrated-life.csv`. Cada componente pertence ao mesmo documento.
+
 Os resultados mostram um comparativo adicional quando há no arquivo um relatório para a mesma idade, tabagismo, idade final e capitais com “life or earlier critical illness”. A parcela combinada paga no primeiro evento coberto. O painel indica as quantias efetivamente devolvidas, o prazo, a definição de incapacidade permanente e a isenção de mensalidade de cada seguradora. A proteção principal e seu total com MetLife continuam usando a modalidade solicitada no formulário.
 
 O extrator `scripts/extract-accelerated-comparisons.py` verifica as opções no PDF original, aceita somente resultados indicativos mensais com prêmio garantido e registra o hash do documento. O arquivo `data/accelerated-comparisons.csv` contém apenas referências e valores anônimos. Os comparativos com essa estrutura são exibidos pelo preço histórico, para correspondências exatas.

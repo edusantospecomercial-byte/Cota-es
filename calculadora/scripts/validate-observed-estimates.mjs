@@ -349,6 +349,16 @@ for (const row of illustratedRows) {
   assert.equal(pennies("base_monthly") + pennies("additional_monthly") - pennies("discount_monthly"),
     pennies("policy_monthly"));
 }
+const avivaSmoker = calculate(70, 20000, 0, {age:57, smoker:"smoker", term:13});
+for (const sum of ["£22.82", "£0.24", "£23.06"]) {
+  assert.ok(avivaSmoker.componentNote.includes(sum));
+  assert.ok(node("details").innerHTML.includes(sum));
+}
+assert.ok(!calculate(70, 20000, 0, {age:57, smoker:"non_smoker", term:13}).componentNote?.includes("1081446898"));
+for (const row of illustratedRows.filter(r => r.provider === "Aviva")) {
+  assert.match(row.comparison_sha256, /^[a-f0-9]{64}$/);
+  assert.ok(row.sha256 !== row.comparison_sha256);
+}
 const profileWithIllustration = { age: 65, smoker: "non_smoker", toAge: 80, life: 20000, ci: 0 };
 ctx.inputs = profileWithIllustration;
 const verifiedLife = run("illustratedLifeFor(inputs)");
@@ -366,7 +376,7 @@ for (const rows of profileGroups.values()) {
     age: +first.age, smoker: first.smoker === "Yes" ? "smoker" : "non_smoker", term: +first.to_age - +first.age
   });
   if (response.illustratedBase) {
-    assert.equal(response.provider, "Zurich");
+    assert.ok(["Zurich", "Aviva"].includes(response.provider));
     assert.ok(response.text.includes("antes de adicionais e descontos"));
     assert.ok(response.illustrationNote);
     assert.ok(!response.priorityExact);

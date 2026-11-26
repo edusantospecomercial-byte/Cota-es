@@ -48,6 +48,7 @@ async function init() {
     illustratedLife,
     loadedAccelerated,
     loadedIndividualWaivers,
+    avivaLife,
   ] = await Promise.all([
     fetch("./data/models.json", { cache: "no-store" })
       .then((r) => r.json())
@@ -104,10 +105,15 @@ async function init() {
       .then(response => response.ok ? response.text() : "")
       .then(parsePriorityCsv)
       .catch(() => []),
+    fetch("./data/aviva-illustrated-life.csv", { cache: "no-store" })
+      .then(response => response.ok ? response.text() : "")
+      .then(parsePriorityCsv)
+      .catch(() => []),
   ]);
   individualWaivers = loadedIndividualWaivers;
   acceleratedOffers = loadedAccelerated;
-  illustratedLifeRows = illustratedLife;
+  illustratedLifeRows = illustratedLife.map(row => ({ ...row, provider: "Zurich" })).concat(
+    avivaLife.map(row => ({ ...row, provider: "Aviva", policy_count: "1", discount_monthly: "0.00" })));
   reportedRows = loadedReports;
   const trials = evaluateCapitalTrials(loadedReports, capitalHoldout);
   validatedCapitalRanges = buildCapitalRanges(trials, capitalHoldout);
@@ -291,16 +297,22 @@ function renderAcceleratedComparison(p) {
   panel.hidden = false;
 }
 
-function illustratedLifeFor(p) {
+function illustratedLifeFor(p, provider) {
   if (!p.life || p.ci || p.waiver === "Yes") return null;
   const smoker = p.smoker === "smoker" ? "Yes" : "No";
   const matching = illustratedLifeRows.filter(row => Number(row.age) === p.age && row.smoker === smoker &&
-    Number(row.to_age) === p.toAge && Number(row.life_cover) === p.life);
-  if (!matching.length) return null;
-  const latestDate = matching.reduce((d, row) => row.source_date > d ? row.source_date : d, "");
-  const recent = matching.filter(row => row.source_date === latestDate);
-  if (new Set(recent.map(row => row.base_monthly)).size !== 1) return null;
-  return recent.find(row => row.policy_count === "1") || recent[0];
+    Number(row.to_age) === p.toAge && Number(row.life_cover) === p.life && (!provider || row.provider === provider));
+  const newestByProvider = [];
+  for (const name of new Set(matching.map(row => row.provider))) {
+    const carrier = matching.filter(row => row.provider === name);
+    const latestDate = carrier.reduce((d, row) => row.source_date > d ? row.source_date : d, "");
+    const recent = carrier.filter(row => row.source_date === latestDate);
+    if (new Set(recent.map(row => row.base_monthly)).size === 1)
+      newestByProvider.push(recent.find(row => row.policy_count === "1") || recent[0]);
+  }
+  newestByProvider.sort((a, b) => b.source_date.localeCompare(a.source_date) ||
+    Number(b.policy_count === "1") - Number(a.policy_count === "1") || Number(a.base_monthly) - Number(b.base_monthly));
+  return newestByProvider[0] || null;
 }
 
 function capturedReportFor(p, source = reportedRows) {
@@ -751,6 +763,7 @@ function makeSummary(p, r) {
       lines.push(`${q.provider} · ${quotedTerm(q)} · ${gbp(q.premium)}/mês${m.c ? ` · com MetLife ${gbp(q.premium + m.total)}/mês` : ""}${q.occupationRated ? " · preço do perfil profissional de referência" : ""}`);
   if (r.reportNote) lines.push(r.reportNote);
   if (r.illustrationNote) lines.push(r.illustrationNote);
+  if (r.componentNote) lines.push(r.componentNote);
   if (r.complete)
     lines.push("", `Total estimado: ${gbp(r.main + m.total)}/mês`);
   else lines.push("", "Total do pacote a confirmar.");
@@ -916,18 +929,24 @@ function render(p) {
   if (illustrated) {
     const base = Number(illustrated.base_monthly);
     const standalone = illustrated.policy_count === "1";
-    r.illustrationNote = `Zurich · illustration de ${illustrated.source_date} · vida a ${gbp(base)}/mês antes de adicionais e descontos.`;
+    r.illustrationNote = `${illustrated.provider} · illustration de ${illustrated.source_date} · vida a ${gbp(base)}/mês antes de adicionais e descontos.`;
     if (!standalone) r.illustrationNote += " O documento inclui outras apólices.";
     if (standalone && !priorityQuotes.length) {
       r.supported = true;
       r.illustratedBase = true;
-      r.provider = "Zurich";
+      r.provider = illustrated.provider;
       r.main = r.low = r.high = base;
       warnings = warnings.filter(w => !w.startsWith("Baixa confiança:") &&
         !w.startsWith("Perfil fora da faixa principal da base:") &&
         !w.startsWith("Perfil ou capital fora da faixa validada"));
       warnings.unshift(r.illustrationNote);
     }
+  }
+  const avivaRecord = illustratedLifeFor(p, "Aviva");
+  if (avivaRecord) {
+    r.componentNote = "Aviva · " + avivaRecord.source_date + " · prêmio-base de vida " +
+      gbp(Number(avivaRecord.base_monthly)) + " + adicionais " + gbp(Number(avivaRecord.additional_monthly)) +
+      " = " + gbp(Number(avivaRecord.policy_monthly)) + "/mês. Total conferido no comparativo " + avivaRecord.reference + ".";
   }
   if (r.supported && !r.providerQuotes?.length && !r.illustratedBase)
     warnings.unshift(
@@ -948,7 +967,7 @@ function render(p) {
   $("mainPrice").textContent = r.supported
     ? `${gbp(r.main)}/mês`
     : "Não publicado";
-  $("range").textContent = r.illustratedBase ? "Prêmio-base de vida registrado na illustration Zurich" : r.supported
+  $("range").textContent = r.illustratedBase ? "Prêmio-base de vida registrado na illustration " + r.provider : r.supported
     ? `${r.detailed && r.termPending ? "Faixa das alternativas devolvidas" : r.detailed ? "Faixa para a idade final solicitada" : r.providerQuotes?.length ? r.providerGap ? "Faixa observada entre seguradoras disponíveis" : r.priorityExact ? "Faixa observada entre seguradoras" : "Faixa estimada entre seguradoras" : "Faixa provável"}: ${gbp(r.low)} a ${gbp(r.high)}/mês`
     : "O motor não publica um preço sem validação suficiente.";
   $("totalPrice").textContent = r.complete
@@ -993,7 +1012,8 @@ function render(p) {
   }
   if (r.illustrationNote)
     priorityDetail += `<dt>Prêmio-base documentado</dt><dd>${escapeHtml(r.illustrationNote)}</dd>`;
-  const evidence = r.illustratedBase ? "1 illustration Zurich · vida em apólice individual" : r.detailed
+  if (r.componentNote) priorityDetail += `<dt>Composição da apólice histórica</dt><dd>${escapeHtml(r.componentNote)}</dd>`;
+  const evidence = r.illustratedBase ? `1 illustration ${escapeHtml(r.provider)} · vida em apólice individual` : r.detailed
     ? r.capitalRange ? `2 capitais de referência · 1 capital de teste · ${r.providerQuotes.length} ${r.providerQuotes.length === 1 ? "seguradora" : "seguradoras"}` : `1 comparativo · ${r.providerQuotes.length} preços históricos`
     : `${model?.records || 0} registros na família · confiança ${escapeHtml(confidenceLabel)}`;
   $("details").innerHTML =

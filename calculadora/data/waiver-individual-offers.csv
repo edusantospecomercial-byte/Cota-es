@@ -86,6 +86,8 @@ source_date,age,smoker,to_age,life_cover,provider,product,monthly_premium,quoted
 2026-09-18,64,False,80,30000,Aviva,Aviva Life Insurance+,27.59,To Age 80,70,65df0f7871f1286f1d33373e75095d21932e7d8bceeea8fa7b64649f9b2f775f
 2026-09-18,60,False,80,30000,Legal & General,Legal & General Life,18.46,19 years,Expiry,f4a97272494ece8d9fc7748fb8cdd27e1f5ed6cc09f7997a969e5f8f235b2f9a
 2026-09-18,60,False,80,30000,Aviva,Aviva Life Insurance+,19.95,To Age 80,70,f4a97272494ece8d9fc7748fb8cdd27e1f5ed6cc09f7997a969e5f8f235b2f9a
+2026-09-24,61,False,70,30000,Legal & General,Legal & General Life,15.60,8 years,Expiry,a708988296aa5be900875b78b06a6024d1626f34211ad66de92d95b8865693d3
+2026-09-24,61,False,70,30000,Aviva,Aviva Life Insurance+,15.67,To Age 70,70,a708988296aa5be900875b78b06a6024d1626f34211ad66de92d95b8865693d3
 2026-09-27,20,False,65,50000,Zurich,Zurich Life,5.26,To Age 65,70,5d1299b13196de3cdc6b416b9b4410a17753d907fad235f94c50502344c8ea7a
 2026-09-28,55,False,70,50000,Legal & General,Legal & General Life,15.53,14 years,Expiry,4fba19bc7c0b5c68bd8a9e3bb3e19b3d61917bbc0dd85da93c7d0f4d679ab8d2
 2026-09-28,55,False,70,50000,Aviva,Aviva Life Insurance+,16.80,To Age 70,70,4fba19bc7c0b5c68bd8a9e3bb3e19b3d61917bbc0dd85da93c7d0f4d679ab8d2
