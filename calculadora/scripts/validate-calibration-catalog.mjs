@@ -162,15 +162,15 @@ const illustrationFingerprints = illustrationRows.map((row) => [
   row.total_monthly,
 ].join('|'));
 if (
-  illustrationRows.length !== 504
-  || new Set(hashes).size !== 389
+  illustrationRows.length !== 508
+  || new Set(hashes).size !== 392
   || catalog.audit?.illustrationValidationDocuments !== new Set(hashes).size
   || new Set(illustrationFingerprints).size !== illustrationRows.length
   || hashes.some((hash) => !/^[a-f0-9]{64}$/.test(hash))
-  || catalog.audit?.illustrationValidationRecords !== 504
+  || catalog.audit?.illustrationValidationRecords !== 508
 ) {
   failures.push({
-    expectedIllustrationValidation: { rows: 504, uniqueDocuments: 389, uniqueRecords: 504, auditCount: 504 },
+    expectedIllustrationValidation: { rows: 508, uniqueDocuments: 392, uniqueRecords: 508, auditCount: 508 },
     actualIllustrationValidation: {
       rows: illustrationRows.length,
       uniqueDocuments: new Set(hashes).size,
@@ -189,7 +189,8 @@ for (const row of illustrationRows) {
     + Number(row.base_ci_monthly)
     + Number(row.optional_monthly);
   const validTerms = new Set([expectedTerm, expectedTerm - 1]);
-  if (!Number.isFinite(term) || !validTerms.has(term)) {
+  const fixedOnly = row.to_age === '' && row.provider === 'Legal & General' && Number.isInteger(term) && term > 0;
+  if (!fixedOnly && (!Number.isFinite(term) || !validTerms.has(term))) {
     failures.push({
       illustrationHash: row.sha256,
       issue: 'term does not reconcile with current-age or age-next-birthday basis',

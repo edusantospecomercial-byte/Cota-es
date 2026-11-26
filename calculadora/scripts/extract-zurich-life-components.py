@@ -25,6 +25,15 @@ def field(section, label, pattern):
     return match[1] if match else None
 
 
+def schedule_field(part, label, pattern):
+    regular = field(part, label, pattern)
+    if regular is not None:
+        return regular
+    # Some older PDFs place the value one line above the label.
+    found = re.findall(r"^[ \t]+" + pattern + r"[ \t]*\n[ \t]*" + label + r"[ \t]*$", part, re.M)
+    return found[0] if len(found) == 1 else None
+
+
 def parse_date(value):
     for fmt in ("%d %B %Y", "%d %b %Y"):
         try:
@@ -39,6 +48,7 @@ def pounds(value):
 
 
 def parse_illustration(text, digest):
+    text = text.replace("\f", "\n")
     ref = re.search(r"^\s*Your Zurich quote[ \t]{2,}([A-Z0-9]+)[ \t]*$", text, re.I | re.M)
     if not ref or "your zurich personal protection quote" not in text.lower():
         return None
@@ -51,25 +61,25 @@ def parse_illustration(text, digest):
     sections = re.split(r"^[ \t]*Date of birth[ \t]+", text, flags=re.I | re.M)[1:]
     rows = []
     for section in sections:
-        if field(section, "Cover provided", "(Level Life Cover)") is None:
+        if schedule_field(section, "Cover provided", "(Level Life Cover)") is None:
             continue
-        if field(section, "Premium type", "(Guaranteed)") is None:
+        if schedule_field(section, "Premium type", "(Guaranteed)") is None:
             continue
         birth = re.match(DATE, section)
-        smoker = field(section, "Smoker status", "(Non-Smoker|Smoker)")
-        end_age = field(section, "Term", r"To age (\d+)")
-        cover = field(section, "Sum assured", MONEY)
-        gross = field(section, "Monthly premium for main cover", MONEY)
+        smoker = schedule_field(section, "Smoker status", "(Non-Smoker|Smoker)")
+        end_age = schedule_field(section, "Term", r"To age (\d+)")
+        cover = schedule_field(section, "Sum assured", MONEY)
+        gross = schedule_field(section, "Monthly premium for main cover", MONEY)
         main = field(section, "Main cover", MONEY)
         total = field(section, "Total Monthly premium", MONEY)
-        if not all((birth, smoker, end_age, cover, gross, total)):
+        if not all((birth, smoker, end_age, cover, gross, main, total)):
             continue
         birth_date = parse_date(birth[1])
         age = issued.year - birth_date.year - ((issued.month, issued.day) < (birth_date.month, birth_date.day))
         gross, total, cover = map(pounds, (gross, total, cover))
         additional = pounds(field(section, "Additional benefits", MONEY) or "0.00")
         discount = pounds(field(section, "Multi-policy discount", MONEY) or "0.00")
-        if (main is not None and pounds(main) != gross) or gross + additional - discount != total:
+        if pounds(main) != gross or gross + additional - discount != total:
             continue
         if not (18 <= age < int(end_age) <= 100 and cover > 0 and cover == int(cover) and gross > 0 and total > 0):
             continue

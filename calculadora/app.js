@@ -20,6 +20,7 @@ let catalog = { models: {} },
   supplementalLifeRows = [],
   fractureBreakdowns = new Map(),
   lgIllustratedTerms = [],
+  lgFixedLife = [],
   lastPayload = null;
 const $ = (id) => document.getElementById(id),
   num = (id) => Number($(id).value || 0),
@@ -80,6 +81,7 @@ async function init() {
     loadedOccupations,
     comparisonIndex,
     loadedSupplementalLife,
+    historicalPolicies,
   ] = await Promise.all([
     fetch("./data/models.json", { cache: "no-store" })
       .then((r) => r.json())
@@ -174,7 +176,12 @@ async function init() {
       .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
     fetch("./data/supplemental-life-offers.csv", { cache: "no-store" })
       .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
+    fetch("./data/illustration-validation-2026-11-19.csv", { cache: "no-store" })
+      .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
   ]);
+  lgFixedLife = historicalPolicies.filter(row => row.provider === "Legal & General" && row.to_age === "" &&
+    row.product === "Life" && row.critical_illness_component === "0" &&
+    ["None", "Waiver of Premium"].includes(row.optional_features));
   supplementalLifeRows = loadedSupplementalLife;
   showComparisonInventory(comparisonIndex, [loadedReports, verifiedArchive, loadedWaiverRows,
     loadedIndividualWaivers, loadedAccelerated, loadedMaturityDeclines, loadedTpdOffers, loadedFractureOffers, loadedSupplementalLife]);
@@ -731,12 +738,32 @@ function illustratedLifeFor(p, provider) {
   return newestByProvider[0] || null;
 }
 
+function lgFixedTermNote(p, metlife) {
+  const requested = p.toAge - p.age;
+  const matches = lgFixedLife.filter(row => Number(row.age) === p.age && Number(row.life_component) === p.life &&
+    row.smoker === String(p.smoker === "smoker") && [requested, requested - 1].includes(Number(row.term_years)));
+  if (!matches.length) return "";
+  matches.sort((a, b) => Number(b.term_years) - Number(a.term_years) || b.source_date.localeCompare(a.source_date));
+  const latest = matches[0];
+  if (matches.some(row => row.term_years === latest.term_years && row.source_date === latest.source_date &&
+    (row.total_monthly !== latest.total_monthly || row.base_life_monthly !== latest.base_life_monthly ||
+      row.optional_monthly !== latest.optional_monthly))) return "";
+  const price = Number(latest.total_monthly);
+  const waiver = Number(latest.optional_monthly);
+  return "Legal & General · " + latest.source_date + " · referência de vida por prazo fixo de " +
+    latest.term_years + " anos. O pedido atual é até os " + p.toAge + " anos (" + requested +
+    " anos pela idade informada). O documento informa apenas a duração. Vida " + gbp(Number(latest.base_life_monthly)) +
+    (waiver ? " + isenção " + gbp(waiver) + " = " + gbp(price) : "") + "/mês." +
+    (metlife.c && !metlife.unavailable ? " Com a MetLife selecionada, o total para esse prazo fixo seria " +
+      gbp(monthlyTotal(price, metlife.total)) + "/mês." : "");
+}
+
 function lgTermReference(p, metlife) {
   if (!p.life || p.ci) return "";
   const smoker = p.smoker === "smoker" ? "Yes" : "No";
   const matching = lgIllustratedTerms.filter(row => Number(row.age) === p.age && row.smoker === smoker &&
     Number(row.to_age) === p.toAge && Number(row.life_cover) === p.life);
-  if (!matching.length) return "";
+  if (!matching.length) return lgFixedTermNote(p, metlife);
   const latest = matching.reduce((a, b) => a.source_date >= b.source_date ? a : b);
   const contemporaries = matching.filter(row => row.source_date === latest.source_date);
   const signature = row => [row.term_years, row.base_monthly, row.waiver_monthly, row.policy_monthly, row.reported_tpd].join("|");
@@ -1568,7 +1595,9 @@ function priceProtection(p, m) {
     const base = Number(illustrated.base_monthly);
     const standalone = illustrated.policy_count === "1";
     r.illustrationNote = `${illustrated.provider} · illustration de ${illustrated.source_date} · vida a ${gbp(base)}/mês antes de adicionais e descontos.`;
-    if (!standalone) r.illustrationNote += " O documento inclui outras apólices.";
+    if (!standalone) r.illustrationNote += " O documento inclui outras apólices. Com adicionais de " +
+      gbp(Number(illustrated.additional_monthly)) + " e desconto de " + gbp(Number(illustrated.discount_monthly)) +
+      ", esta apólice custava " + gbp(Number(illustrated.policy_monthly)) + "/mês no pacote.";
     if (standalone && !priorityQuotes.length) {
       r.supported = true;
       r.illustratedBase = true;

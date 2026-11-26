@@ -14,13 +14,7 @@ SHARED = "Level Life Cover and Critical Illness"
 LIFE = "Level Life Cover"
 
 
-def field(part, label, pattern):
-    regular = zurich.field(part, label, pattern)
-    if regular is not None:
-        return regular
-    # Some older PDFs place the value one line above the label.
-    found = re.findall(r"^[ \t]+" + pattern + r"[ \t]*\n[ \t]*" + label + r"[ \t]*$", part, re.M)
-    return found[0] if len(found) == 1 else None
+field = zurich.schedule_field
 
 
 def fields_from_pdf(text, paid):
@@ -57,6 +51,8 @@ def fields_from_pdf(text, paid):
             raise ValueError("Missing Zurich premium statement")
         menu, prices = statement
         chosen = re.split(r"^[ \t]*Additional benefits[ \t]*$", menu, maxsplit=1, flags=re.M)
+        if len(chosen) == 1 and re.search(r"^[ \t]*You haven't chosen any additional benefits available to you\.[ \t]*$", menu, re.M):
+            chosen.append("")
         if len(chosen) != 2:
             raise ValueError("Missing optional benefits schedule")
         menu = re.sub(r"(Total Permanent Disability - (?:Own|Work))[ \t]*\n[ \t]*(Occupation|Tasks)", r"\1 \2", chosen[1])

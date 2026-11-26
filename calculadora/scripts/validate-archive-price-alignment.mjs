@@ -20,7 +20,7 @@ const families = [
     name: "life",
     model: catalog.models.life_only,
     filter: (row) =>
-      Number(row.life_component) > 0 &&
+      row.to_age !== "" && Number(row.life_component) > 0 &&
       Number(row.critical_illness_component) === 0 &&
       !/discounted|multipolicy|package component/i.test(row.product),
     comparablePremium: (row) =>
@@ -30,7 +30,7 @@ const families = [
     name: "standardCombined",
     model: catalog.models["life_plus_standalone_ci:standard_core_ci"],
     filter: (row) =>
-      Number(row.life_component) > 0 &&
+      row.to_age !== "" && Number(row.life_component) > 0 &&
       Number(row.critical_illness_component) > 0 &&
       !/earlier|enhanced|upgraded|extra|child|discounted|multipolicy|package component/i.test(row.product),
     comparablePremium: (row) =>

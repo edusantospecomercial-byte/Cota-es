@@ -32,6 +32,7 @@ const criticalAssets = [
   "data/capital-validation-holdout.csv",
   "data/verified-archive-terms.csv",
   "data/zurich-illustrated-life.csv",
+  "data/illustration-validation-2026-11-19.csv",
   "data/live-captures-2026-11-22.csv",
   "data/solutionbuilder-priority-providers-2026-11-20.csv",
   "data/solutionbuilder-priority-provider-archive-2026-11-21.csv",

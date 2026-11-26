@@ -19,6 +19,7 @@ const dataFiles = [
   "./data/solutionbuilder-priority-providers-2026-11-20.csv",
   "./data/verified-archive-terms.csv",
   "./data/zurich-illustrated-life.csv",
+  "./data/illustration-validation-2026-11-19.csv",
   "./data/solutionbuilder-priority-provider-gaps-2026-11-20.csv",
 ];
 const failures = [];

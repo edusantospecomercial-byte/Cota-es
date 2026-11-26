@@ -157,7 +157,7 @@ console.log(JSON.stringify({ verifiedReportsWithWaiver: reports.size, resolvedPr
 const reported = run("reportedRows");
 const verifiedReports = group(reported, "model_id");
 assert.ok(node("baseStatus").textContent.includes(verifiedReports.size + " cenários"));
-assert.ok(node("baseStatus").textContent.includes("504 registros em 389 illustrations distintas"));
+assert.ok(node("baseStatus").textContent.includes("508 registros em 392 illustrations distintas"));
 assert.ok(node("baseStatus").textContent.includes(reported.filter(r => r.available === "true").length + " mensalidades"));
 // The public inventory counts separately by insurer and the printed report identifier.
 const pdfIndex = run("parsePriorityCsv")(readFileSync(new URL("../data/comparison-pdf-index.csv", import.meta.url), "utf8"));
@@ -706,6 +706,24 @@ for (const row of illustratedRows) {
   assert.ok(+row.to_age > +row.age && +row.life_cover > 0 && +row.policy_count >= 1);
   assert.equal(pennies("base_monthly") + pennies("additional_monthly") - pennies("discount_monthly"),
     pennies("policy_monthly"));
+}
+const fixed51 = calculate(65, 100000, 0, {age:51, term:14});
+for (const fragment of ["prazo fixo de 13 anos", "até os 65 anos (14 anos", "£19.69", "£0.39", "£20.08", "£33.08"]) {
+  assert.ok(fixed51.lgTermNote.includes(fragment), fragment);
+  assert.ok(fixed51.text.includes(fragment), fragment);
+}
+assert.doesNotMatch(fixed51.lgTermNote, /19\.83|15\.01/);
+assert.ok(!calculate(70, 100000, 0, {age:51, term:19}).lgTermNote?.includes("£20.08"));
+assert.ok(!calculate(65, 100000, 0, {age:51, term:14, smoker:"smoker"}).lgTermNote?.includes("£20.08"));
+assert.ok(!calculate(65, 100000, 10000, {age:51, term:14}).lgTermNote);
+assert.match(calculate(85, 120000, 0, {age:65, term:20}).lgTermNote, /prazo fixo de 20 anos.*£119.76/);
+const standalone35 = calculate(65, 571000, 0, {age:35, term:30});
+assert.equal(standalone35.main, 29.12);
+assert.equal(standalone35.illustratedBase, true);
+for (const [cap, billed] of [[400000, "£32.88"], [500000, "£38.66"]]) {
+  const bundled = calculate(65, cap, 0, {age:38, term:27});
+  assert.ok(!bundled.illustratedBase);
+  assert.ok(bundled.illustrationNote.includes(billed) && bundled.illustrationNote.includes("£7.75"));
 }
 const lgSmoker = calculate(70, 20000, 0, {age:59, smoker:"smoker", term:11});
 for (const term of ["10 anos", "£23.94", "£0.72", "£24.66", "1082481714"]) {
