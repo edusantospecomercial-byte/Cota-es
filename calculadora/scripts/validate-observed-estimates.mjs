@@ -170,7 +170,21 @@ const counts = inventory(pdfIndex, tables);
 assert.ok(counts, "All public source tables must reconcile with the PDF index");
 assert.equal(counts.prices, distinct(withPrice));
 assert.equal(counts.reports, new Set(withPrice.map(r => reportKeys.get(r.sha256))).size);
-assert.ok(node("comparisonInventoryTitle").textContent.includes(counts.prices.toLocaleString("pt-BR")));
+const namedVersions = run("exactCapitalVariants.concat(firstEventVariants,fixedTermFirstEventVariants)");
+const productTotal = run("additionalProductInventory");
+const totals = productTotal(reportKeys,tables,[[namedVersions]]);
+assert.ok(totals && totals.prices === new Set(namedVersions.map(r=>[reportKeys.get(r.sha256),r.provider,r.product].join("|"))).size);
+assert.ok(node("comparisonInventoryTitle").textContent.includes((counts.prices+totals.prices).toLocaleString("pt-BR")+" preços por produto"));
+assert.ok(node("comparisonInventoryProviders").textContent.includes(counts.prices.toLocaleString("pt-BR")+" preços-base"));
+assert.ok(counts.distinctRequests > 0 && counts.distinctRequests < counts.reports);
+assert.ok(node("comparisonInventoryProviders").textContent.includes(counts.distinctRequests+" pedidos distintos"));
+const v0=namedVersions[0];
+assert.equal(productTotal(reportKeys,tables,[[namedVersions.concat(v0)]]).prices,totals.prices);
+for (const change of [{sha256:"unknown"},{product:v0.standard_product},{standard_monthly:"0.01"},{monthly_premium:"0.00"},{monthly_premium:"999.99"}])
+  assert.equal(productTotal(reportKeys,tables,[[namedVersions.concat({...v0,...change})]]),null);
+assert.equal(productTotal(reportKeys,tables,[[[]]]),null);
+assert.equal(inventory(pdfIndex.map(r=>({...r,request_key:""})),tables).distinctRequests,null);
+
 for (const provider of ["Zurich", "Legal & General", "Aviva"]) {
   assert.equal(counts.byInsurer[provider], distinct(withPrice.filter(row => row.provider === provider)));
 }

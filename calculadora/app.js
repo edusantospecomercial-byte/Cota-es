@@ -335,7 +335,19 @@ function comparisonInventory(index, tables) {
   if (usedHashes.size !== reportByHash.size) return null;
   const priced = [...offers.values()].filter(item => item.pence);
   for (const item of priced) byInsurer[item.provider]++;
-  return { prices: priced.length, reports: new Set(priced.map(item => item.report)).size,
+  const pricedReports = new Set(priced.map(item => item.report));
+  const requestByReport = new Map();
+  let allRequestsIdentified = true;
+  for (const {report_key: report, request_key: request} of index) {
+    if (!pricedReports.has(report)) continue;
+    if (!/^[a-f0-9]{32}$/.test(request || "") || (requestByReport.has(report) && requestByReport.get(report) !== request)) {
+      allRequestsIdentified = false;
+      break;
+    }
+    requestByReport.set(report, request);
+  }
+  return { prices: priced.length, reports: pricedReports.size,
+    distinctRequests: allRequestsIdentified ? new Set(requestByReport.values()).size : null,
     byInsurer, smokers: priced.filter(item => item.smoker).length,
     requested65: priced.filter(item => item.toAge === "65").length,
     legal65: priced.filter(item => item.provider === "Legal & General" && item.toAge === "65").length,
@@ -343,6 +355,30 @@ function comparisonInventory(index, tables) {
     standard65: priced.filter(item => item.standard65).length,
     standardSmokers65: priced.filter(item => item.standard65 && item.smoker).length,
     withoutPrice: offers.size - priced.length };
+}
+
+function additionalProductInventory(reports, tables, groups) {
+  if (groups.some(([rows]) => !rows.length)) return null;
+  const extra = new Map();
+  const byInsurer = {Zurich:0, "Legal & General":0, Aviva:0};
+  const priced = tables.flat().filter(row => row.monthly_premium);
+  const standards = new Set(priced.map(row => [row.sha256,row.provider,row.product,row.monthly_premium].join("|")));
+  const countedProducts = new Set(priced.map(row => [reports.get(row.sha256),row.provider,row.product].join("|")));
+  for (const [rows] of groups) {
+    for (const row of rows) {
+      const key = [reports.get(row.sha256),row.provider,row.product].join("|");
+      if (!reports.has(row.sha256) || !Object.hasOwn(byInsurer,row.provider) || !row.product || countedProducts.has(key) ||
+          row.product === row.standard_product || !/^\d+\.\d{2}$/.test(row.monthly_premium) || Number(row.monthly_premium) <= 0 ||
+          !standards.has([row.sha256,row.provider,row.standard_product,row.standard_monthly].join("|"))) return null;
+      if (extra.has(key)) {
+        if (extra.get(key) !== row.monthly_premium) return null;
+        continue;
+      }
+      extra.set(key,row.monthly_premium);
+      byInsurer[row.provider]++;
+    }
+  }
+  return {prices:extra.size,byInsurer};
 }
 
 function showComparisonInventory(index, tables) {
@@ -354,20 +390,27 @@ function showComparisonInventory(index, tables) {
     return;
   }
   const n = value => value.toLocaleString("pt-BR");
-  $("comparisonInventoryTitle").textContent = n(count.prices) + " mensalidades documentadas em " + n(count.reports) + " comparativos";
-  $("comparisonInventoryProviders").textContent = Object.entries(count.byInsurer)
-    .map(([provider, value]) => provider + " " + n(value)).join(" · ") + ". Cada seguradora conta uma vez por relatório com preço.";
-  $("comparisonInventoryScope").textContent = "Há " + n(count.smokers) + " preços para fumantes. Dos " + n(count.requested65) +
+  $("comparisonInventoryScope").textContent = "Na contagem de preços-base há " + n(count.smokers) + " preços para fumantes. Dos " + n(count.requested65) +
     " preços em pedidos até os 65 anos, " + n(count.standard65) +
     " correspondem ao prazo e aos capitais pedidos para vida ou doenças graves independentes, com tarifa sem ajuste por profissão e sem adicionais. " +
     n(count.standardSmokers65) + " desses preços são para fumantes. Há ainda " + n(count.withoutPrice) + " respostas sem valor.";
   const reports = new Map(index.map(row => [row.sha256, row.report_key]));
-  for (const [rows, scope] of [
+  const groups = [
     [exactCapitalVariants.filter(standardChangedCapital), "com os capitais pedidos para diagnóstico independente quando o produto padrão alterou o capital"],
     [exactCapitalVariants.filter(v => !standardChangedCapital(v)), "com os mesmos capitais de diagnóstico independente da versão padrão"],
     [firstEventVariants.filter(v => v.smoker === "Yes"), "para fumantes que pediram cobertura por falecimento ou diagnóstico no primeiro evento"],
     [firstEventVariants.filter(v => v.smoker === "No"), "para não fumantes que pediram cobertura por falecimento ou diagnóstico no primeiro evento"],
-    [fixedTermFirstEventVariants, "da Legal & General para o primeiro evento, com prazo fixo e preço específico da profissão e do vínculo"]]) {
+    [fixedTermFirstEventVariants, "da Legal & General para o primeiro evento, com prazo fixo e preço específico da profissão e do vínculo"]];
+  const extra = additionalProductInventory(reports, tables, groups);
+  const heading = extra ? n(count.prices + extra.prices) + " preços por produto" : n(count.prices) + " preços-base";
+  $("comparisonInventoryTitle").textContent = heading + " em " + n(count.reports) + " comparativos";
+  const byInsurer = Object.entries(count.byInsurer).map(([provider, value]) =>
+    provider + " " + n(value + (extra?.byInsurer[provider] || 0))).join(" · ");
+  const forms = count.distinctRequests === null ? "" : " Esses relatórios correspondem a " + n(count.distinctRequests) +
+    " pedidos distintos por idade, tabagismo e coberturas. Pedidos iguais feitos em datas ou profissões diferentes contam uma vez.";
+  $("comparisonInventoryProviders").textContent = byInsurer + ". Há " + n(count.prices) +
+    " preços-base, um por seguradora e comparativo" + (extra ? ", e " + n(extra.prices) + " preços de outras versões" : "") + "." + forms;
+  for (const [rows, scope] of extra ? groups : []) {
     const variants = rows.map(row => [reports.get(row.sha256), row.provider, row.product]);
     if (variants.length && variants.every(([key]) => key)) {
       const products = new Set(variants.map(parts => parts.join("|")));
