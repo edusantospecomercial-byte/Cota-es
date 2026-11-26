@@ -75,7 +75,8 @@ async function init() {
     loadedMaturityDeclines,
     loadedProductDeclines,
     loadedCapitalVariants,
-    loadedFirstEventVariants,
+    loadedSmokerFirstEventVariants,
+    loadedNonSmokerFirstEventVariants,
     loadedIndividualWaivers,
     avivaLife,
     loadedLgTerms,
@@ -152,6 +153,8 @@ async function init() {
       .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
     fetch("./data/smoker-first-event-product-variants.csv", { cache: "no-store" })
       .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
+    fetch("./data/non-smoker-first-event-product-variants.csv", { cache: "no-store" })
+      .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
     fetch("./data/waiver-individual-offers.csv", { cache: "no-store" })
       .then(response => response.ok ? response.text() : "")
       .then(parsePriorityCsv)
@@ -199,7 +202,7 @@ async function init() {
     row.product === "Life" && row.critical_illness_component === "0" &&
     ["None", "Waiver of Premium"].includes(row.optional_features));
   exactCapitalVariants = loadedCapitalVariants;
-  firstEventVariants = loadedFirstEventVariants;
+  firstEventVariants = loadedSmokerFirstEventVariants.concat(loadedNonSmokerFirstEventVariants);
   supplementalLifeRows = loadedSupplementalLife;
   fixedTermLifeRows = loadedFixedTermLife;
   showComparisonInventory(comparisonIndex, [loadedReports, verifiedArchive, loadedWaiverRows,
@@ -346,7 +349,8 @@ function showComparisonInventory(index, tables) {
     n(count.standardSmokers65) + " desses preços são para fumantes. Há ainda " + n(count.withoutPrice) + " respostas sem valor.";
   const reports = new Map(index.map(row => [row.sha256, row.report_key]));
   for (const [rows, scope] of [[exactCapitalVariants, "com os capitais pedidos para diagnóstico independente"],
-    [firstEventVariants, "para fumantes que pediram cobertura por falecimento ou diagnóstico no primeiro evento"]]) {
+    [firstEventVariants.filter(v => v.smoker === "Yes"), "para fumantes que pediram cobertura por falecimento ou diagnóstico no primeiro evento"],
+    [firstEventVariants.filter(v => v.smoker === "No"), "para não fumantes que pediram cobertura por falecimento ou diagnóstico no primeiro evento"]]) {
     const variants = rows.map(row => [reports.get(row.sha256), row.provider, row.product]);
     if (variants.length && variants.every(([key]) => key)) {
       const products = new Set(variants.map(parts => parts.join("|")));

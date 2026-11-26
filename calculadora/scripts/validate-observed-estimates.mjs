@@ -355,12 +355,15 @@ const versionsForOffer = run("matchedFirstEventVariants");
 assert.equal(firstEventVersions.length,new Set(firstEventVersions.map(v => [reportKeys.get(v.sha256),v.provider,v.product].join("|"))).size);
 const sharedCatalogue = run("acceleratedOffers");
 for (const version of firstEventVersions) {
-  assert.equal(version.smoker,"Yes");
+  assert.ok(["Yes","No"].includes(version.smoker));
   assert.equal(version.to_age,"65");
   assert.ok(version.occupation_rated === "No" && Number(version.monthly_premium) > 0);
   assert.ok(sharedCatalogue.some(offer => versionsForOffer(offer).includes(version)));
 }
-assert.ok(node("comparisonInventoryScope").textContent.includes(firstEventVersions.length + " preços de outras versões do produto para fumantes"));
+for (const [tobacco, label] of [["No","não fumantes"],["Yes","fumantes"]]) {
+  const count = firstEventVersions.filter(row => row.smoker === tobacco).length;
+  assert.ok(count > 0 && node("comparisonInventoryScope").textContent.includes(count + " preços de outras versões do produto para " + label));
+}
 const smokerPackage = {age:30,term:35,toAge:65,life:50000,ci:10000,smoker:"smoker",waiver:"Yes",monthlyBudget:28};
 const firstEvent30 = calculate(65,50000,10000,smokerPackage);
 const upgradedAviva = "Aviva Multi-Product Upgraded CI/No Child Upgrade";
@@ -384,6 +387,10 @@ assert.ok(withChildren30.alternativePackage.includes("£27.59/mês") && !withChi
 node("metlifeChild").checked = false;
 calculate(65,50000,10000,{...smokerPackage,smoker:"non_smoker"});
 assert.ok(node("acceleratedComparison").hidden || !node("acceleratedOffers").innerHTML.includes("Comparar versões de Aviva"));
+calculate(65,50000,10000,{...smokerPackage,age:34,term:31,smoker:"non_smoker"});
+assert.ok(!node("acceleratedComparison").hidden && node("acceleratedOffers").innerHTML.includes("£11.80/mês · com a MetLife £24.80/mês"));
+calculate(65,50000,10000,{...smokerPackage,age:34,term:31});
+assert.ok(node("acceleratedComparison").hidden || !node("acceleratedOffers").innerHTML.includes("£11.80/mês · com a MetLife £24.80/mês"));
 const fixedLife = run("fixedTermLifeRows");
 assert.ok(fixedLife.length >= 6);
 const historical64 = calculate(85,20000,0,{age:64,term:21});
