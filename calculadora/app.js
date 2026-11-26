@@ -248,6 +248,11 @@ function comparisonInventory(index, tables) {
         const pence = Math.round(Number(row.monthly_premium) * 100);
         if (pence <= 0 || (item.pence && item.pence !== pence)) return null;
         item.pence = pence;
+        if (row.provider === "Legal & General" && row.to_age === "65" && row.quoted_term) {
+          if (item.legalTerm && item.legalTerm !== row.quoted_term) return null;
+          item.legalTerm = row.quoted_term;
+          item.oneYearShort = Number(row.age) + Number(/^(\d+) years?$/.exec(row.quoted_term)?.[1]) === 64;
+        }
         if ((row.available === "true" || /^[a-f0-9]{64}$/.test(row.no_riders_illustration_sha256 || "")) &&
             row.to_age === "65" && row.quoted_term === "To Age 65" &&
             row.occupation_rated === "No" && (!row.quoted_tpd || row.quoted_tpd === "None") &&
@@ -263,6 +268,8 @@ function comparisonInventory(index, tables) {
   return { prices: priced.length, reports: new Set(priced.map(item => item.report)).size,
     byInsurer, smokers: priced.filter(item => item.smoker).length,
     requested65: priced.filter(item => item.toAge === "65").length,
+    legal65: priced.filter(item => item.provider === "Legal & General" && item.toAge === "65").length,
+    legal65Shorter: priced.filter(item => item.oneYearShort).length,
     standard65: priced.filter(item => item.standard65).length,
     standardSmokers65: priced.filter(item => item.standard65 && item.smoker).length,
     withoutPrice: offers.size - priced.length };
@@ -284,6 +291,8 @@ function showComparisonInventory(index, tables) {
     " preços em pedidos até os 65 anos, " + n(count.standard65) +
     " correspondem ao prazo e aos capitais pedidos para vida ou doenças graves independentes, com tarifa sem ajuste por profissão e sem adicionais. " +
     n(count.standardSmokers65) + " desses preços são para fumantes. Há ainda " + n(count.withoutPrice) + " respostas sem valor.";
+  if (count.legal65Shorter) $("comparisonInventoryScope").textContent += " Em " + n(count.legal65Shorter) +
+    " de " + n(count.legal65) + " preços da Legal & General para pedidos até os 65, o prazo oferecido em anos foi um ano menor que a diferença entre 65 e a idade informada.";
 }
 
 function interpolateRiskPremium(below, above, ratio) {
@@ -1092,7 +1101,7 @@ function waiverComparisonFor(p) {
   if (!sameEndAge.length) return { note: "O relatório informa prazos em anos. A idade de término precisa de confirmação." };
   return { quotes, sameEndAge, exact: true };
 }
-function quotedTerm(quote) {
+function quotedTerm(quote, profile) {
   let term = quote.term.startsWith("To Age ")
     ? `até ${quote.term.slice(7)} anos`
     : `${parseInt(quote.term, 10)} anos de prazo`;
@@ -1111,11 +1120,13 @@ function quotedTerm(quote) {
   if (quote.waiverTo) {
     const waiver = quote.waiverTo === "Expiry" ? "isenção até o fim do contrato" :
       "isenção durante a vigência, com idade-limite informada de " + quote.waiverTo + " anos";
-    return term + " · " + waiver;
+    term += " · " + waiver;
   }
-  return quote.differentCapital
-    ? `${term} · capital oferecido: vida ${gbp(quote.quotedLife)} e doenças graves ${gbp(quote.quotedCi)}`
-    : term;
+  if (quote.differentCapital) term += " · capital oferecido: vida " + gbp(quote.quotedLife) + " e doenças graves " + gbp(quote.quotedCi);
+  const years = /^(\d+) years?$/.exec(quote.term);
+  if (profile && years && Number(years[1]) < profile.toAge - profile.age)
+    term += " · pedido até os " + profile.toAge + " anos (" + (profile.toAge - profile.age) + " anos pela idade informada)";
+  return term;
 }
 function payload() {
   let age = num("age"),
@@ -1208,7 +1219,7 @@ function makeSummary(p, r) {
     );
   if (r.detailed)
     for (const q of r.providerQuotes)
-      lines.push(`${q.provider} · ${quotedTerm(q)} · ${gbp(q.premium)}/mês${m.c ? ` · com MetLife ${gbp(q.premium + m.total)}/mês` : ""}`);
+      lines.push(`${q.provider} · ${quotedTerm(q, p)} · ${gbp(q.premium)}/mês${m.c ? ` · com MetLife ${gbp(q.premium + m.total)}/mês` : ""}`);
   if (r.budgetNote && !r.ciPending) lines.push(r.budgetNote);
   if (r.reportNote) lines.push(r.reportNote);
   if (r.illustrationNote) lines.push(r.illustrationNote);
@@ -1532,7 +1543,7 @@ function render(p) {
     ? `<dt>Seguradoras prioritárias</dt><dd>${r.providerQuotes.map((quote) => `${escapeHtml(quote.provider)} ${gbp(quote.premium)}`).join(" · ")}${r.providerGap ? ` · ${escapeHtml(r.providerGap.provider)} sem preço no relatório` : ""}</dd><dt>Preço-base usado</dt><dd>${escapeHtml(r.provider)} · ${escapeHtml(r.product)}</dd><dt>Origem do preço</dt><dd>${r.priorityExact ? `SolutionBuilder ref. ${escapeHtml(r.providerQuotes[0].modelId)}${r.providerQuotes[0].sourceDate ? ` · ${escapeHtml(r.providerQuotes[0].sourceDate)}` : ""}` : "Interpolação de múltiplas âncoras oficiais do SolutionBuilder"}</dd>`
     : "";
   if (r.detailed) {
-    const rows = r.providerQuotes.map(q => `<dt>${escapeHtml(q.provider)}</dt><dd>${gbp(q.premium)}/mês · ${escapeHtml(quotedTerm(q))}${m.c ? ` · com MetLife ${gbp(q.premium + m.total)}/mês` : ""}</dd>`).join("");
+    const rows = r.providerQuotes.map(q => `<dt>${escapeHtml(q.provider)}</dt><dd>${gbp(q.premium)}/mês · ${escapeHtml(quotedTerm(q, p))}${m.c ? ` · com MetLife ${gbp(q.premium + m.total)}/mês` : ""}</dd>`).join("");
     priorityDetail = `<dt>${r.composition ? "Estimativa por composição" : r.capitalRange ? "Estimativa por capital" : r.withWaiver ? "Comparativo com isenção" : "Comparativo sem isenção"}</dt><dd>SolutionBuilder · ${escapeHtml(r.providerQuotes[0].sourceDate)}</dd>${rows}`;
     if (r.complete)
       priorityDetail += `<dt>Preço usado no total</dt><dd>${escapeHtml(r.provider)} · até ${p.toAge} anos</dd>`;
@@ -1578,7 +1589,7 @@ function render(p) {
     const withWaiver = waiverComparisonFor(p).sameEndAge?.[0];
     if (withWaiver) {
       r.alternativePackage = "Opção com isenção de mensalidade · " + withWaiver.provider + " · vida de " +
-        gbp(p.life) + " " + quotedTerm(withWaiver) + ". No comparativo de " + withWaiver.sourceDate +
+        gbp(p.life) + " " + quotedTerm(withWaiver, p) + ". No comparativo de " + withWaiver.sourceDate +
         ", a mensalidade com isenção era " + gbp(withWaiver.premium) + ".";
       if (m.c) r.alternativePackage += " Com " + gbp(m.total) + " de MetLife, o total dessa opção seria " +
         gbp(withWaiver.premium + m.total) + "/mês.";

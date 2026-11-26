@@ -175,6 +175,13 @@ for (const provider of ["Zurich", "Legal & General", "Aviva"]) {
 }
 assert.equal(counts.smokers, distinct(withPrice.filter(r => ["True", "Yes"].includes(r.smoker))));
 assert.equal(counts.requested65, distinct(withPrice.filter(r => r.to_age === "65")));
+const legal65 = withPrice.filter(r => r.provider === "Legal & General" && r.to_age === "65");
+assert.equal(counts.legal65, distinct(legal65));
+assert.equal(counts.legal65Shorter, distinct(legal65.filter(r => r.quoted_term === (64 - Number(r.age)) + " years")));
+assert.ok(node("comparisonInventoryScope").textContent.includes(counts.legal65Shorter + " de " + counts.legal65));
+const termDescription = run("quotedTerm")({term:"14 years", waiverTo:"Expiry", differentCapital:true, quotedLife:52000, quotedCi:0},{age:50,toAge:65});
+for (const clue of ["14 anos de prazo", "pedido até os 65 anos (15 anos", "isenção até o fim do contrato", "vida £52,000.00"]) assert.ok(termDescription.includes(clue),clue);
+assert.ok(!run("quotedTerm")({term:"15 years"},{age:50,toAge:65}).includes("pedido até"));
 assert.equal(counts.withoutPrice, distinct(tables.flat()) - counts.prices);
 assert.ok(counts.standard65 > counts.standardSmokers65 && counts.standardSmokers65 > 0);
 assert.equal(inventory(pdfIndex, [...tables.slice(0, -1), []]), null);
