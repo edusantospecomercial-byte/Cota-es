@@ -653,3 +653,39 @@ for (const part of fractureDocuments.values()) {
 calculate(75,50000,0,{age:54,term:21});
 assert.ok(node('fractureOffers').innerHTML.includes('£18.55/mês (comparativo '));
 assert.ok(node('fractureOffers').innerHTML.includes('diferença entre as mensalidades foi de £8.14'));
+
+// These two general budgets previously fell from £31.72 to £7.80 as cover rose.
+const smoker40 = {age: 40, term: 25, smoker: 'smoker', waiver: 'No'};
+for (const [amount, expected] of [[20000, '5.26'], [30000, '7.80']]) {
+  const result = calculate(65, amount, 0, smoker40);
+  assert.ok(result.complete && result.aggregateOnly);
+  assert.equal(result.main.toFixed(2), expected);
+}
+
+const generalPremium = (age, smoker, life, ci) => {
+  ctx.curveProfile = {age, smoker, toAge: 65, term: 65 - age, life, ci};
+  const name = ci ? 'life_plus_standalone_ci:standard_core_ci' : 'life_only';
+  return run(`predictBudget(catalog.models["${name}"], curveProfile, null)`);
+};
+function assertIncreasing(values) {
+  for (let i = 0; i < values.length; i++) {
+    assert.ok(Number.isFinite(values[i]) && values[i] > 0);
+    if (i > 0) assert.ok(values[i] >= values[i - 1] - 1e-8, values.join(', '));
+  }
+}
+for (const smoker of ['smoker', 'non_smoker']) {
+  for (const ci of [0, 9999, 10000, 10001, 17000, 50000]) {
+    const amounts = [500, 10000, 19999, 20000, 20001, 30000, 75000, 147321, 500000];
+    assertIncreasing(amounts.map(life => generalPremium(40, smoker, life, ci)));
+  }
+  for (const life of [10000, 75000, 207500]) {
+    const diagnoses = [500, 5000, 9999, 10000, 10001, 15000, 30000, 40001, 60000];
+    assertIncreasing(diagnoses.map(ci => generalPremium(52, smoker, life, ci)));
+  }
+}
+ctx.crossing = {lookup: {'40|65|20000|0|1': 20, '40|65|30000|0|1': 10, '40|65|50000|0|1': 30}};
+for (const [life, expected] of [[20000, 15], [30000, 15], [40000, 22.5], [50000, 30]]) {
+  ctx.curveProfile = {...smoker40, toAge: 65, ci: 0, life};
+  assert.equal(run('generalBudgetEstimate(crossing, curveProfile, () => 6)'), expected);
+}
+assert.equal(run('predictBudget(crossing, curveProfile, 19.37)'), 19.37);

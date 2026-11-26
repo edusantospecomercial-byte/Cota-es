@@ -859,41 +859,9 @@ function ridgePredict(model, p) {
     Math.expm1(f.reduce((s, x, i) => s + x * (model.coefficients[i] || 0), 0)),
   );
 }
-function predict(model, p) {
-  let key = `${p.age}|${p.toAge}|${p.life}|${p.ci}|${p.smoker === "smoker" ? 1 : 0}`;
-  if (model.lookup?.[key] != null) return model.lookup[key];
-  let calibrated = globalThis.lookupInterpolate?.(model, p);
-  if (calibrated != null) return calibrated;
-  if (model.modelType === "monotonic_hist_gb") return ridgePredict(model, p);
-  if (model.modelType === "knn" && model.points?.length) {
-    let target = [
-        p.age / 10,
-        p.term / 10,
-        Math.log1p(p.life),
-        Math.log1p(p.ci),
-        0,
-        3 * (p.smoker === "smoker"),
-      ],
-      all = model.points
-        .map((row) => ({
-          d: Math.sqrt(target.reduce((s, x, i) => s + (x - row[i]) ** 2, 0)),
-          v: row[6],
-        }))
-        .sort((a, b) => a.d - b.d);
-    if (all[0].d <= 0.15) {
-      let close = all
-          .filter((x) => x.d <= all[0].d + 0.02)
-          .map((x) => x.v)
-          .sort((a, b) => a - b),
-        mid = Math.floor(close.length / 2);
-      return close.length % 2 ? close[mid] : (close[mid - 1] + close[mid]) / 2;
-    }
-    let nearest = all.slice(0, model.k || 7),
-      weights = nearest.map((x) => 1 / (x.d + 0.1) ** 2),
-      sum = weights.reduce((a, b) => a + b, 0);
-    return nearest.reduce((s, x, i) => s + x.v * weights[i], 0) / sum;
-  }
-  return ridgePredict(model, p);
+function predictBudget(model, p, documentedPrice) {
+  if (documentedPrice != null) return documentedPrice;
+  return globalThis.generalBudgetEstimate(model, p, profile => ridgePredict(model, profile));
 }
 function makeSummary(p, r) {
   let m = r.metlife || metlifeForAge(ml(), p.age),
@@ -995,7 +963,7 @@ function render(p) {
         p.life > model.lifeMax ||
         p.ci < model.ciMin ||
         p.ci > model.ciMax,
-      estimate = predict(model, p);
+      estimate = predictBudget(model, p, directLookup ? model.lookup[lookupKey] : null);
     if (Number.isFinite(estimate)) {
       r.supported = true;
       r.main = estimate;

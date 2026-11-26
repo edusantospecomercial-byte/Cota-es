@@ -11,25 +11,111 @@
     }
     return null;
   }
-  root.lookupInterpolate=function(model,p){
-    if(!model?.lookup)return null;
-    const wantedSmoker=p.smoker==='smoker'?1:0,byAge=new Map();
-    for(const [key,premium] of Object.entries(model.lookup)){
-      const [age,toAge,life,ci,smoker]=key.split('|').map(Number);
-      if(smoker!==wantedSmoker||ci!==p.ci||!Number.isFinite(premium)||premium<=0)continue;
-      if(!byAge.has(age))byAge.set(age,new Map());
-      const byToAge=byAge.get(age);if(!byToAge.has(toAge))byToAge.set(toAge,[]);
-      byToAge.get(toAge).push([life,premium]);
+  const lookupIndexes = new WeakMap();
+  function lookupSlices(model) {
+    let index = lookupIndexes.get(model);
+    if (index) return index;
+    index = [new Map(), new Map()];
+    for (const [key, premium] of Object.entries(model.lookup || {})) {
+      const [age, toAge, life, ci, smoker] = key.split('|').map(Number);
+      if (!index[smoker] || ![age, toAge, life, ci, premium].every(Number.isFinite) || premium <= 0) continue;
+      const layers = index[smoker];
+      if (!layers.has(ci)) layers.set(ci, { byAge: new Map(), capitals: new Set() });
+      const { byAge, capitals } = layers.get(ci);
+      capitals.add(life);
+      if (!byAge.has(age)) byAge.set(age, new Map());
+      const maturities = byAge.get(age);
+      if (!maturities.has(toAge)) maturities.set(toAge, []);
+      maturities.get(toAge).push([life, premium]);
     }
-    const agePoints=[];
-    for(const [age,byToAge] of byAge){
-      const termPoints=[];
-      for(const [toAge,capitalPoints] of byToAge){
-        const premium=interpolate(capitalPoints,p.life,'linear');if(premium!=null)termPoints.push([toAge,premium]);
+    lookupIndexes.set(model, index);
+    return index;
+  }
+  function fromLookupSlice(slice, p) {
+    if (!slice) return null;
+    const byAge = [];
+    for (const [age, terms] of slice.byAge) {
+      const byTerm = [];
+      for (const [end, points] of terms) {
+        const price = interpolate(points, p.life, 'linear');
+        if (price != null) byTerm.push([end, price]);
       }
-      const premium=interpolate(termPoints,p.toAge);if(premium!=null)agePoints.push([age,premium]);
+      const price = interpolate(byTerm, p.toAge);
+      if (price != null) byAge.push([age, price]);
     }
-    return interpolate(agePoints,p.age);
+    return interpolate(byAge, p.age);
+  }
+  root.lookupInterpolate = function(model, p) {
+    if (!model?.lookup) return null;
+    return fromLookupSlice(lookupSlices(model)[Number(p.smoker === 'smoker')].get(p.ci), p);
+  };
+
+  // Pool adjacent decreasing premiums by least squares. Each sampled capital
+  // contributes once. Input prices are model budgets, never insurer offers.
+  function isotonic(points) {
+    const blocks = [];
+    for (const [, price] of points) {
+      blocks.push({ total: price, count: 1 });
+      while (blocks.length > 1) {
+        const a = blocks[blocks.length - 2], b = blocks[blocks.length - 1];
+        if (a.total / a.count <= b.total / b.count) break;
+        a.total += b.total;
+        a.count += b.count;
+        blocks.pop();
+      }
+    }
+    let i = 0;
+    const fitted = [];
+    for (const block of blocks) {
+      const value = block.total / block.count;
+      for (let within = 0; within < block.count; within++) fitted.push([points[i++][0], value]);
+    }
+    return fitted;
+  }
+
+  const budgetSurfaces = new WeakMap();
+  function budgetLayers(model, p) {
+    let cache = budgetSurfaces.get(model);
+    if (!cache) { cache = new Map(); budgetSurfaces.set(model, cache); }
+    const key = [p.age, p.toAge, p.smoker, p.ci > 0].join('|');
+    if (cache.has(key)) return cache.get(key);
+    const curves = [];
+    const slices = lookupSlices(model)[Number(p.smoker === 'smoker')];
+    for (const [ci, slice] of slices) {
+      if ((ci > 0) !== (p.ci > 0)) continue;
+      const values = [];
+      for (const life of [...slice.capitals].filter(n => n > 0).sort((a, b) => a - b)) {
+        const price = fromLookupSlice(slice, { ...p, life });
+        if (price != null) values.push([life, price]);
+      }
+      if (values.length) curves.push([ci, isotonic(values)]);
+    }
+    curves.sort((a, b) => a[0] - b[0]);
+    // Keep the tab's cache bounded when many age and term combinations are tested.
+    if (cache.size >= 128) cache.delete(cache.keys().next().value);
+    cache.set(key, curves);
+    return curves;
+  }
+
+  function alongLife(points, p, fallback) {
+    const inside = interpolate(points, p.life, 'linear');
+    if (inside != null) return inside;
+    const [capital, price] = p.life < points[0][0] ? points[0] : points.at(-1);
+    // Extend the fitted boundary continuously using the positive slope of the
+    // existing regression. Do not switch models abruptly at a lookup boundary.
+    return Math.max(Math.min(4.50, price), price + fallback(p) - fallback({ ...p, life: capital }));
+  }
+  root.generalBudgetEstimate = function(model, p, fallback) {
+    const curves = budgetLayers(model, p);
+    if (!curves.length) return fallback(p);
+    const byCi = curves.map(([ci, values]) => [ci, alongLife(values, { ...p, ci }, fallback)]);
+    if (!p.ci) return byCi[0][1];
+    const fitted = isotonic(byCi);
+    const inside = interpolate(fitted, p.ci, 'linear');
+    if (inside != null) return inside;
+    const [capital, price] = p.ci < fitted[0][0] ? fitted[0] : fitted.at(-1);
+    const elasticity = Math.max(0, model.coefficients?.[5] || 0);
+    return Math.max(Math.min(4.50, price), price * Math.pow((1 + p.ci) / (1 + capital), elasticity));
   };
   // Only comparable guaranteed, standalone Zurich life bases are eligible.
   // Both endpoints must precede every illustration used to check an age interval.
