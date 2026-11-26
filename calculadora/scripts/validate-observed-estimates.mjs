@@ -158,6 +158,34 @@ const reported = run("reportedRows");
 const verifiedReports = group(reported, "model_id");
 assert.ok(node("baseStatus").textContent.includes(verifiedReports.size + " cenários"));
 assert.ok(node("baseStatus").textContent.includes(reported.filter(r => r.available === "true").length + " mensalidades"));
+// The public inventory counts separately by insurer and the printed report identifier.
+const pdfIndex = run("parsePriorityCsv")(readFileSync(new URL("../data/comparison-pdf-index.csv", import.meta.url), "utf8"));
+const tables = run("[reportedRows, verifiedArchiveRows, waiverRows, individualWaivers, acceleratedOffers, maturityDeclines, tpdOffers, fractureOffers]");
+const reportKeys = new Map(pdfIndex.map(item => [item.sha256, item.report_key]));
+const withPrice = tables.flat().filter(row => Number(row.monthly_premium) > 0);
+const distinct = rows => new Set(rows.map(row => reportKeys.get(row.sha256) + "|" + row.provider)).size;
+const inventory = run("comparisonInventory");
+const counts = inventory(pdfIndex, tables);
+assert.ok(counts, "All public source tables must reconcile with the PDF index");
+assert.equal(counts.prices, distinct(withPrice));
+assert.equal(counts.reports, new Set(withPrice.map(r => reportKeys.get(r.sha256))).size);
+assert.ok(node("comparisonInventoryTitle").textContent.includes(counts.prices.toLocaleString("pt-BR")));
+for (const provider of ["Zurich", "Legal & General", "Aviva"]) {
+  assert.equal(counts.byInsurer[provider], distinct(withPrice.filter(row => row.provider === provider)));
+}
+assert.equal(counts.smokers, distinct(withPrice.filter(r => ["True", "Yes"].includes(r.smoker))));
+assert.equal(counts.requested65, distinct(withPrice.filter(r => r.to_age === "65")));
+assert.equal(counts.withoutPrice, distinct(tables.flat()) - counts.prices);
+assert.ok(counts.standard65 > counts.standardSmokers65 && counts.standardSmokers65 > 0);
+assert.equal(inventory(pdfIndex, [...tables.slice(0, 7), []]), null);
+assert.equal(inventory(pdfIndex.slice(1), tables), null);
+const duplicate = {...withPrice[0]};
+const includeRow = row => [tables[0].concat(row), ...tables.slice(1)];
+assert.equal(inventory(pdfIndex, includeRow(duplicate)).prices, counts.prices);
+assert.equal(inventory(pdfIndex, includeRow({...duplicate, monthly_premium: "1500.00"})), null);
+assert.equal(inventory(pdfIndex, includeRow({...duplicate, monthly_premium: "approximate"})), null);
+console.log(JSON.stringify({ documentedComparisonInventory: counts }));
+
 const keys = new Set();
 for (const [id, rows] of verifiedReports) {
   const first = rows[0];

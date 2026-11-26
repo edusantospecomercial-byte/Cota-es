@@ -67,6 +67,7 @@ async function init() {
     loadedFractureOffers,
     loadedFractureBreakdowns,
     loadedOccupations,
+    comparisonIndex,
   ] = await Promise.all([
     fetch("./data/models.json", { cache: "no-store" })
       .then((r) => r.json())
@@ -157,7 +158,11 @@ async function init() {
       .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
     fetch("./data/occupation-basis.csv", { cache: "no-store" })
       .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
+    fetch("./data/comparison-pdf-index.csv", { cache: "no-store" })
+      .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
   ]);
+  showComparisonInventory(comparisonIndex, [loadedReports, verifiedArchive, loadedWaiverRows,
+    loadedIndividualWaivers, loadedAccelerated, loadedMaturityDeclines, loadedTpdOffers, loadedFractureOffers]);
   reportedOccupations = new Map(loadedOccupations.map(row => [row.sha256, row]));
   fractureOffers = loadedFractureOffers;
   fractureBreakdowns = new Map(loadedFractureBreakdowns.map(row => [row.provider + "|" + row.comparison_sha256, row]));
@@ -215,6 +220,66 @@ function parsePriorityCsv(csv) {
     ),
   );
 }
+// Deduplicate reprints by the reference on the PDF, even when the PDF bytes differ.
+function comparisonInventory(index, tables) {
+  if (!index.length || tables.length !== 8 || tables.some(rows => !rows?.length)) return null;
+  const reportByHash = new Map(index.map(row => [row.sha256, row.report_key]));
+  if (reportByHash.size !== index.length || index.some(row =>
+    !/^[a-f0-9]{64}$/.test(row.sha256) || !/^[a-f0-9]{32}$/.test(row.report_key))) return null;
+  const byInsurer = { Zurich: 0, "Legal & General": 0, Aviva: 0 };
+  const offers = new Map(), usedHashes = new Set();
+  for (const rows of tables) {
+    for (const row of rows) {
+      const report = reportByHash.get(row.sha256);
+      if (!report || !Object.hasOwn(byInsurer, row.provider)) return null;
+      usedHashes.add(row.sha256);
+      const key = report + "|" + row.provider;
+      const smoker = /^(true|yes)$/i.test(row.smoker);
+      if (!/^(true|false|yes|no)$/i.test(row.smoker) || !/^\d+$/.test(row.to_age)) return null;
+      const item = offers.get(key) || { report, smoker, toAge: row.to_age, provider: row.provider };
+      if (smoker !== item.smoker || row.to_age !== item.toAge) return null;
+      if (row.monthly_premium) {
+        if (!/^\d+\.\d{2}$/.test(row.monthly_premium)) return null;
+        const pence = Math.round(Number(row.monthly_premium) * 100);
+        if (pence <= 0 || (item.pence && item.pence !== pence)) return null;
+        item.pence = pence;
+        if (row.available === "true" && row.to_age === "65" && row.quoted_term === "To Age 65" &&
+            row.occupation_rated === "No" && (!row.quoted_tpd || row.quoted_tpd === "None") &&
+            row.quoted_life_cover === row.life_cover && row.quoted_critical_illness_cover === row.critical_illness_cover)
+          item.standard65 = true;
+      }
+      offers.set(key, item);
+    }
+  }
+  if (usedHashes.size !== reportByHash.size) return null;
+  const priced = [...offers.values()].filter(item => item.pence);
+  for (const item of priced) byInsurer[item.provider]++;
+  return { prices: priced.length, reports: new Set(priced.map(item => item.report)).size,
+    byInsurer, smokers: priced.filter(item => item.smoker).length,
+    requested65: priced.filter(item => item.toAge === "65").length,
+    standard65: priced.filter(item => item.standard65).length,
+    standardSmokers65: priced.filter(item => item.standard65 && item.smoker).length,
+    withoutPrice: offers.size - priced.length };
+}
+
+function showComparisonInventory(index, tables) {
+  const count = comparisonInventory(index, tables);
+  if (!count) {
+    $("comparisonInventoryTitle").textContent = "Contagem dos comparativos indisponível";
+    $("comparisonInventoryScope").textContent = "A contagem exige as oito fontes de preços e o índice dos PDFs correspondentes.";
+    $("comparisonInventoryProviders").textContent = "";
+    return;
+  }
+  const n = value => value.toLocaleString("pt-BR");
+  $("comparisonInventoryTitle").textContent = n(count.prices) + " mensalidades documentadas em " + n(count.reports) + " comparativos";
+  $("comparisonInventoryProviders").textContent = Object.entries(count.byInsurer)
+    .map(([provider, value]) => provider + " " + n(value)).join(" · ") + ". Cada seguradora conta uma vez por relatório com preço.";
+  $("comparisonInventoryScope").textContent = "Há " + n(count.smokers) + " preços para fumantes. Dos " + n(count.requested65) +
+    " preços em pedidos até os 65 anos, " + n(count.standard65) +
+    " correspondem ao prazo e aos capitais pedidos para vida ou doenças graves independentes, com tarifa sem ajuste por profissão e sem adicionais. " +
+    n(count.standardSmokers65) + " desses preços são para fumantes. Há ainda " + n(count.withoutPrice) + " respostas sem valor.";
+}
+
 function interpolateRiskPremium(below, above, ratio) {
   if (below > 0 && above > 0)
     return Math.exp(Math.log(below) + (Math.log(above) - Math.log(below)) * ratio);
