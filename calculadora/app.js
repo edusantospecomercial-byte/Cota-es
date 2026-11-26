@@ -372,7 +372,11 @@ function renderFractureComparison(p) {
     const part = fractureBreakdowns.get(row.provider + "|" + row.sha256);
     const itemised = itemisedCiPremium(row, part);
     if (itemised && /^\d+$/.test(part.fracture_to_age)) detail.push("fraturas até os " + part.fracture_to_age + " anos");
-    return label + `<dd><b>${gbp(Number(row.monthly_premium))}/mês</b> · ${escapeHtml(detail.join(" · "))}${itemised || "<br>O pedido incluía fraturas. A inclusão do adicional precisa de confirmação na illustration da seguradora."}</dd>`;
+    const plain = itemised && Number(part.plain_with_waiver_monthly);
+    const pair = plain > 0 ? "<br>No mesmo dia, a seguradora cotou o mesmo perfil e os mesmos capitais com isenção, sem fraturas, por " +
+      gbp(plain) + "/mês (comparativo " + escapeHtml(part.plain_reference) + "). A diferença entre as mensalidades foi de " +
+      gbp(Math.abs(Number(row.monthly_premium) - plain)) + "." : "";
+    return label + `<dd><b>${gbp(Number(row.monthly_premium))}/mês</b> · ${escapeHtml(detail.join(" · "))}${itemised || "<br>O pedido incluía fraturas. A inclusão do adicional precisa de confirmação na illustration da seguradora."}${pair}</dd>`;
   }).join("");
   panel.hidden = false;
 }

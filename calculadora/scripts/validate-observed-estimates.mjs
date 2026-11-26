@@ -642,3 +642,14 @@ assert.equal(node('totalPrice').textContent,'£22.99/mês');
 const namedBudget = calculate(65,50000,0,{age:32,smoker:'smoker',term:33,waiver:'No'});
 assert.ok(namedBudget.complete && !namedBudget.aggregateOnly);
 assert.ok(!namedBudget.text.includes('Seguradora a confirmar.'));
+
+const pairedArchive = evidence.concat(variantRows);
+for (const part of fractureDocuments.values()) {
+  if (!part.plain_reference) continue;
+  assert.notEqual(part.plain_reference,part.reference);
+  assert.ok(pairedArchive.some(row => row.sha256 === part.plain_comparison_sha256 && row.provider === part.provider &&
+    row.source_date === part.source_date && row.monthly_premium === part.plain_with_waiver_monthly));
+}
+calculate(75,50000,0,{age:54,term:21});
+assert.ok(node('fractureOffers').innerHTML.includes('£18.55/mês (comparativo '));
+assert.ok(node('fractureOffers').innerHTML.includes('diferença entre as mensalidades foi de £8.14'));
