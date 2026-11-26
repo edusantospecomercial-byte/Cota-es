@@ -935,6 +935,7 @@ function makeSummary(p, r) {
   if (r.detailed)
     for (const q of r.providerQuotes)
       lines.push(`${q.provider} · ${quotedTerm(q)} · ${gbp(q.premium)}/mês${m.c ? ` · com MetLife ${gbp(q.premium + m.total)}/mês` : ""}${q.occupationRated ? " · preço do perfil profissional de referência" : ""}`);
+  if (r.budgetNote) lines.push(r.budgetNote);
   if (r.reportNote) lines.push(r.reportNote);
   if (r.illustrationNote) lines.push(r.illustrationNote);
   if (r.ageNote) lines.push(r.ageNote);
@@ -942,7 +943,8 @@ function makeSummary(p, r) {
   if (r.lgTermNote) lines.push(r.lgTermNote);
   if (r.alternativePackage) lines.push(r.alternativePackage);
   if (r.complete)
-    lines.push("", `Total estimado: ${gbp(r.main + m.total)}/mês`);
+    lines.push("", r.aggregateOnly ? `Orçamento mensal indicativo de ${gbp(r.main + m.total)}. Seguradora a confirmar.` :
+      `Total estimado: ${gbp(r.main + m.total)}/mês`);
   else lines.push("", "Total do pacote a confirmar.");
   lines.push(
     "",
@@ -1155,10 +1157,11 @@ function render(p) {
       gbp(Number(avivaRecord.base_monthly)) + " + adicionais " + gbp(Number(avivaRecord.additional_monthly)) +
       " = " + gbp(Number(avivaRecord.policy_monthly)) + "/mês. Total conferido no comparativo " + avivaRecord.reference + ".";
   }
-  if (r.supported && !r.providerQuotes?.length && !r.illustratedBase && !r.ageEstimate)
-    warnings.unshift(
-      "Estimativa do modelo histórico agregado; ainda sem interpolação validada das três seguradoras prioritárias para esta combinação.",
-    );
+  r.aggregateOnly = r.supported && !r.providerQuotes?.length && !r.illustratedBase && !r.ageEstimate;
+  if (r.aggregateOnly) {
+    r.budgetNote = "Referência de orçamento calculada pelo modelo geral. O valor para Zurich, Legal & General ou Aviva precisa de confirmação.";
+    warnings.unshift(r.budgetNote);
+  }
   if (p.life && p.ci && !r.providerQuotes?.length && !priorityMatch.reported && r.supported) {
     r.reportNote = "A base histórica inclui coberturas em que o diagnóstico antecipa o pagamento de vida. Confirme o preço do pagamento independente no SolutionBuilder.";
     warnings.push(r.reportNote);
@@ -1168,9 +1171,8 @@ function render(p) {
   $("results").classList.remove("hidden");
   $("quoteCount").textContent = r.supported ? 1 : 0;
   $("unsupportedCount").textContent = r.complete ? 0 : 1;
-  $("resultTitle").textContent = r.supported && !r.complete ? "Estimativa parcial" : r.supported
-    ? "Estimativa calculada"
-    : "Cotação oficial necessária";
+  $("resultTitle").textContent = r.supported && !r.complete ? "Estimativa parcial" : r.aggregateOnly ? "Referência de orçamento" :
+    r.supported ? "Estimativa calculada" : "Cotação oficial necessária";
   $("mainPrice").textContent = r.supported
     ? `${gbp(r.main)}/mês`
     : "Não publicado";

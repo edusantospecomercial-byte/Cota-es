@@ -34,7 +34,7 @@ const checks = {
   limitedSampleThreshold: /confidenceMetrics\.tested \|\| 0\) < 30/.test(app),
   limitedSampleWarning: /A validação deste segmento ainda usa amostra limitada/.test(app),
   aggregateFallbackWarning:
-    /Estimativa do modelo histórico agregado; ainda sem interpolação validada das três seguradoras prioritárias/.test(app),
+    /Referência de orçamento calculada pelo modelo geral/.test(app),
   aggregateFallbackLabel: /modelo histórico agregado/.test(app),
   aggregateFallbackTranslated:
     /low: "baixa"/.test(app) &&

@@ -632,3 +632,13 @@ assert.equal(node('fractureComparison').hidden,true);
 ctx.adjustedCapital = {age:33,toAge:65,smoker:'non_smoker',life:49408,ci:0,waiver:'No'};
 assert.equal(run('illustratedLifeFor(adjustedCapital,"Aviva")').base_monthly,'4.99');
 assert.notEqual(run('illustratedLifeFor({...adjustedCapital,life:10000},"Aviva")')?.reference,'1083310818');
+
+const generalBudget = calculate(65,50000,10000,{age:42,smoker:'smoker',term:23,waiver:'No'});
+assert.ok(generalBudget.complete && generalBudget.aggregateOnly);
+assert.equal(node('resultTitle').textContent,'Referência de orçamento');
+assert.ok(generalBudget.text.includes('Orçamento mensal indicativo de £22.99. Seguradora a confirmar.'));
+assert.ok(generalBudget.text.includes('valor para Zurich, Legal & General ou Aviva precisa de confirmação'));
+assert.equal(node('totalPrice').textContent,'£22.99/mês');
+const namedBudget = calculate(65,50000,0,{age:32,smoker:'smoker',term:33,waiver:'No'});
+assert.ok(namedBudget.complete && !namedBudget.aggregateOnly);
+assert.ok(!namedBudget.text.includes('Seguradora a confirmar.'));
