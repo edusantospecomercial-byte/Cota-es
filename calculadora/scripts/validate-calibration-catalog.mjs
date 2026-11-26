@@ -151,6 +151,18 @@ if (correctedZurichLife?.product !== 'Life discounted multipolicy' || correctedZ
   failures.push({ issue: 'Zurich historical policy used for an incompatible family or capital' });
 }
 
+const shortLgLife = [['20|65|144073|0|0', 5.97], ['45|65|60000|0|1', 20.35],
+  ['50|65|70000|0|0', 12.67], ['54|75|50000|0|0', 17.18]];
+for (const [key, shorterPremium] of shortLgLife) {
+  if (catalog.models.life_only.lookup[key] === shorterPremium)
+    failures.push({ key, issue: 'Shorter L&G policy was used as an end-age anchor' });
+}
+const matchingZurich = illustrationRows.find(row => row.provider === 'Zurich' && row.to_age === '75' &&
+  row.age === '54' && row.smoker === 'false' && row.life_component === '50000' &&
+  row.critical_illness_component === '0' && row.base_life_monthly === '17.67');
+if (!matchingZurich || catalog.models.life_only.lookup['54|75|50000|0|0'] !== Number(matchingZurich.base_life_monthly))
+  failures.push({ issue: 'Full-duration Zurich life premium differs from the verified source' });
+
 const hashes = illustrationRows.map((row) => row.sha256);
 const illustrationFingerprints = illustrationRows.map((row) => [
   row.sha256,

@@ -19,14 +19,16 @@ const rows = lines.map((line) => {
 const families = {
   life: {
     model: catalog.models.life_only,
-    rows: rows.filter((row) => row.to_age !== "" && Number(row.life_component) > 0 && Number(row.critical_illness_component) === 0
+    rows: rows.filter((row) => row.to_age !== "" && (row.provider !== "Legal & General" || Number(row.term_years) === Number(row.to_age) - Number(row.age))
+      && Number(row.life_component) > 0 && Number(row.critical_illness_component) === 0
       && !/discounted|multipolicy|package component/i.test(row.product)),
     minimumCoverage: 1,
   },
   standardCombined: {
     model: catalog.models["life_plus_standalone_ci:standard_core_ci"],
     rows: rows.filter((row) =>
-      row.to_age !== "" && Number(row.life_component) > 0
+      row.to_age !== "" && (row.provider !== "Legal & General" || Number(row.term_years) === Number(row.to_age) - Number(row.age))
+      && Number(row.life_component) > 0
       && Number(row.critical_illness_component) > 0
       && !/earlier|discounted|multipolicy|package component|enhanced|upgraded|extra|child/i.test(row.product)
     ),

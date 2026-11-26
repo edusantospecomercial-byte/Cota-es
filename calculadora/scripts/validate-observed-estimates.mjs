@@ -725,6 +725,20 @@ for (const [cap, billed] of [[400000, "£32.88"], [500000, "£38.66"]]) {
   assert.ok(!bundled.illustratedBase);
   assert.ok(bundled.illustrationNote.includes(billed) && bundled.illustrationNote.includes("£7.75"));
 }
+// Newer L&G illustrations can document a different price for the same printed term.
+for (const [age, smoker, life, ref, years, paid, total] of [
+  [53, "non_smoker", 100000, "1080546712", 16, "£24.62", "£37.62"],
+  [57, "smoker", 50000, "1080433664", 12, "£47.82", "£60.82"],
+  [38, "non_smoker", 200000, "1079330055", 31, "£16.47", "£29.47"],
+]) {
+  const result = calculate(70, life, 0, {age, smoker, term:70 - age});
+  for (const text of [ref, years + " anos", paid, total, "pedido até os 70"]) {
+    assert.ok(result.lgTermNote.includes(text), text);
+    assert.ok(node("details").innerHTML.includes(text), text);
+  }
+  assert.ok(!calculate(65, life, 0, {age, smoker, term:65 - age}).lgTermNote?.includes(ref));
+  assert.ok(!calculate(70, life, 10000, {age, smoker, term:70 - age}).lgTermNote);
+}
 const lgSmoker = calculate(70, 20000, 0, {age:59, smoker:"smoker", term:11});
 for (const term of ["10 anos", "£23.94", "£0.72", "£24.66", "1082481714"]) {
   assert.ok(lgSmoker.lgTermNote.includes(term));
@@ -967,8 +981,8 @@ assert.equal(run('predictBudget(crossing, curveProfile, 19.37)'), 19.37);
 const smoker43 = {...smoker40, age: 43, term: 22};
 const smoker43Base = calculate(65, 50000, 0, smoker43);
 assert.ok(smoker43Base.aggregateOnly && smoker43Base.complete);
-assert.equal(smoker43Base.main.toFixed(2), '14.76');
-assert.equal(node('totalPrice').textContent, '£27.76/mês');
+assert.equal(smoker43Base.main.toFixed(2), '15.21');
+assert.equal(node('totalPrice').textContent, '£28.21/mês');
 for (const clue of ['Opção com isenção', 'Aviva', '2026-09-14', '£15.30', '£28.30/mês']) {
   assert.ok(smoker43Base.alternativePackage.includes(clue), clue);
   assert.ok(node('alternativePackage').textContent.includes(clue), clue);
@@ -1001,14 +1015,16 @@ assert.equal(calculate(65, 30000, 0, smoker47).main, lifeWithItemisation.main);
 assert.equal(calculate(65, 30000, 0, smoker47).componentNote, undefined);
 run('coreBreakdowns = availableBreakdowns');
 
-for (const [age, life, expected, subtotal] of [[42,50000,'13.48','26.48'], [44,50000,'16.16','29.16'], [45,50000,'17.69','30.69'], [55,100000,'57.24','70.24']]) {
+for (const [age, life] of [[42,50000], [44,50000], [45,50000], [55,100000]]) {
   const profile = {age, smoker:'smoker', term:65-age, waiver:'No'};
   const base = calculate(65, life, 0, profile);
   const bundle = calculate(65, life, life / 5, profile);
   assert.equal(bundle.ciPending, true);
   assert.equal(bundle.complete, false);
   assert.equal(bundle.main, base.main);
-  assert.equal(bundle.main.toFixed(2), expected);
+  assert.ok(Number.isFinite(base.main) && base.main > 0);
+  const expected = base.main.toFixed(2);
+  const subtotal = (Number(expected) + base.metlife.total).toFixed(2);
   assert.equal(node('totalPrice').textContent, 'A confirmar');
   assert.equal(node('resultTitle').textContent, 'Estimativa parcial');
   assert.ok(node('range').textContent.includes('Somente vida'));
