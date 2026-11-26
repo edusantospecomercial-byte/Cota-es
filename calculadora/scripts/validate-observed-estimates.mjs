@@ -247,6 +247,11 @@ const calculate = (toAge, life, ci, extra = {}) => {
   run("render({...payload(), ...inputs})");
   return run("lastPayload.result");
 };
+const limitedWaiver = calculate(80,20000,0,{age:62,term:18,waiver:"Yes"});
+assert.equal(limitedWaiver.waiverLimitNote, "Aviva · a isenção de mensalidade termina aos 70 anos. O seguro de vida segue até os 80 anos.");
+assert.ok(limitedWaiver.text.includes(limitedWaiver.waiverLimitNote));
+assert.ok(node("warning").textContent.includes(limitedWaiver.waiverLimitNote));
+assert.equal(quoted.waiverLimitNote, undefined);
 // Assess whether a pre-recorded total is strictly below the selected cap, after penny rounding.
 const checkBudget = run("budgetEvidence");
 const family31 = {age:31,toAge:65,life:152000,ci:10000,smoker:"non_smoker",waiver:"No",monthlyBudget:28};
@@ -298,7 +303,7 @@ assert.ok(returnedMinimum.supplementalLifeNote.includes("pedido original de £50
 assert.ok(returnedMinimum.text.includes("valor oferecido em um pedido diferente"));
 assert.ok(!returnedMinimum.providerQuotes?.some(q => q.premium === 5 && q.provider === "Aviva"));
 assert.equal(calculate(65,99991,0,{age:20,term:45,waiver:"Yes"}).supplementalLifeNote,"");
-const standardProofs = new Map(run("illustratedLifeRows").filter(r => r.provider === "Zurich").map(r => [r.sha256,r]));
+const standardProofs = new Map(run("illustratedLifeRows").map(r => [r.sha256,r]));
 const baselineInsurers = new Set(tables.slice(0,-1).flat().map(r => reportKeys.get(r.sha256) + "|" + r.provider));
 for (const row of run("supplementalLifeRows")) {
   const id = reportKeys.get(row.sha256) + "|" + row.provider;
@@ -308,13 +313,20 @@ for (const row of run("supplementalLifeRows")) {
   assert.match(row.no_riders_illustration_sha256, /^[a-f0-9]{64}$/);
   // The life catalogue keeps a single PDF for reprints with the same economics.
   const evidence = standardProofs.get(row.no_riders_illustration_sha256) || [...standardProofs.values()].find(proof =>
-    ["source_date","age","smoker","to_age"].every(key => proof[key] === row[key]) && proof.policy_count === "1" &&
+    ["provider","source_date","age","smoker","to_age"].every(key => proof[key] === row[key]) && proof.policy_count === "1" &&
     proof.life_cover === row.quoted_life_cover && proof.base_monthly === row.monthly_premium &&
     proof.policy_monthly === row.monthly_premium && Number(proof.additional_monthly) === 0 && Number(proof.discount_monthly) === 0);
   assert.ok(evidence && evidence.policy_count === "1" && Number(evidence.additional_monthly) === 0 && Number(evidence.discount_monthly) === 0);
-  for (const key of ["source_date","age","smoker","to_age"]) assert.equal(row[key],evidence[key]);
+  for (const key of ["provider","source_date","age","smoker","to_age"]) assert.equal(row[key],evidence[key]);
+  if (row.provider === "Aviva") assert.equal(row.sha256, evidence.comparison_sha256);
   assert.equal(row.quoted_life_cover,evidence.life_cover);
   assert.equal(row.monthly_premium,evidence.policy_monthly);
+}
+for (const [age, life, premium, reference] of [[34,100000,"8.07","1081022993"], [41,50000,"7.15","1081150471"], [43,30000,"5.10","1083811974"]]) {
+  const policy = calculate(65,life,0,{age,term:65-age,waiver:"No"});
+  assert.ok(policy.componentNote.includes("£" + premium + " + adicionais £0.00"));
+  assert.ok(policy.text.includes(reference));
+  if (age !== 43) assert.ok(policy.supplementalLifeNote.includes("a illustration confirma vida sem adicionais"));
 }
 assert.ok(calculate(65,30000,0,{age:37,term:28,smoker:"smoker",waiver:"No"}).supplementalLifeNote.includes("£7.17/mês em 2026-08-11 (isenção de mensalidade sem confirmação)"));
 const subjectToTerms = calculate(65,30000,0,{age:37,term:28,smoker:"smoker",waiver:"No"});

@@ -136,6 +136,23 @@ def confirm_zurich_benefits(offers, paths):
     return confirmed
 
 
+def confirm_aviva_benefits(offers):
+    # This table is already reconciled, policy by policy, to the original comparison.
+    with (DATA / "aviva-illustrated-life.csv").open() as stream:
+        proofs = {r["comparison_sha256"]: r for r in csv.DictReader(stream)
+                  if r["additional_monthly"] == "0.00" and r["base_monthly"] == r["policy_monthly"]}
+    confirmed = {}
+    for row in offers:
+        proof = proofs.get(row["sha256"])
+        if row["provider"] != "Aviva" or not proof:
+            continue
+        if (all(str(row[k]) == proof[k] for k in ("source_date", "reference", "age", "smoker", "to_age"))
+                and row["quoted_term"] == f"To Age {row['to_age']}" and row["quoted_tpd"] == "None"
+                and str(row["quoted_life_cover"]) == proof["life_cover"] and row["monthly_premium"] == proof["policy_monthly"]):
+            confirmed[row["sha256"]] = proof["sha256"]
+    return confirmed
+
+
 def confirm_lg_waiver(offers, paths):
     """Confirm the actual waiver charge separately from the comparison's TPD column."""
     reader = runpy.run_path(str(Path(__file__).with_name("extract-lg-life-components.py")))["read_pair"]
@@ -191,14 +208,15 @@ def main():
                 if key not in kept or digest < kept[key]["sha256"]:
                     kept[key] = r
     paths = illustration_paths(args.illustration_root)
-    confirmed = confirm_zurich_benefits(kept.values(), paths)
+    confirmed = {"Zurich": confirm_zurich_benefits(kept.values(), paths),
+                 "Aviva": confirm_aviva_benefits(kept.values())}
     lg_charges = confirm_lg_waiver(kept.values(), paths)
     public_fields = [f for f in FIELDS if f != "reference"] + ["no_riders_illustration_sha256", "illustrated_waiver_monthly", "waiver_illustration_sha256"]
     writer = csv.DictWriter(sys.stdout, fieldnames=public_fields, extrasaction="ignore", lineterminator="\n")
     writer.writeheader()
     for row in sorted(kept.values(), key=lambda r: (r["source_date"], r["reference"], r["provider"])):
         charges = lg_charges.get(row["sha256"], {}) if row["provider"] == "Legal & General" else {}
-        writer.writerow({**row, **charges, "no_riders_illustration_sha256": confirmed.get(row["sha256"], "") if row["provider"] == "Zurich" else ""})
+        writer.writerow({**row, **charges, "no_riders_illustration_sha256": confirmed.get(row["provider"], {}).get(row["sha256"], "")})
 
 
 if __name__ == "__main__":

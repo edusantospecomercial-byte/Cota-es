@@ -21,9 +21,25 @@ def price(value):
     return Decimal(value.replace(",", ""))
 
 
+def life_premium_without_breakdown(text, paid):
+    # For a policy with no paid extras Aviva can omit the entire breakdown.
+    # Accept only the complete life-only schedule; an unfamiliar line needs review.
+    heading, details, rest = text.partition("Cover details")
+    if not details or "your quick quote illustration for life" not in heading.lower():
+        return None
+    schedule, end, _ = rest.partition("Total premiums")
+    schedule = re.sub(r"^[ \t]*Life cover for[ \t]+[^\n]+$", "Life cover", schedule, flags=re.M)
+    pattern = (r"Life cover Cover type Level Cover amount " + MONEY + r" Expiry age \d+ "
+               r"(?:The policy ends when the eldest life covered reaches the expiry age\. )?"
+               r"How much will it cost\? Monthly premium " + MONEY)
+    match = re.fullmatch(pattern, " ".join(schedule.split()))
+    return paid if end and match and price(match[2]) == paid else None
+
+
 def read_pair(illustration, comparison):
     text = extract_text(illustration)
-    if "your quick quote illustration" not in text.lower() or text.count("How your premium is made up") != 1:
+    heading = "How your premium is made up"
+    if "your quick quote illustration" not in text.lower() or text.count(heading) > 1:
         return None
     if len(re.findall(r"Date of birth:", text)) != 1 or not re.search(r"^\s*Cover type\s+Level[ \t]*$", text, re.M):
         return None
@@ -35,11 +51,17 @@ def read_pair(illustration, comparison):
     total = re.search(r"^\s*Monthly premium[ \t]+" + MONEY + r"[ \t]*$", text, re.M)
     if not all((prepared, birth, smoker, life, end, total)):
         return None
-    breakdown = text.split("How your premium is made up", 1)[1]
-    items = re.findall(r"^[ \t]*§[ \t]*(.+?)[ \t]{2,}" + MONEY + r"[ \t]*$", breakdown, re.M)
-    base = [price(value) for label, value in items if label.strip().lower() == "life cover"]
     paid = price(total[1])
-    if len(base) != 1 or base[0] <= 0 or paid != sum(price(value) for _, value in items):
+    if heading in text:
+        breakdown = text.split(heading, 1)[1]
+        items = re.findall(r"^[ \t]*§[ \t]*(.+?)[ \t]{2,}" + MONEY + r"[ \t]*$", breakdown, re.M)
+        bases = [price(value) for label, value in items if label.strip().lower() == "life cover"]
+        if len(bases) != 1 or paid != sum(price(value) for _, value in items):
+            return None
+        base = bases[0]
+    else:
+        base = life_premium_without_breakdown(text, paid)
+    if base is None or not 0 < base <= paid:
         return None
     lump, to_age = price(life[1]), int(end[1])
     if lump != int(lump) or lump <= 0:
@@ -67,14 +89,18 @@ def read_pair(illustration, comparison):
                           results.partition("Products Not Quoting:")[0], re.M))
     if len(rows) != 1:
         return None
-    offer = re.fullmatch(MONEY + r"\s+Guaranteed\s+No\s+Monthly\s+£([\d,]+)\s+To Age (\d+)\s+Level\s+(?:(?:\d+|Expiry|No data)\s+)?None\s+No", rows.pop().strip())
+    offer = re.fullmatch(MONEY + r"\s+Guaranteed\s+No\s+Monthly\s+£([\d,]+)\s+To Age (\d+)\s+Level\s+(?:(\d+|Expiry|No data)\s+)?None\s+No", rows.pop().strip())
     if not offer or price(offer[1]) != paid or price(offer[2]) != lump or int(offer[3]) != to_age:
+        return None
+    # "No data" does not establish a waiver either way. The insurer's complete
+    # schedule above supplies the separate evidence for the life-only premium.
+    if heading not in text and (offer[4] not in (None, "No data") or "Fracture Cover selected" in benefit[0]):
         return None
     age = issued.year - born.year - ((issued.month, issued.day) < (born.month, born.day))
     if not 18 <= age < to_age:
         return None
     return (issued.isoformat(), age, "Yes" if smoker[1].lower() == "smoker" else "No", to_age,
-            int(lump), base[0], paid - base[0], paid, ref[1], hashlib.sha256(illustration).hexdigest(),
+            int(lump), base, paid - base, paid, ref[1], hashlib.sha256(illustration).hexdigest(),
             hashlib.sha256(comparison).hexdigest())
 
 

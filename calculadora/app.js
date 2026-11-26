@@ -1330,7 +1330,7 @@ function makeSummary(p, r) {
     ];
   if (p.waiver === "Yes")
     lines.push(r.waiverPending ? "Isenção de mensalidade solicitada · preço a confirmar" :
-      `Isenção de mensalidade incluída · comparativo de ${r.providerQuotes[0].sourceDate}`);
+      r.waiverLimitNote || `Isenção de mensalidade incluída · comparativo de ${r.providerQuotes[0].sourceDate}`);
   lines.push(
     r.ciPending ? `Estimativa só de vida: ${gbp(r.main)}/mês` : r.supported
       ? `${r.waiverPending || r.termPending || (r.reportNote && !r.providerQuotes?.length) ? "Referência geral para a proteção principal" : "Estimativa"}: ${gbp(r.main)}/mês`
@@ -1502,6 +1502,11 @@ function priceProtection(p, m) {
     r.high = comparable.at(-1).premium;
     r.provider = selected.provider;
     r.product = selected.product;
+    if (r.withWaiver && /^\d+$/.test(selected.waiverTo) && Number(selected.waiverTo) < p.toAge) {
+      r.waiverLimitNote = selected.provider + " · a isenção de mensalidade termina aos " + selected.waiverTo +
+        " anos. O seguro de vida segue até os " + p.toAge + " anos.";
+      warnings.unshift(r.waiverLimitNote);
+    }
     r.providerQuotes = priorityQuotes;
     r.providerGap = priorityMatch.gap || null;
     r.priorityExact = priorityMatch.exact;
