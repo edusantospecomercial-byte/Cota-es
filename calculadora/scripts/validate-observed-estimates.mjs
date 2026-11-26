@@ -792,6 +792,17 @@ for (const row of illustratedRows.filter(r => r.provider === "Aviva")) {
   assert.match(row.comparison_sha256, /^[a-f0-9]{64}$/);
   assert.ok(row.sha256 !== row.comparison_sha256);
 }
+// An individual life base remains identifiable when another insurer's most recent document is a discounted package.
+const solo34 = calculate(65,50000,0,{age:34,term:31});
+assert.equal(solo34.main,5.07);
+assert.equal(solo34.provider,"Aviva");
+assert.ok(solo34.illustratedBase && !solo34.aggregateOnly);
+assert.match(solo34.componentNote,/£5\.07.*£4\.02.*£9\.09/);
+const individualLife = run("illustratedLifeFor");
+const mixed = {age:41,toAge:65,life:50000,ci:0,smoker:"non_smoker",waiver:"No"};
+assert.equal(individualLife(mixed,"Zurich"),null); // Two packages with different charges on the same day.
+assert.equal(individualLife(mixed,"Aviva").base_monthly,"7.15");
+assert.equal(individualLife({...mixed,life:120000},"Zurich").policy_monthly,"12.29"); // Both kinds on one date.
 const profileWithIllustration = { age: 65, smoker: "non_smoker", toAge: 80, life: 20000, ci: 0 };
 ctx.inputs = profileWithIllustration;
 const verifiedLife = run("illustratedLifeFor(inputs)");

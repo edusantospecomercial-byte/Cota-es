@@ -741,11 +741,15 @@ function illustratedLifeFor(p, provider) {
     const carrier = matching.filter(row => row.provider === name);
     const latestDate = carrier.reduce((d, row) => row.source_date > d ? row.source_date : d, "");
     const recent = carrier.filter(row => row.source_date === latestDate);
-    if (new Set(recent.map(row => row.base_monthly)).size === 1)
-      newestByProvider.push(recent.find(row => row.policy_count === "1") || recent[0]);
+    const individual = recent.filter(row => row.policy_count === "1");
+    const candidates = individual.length ? individual : recent;
+    const charges = new Set(candidates.map(row =>
+      [row.base_monthly, row.additional_monthly, row.discount_monthly, row.policy_monthly].join("|")));
+    if (charges.size === 1) newestByProvider.push(candidates[0]);
   }
-  newestByProvider.sort((a, b) => b.source_date.localeCompare(a.source_date) ||
-    Number(b.policy_count === "1") - Number(a.policy_count === "1") || Number(a.base_monthly) - Number(b.base_monthly));
+  // A discounted package on another date cannot establish a standalone premium.
+  newestByProvider.sort((a, b) => Number(b.policy_count === "1") - Number(a.policy_count === "1") ||
+    b.source_date.localeCompare(a.source_date) || Number(a.base_monthly) - Number(b.base_monthly));
   return newestByProvider[0] || null;
 }
 
