@@ -170,7 +170,7 @@ const counts = inventory(pdfIndex, tables);
 assert.ok(counts, "All public source tables must reconcile with the PDF index");
 assert.equal(counts.prices, distinct(withPrice));
 assert.equal(counts.reports, new Set(withPrice.map(r => reportKeys.get(r.sha256))).size);
-const namedVersions = run("exactCapitalVariants.concat(firstEventVariants,fixedTermFirstEventVariants)");
+const namedVersions = run("exactCapitalVariants.concat(firstEventVariants,fixedTermFirstEventVariants,lifeChildVariants)");
 const productTotal = run("additionalProductInventory");
 const totals = productTotal(reportKeys,tables,[[namedVersions]]);
 assert.ok(totals && totals.prices === new Set(namedVersions.map(r=>[reportKeys.get(r.sha256),r.provider,r.product].join("|"))).size);
@@ -194,6 +194,43 @@ const legal65 = withPrice.filter(r => r.provider === "Legal & General" && r.to_a
 assert.equal(counts.legal65, distinct(legal65));
 assert.equal(counts.legal65Shorter, distinct(legal65.filter(r => r.quoted_term === (64 - Number(r.age)) + " years")));
 assert.ok(node("comparisonInventoryScope").textContent.includes(counts.legal65Shorter + " de " + counts.legal65));
+// The Zurich family version is a separate monthly price for the same life sum.
+{
+  const variants = run("lifeChildVariants");
+  const build = run("indexLifeChildSources");
+  const describe = run("lifeChildNote");
+  const base = tables.flat().filter(row => row.provider === "Zurich" && row.product === "Zurich Life");
+  assert.ok(variants.length >= 167 && variants.some(r => r.smoker === "Yes") && variants.some(r => r.waiver_to === "70"));
+  for (const item of variants) {
+    assert.ok(base.some(row => row.sha256 === item.sha256 && row.monthly_premium === item.standard_monthly));
+    assert.ok(item.occupation_rated === "No" && item.quoted_tpd === "None" && item.quoted_term === "To Age "+item.to_age);
+    assert.ok(["not_requested", "70", "Expiry"].includes(item.waiver_to) || Number(item.waiver_to) >= Number(item.to_age));
+  }
+  const child = variants.find(r => r.age === "31" && r.life_cover === "125000" && r.to_age === "65" && r.waiver_to === "not_requested");
+  const standard = base.find(r => r.sha256 === child.sha256);
+  const input = {age:31, smoker:"non_smoker", life:125000, toAge:65, ci:0, waiver:"unspecified"};
+  const asOf = Date.parse(child.source_date), adult = {c:1,total:13}, family = {c:1,total:15};
+  const source = build([standard],[child]);
+  assert.ok(describe(input,adult,source,asOf).includes("£22.26/mês"));
+  assert.ok(describe(input,family,source,asOf).includes("£24.26/mês"));
+  assert.ok(describe(input,{c:0,total:0},source,asOf).includes("£9.26/mês"));
+  assert.ok(!describe(input,{c:0,total:0},source,asOf).includes("MetLife"));
+  assert.equal(describe(input,adult,source,asOf - 1),"");
+  assert.equal(describe(input,adult,source,asOf + 181*86400000),"");
+  for (const change of [{ci:10000},{earlierCi:10000},{waiver:"Yes"},{smoker:"smoker"},{toAge:70},{age:32},{life:120000},{tpd:"Own"},{fracture:"Yes"}])
+    assert.equal(describe({...input,...change},adult,source,asOf),"");
+  for (const change of [{occupation_rated:"Yes"},{standard_monthly:"0.01"},{quoted_tpd:"Own"},{monthly_premium:""},{life_cover:"130000"},{quoted_term:"34 years"},{waiver_to:"No data"}])
+    assert.equal(describe(input,adult,build([standard],[{...child,...change}]),asOf),"");
+  assert.equal(describe(input,adult,build([standard],[child,{...child,monthly_premium:"17.99"}]),asOf),"");
+  for(const next of [{...standard,sha256:"changed-source"},{...standard,source_date:"2026-11-27",available:"false",monthly_premium:""}])
+    assert.equal(describe(input,adult,build([standard,next],[child]),Date.parse("2026-11-27")),"");
+  const smoker = variants.find(r=>r.age==="45" && r.life_cover==="30000" && r.to_age==="65" && r.smoker==="Yes" && r.waiver_to==="70");
+  const si={age:45,toAge:65,smoker:"smoker",life:30000,ci:0,waiver:"Yes"};
+  const sw=build(base.filter(r=>r.sha256===smoker.sha256),[smoker]);
+  assert.ok(describe(si,adult,sw,Date.parse(smoker.source_date)).includes("£27.82/mês"));
+  assert.equal(describe({...si,waiver:"unspecified"},adult,sw,Date.parse(smoker.source_date)),"");
+}
+
 const termDescription = run("quotedTerm")({term:"14 years", waiverTo:"Expiry", differentCapital:true, quotedLife:52000, quotedCi:0},{age:50,toAge:65});
 for (const clue of ["14 anos de prazo", "pedido até os 65 anos (15 anos", "isenção até o fim do contrato", "vida £52,000.00"]) assert.ok(termDescription.includes(clue),clue);
 assert.ok(!run("quotedTerm")({term:"15 years"},{age:50,toAge:65}).includes("pedido até"));
