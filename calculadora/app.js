@@ -534,14 +534,23 @@ function documentedLookupPrice(p, amount) {
     row.quoted_term === `To Age ${p.toAge}` && Number(row.monthly_premium) === amount);
 }
 
+function billedPolicyText(row, breakdown) {
+  if (!breakdown) return "";
+  const shared = Number(row.quoted_earlier_ci_cover) > 0;
+  const policies = [[shared ? "vida adicional" : "vida", row.quoted_life_cover, breakdown.life_policy_monthly],
+    ["vida ou diagnóstico", row.quoted_earlier_ci_cover, breakdown.earlier_ci_policy_monthly],
+    ["diagnóstico independente", row.quoted_independent_ci_cover, breakdown.independent_ci_policy_monthly]];
+  if (policies.some(([, cover, price]) => (Number(cover) > 0) !== (Number(price) > 0))) return "";
+  const charged = policies.filter(([, cover]) => Number(cover) > 0);
+  const billed = charged.reduce((sum, [, , price]) => sum + displayedPence(Number(price)), 0);
+  if (!charged.length || billed !== displayedPence(Number(row.monthly_premium))) return "";
+  return "<br>Mensalidade cobrada por apólice neste pacote · " + charged.map(([label, , price]) =>
+    label + " " + gbp(Number(price))).join(" + ") + ".";
+}
+
 function itemisedCiPremium(row, breakdown) {
   if (!breakdown || breakdown.reference !== row.reference || breakdown.total_monthly !== row.monthly_premium) return "";
-  if (breakdown.earlier_ci_policy_monthly) {
-    const policies = [];
-    if (Number(breakdown.life_policy_monthly) > 0) policies.push("vida adicional " + gbp(Number(breakdown.life_policy_monthly)));
-    policies.push("vida ou diagnóstico " + gbp(Number(breakdown.earlier_ci_policy_monthly)));
-    return "<br>Mensalidade cobrada por apólice neste pacote · " + policies.join(" + ") + ".";
-  }
+  if (breakdown.earlier_ci_policy_monthly) return billedPolicyText(row, breakdown);
   const charges = [[Number(row.quoted_earlier_ci_cover) > 0 ? "vida adicional" : "vida", breakdown.life_monthly], ["vida ou diagnóstico", breakdown.earlier_ci_monthly], ["diagnóstico independente", breakdown.independent_ci_monthly],
     ["isenção", breakdown.waiver_monthly], ["incapacidade permanente", breakdown.tpd_monthly],
     ["fraturas da seguradora", breakdown.fracture_monthly]];
@@ -644,6 +653,7 @@ function renderCiComparison(p, independentTpd = false) {
     (a.source_date === b.source_date && Number(a.reference) > Number(b.reference)) ? a : b);
   const prices = candidates.filter(row => row.reference === latest.reference)
     .sort((a, b) => Number(a.monthly_premium) - Number(b.monthly_premium));
+  const metlife = metlifeForAge(ml(), p.age);
   const entries = prices.map(row => {
     const waiver = row.waiver_to === "Expiry" ? "isenção até o fim do contrato" :
       /^\d+$/.test(row.waiver_to) ? "isenção durante a vigência, com idade-limite informada de " + row.waiver_to + " anos" :
@@ -656,14 +666,21 @@ function renderCiComparison(p, independentTpd = false) {
       detail.push("diagnóstico independente " + gbp(Number(row.quoted_independent_ci_cover)));
     if (Number(row.quoted_earlier_ci_cover) > 0)
       detail.push("vida ou diagnóstico " + gbp(Number(row.quoted_earlier_ci_cover)));
+    if (Number(row.quoted_life_cover) !== p.life ||
+        Number(row.quoted_independent_ci_cover || 0) + Number(row.quoted_earlier_ci_cover || 0) !== p.ci)
+      detail.push("o pedido original incluía " + gbp(p.life) + " de vida e " + gbp(p.ci) + " de diagnóstico");
     detail.push(waiver, row.tpd_basis === "None" ? "oferta sem TPD" : "TPD " + row.tpd_basis);
     if (row.occupation_rated === "Yes") detail.push(historicalOccupationNote(row, p));
-    const breakdown = independentTpd ? null : coreBreakdowns.get(row.provider + "|" + row.sha256);
-    const itemised = itemisedCiPremium(row, breakdown);
-    return `<dt>${escapeHtml(row.provider)}</dt><dd><b>${gbp(Number(row.monthly_premium))}/mês</b> · ${escapeHtml(detail.join(" · "))}${itemised}</dd>`;
+    const itemised = independentTpd
+      ? billedPolicyText(row, row.illustration_sha256 && row)
+      : itemisedCiPremium(row, coreBreakdowns.get(row.provider + "|" + row.sha256));
+    const price = Number(row.monthly_premium);
+    const packageText = metlife.c ? "<br>Com " + gbp(metlife.total) + " de MetLife, esta opção soma " +
+      gbp(monthlyTotal(price, metlife.total)) + "/mês." : "";
+    return `<dt>${escapeHtml(row.provider)}</dt><dd><b>${gbp(price)}/mês</b> · ${escapeHtml(detail.join(" · "))}${itemised}${packageText}</dd>`;
   });
   $(prefix + "Source").textContent = "Comparativo de " + latest.source_date +
-    " · referência " + latest.reference + " · mensalidades antes da MetLife. " +
+    " · referência " + latest.reference + ". " +
     (referencesWithWaiverColumn.has(latest.reference) ? "O relatório traz uma coluna de isenção. Confira a resposta de cada seguradora." :
       "O relatório não informa isenção nas ofertas.");
   if (candidates.some(row => row.reference === latest.reference && occupationalBasis(p.occupation, row).occupationMatched))

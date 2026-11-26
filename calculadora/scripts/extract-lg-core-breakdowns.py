@@ -15,10 +15,10 @@ DATE = r"(\d{2}/\d{2}/\d{4})"
 MONEY = r"£([\d,]+\.\d{2})"
 
 
-def read_pair(illustration, comparison):
+def read_pair(illustration, comparison, offers, policy_premiums=False):
     digest = hashlib.sha256(comparison).hexdigest()
     offer = offers.get(digest)
-    if not offer:
+    if not offer or not int(offer["quoted_earlier_ci_cover"]) or int(offer.get("quoted_independent_ci_cover", 0)):
         return None
     report = subprocess.check_output(["pdftotext", "-layout", "-", "-"], input=comparison).decode().split("\f", 1)[0]
     birth = re.search(r"born on " + DATE, report)
@@ -58,6 +58,8 @@ def read_pair(illustration, comparison):
     total = sum(billed.values())
     if wanted or total != Decimal(offer["monthly_premium"]):
         return None
+    if policy_premiums:
+        return billed.get("life", Decimal("0.00")), billed["shared"], Decimal("0.00")
     return (offer["source_date"], offer["age"], offer["smoker"], offer["to_age"], offer["quoted_life_cover"],
             offer["quoted_earlier_ci_cover"], billed.get("life", Decimal("0.00")), billed["shared"], offer["reference"],
             quoted_term[1], total, hashlib.sha256(illustration).hexdigest(), digest)
@@ -66,4 +68,4 @@ def read_pair(illustration, comparison):
 if __name__ == "__main__":
     with (Path(__file__).resolve().parents[1] / "data/accelerated-comparisons.csv").open() as source:
         offers = {r["sha256"]: r for r in csv.DictReader(source) if r["provider"] == "Legal & General"}
-    extract_pairs("Legal & General Life + CI (Standard)", FIELDS, read_pair, __doc__)
+    extract_pairs("Legal & General Life + CI (Standard)", FIELDS, lambda illustration, comparison: read_pair(illustration, comparison, offers), __doc__)

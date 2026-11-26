@@ -91,7 +91,7 @@ def illustrations(source):
                 yield archive.read(member)
 
 
-def earlier_ci_reader(offers, fracture_requested=False):
+def earlier_ci_reader(offers, fracture_requested=False, policy_premiums=False):
     def read_pair(illustration, comparison):
         comparison_hash = hashlib.sha256(comparison).hexdigest()
         if fracture_requested:
@@ -129,6 +129,7 @@ def earlier_ci_reader(offers, fracture_requested=False):
             return None
         zero = Decimal("0.00")
         amounts = dict.fromkeys([life, shared, independent, "waiver", "tpd", "discount", "fracture", "paid"], zero)
+        billed = {}
         fracture_limits = set()
         for part in parts:
             part_birth = re.match(DATE, part)
@@ -169,8 +170,11 @@ def earlier_ci_reader(offers, fracture_requested=False):
             amounts["tpd"] += disability
             amounts["discount"] += discount
             amounts["paid"] += pounds(total)
+            billed[kind] = pounds(total)
         if expected or amounts["paid"] != pounds(offer["monthly_premium"]):
             return None
+        if policy_premiums:
+            return tuple(billed.get(kind, zero) for kind in (life, shared, independent))
         if fracture_requested:
             from fracture_comparison import fracture_row
             return fracture_row(offer, amounts[life], amounts[shared], amounts["waiver"], amounts["tpd"],

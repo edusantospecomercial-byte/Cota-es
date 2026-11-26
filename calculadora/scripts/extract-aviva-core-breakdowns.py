@@ -16,6 +16,7 @@ MONEY = r"£([\d,]+\.\d{2})"
 DATE = r"(\d{1,2} [A-Za-z]+ \d{4})"
 LIFE = "Life cover"
 SHARED = "Life and critical illness cover"
+INDEPENDENT = "Critical illness cover"
 WAIVER = "Waiver of Premium"
 TPD = "Total permanent disability"
 
@@ -28,7 +29,7 @@ def pdf_text(document):
     return subprocess.check_output(["pdftotext", "-layout", "-", "-"], input=document).decode("utf-8")
 
 
-def read_pair(illustration, comparison, offers=None, fracture_requested=False):
+def read_pair(illustration, comparison, offers=None, fracture_requested=False, policy_premiums=False):
     digest = hashlib.sha256(comparison).hexdigest()
     if fracture_requested:
         from fracture_comparison import read_offer
@@ -52,9 +53,14 @@ def read_pair(illustration, comparison, offers=None, fracture_requested=False):
         expected[SHARED] = int(offer["quoted_earlier_ci_cover"])
     if int(offer["quoted_life_cover"]):
         expected[LIFE] = int(offer["quoted_life_cover"])
+    if policy_premiums and int(offer.get("quoted_independent_ci_cover", 0)):
+        expected[INDEPENDENT] = int(offer["quoted_independent_ci_cover"])
     if len(policies) != len(expected) or text.count("Date of birth:") != len(policies):
         return None
     totals = {label: Decimal("0.00") for label in (LIFE, SHARED, WAIVER, TPD)}
+    if INDEPENDENT in expected:
+        totals[INDEPENDENT] = Decimal("0.00")
+    billed = {}
     if fracture_requested:
         totals["Fracture cover"] = Decimal("0.00")
     paid = Decimal("0.00")
@@ -68,23 +74,28 @@ def read_pair(illustration, comparison, offers=None, fracture_requested=False):
         monthly = re.search(r"^[ \t]*Monthly premium[ \t]+" + MONEY + r"[ \t]*$", details, re.M)
         if not all((prepared, born, smoking, amount, end, monthly)) or not re.search(r"^[ \t]*Cover type[ \t]+Level[ \t]*$", details, re.M):
             return None
-        if datetime.strptime(prepared[1], "%d %B %Y").date().isoformat() != offer["source_date"]:
+        issued = datetime.strptime(prepared[1], "%d %B %Y").date()
+        age = issued.year - birth.year - ((issued.month, issued.day) < (birth.month, birth.day))
+        if issued.isoformat() != offer["source_date"] or age != int(offer["age"]):
             return None
         if (datetime.strptime(born[1], "%d %B %Y").date() != birth or end[1] != offer["to_age"]
                 or (smoking[1].lower() == "smoker") != (offer["smoker"] == "Yes")):
             return None
         items = re.findall(r"^[ \t]*§[ \t]*(\S[^\n]*?)[ \t]{2,}" + MONEY + r"[ \t]*$", breakdown, re.M)
         labels = [label.strip() for label, _ in items]
-        base = [label for label in labels if label in (LIFE, SHARED)]
+        base = [label for label in labels if label in (LIFE, SHARED, INDEPENDENT)]
         if len(base) != 1 or base[0] not in expected or pounds(amount[1]) != expected.pop(base[0]):
             return None
         if set(labels) - totals.keys() or len(set(labels)) != len(labels) or sum(pounds(n) for _, n in items) != pounds(monthly[1]):
             return None
         for (label, value) in items:
             totals[label.strip()] += pounds(value)
+        billed[base[0]] = pounds(monthly[1])
         paid += pounds(monthly[1])
     if expected or paid != pounds(offer["monthly_premium"]) or paid != sum(totals.values()):
         return None
+    if policy_premiums:
+        return tuple(billed.get(label, Decimal("0.00")) for label in (LIFE, SHARED, INDEPENDENT))
     if fracture_requested:
         from fracture_comparison import fracture_row
         return fracture_row(offer, totals[LIFE], totals[SHARED], totals[WAIVER], totals[TPD],

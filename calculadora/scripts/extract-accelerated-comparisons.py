@@ -3,9 +3,12 @@
 import argparse
 import csv
 from datetime import datetime
+from decimal import Decimal
+from functools import partial
 import hashlib
 from pathlib import Path
 import re
+import runpy
 import subprocess
 import sys
 
@@ -16,6 +19,7 @@ FIELDS = ("source_date", "reference", "age", "smoker", "to_age", "life_cover",
           "occupation_rated", "waiver_to", "tpd_basis", "sha256")
 INDEPENDENT_FIELDS = tuple("independent_ci_cover" if field == "earlier_ci_cover" else field for field in FIELDS)
 INDEPENDENT_FIELDS = INDEPENDENT_FIELDS[:11] + ("quoted_independent_ci_cover",) + INDEPENDENT_FIELDS[11:]
+POLICY_FIELDS = ("life_policy_monthly", "earlier_ci_policy_monthly", "independent_ci_policy_monthly", "illustration_sha256")
 DECLINE_FIELDS = FIELDS[:9] + ("maturity_reason", "waiver_column", "sha256")
 PRODUCTS = {
     "Zurich": "Zurich Life & CI",
@@ -124,6 +128,50 @@ def read_report(path, independent=False, maturity_declines=False):
     return rows
 
 
+def billed_policy_premiums(reports, roots):
+    """Identify policy-level charges in the insurer PDF supplied with the same comparison."""
+    from illustration_pairs import illustration_files, pairs
+    directory = Path(__file__).parent
+    sources = illustration_files(roots)
+    records = [dict(zip(INDEPENDENT_FIELDS, map(str, row))) for rows in reports.values() for row in rows]
+    folders = {"Aviva": ("Aviva Multi-Product with Core CI", "Aviva Critical Illness+ Core", "Aviva Life Insurance+ with Core CI"),
+               "Zurich": ("Zurich Life & CI", "Zurich Critical Illness"),
+               "Legal & General": ("Legal & General Life + CI (Standard)",)}
+    premiums = {}
+    for provider, names in folders.items():
+        offers = {r["sha256"]: r for r in records if r["provider"] == provider}
+        if provider == "Zurich":
+            factory = runpy.run_path(str(directory / "extract-zurich-life-components.py"))["earlier_ci_reader"]
+            verify = factory(offers, policy_premiums=True)
+        else:
+            script = "extract-aviva-core-breakdowns.py" if provider == "Aviva" else "extract-lg-core-breakdowns.py"
+            reader = runpy.run_path(str(directory / script))["read_pair"]
+            verify = partial(reader, offers=offers, policy_premiums=True)
+        checked = set()
+        for illustration, comparison in pairs(sources, names):
+            digest = hashlib.sha256(comparison).hexdigest()
+            if digest not in offers:
+                continue
+            proof = hashlib.sha256(illustration).hexdigest()
+            if (digest, proof) in checked:
+                continue
+            checked.add((digest, proof))
+            charges = verify(illustration, comparison)
+            if charges is None:
+                continue
+            offer = offers[digest]
+            capitals = ("quoted_life_cover", "quoted_earlier_ci_cover", "quoted_independent_ci_cover")
+            if sum(charges) != Decimal(offer["monthly_premium"]) or any(
+                    (charge > 0) != (int(offer[field]) > 0) for charge, field in zip(charges, capitals)):
+                raise ValueError("Policy payments do not reconcile with the offered benefits")
+            key = (digest, provider)
+            if key in premiums and premiums[key][:-1] != charges:
+                raise ValueError("Different policy payments in two copies of the insurer illustration")
+            if key not in premiums or proof < premiums[key][-1]:
+                premiums[key] = (*charges, proof)
+    return premiums
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("roots", nargs="+", type=Path)
@@ -152,9 +200,12 @@ def main():
         if ref not in reports or digest < reports[ref][0][-1]:
             reports[ref] = rows
     writer = csv.writer(sys.stdout, lineterminator="\n")
-    writer.writerow(DECLINE_FIELDS if args.maturity_declines else INDEPENDENT_FIELDS if args.independent_tpd else FIELDS)
+    premiums = billed_policy_premiums(reports, args.roots) if args.independent_tpd else {}
+    writer.writerow(DECLINE_FIELDS if args.maturity_declines else INDEPENDENT_FIELDS + POLICY_FIELDS if args.independent_tpd else FIELDS)
     for rows in sorted(reports.values(), key=lambda rows: (rows[0][0], rows[0][1])):
-        writer.writerows(rows)
+        for row in rows:
+            extra = premiums.get((row[-1], row[7]), ("",) * len(POLICY_FIELDS)) if args.independent_tpd else ()
+            writer.writerow((*row, *extra))
     print(f"{len(seen)} distinct PDFs scanned, {len(reports)} qualifying reports", file=sys.stderr)
 
 

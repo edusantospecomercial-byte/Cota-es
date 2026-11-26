@@ -497,7 +497,27 @@ const tpdList = node("tpdOffers").innerHTML;
 assert.match(tpdList, /Aviva<\/dt><dd><b>£40\.98\/mês<\/b>[^<]*diagnóstico independente £10,000\.00/);
 assert.match(tpdList, /Legal &amp; General<\/dt><dd><b>£46\.30\/mês<\/b>[^<]*12 anos de prazo[^<]*vida ou diagnóstico £10,000\.00[^<]*preço depende da profissão/);
 assert.match(tpdList, /Zurich<\/dt><dd><b>£50\.19\/mês<\/b>[^<]*diagnóstico independente £10,000\.00/);
+assert.ok(tpdList.includes("vida £11.67 + diagnóstico independente £29.31"));
+assert.ok(tpdList.includes("Com £13.00 de MetLife, esta opção soma £53.98/mês."));
 assert.ok(!tpdReference.text.includes("1080433474"));
+node("metlifeChild").checked = true;
+calculate(70,100000,10000,{age:40,term:30});
+assert.ok(node("tpdOffers").innerHTML.includes("vida £9.78 + diagnóstico independente £8.79"));
+assert.ok(node("tpdOffers").innerHTML.includes("Com £15.00 de MetLife, esta opção soma £33.57/mês."));
+node("metlifeChild").checked = false;
+calculate(70,200000,20000,{age:40,term:30});
+assert.ok(node("tpdOffers").innerHTML.includes("vida adicional £17.71 + vida ou diagnóstico £13.47"));
+const policyRows = run("tpdOffers").filter(row => row.illustration_sha256);
+assert.ok(["Aviva","Zurich","Legal & General"].every(provider => policyRows.some(row => row.provider === provider)));
+for (const row of policyRows) {
+  assert.match(row.illustration_sha256,/^[a-f0-9]{64}$/);
+  assert.notEqual(row.illustration_sha256,row.sha256);
+  const billed = run("billedPolicyText");
+  assert.ok(billed(row,row));
+  assert.equal(billed({...row,monthly_premium:(Number(row.monthly_premium)+0.01).toFixed(2)},row),"");
+  if (Number(row.quoted_independent_ci_cover) > 0)
+    assert.equal(billed({...row,quoted_independent_ci_cover:"0",quoted_earlier_ci_cover:row.quoted_independent_ci_cover},row),"");
+}
 calculate(65, 10000, 10000, {age:57, smoker:"smoker", term:8});
 assert.equal(node("tpdComparison").hidden, true);
 const regular = calculate(65, 75000, 15000, {age:31, smoker:"non_smoker", term:34});
@@ -571,6 +591,7 @@ assert.ok(ciWithTpdOnly.text.includes(ciWithTpdOnly.alternativePackage));
 assert.equal(node("tpdComparison").hidden, false);
 assert.ok(node("tpdSource").textContent.includes("1081121809"));
 assert.match(node("tpdOffers").innerHTML, /Aviva<\/dt><dd><b>£16\.54\/mês<\/b>[^<]*diagnóstico independente £10,000\.00/);
+assert.ok(node("tpdOffers").innerHTML.includes("Mensalidade cobrada por apólice neste pacote · diagnóstico independente £16.54."));
 assert.match(node("tpdOffers").innerHTML, /Legal &amp; General<\/dt><dd><b>£20\.41\/mês<\/b>[^<]*12 anos de prazo[^<]*vida ou diagnóstico £10,000\.00[^<]*preço depende da profissão/);
 assert.match(node("tpdOffers").innerHTML, /Zurich<\/dt><dd><b>£24\.08\/mês<\/b>[^<]*diagnóstico independente £10,000\.00/);
 calculate(65, 0, 20000, {age: 36, term: 29});
