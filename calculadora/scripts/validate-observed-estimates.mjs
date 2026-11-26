@@ -819,3 +819,33 @@ assert.notEqual(shortTerm.provider,'Legal & General');
 const withNoProof=run('reportedOccupations');run('reportedOccupations=new Map()');
 assert.notEqual(calculate(65,0,30000,occupationInput).provider,'Legal & General');
 ctx.restoredOccupations=withNoProof;run('reportedOccupations=restoredOccupations');
+
+run("Date.now = () => Date.parse('2026-11-26T00:00:00Z')");
+const twoPolicies = calculate(65,25000,7500,{age:50,term:15,occupation:'Office administrator',waiver:'No'});
+assert.ok(twoPolicies.aggregateOnly && !twoPolicies.provider);
+for (const item of ['duas apólices individuais da Aviva','£7.03/mês','£7.40/mês','£14.43/mês','£27.43/mês','contratação simultânea']) {
+  assert.ok(node('alternativePackage').textContent.includes(item) && twoPolicies.text.includes(item));
+}
+assert.ok(!node('totalPrice').textContent.includes('27.43'));
+assert.equal(calculate(65,25000,7500,{age:50,term:15,smoker:'smoker',waiver:'No'}).separatePolicyNote,undefined);
+assert.equal(calculate(65,25000,7500,{age:50,term:15,waiver:'Yes'}).separatePolicyNote,undefined);
+assert.equal(calculate(65,150000,15000,composedProfile).separatePolicyNote,undefined);
+ctx.standaloneProfile={age:31,smoker:'non_smoker',toAge:65,life:50000,ci:10000};
+const singleLife=independentOffer(1,50000,0,6.25),singleCi=independentOffer(2,0,10000,8.30);
+function individualOption(...evidence) {
+  ctx.standaloneSources=evidence;
+  return run('separatePolicyOptions(standaloneProfile,standaloneSources)[0]');
+}
+assert.equal(individualOption(singleLife,singleCi).sum,14.55);
+for(const changes of [{provider:'Aviva'},{source_date:'2026-11-24'},{quoted_term:'33 years'},
+    {occupation_rated:'Yes'},{quoted_tpd:'Own occupation'},{available:'false'},
+    {monthly_premium:''},{quoted_critical_illness_cover:'11000'},{smoker:'Yes'}]) {
+  assert.equal(individualOption(singleLife,{...singleCi,...changes}),undefined);
+}
+assert.equal(individualOption(singleLife,singleCi,{...singleCi,model_id:'3',available:'false'}),undefined);
+assert.equal(individualOption(singleLife,singleCi,{...singleCi,model_id:'4',monthly_premium:'7.99'}),undefined);
+assert.equal(individualOption(singleLife,singleCi,{...singleCi,model_id:'5',available:'false',source_date:'2026-11-26'}),undefined);
+assert.equal(individualOption(singleLife,singleCi,independentOffer(6,50000,10000,12.55)),undefined);
+run("Date.now = () => Date.parse('2030-01-01')");
+assert.equal(individualOption(singleLife,singleCi),undefined);
+run('Date.now = originalClock');

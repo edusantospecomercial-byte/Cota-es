@@ -526,6 +526,39 @@ function lgTermReference(p) {
     "/mês na illustration " + latest.reference + ".";
 }
 
+function separatePolicyOptions(p, rows = reportedRows.concat(verifiedArchiveRows)) {
+  if (!p.life || !p.ci || p.waiver === "Yes") return [];
+  const smoker = p.smoker === "smoker" ? "Yes" : "No";
+  const offers = rows.filter(row => Number(row.age) === p.age && row.smoker === smoker &&
+    Number(row.to_age) === p.toAge && (Number(row.life_cover) === p.life || Number(row.critical_illness_cover) === p.ci));
+  function latestStandalone(items) {
+    if (!items.length) return null;
+    const day = items.reduce((latest, row) => row.source_date > latest ? row.source_date : latest, "");
+    const days = (Date.now() - Date.parse(day)) / 86400000;
+    if (!(days >= 0 && days <= 180)) return null;
+    const sameDay = items.filter(row => row.source_date === day);
+    const reference = sameDay[0];
+    if (sameDay.some(row => row.available !== "true" || row.occupation_rated !== "No" ||
+        row.quoted_term !== "To Age " + p.toAge || (row.quoted_tpd || "None") !== "None" ||
+        row.life_cover !== row.quoted_life_cover || row.critical_illness_cover !== row.quoted_critical_illness_cover ||
+        !Number.isFinite(Number(row.monthly_premium)) || Number(row.monthly_premium) <= 0 ||
+        row.monthly_premium !== reference.monthly_premium || row.product !== reference.product)) return null;
+    return reference;
+  }
+  const options = [];
+  for (const provider of ["Zurich", "Legal & General", "Aviva"]) {
+    const prices = offers.filter(row => row.provider === provider);
+    const life = latestStandalone(prices.filter(row => row.critical_illness_cover === "0"));
+    const ci = latestStandalone(prices.filter(row => row.life_cover === "0"));
+    if (!life || !ci || life.source_date !== ci.source_date || life.model_id === ci.model_id) continue;
+    if (prices.some(row => Number(row.life_cover) === p.life && Number(row.critical_illness_cover) === p.ci &&
+        row.source_date >= life.source_date)) continue;
+    const sum = (Math.round(Number(life.monthly_premium) * 100) + Math.round(Number(ci.monthly_premium) * 100)) / 100;
+    options.push({provider, life, ci, sum});
+  }
+  return options.sort((a, b) => a.sum - b.sum);
+}
+
 function capturedReportFor(p, source = reportedRows) {
   const matching = source.filter(row =>
     Number(row.age) === p.age && Number(row.to_age) === p.toAge &&
@@ -980,6 +1013,7 @@ function makeSummary(p, r) {
   if (r.componentNote) lines.push(r.componentNote);
   if (r.lgTermNote) lines.push(r.lgTermNote);
   if (r.alternativePackage) lines.push(r.alternativePackage);
+  if (r.separatePolicyNote) lines.push(r.separatePolicyNote);
   if (r.complete)
     lines.push("", r.aggregateOnly ? `Orçamento mensal indicativo de ${gbp(r.main + m.total)}. Seguradora a confirmar.` :
       `Total estimado: ${gbp(r.main + m.total)}/mês`);
@@ -1335,8 +1369,20 @@ function render(p) {
         gbp(withWaiver.premium + m.total) + "/mês.";
     }
   }
-  $("alternativePackage").textContent = r.alternativePackage || "";
-  $("alternativePackage").hidden = !r.alternativePackage;
+  if (!r.provider && !priorityMatch.reported && !priorityMatch.exact && !priorityMatch.gap &&
+      !r.waiverPending && !m.unavailable && p.life && p.ci) {
+    const option = separatePolicyOptions(p)[0];
+    if (option) {
+      const {provider, life, ci, sum} = option;
+      r.separatePolicyNote = `Alternativa em duas apólices individuais da ${provider}, até os ${p.toAge} anos. ` +
+        `Vida de ${gbp(p.life)} por ${gbp(Number(life.monthly_premium))}/mês e diagnóstico independente de ${gbp(p.ci)} ` +
+        `por ${gbp(Number(ci.monthly_premium))}/mês. A soma dos prêmios individuais é ${gbp(sum)}/mês.` +
+        (m.c ? ` Com ${gbp(m.total)} da MetLife selecionada, o total estimado em contratos separados é ${gbp(sum + m.total)}/mês.` : "") +
+        ` Comparativos de ${life.source_date}, referências ${life.model_id} e ${ci.model_id}. A contratação simultânea precisa de confirmação.`;
+    }
+  }
+  $("alternativePackage").textContent = [r.alternativePackage, r.separatePolicyNote].filter(Boolean).join(" ");
+  $("alternativePackage").hidden = !$("alternativePackage").textContent;
   $("metlifeResult").textContent = m.unavailable
     ? "MultiProtect indisponível para nova contratação após 65 anos"
     : m.c
