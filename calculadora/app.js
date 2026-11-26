@@ -1048,11 +1048,29 @@ function lifeChildNote(p, m, sources = lifeChildSources, asOf = Date.now()) {
   const premium = Number(offer.monthly_premium);
   const term = offer.waiver_to === "not_requested" ? "sem isenção de mensalidade solicitada" :
     offer.waiver_to === "Expiry" ? "com isenção até o término" : "com isenção durante a vigência e idade-limite de " + offer.waiver_to + " anos";
-  const combined = m.c && !m.unavailable ? " Com a MetLife selecionada (" + gbp(m.total) + "/mês), o total dessa opção é " +
-    gbp(monthlyTotal(premium, m.total)) + "/mês." : "";
+  const supplement = m.c && !m.unavailable ? m.total : 0;
+  const total = monthlyTotal(premium, supplement);
+  const combined = supplement ? " Com a MetLife selecionada (" + gbp(supplement) + "/mês), o total dessa opção é " + gbp(total) + "/mês." : "";
+  let budgetOption = "";
+  if (Number.isFinite(p.monthlyBudget) && p.monthlyBudget > 0 && !m.unavailable &&
+      displayedPence(total) >= displayedPence(p.monthlyBudget)) {
+    let best;
+    for (const {row} of sources.values()) {
+      if (!row || row.age !== offer.age || row.smoker !== offer.smoker || row.to_age !== offer.to_age ||
+          row.waiver_to !== offer.waiver_to || Number(row.life_cover) >= p.life) continue;
+      const ageDays = (asOf - Date.parse(row.source_date)) / 86400000;
+      if (!(ageDays >= 0 && ageDays <= 180)) continue;
+      const candidate = monthlyTotal(Number(row.monthly_premium), supplement);
+      if (displayedPence(candidate) < displayedPence(p.monthlyBudget) && (!best || Number(row.life_cover) > Number(best.row.life_cover)))
+        best = {row, total:candidate};
+    }
+    if (best) budgetOption = " Para ficar abaixo de " + gbp(p.monthlyBudget) + "/mês, há uma opção de " + gbp(Number(best.row.life_cover)) +
+      " de vida. É o maior capital que coube no orçamento entre os valores menores que o pedido nos comparativos recentes. A Zurich ficou em " + gbp(Number(best.row.monthly_premium)) +
+      "/mês no comparativo de " + best.row.source_date + (supplement ? ", totalizando " + gbp(best.total) + "/mês com a MetLife selecionada." : ".");
+  }
   return "Zurich Life + Child ficou em " + gbp(premium) + "/mês para " + gbp(p.life) + " de vida até os " + p.toAge +
     " anos, " + term + ". No mesmo comparativo de " + offer.source_date + ", Zurich Life ficou em " + gbp(Number(offer.standard_monthly)) +
-    "/mês." + combined;
+    "/mês." + combined + budgetOption;
 }
 
 function supplementalLifeNote(p, m, source = supplementalLifeRows) {

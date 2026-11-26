@@ -224,6 +224,20 @@ assert.ok(node("comparisonInventoryScope").textContent.includes(counts.legal65Sh
   assert.equal(describe(input,adult,build([standard],[child,{...child,monthly_premium:"17.99"}]),asOf),"");
   for(const next of [{...standard,sha256:"changed-source"},{...standard,source_date:"2026-11-27",available:"false",monthly_premium:""}])
     assert.equal(describe(input,adult,build([standard,next],[child]),Date.parse("2026-11-27")),"");
+  const portfolio = build(base, variants);
+  const dated = Date.parse("2026-11-26");
+  const expensive = {...input,life:300000,monthlyBudget:28};
+  const adultOption = describe(expensive,adult,portfolio,dated);
+  assert.ok(adultOption.includes("£275,000.00 de vida") && adultOption.includes("£27.64/mês com a MetLife"));
+  const familyOption = describe(expensive,family,portfolio,dated);
+  assert.ok(familyOption.includes("£225,000.00 de vida") && familyOption.includes("£27.89/mês com a MetLife"));
+  const exactly = describe({...expensive,monthlyBudget:27.89},family,portfolio,dated);
+  assert.ok(exactly.includes("£200,000.00 de vida") && exactly.includes("£27.00/mês com a MetLife"));
+  assert.ok(!describe({...expensive,monthlyBudget:1},adult,portfolio,dated).includes("Para ficar abaixo"));
+  assert.ok(!describe({...expensive,monthlyBudget:0},adult,portfolio,dated).includes("Para ficar abaixo"));
+  assert.ok(!describe({...input,monthlyBudget:28},adult,portfolio,dated).includes("Para ficar abaixo"));
+  assert.ok(!describe({...expensive,ci:10000},family,portfolio,dated));
+  assert.ok(!describe({...expensive,smoker:"smoker"},family,portfolio,dated));
   const smoker = variants.find(r=>r.age==="45" && r.life_cover==="30000" && r.to_age==="65" && r.smoker==="Yes" && r.waiver_to==="70");
   const si={age:45,toAge:65,smoker:"smoker",life:30000,ci:0,waiver:"Yes"};
   const sw=build(base.filter(r=>r.sha256===smoker.sha256),[smoker]);
