@@ -291,7 +291,7 @@ function occupationalBasis(input, ...rows) {
   const evidence = rows.map(r => reportedOccupations.get(r.sha256));
   const first = evidence[0];
   if (!first || !["employed", "self-employed"].includes(first.employment) || !first.occupation ||
-      evidence.some((e, i) => !e || e.source_date !== rows[i].source_date || e.model_id !== rows[i].model_id ||
+      evidence.some((e, i) => !e || e.source_date !== rows[i].source_date || e.model_id !== (rows[i].model_id || rows[i].reference) ||
         e.employment !== first.employment || e.occupation !== first.occupation)) return {};
   const normalize = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "")
     .toLowerCase().replace(/[()\s-]+/g, " ").trim();
@@ -301,6 +301,19 @@ function occupationalBasis(input, ...rows) {
   const matched = statuses.some(s => entered === job + " " + s || entered === s + " " + job);
   const label = first.occupation + (first.employment === "self-employed" ? " (autônomo)" : " (empregado)");
   return {occupationLabel: label, occupationMatched: matched, occupationNeedsStatus: entered === job};
+}
+
+function reportsForOccupation(rows, p) {
+  if (!p.occupation) return rows;
+  const matching = new Set(rows.filter(row => occupationalBasis(p.occupation, row).occupationMatched)
+    .map(row => row.sha256));
+  return matching.size ? rows.filter(row => matching.has(row.sha256)) : rows;
+}
+
+function historicalOccupationNote(row, p) {
+  const basis = occupationalBasis(p.occupation, row);
+  if (basis.occupationMatched) return "profissão e vínculo conferidos: " + basis.occupationLabel;
+  return basis.occupationLabel ? "preço depende da profissão: " + basis.occupationLabel : "preço depende da profissão";
 }
 
 function validatedCapitalQuotes(p) {
@@ -374,8 +387,9 @@ function renderFractureComparison(p) {
   const matching = fractureOffers.filter(row => Number(row.age) === p.age && row.smoker === smoking &&
     Number(row.to_age) === p.toAge && Number(row.life_cover) === p.life && Number(row.earlier_ci_cover) === p.ci);
   if (!matching.length) return;
-  const date = matching.reduce((d, row) => row.source_date > d ? row.source_date : d, "");
-  const report = matching.filter(row => row.source_date === date);
+  const jobReports = reportsForOccupation(matching, p);
+  const date = jobReports.reduce((d, row) => row.source_date > d ? row.source_date : d, "");
+  const report = jobReports.filter(row => row.source_date === date);
   $("fractureSource").textContent = "Comparativo de " + date + (p.ci ?
     ". O capital de diagnóstico abaixo é pago por morte ou diagnóstico, no primeiro evento coberto." :
     ". O pedido foi de seguro de vida com adicional de fraturas.");
@@ -392,7 +406,7 @@ function renderFractureComparison(p) {
     if (row.tpd_basis !== "None") detail.push("TPD " + row.tpd_basis);
     if (/^\d+$/.test(row.waiver_to)) detail.push("idade-limite da isenção " + row.waiver_to + " anos");
     else if (row.waiver_to === "Expiry") detail.push("isenção até o fim do contrato");
-    if (row.occupation_rated === "Yes") detail.push("preço depende da profissão");
+    if (row.occupation_rated === "Yes") detail.push(historicalOccupationNote(row, p));
     const part = fractureBreakdowns.get(row.provider + "|" + row.sha256);
     const itemised = itemisedCiPremium(row, part);
     if (itemised && /^\d+$/.test(part.fracture_to_age)) detail.push("fraturas até os " + part.fracture_to_age + " anos");
@@ -441,10 +455,10 @@ function renderCiComparison(p, independentTpd = false) {
   const referencesWithWaiverColumn = new Set(matching.filter(row => row.waiver_to !== "not_shown").map(row => row.reference));
   const requestedWaiver = p.waiver === "Yes";
   const comparable = matching.filter(row => referencesWithWaiverColumn.has(row.reference) === requestedWaiver);
-  const candidates = comparable.length ? comparable : matching;
+  const candidates = reportsForOccupation(comparable.length ? comparable : matching, p);
   const latest = candidates.reduce((a, b) => a.source_date > b.source_date ||
     (a.source_date === b.source_date && Number(a.reference) > Number(b.reference)) ? a : b);
-  const prices = matching.filter(row => row.reference === latest.reference)
+  const prices = candidates.filter(row => row.reference === latest.reference)
     .sort((a, b) => Number(a.monthly_premium) - Number(b.monthly_premium));
   const entries = prices.map(row => {
     const waiver = row.waiver_to === "Expiry" ? "isenção até o fim do contrato" :
@@ -459,7 +473,7 @@ function renderCiComparison(p, independentTpd = false) {
     if (Number(row.quoted_earlier_ci_cover) > 0)
       detail.push("vida ou diagnóstico " + gbp(Number(row.quoted_earlier_ci_cover)));
     detail.push(waiver, row.tpd_basis === "None" ? "oferta sem TPD" : "TPD " + row.tpd_basis);
-    if (row.occupation_rated === "Yes") detail.push("preço depende da profissão");
+    if (row.occupation_rated === "Yes") detail.push(historicalOccupationNote(row, p));
     const breakdown = independentTpd ? null : coreBreakdowns.get(row.provider + "|" + row.sha256);
     const itemised = itemisedCiPremium(row, breakdown);
     return `<dt>${escapeHtml(row.provider)}</dt><dd><b>${gbp(Number(row.monthly_premium))}/mês</b> · ${escapeHtml(detail.join(" · "))}${itemised}</dd>`;
@@ -468,6 +482,8 @@ function renderCiComparison(p, independentTpd = false) {
     " · referência " + latest.reference + " · mensalidades antes da MetLife. " +
     (referencesWithWaiverColumn.has(latest.reference) ? "O relatório traz uma coluna de isenção. Confira a resposta de cada seguradora." :
       "O relatório não informa isenção nas ofertas.");
+  if (candidates.some(row => row.reference === latest.reference && occupationalBasis(p.occupation, row).occupationMatched))
+    $(prefix + "Source").textContent += " O relatório corresponde à profissão e ao vínculo informados.";
   $(prefix + "Offers").innerHTML = entries.join("");
   panel.hidden = false;
   return prices;
@@ -1348,11 +1364,12 @@ function render(p) {
   }
   if (!r.complete && !r.alternativePackage && !m.unavailable && !p.life && p.ci) {
     const alternative = tpdPrices.find(row => Number(row.quoted_independent_ci_cover) === p.ci &&
-      row.quoted_term === `To Age ${p.toAge}` && row.occupation_rated === "No" && row.tpd_basis !== "None");
+      row.quoted_term === `To Age ${p.toAge}` && (row.occupation_rated === "No" || occupationalBasis(p.occupation, row).occupationMatched) && row.tpd_basis !== "None");
     if (alternative) {
       const premium = Number(alternative.monthly_premium);
       r.alternativePackage = "Alternativa documentada com TPD · " + alternative.provider + " · " +
         gbp(p.ci) + " de diagnóstico independente até os " + p.toAge + " anos por " + gbp(premium) + "/mês.";
+      if (alternative.occupation_rated === "Yes") r.alternativePackage += " " + historicalOccupationNote(alternative, p) + ".";
       if (m.c) r.alternativePackage += " Com a MetLife selecionada (" + gbp(m.total) + "), o pacote soma " + gbp(premium + m.total) + "/mês.";
       if (p.waiver === "Yes" && alternative.waiver_to !== "Expiry" && !(Number(alternative.waiver_to) >= p.toAge))
         r.alternativePackage += " A isenção até o fim do contrato precisa de confirmação.";

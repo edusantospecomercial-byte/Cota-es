@@ -790,9 +790,10 @@ for (const change of [{monthly_premium:'12.51'},{quoted_term:'33 years'},{quoted
 assert.equal(fromParts([...partOffers,{...partOffers.at(-1),model_id:'11',monthly_premium:'12.49'}]),undefined);
 
 const ratedSources = run('reportedOccupations');
+const occupationalReports = reported.concat(run('verifiedArchiveRows'),run('acceleratedOffers'),run('tpdOffers'),run('fractureOffers'));
 for (const [digest, basis] of ratedSources) {
-  const rated = reported.find(r => r.sha256 === digest && r.occupation_rated === 'Yes');
-  assert.ok(rated && rated.source_date === basis.source_date && rated.model_id === basis.model_id);
+  const rated = occupationalReports.find(r => r.sha256 === digest && r.occupation_rated === 'Yes');
+  assert.ok(rated && rated.source_date === basis.source_date && (rated.model_id || rated.reference) === basis.model_id);
   assert.ok(basis.employment === 'employed' || basis.employment === 'self-employed');
 }
 const occupationInput={age:31,term:34,waiver:'No',occupation:'Housekeeper (empregada)'};
@@ -849,3 +850,12 @@ assert.equal(individualOption(singleLife,singleCi,independentOffer(6,50000,10000
 run("Date.now = () => Date.parse('2030-01-01')");
 assert.equal(individualOption(singleLife,singleCi),undefined);
 run('Date.now = originalClock');
+
+const smokerJob={age:40,term:25,smoker:'smoker',occupation:'Self-employed Director - Company - Admin only',waiver:'Yes'};
+const privateCi=calculate(65,50000,10000,smokerJob);
+assert.match(node('acceleratedSource').textContent,/1078482136.*profissão e ao vínculo informados/);
+assert.match(node('acceleratedOffers').innerHTML,/Legal &amp; General<\/dt><dd><b>£22\.68\/mês<\/b> · 24 anos de prazo/);
+assert.ok(node('acceleratedOffers').innerHTML.includes('profissão e vínculo conferidos: Director - Company - Admin only (autônomo)'));
+assert.ok(!privateCi.text.includes('£22.68'));
+calculate(65,50000,10000,{...smokerJob,occupation:'Stock manager'});
+assert.ok(!node('acceleratedOffers').innerHTML.includes('profissão e vínculo conferidos'));
