@@ -22,7 +22,7 @@ const families = [
     filter: (row) =>
       Number(row.life_component) > 0 &&
       Number(row.critical_illness_component) === 0 &&
-      !/discounted|multipolicy/i.test(row.product),
+      !/discounted|multipolicy|package component/i.test(row.product),
     comparablePremium: (row) =>
       Number(row.base_life_monthly) || Number(row.total_monthly),
   },
@@ -32,7 +32,7 @@ const families = [
     filter: (row) =>
       Number(row.life_component) > 0 &&
       Number(row.critical_illness_component) > 0 &&
-      !/earlier|enhanced|upgraded|extra|child|discounted|multipolicy/i.test(row.product),
+      !/earlier|enhanced|upgraded|extra|child|discounted|multipolicy|package component/i.test(row.product),
     comparablePremium: (row) =>
       Number(row.base_life_monthly) + Number(row.base_ci_monthly) ||
       Number(row.total_monthly),
@@ -57,6 +57,11 @@ for (const family of families) {
       expectedByKey.set(key, { premium, provider: row.provider, product: row.product });
   }
 
+  if (!expectedByKey.size) {
+    report[family.name] = { keysCompared: 0, within20: 0, maxOverestimate: null, worstKey: null };
+    if (family.name === "life") failures.push({ family: family.name, issue: "No comparable life premiums" });
+    continue;
+  }
   const comparisons = [...expectedByKey].map(([key, expected]) => {
     const actual = Number(family.model.lookup?.[key]);
     const overestimate = (actual - expected.premium) / expected.premium;

@@ -157,7 +157,7 @@ console.log(JSON.stringify({ verifiedReportsWithWaiver: reports.size, resolvedPr
 const reported = run("reportedRows");
 const verifiedReports = group(reported, "model_id");
 assert.ok(node("baseStatus").textContent.includes(verifiedReports.size + " cenários"));
-assert.ok(node("baseStatus").textContent.includes("500 registros em 389 illustrations distintas"));
+assert.ok(node("baseStatus").textContent.includes("504 registros em 389 illustrations distintas"));
 assert.ok(node("baseStatus").textContent.includes(reported.filter(r => r.available === "true").length + " mensalidades"));
 // The public inventory counts separately by insurer and the printed report identifier.
 const pdfIndex = run("parsePriorityCsv")(readFileSync(new URL("../data/comparison-pdf-index.csv", import.meta.url), "utf8"));
@@ -949,8 +949,8 @@ assert.equal(run('predictBudget(crossing, curveProfile, 19.37)'), 19.37);
 const smoker43 = {...smoker40, age: 43, term: 22};
 const smoker43Base = calculate(65, 50000, 0, smoker43);
 assert.ok(smoker43Base.aggregateOnly && smoker43Base.complete);
-assert.equal(smoker43Base.main.toFixed(2), '14.84');
-assert.equal(node('totalPrice').textContent, '£27.84/mês');
+assert.equal(smoker43Base.main.toFixed(2), '14.76');
+assert.equal(node('totalPrice').textContent, '£27.76/mês');
 for (const clue of ['Opção com isenção', 'Aviva', '2026-09-14', '£15.30', '£28.30/mês']) {
   assert.ok(smoker43Base.alternativePackage.includes(clue), clue);
   assert.ok(node('alternativePackage').textContent.includes(clue), clue);
@@ -983,7 +983,7 @@ assert.equal(calculate(65, 30000, 0, smoker47).main, lifeWithItemisation.main);
 assert.equal(calculate(65, 30000, 0, smoker47).componentNote, undefined);
 run('coreBreakdowns = availableBreakdowns');
 
-for (const [age, life, expected, subtotal] of [[42,50000,'13.53','26.53'], [44,50000,'16.06','29.06'], [45,50000,'17.69','30.69'], [55,100000,'57.24','70.24']]) {
+for (const [age, life, expected, subtotal] of [[42,50000,'13.48','26.48'], [44,50000,'16.16','29.16'], [45,50000,'17.69','30.69'], [55,100000,'57.24','70.24']]) {
   const profile = {age, smoker:'smoker', term:65-age, waiver:'No'};
   const base = calculate(65, life, 0, profile);
   const bundle = calculate(65, life, life / 5, profile);

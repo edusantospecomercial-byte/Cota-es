@@ -20,7 +20,7 @@ const families = {
   life: {
     model: catalog.models.life_only,
     rows: rows.filter((row) => Number(row.life_component) > 0 && Number(row.critical_illness_component) === 0
-      && !/discounted|multipolicy/i.test(row.product)),
+      && !/discounted|multipolicy|package component/i.test(row.product)),
     minimumCoverage: 1,
   },
   standardCombined: {
@@ -28,7 +28,7 @@ const families = {
     rows: rows.filter((row) =>
       Number(row.life_component) > 0
       && Number(row.critical_illness_component) > 0
-      && !/earlier|discounted|multipolicy|enhanced|upgraded|extra|child/i.test(row.product)
+      && !/earlier|discounted|multipolicy|package component|enhanced|upgraded|extra|child/i.test(row.product)
     ),
     minimumCoverage: 1,
   },
@@ -47,6 +47,11 @@ for (const [name, family] of Object.entries(families)) {
       row.smoker === "true" ? 1 : 0,
     ].join("|");
     if (family.model.lookup?.[key] != null) keyed += 1;
+  }
+  if (!family.rows.length) {
+    report[name] = { comparableRecords: 0, keyedRecords: 0, keyCoverage: null };
+    if (name === "life") failures.push({ name, issue: "No life records available for coverage checks" });
+    continue;
   }
   const coverage = keyed / family.rows.length;
   report[name] = {

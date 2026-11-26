@@ -128,6 +128,29 @@ if (catalog.models.life_only.lookup['57|69|50000|0|0'] === 46.43 ||
     model.lookup['26|64|10000|10000|1'] === 11.16)
   failures.push({ issue: 'Historical L&G premium reused for incompatible benefits or smoking status' });
 
+// The £35.77 Aviva package contains £50k life and £10k life or earlier CI.
+const avivaPackage = illustrationRows.find(row => row.sha256 === '7a981c1026538918932d9678c629c2ad1c6da20057bbff53c60a8a5c81cfc0ad' && row.total_monthly === '35.77');
+if (avivaPackage?.product !== 'Life + Life or Earlier CI Core' || avivaPackage.life_component !== '50000' ||
+    avivaPackage.critical_illness_component !== '10000' || avivaPackage.base_life_monthly !== '18.92' ||
+    avivaPackage.base_ci_monthly !== '16.34' || avivaPackage.optional_monthly !== '0.51' ||
+    model.lookup['56|70|60000|10000|0'] === 35.77 || model.lookup['49|65|10000|10000|0'] === 9.89) {
+  failures.push({ issue: 'Aviva shared life and CI premium reused for an independent diagnosis benefit' });
+}
+const independentSmoker = illustrationRows.find(row => row.sha256 === 'fd563b6a9784aaa755cc9a501bc13644a1215b2f7b29691c6b1be1eade9b142c' && row.total_monthly === '29.31');
+if (independentSmoker?.product !== 'Critical Illness+ Core (package component)' || independentSmoker.smoker !== 'true' ||
+    independentSmoker.life_component !== '0' || independentSmoker.critical_illness_component !== '10000' ||
+    independentSmoker.base_ci_monthly !== '28.78' || independentSmoker.optional_monthly !== '0.53') {
+  failures.push({ issue: 'Aviva independent CI component differs from the smoker illustration' });
+}
+
+const correctedZurichLife = illustrationRows.find(row => row.sha256.startsWith('577d3298f12e'));
+if (correctedZurichLife?.product !== 'Life discounted multipolicy' || correctedZurichLife.life_component !== '50000' ||
+    correctedZurichLife.critical_illness_component !== '0' || correctedZurichLife.total_monthly !== '8.61' ||
+    catalog.models.life_only.lookup['59|70|20000|0|1'] !== 30.35 ||
+    model.lookup['32|65|160000|10000|0'] === 14.07 || model.lookup['34|65|70000|20000|0'] === 14.69) {
+  failures.push({ issue: 'Zurich historical policy used for an incompatible family or capital' });
+}
+
 const hashes = illustrationRows.map((row) => row.sha256);
 const illustrationFingerprints = illustrationRows.map((row) => [
   row.sha256,
@@ -139,15 +162,15 @@ const illustrationFingerprints = illustrationRows.map((row) => [
   row.total_monthly,
 ].join('|'));
 if (
-  illustrationRows.length !== 500
+  illustrationRows.length !== 504
   || new Set(hashes).size !== 389
   || catalog.audit?.illustrationValidationDocuments !== new Set(hashes).size
   || new Set(illustrationFingerprints).size !== illustrationRows.length
   || hashes.some((hash) => !/^[a-f0-9]{64}$/.test(hash))
-  || catalog.audit?.illustrationValidationRecords !== 500
+  || catalog.audit?.illustrationValidationRecords !== 504
 ) {
   failures.push({
-    expectedIllustrationValidation: { rows: 500, uniqueDocuments: 389, uniqueRecords: 500, auditCount: 500 },
+    expectedIllustrationValidation: { rows: 504, uniqueDocuments: 389, uniqueRecords: 504, auditCount: 504 },
     actualIllustrationValidation: {
       rows: illustrationRows.length,
       uniqueDocuments: new Set(hashes).size,
@@ -207,22 +230,18 @@ if (
 
 const lifeModel = catalog.models?.life_only;
 const exactHistoryAnchors = [
-  { key: '49|65|10000|10000|0', expected: 9.89, actual: model.lookup['49|65|10000|10000|0'] },
   { key: '56|70|50000|0|0', expected: 17.29, actual: lifeModel?.lookup?.['56|70|50000|0|0'] },
   { key: '38|65|100000|0|0', expected: 9.26, actual: lifeModel?.lookup?.['38|65|100000|0|0'] },
   { key: '36|65|100000|0|0', expected: 8.44, actual: lifeModel?.lookup?.['36|65|100000|0|0'] },
   { key: '61|85|80000|0|0', expected: 59.77, actual: lifeModel?.lookup?.['61|85|80000|0|0'] },
   { key: '46|65|500000|0|0', expected: 49.28, actual: lifeModel?.lookup?.['46|65|500000|0|0'] },
-  { key: '32|65|160000|10000|0', expected: 14.07, actual: model.lookup['32|65|160000|10000|0'] },
   { key: '57|69|50000|0|1', expected: 46.43, actual: lifeModel?.lookup?.['57|69|50000|0|1'] },
-  { key: '56|70|60000|10000|0', expected: 35.77, actual: model.lookup['56|70|60000|10000|0'] },
   { key: '41|65|100000|0|0', expected: 10.90, actual: lifeModel?.lookup?.['41|65|100000|0|0'] },
   { key: '54|64|50000|0|0', expected: 13.01, actual: lifeModel?.lookup?.['54|64|50000|0|0'] },
   { key: '54|65|50000|0|0', expected: 15.12, actual: lifeModel?.lookup?.['54|65|50000|0|0'] },
   { key: '47|69|80000|0|0', expected: 14.13, actual: lifeModel?.lookup?.['47|69|80000|0|0'] },
   { key: '47|69|100000|0|0', expected: 17.16, actual: lifeModel?.lookup?.['47|69|100000|0|0'] },
   { key: '47|70|70000|0|0', expected: 13.27, actual: lifeModel?.lookup?.['47|70|70000|0|0'] },
-  { key: '34|65|70000|20000|0', expected: 14.69, actual: model.lookup['34|65|70000|20000|0'] },
   { key: '34|65|50000|10000|0', expected: 7.32, actual: model.lookup['34|65|50000|10000|0'] },
   { key: '54|65|100000|0|0', expected: 19.59, actual: lifeModel?.lookup?.['54|65|100000|0|0'] },
   { key: '51|75|50000|10000|0', expected: 21.36, actual: model.lookup['51|75|50000|10000|0'] },
