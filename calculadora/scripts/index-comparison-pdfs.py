@@ -1,7 +1,7 @@
 """Index the printed reference in original comparison PDFs without exporting it.
 
 Pass one or more PDFs or folders, optionally with additional paths on stdin. Only
-PDFs used by the eight comparison tables are read. Re-run after importing quotes.
+PDFs used by the comparison tables are read. Re-run after importing quotes.
 Use --rebuild to verify every entry again from the originals.
 """
 import argparse
@@ -19,7 +19,7 @@ DATA = Path(__file__).resolve().parents[1] / "data"
 INDEX = DATA / "comparison-pdf-index.csv"
 SOURCES = ("solutionbuilder-observed-2026-11-24", "verified-archive-terms",
            "comparisons-with-waiver", "waiver-individual-offers", "accelerated-comparisons",
-           "accelerated-maturity-declines", "independent-ci-tpd", "fracture-comparisons")
+           "accelerated-maturity-declines", "independent-ci-tpd", "fracture-comparisons", "supplemental-life-offers")
 
 
 def main():

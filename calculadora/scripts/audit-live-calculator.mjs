@@ -11,6 +11,7 @@ const localCatalog = JSON.parse(readFileSync(join(calculatorDir, "data/models.js
 const expectedAppVersion = localIndex.match(/app\.js\?v=([a-f0-9]+)/)?.[1];
 const criticalAssets = [
   "data/comparison-pdf-index.csv",
+  "data/supplemental-life-offers.csv",
   "data/accelerated-comparisons.csv",
   "data/waiver-individual-offers.csv",
   "data/independent-ci-tpd.csv",

@@ -16,6 +16,7 @@ let catalog = { models: {} },
   coreBreakdowns = new Map(),
   tpdOffers = [],
   fractureOffers = [],
+  supplementalLifeRows = [],
   fractureBreakdowns = new Map(),
   lgIllustratedTerms = [],
   lastPayload = null;
@@ -68,6 +69,7 @@ async function init() {
     loadedFractureBreakdowns,
     loadedOccupations,
     comparisonIndex,
+    loadedSupplementalLife,
   ] = await Promise.all([
     fetch("./data/models.json", { cache: "no-store" })
       .then((r) => r.json())
@@ -160,9 +162,12 @@ async function init() {
       .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
     fetch("./data/comparison-pdf-index.csv", { cache: "no-store" })
       .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
+    fetch("./data/supplemental-life-offers.csv", { cache: "no-store" })
+      .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
   ]);
+  supplementalLifeRows = loadedSupplementalLife;
   showComparisonInventory(comparisonIndex, [loadedReports, verifiedArchive, loadedWaiverRows,
-    loadedIndividualWaivers, loadedAccelerated, loadedMaturityDeclines, loadedTpdOffers, loadedFractureOffers]);
+    loadedIndividualWaivers, loadedAccelerated, loadedMaturityDeclines, loadedTpdOffers, loadedFractureOffers, loadedSupplementalLife]);
   reportedOccupations = new Map(loadedOccupations.map(row => [row.sha256, row]));
   fractureOffers = loadedFractureOffers;
   fractureBreakdowns = new Map(loadedFractureBreakdowns.map(row => [row.provider + "|" + row.comparison_sha256, row]));
@@ -222,7 +227,7 @@ function parsePriorityCsv(csv) {
 }
 // Deduplicate reprints by the reference on the PDF, even when the PDF bytes differ.
 function comparisonInventory(index, tables) {
-  if (!index.length || tables.length !== 8 || tables.some(rows => !rows?.length)) return null;
+  if (!index.length || tables.length !== 9 || tables.some(rows => !rows?.length)) return null;
   const reportByHash = new Map(index.map(row => [row.sha256, row.report_key]));
   if (reportByHash.size !== index.length || index.some(row =>
     !/^[a-f0-9]{64}$/.test(row.sha256) || !/^[a-f0-9]{32}$/.test(row.report_key))) return null;
@@ -243,7 +248,8 @@ function comparisonInventory(index, tables) {
         const pence = Math.round(Number(row.monthly_premium) * 100);
         if (pence <= 0 || (item.pence && item.pence !== pence)) return null;
         item.pence = pence;
-        if (row.available === "true" && row.to_age === "65" && row.quoted_term === "To Age 65" &&
+        if ((row.available === "true" || /^[a-f0-9]{64}$/.test(row.no_riders_illustration_sha256 || "")) &&
+            row.to_age === "65" && row.quoted_term === "To Age 65" &&
             row.occupation_rated === "No" && (!row.quoted_tpd || row.quoted_tpd === "None") &&
             row.quoted_life_cover === row.life_cover && row.quoted_critical_illness_cover === row.critical_illness_cover)
           item.standard65 = true;
@@ -266,7 +272,7 @@ function showComparisonInventory(index, tables) {
   const count = comparisonInventory(index, tables);
   if (!count) {
     $("comparisonInventoryTitle").textContent = "Contagem dos comparativos indisponível";
-    $("comparisonInventoryScope").textContent = "A contagem exige as oito fontes de preços e o índice dos PDFs correspondentes.";
+    $("comparisonInventoryScope").textContent = "A contagem exige todas as fontes de preços e o índice dos PDFs correspondentes.";
     $("comparisonInventoryProviders").textContent = "";
     return;
   }
@@ -617,6 +623,32 @@ function lgTermReference(p) {
     "/mês na illustration " + latest.reference + ".";
 }
 
+function supplementalLifeNote(p, m, source = supplementalLifeRows) {
+  if (!p.life || p.ci) return "";
+  const smoker = p.smoker === "smoker" ? "Yes" : "No";
+  const matching = source.filter(row => row.smoker === smoker && Number(row.age) === p.age &&
+    Number(row.to_age) === p.toAge && Number(row.life_cover) === p.life);
+  if (!matching.length) return "";
+  const notes = new Set();
+  for (const provider of new Set(matching.map(row => row.provider))) {
+    const offers = matching.filter(row => row.provider === provider);
+    const newest = offers.reduce((date, row) => row.source_date > date ? row.source_date : date, "");
+    for (const row of offers.filter(row => row.source_date === newest)) {
+      const waiver = row.no_riders_illustration_sha256 ? "a illustration confirma vida sem adicionais" :
+        row.waiver_to === "Expiry" ? "isenção de mensalidade até o fim do contrato" :
+        /^\d+$/.test(row.waiver_to) ? "idade-limite da isenção de mensalidade de " + row.waiver_to + " anos" :
+        row.waiver_to === "not_requested" ? "isenção de mensalidade não solicitada" : "isenção de mensalidade sem confirmação";
+      const term = row.quoted_term.startsWith("To Age ") ? "até os " + row.quoted_term.slice(7) + " anos" :
+        "por " + row.quoted_term.split(" ")[0] + " anos de prazo";
+      const premium = Number(row.monthly_premium);
+      const metlife = m.c && !m.unavailable ? " Com a MetLife selecionada, esse cenário soma " + gbp(premium + m.total) + "/mês." : "";
+      notes.add(provider + " ofereceu " + gbp(Number(row.quoted_life_cover)) + " " + term + " por " + gbp(premium) +
+        "/mês em " + newest + " (" + waiver + ")." + metlife);
+    }
+  }
+  return "Pedido histórico de " + gbp(p.life) + " de vida até os " + p.toAge + " anos. " + [...notes].join(" ");
+}
+
 function lifeWithinBudget(p, m, rows = reportedRows.concat(verifiedArchiveRows)) {
   if (!(p.monthlyBudget > 0 && p.life > 0) || m.unavailable) return null;
   const budget = Math.round(p.monthlyBudget * 100), extra = Math.round(m.total * 100);
@@ -647,6 +679,20 @@ function lifeWithinBudget(p, m, rows = reportedRows.concat(verifiedArchiveRows))
       const key = life + "|" + row.provider, group = groups.get(key) || [];
       group.push({life, provider: row.provider, product: row.product, date: row.source_date, ref: row.model_id,
         price: valid ? Number(row.monthly_premium) : null});
+      groups.set(key, group);
+    }
+  }
+  if (!p.ci) {
+    for (const row of supplementalLifeRows) {
+      const life = Number(row.quoted_life_cover);
+      if (Number(row.age) !== p.age || Number(row.to_age) !== p.toAge || row.smoker !== smoking ||
+          row.occupation_rated !== "No" || row.quoted_term !== "To Age " + p.toAge || !(life > 0 && life < p.life)) continue;
+      const eligible = p.waiver === "Yes" ? row.waiver_to === "Expiry" || Number(row.waiver_to) >= p.toAge :
+        Boolean(row.no_riders_illustration_sha256);
+      if (!eligible) continue;
+      const key = life + "|" + row.provider, group = groups.get(key) || [];
+      group.push({life, provider: row.provider, price: Number(row.monthly_premium), product: row.product,
+        date: row.source_date, ref: row.sha256});
       groups.set(key, group);
     }
   }
@@ -1169,6 +1215,7 @@ function makeSummary(p, r) {
   if (r.ageNote) lines.push(r.ageNote);
   if (r.componentNote) lines.push(r.componentNote);
   if (r.lgTermNote) lines.push(r.lgTermNote);
+  if (r.supplementalLifeNote) lines.push(r.supplementalLifeNote);
   if (r.partialCiNote) lines.push(r.partialCiNote);
   if (r.alternativePackage) lines.push(r.alternativePackage);
   if (r.separatePolicyNote) lines.push(r.separatePolicyNote);
@@ -1380,6 +1427,7 @@ function priceProtection(p, m) {
     }
   }
   r.lgTermNote = lgTermReference(p);
+  r.supplementalLifeNote = supplementalLifeNote(p, m);
   r.partialCiNote = historicalPartialCiNote(p);
   const avivaRecord = illustratedLifeFor(p, "Aviva");
   if (avivaRecord) {
@@ -1492,6 +1540,7 @@ function render(p) {
   if (r.illustrationNote)
     priorityDetail += `<dt>Prêmio-base documentado</dt><dd>${escapeHtml(r.illustrationNote)}</dd>`;
   if (r.ageNote) priorityDetail += `<dt>Estimativa entre idades</dt><dd>${escapeHtml(r.ageNote)}</dd>`;
+  if (r.supplementalLifeNote) priorityDetail += `<dt>Condições de vida no comparativo</dt><dd>${escapeHtml(r.supplementalLifeNote)}</dd>`;
   if (r.partialCiNote) priorityDetail += `<dt>Outras condições encontradas</dt><dd>${escapeHtml(r.partialCiNote)}</dd>`;
   if (r.lgTermNote) priorityDetail += `<dt>Prazo e preço documentados pela L&amp;G</dt><dd>${escapeHtml(r.lgTermNote)}</dd>`;
   if (r.componentNote) priorityDetail += `<dt>Composição da apólice histórica</dt><dd>${escapeHtml(r.componentNote)}</dd>`;

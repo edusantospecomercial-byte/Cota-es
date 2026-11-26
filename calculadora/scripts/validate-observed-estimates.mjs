@@ -160,7 +160,7 @@ assert.ok(node("baseStatus").textContent.includes(verifiedReports.size + " cená
 assert.ok(node("baseStatus").textContent.includes(reported.filter(r => r.available === "true").length + " mensalidades"));
 // The public inventory counts separately by insurer and the printed report identifier.
 const pdfIndex = run("parsePriorityCsv")(readFileSync(new URL("../data/comparison-pdf-index.csv", import.meta.url), "utf8"));
-const tables = run("[reportedRows, verifiedArchiveRows, waiverRows, individualWaivers, acceleratedOffers, maturityDeclines, tpdOffers, fractureOffers]");
+const tables = run("[reportedRows, verifiedArchiveRows, waiverRows, individualWaivers, acceleratedOffers, maturityDeclines, tpdOffers, fractureOffers, supplementalLifeRows]");
 const reportKeys = new Map(pdfIndex.map(item => [item.sha256, item.report_key]));
 const withPrice = tables.flat().filter(row => Number(row.monthly_premium) > 0);
 const distinct = rows => new Set(rows.map(row => reportKeys.get(row.sha256) + "|" + row.provider)).size;
@@ -177,7 +177,7 @@ assert.equal(counts.smokers, distinct(withPrice.filter(r => ["True", "Yes"].incl
 assert.equal(counts.requested65, distinct(withPrice.filter(r => r.to_age === "65")));
 assert.equal(counts.withoutPrice, distinct(tables.flat()) - counts.prices);
 assert.ok(counts.standard65 > counts.standardSmokers65 && counts.standardSmokers65 > 0);
-assert.equal(inventory(pdfIndex, [...tables.slice(0, 7), []]), null);
+assert.equal(inventory(pdfIndex, [...tables.slice(0, -1), []]), null);
 assert.equal(inventory(pdfIndex.slice(1), tables), null);
 const duplicate = {...withPrice[0]};
 const includeRow = row => [tables[0].concat(row), ...tables.slice(1)];
@@ -240,7 +240,42 @@ const calculate = (toAge, life, ci, extra = {}) => {
   run("render({...payload(), ...inputs})");
   return run("lastPayload.result");
 };
+// The insurer can return a different capital or maturity at its minimum premium.
+const minimumOffer = calculate(65, 50000, 0, {age:20, term:45, waiver:"No"});
+const minimumNote = minimumOffer.supplementalLifeNote;
+for (const text of ["Pedido histórico de £50,000.00", "Aviva ofereceu £99,992.00 até os 65 anos por £5.00",
+  "Legal & General ofereceu £142,371.00 por 44 anos de prazo por £6.00", "£18.00/mês", "isenção de mensalidade de 70 anos"]) {
+  assert.ok(minimumNote.includes(text), text);
+  assert.ok(minimumOffer.text.includes(text), text);
+}
+assert.ok(node("details").innerHTML.includes("Condições de vida no comparativo"));
+const standardProofs = new Map(run("illustratedLifeRows").filter(r => r.provider === "Zurich").map(r => [r.sha256,r]));
+const baselineInsurers = new Set(tables.slice(0,-1).flat().map(r => reportKeys.get(r.sha256) + "|" + r.provider));
+for (const row of run("supplementalLifeRows")) {
+  const id = reportKeys.get(row.sha256) + "|" + row.provider;
+  assert.ok(!baselineInsurers.has(id), "supplemental return counted twice: " + id);
+  baselineInsurers.add(id);
+  if (!row.no_riders_illustration_sha256) continue;
+  assert.match(row.no_riders_illustration_sha256, /^[a-f0-9]{64}$/);
+  // The life catalogue keeps a single PDF for reprints with the same economics.
+  const evidence = standardProofs.get(row.no_riders_illustration_sha256) || [...standardProofs.values()].find(proof =>
+    ["source_date","age","smoker","to_age"].every(key => proof[key] === row[key]) && proof.policy_count === "1" &&
+    proof.life_cover === row.quoted_life_cover && proof.base_monthly === row.monthly_premium &&
+    proof.policy_monthly === row.monthly_premium && Number(proof.additional_monthly) === 0 && Number(proof.discount_monthly) === 0);
+  assert.ok(evidence && evidence.policy_count === "1" && Number(evidence.additional_monthly) === 0 && Number(evidence.discount_monthly) === 0);
+  for (const key of ["source_date","age","smoker","to_age"]) assert.equal(row[key],evidence[key]);
+  assert.equal(row.quoted_life_cover,evidence.life_cover);
+  assert.equal(row.monthly_premium,evidence.policy_monthly);
+}
+assert.ok(calculate(65,30000,0,{age:37,term:28,smoker:"smoker",waiver:"No"}).supplementalLifeNote.includes("£7.17/mês em 2026-08-11 (isenção de mensalidade sem confirmação)"));
+assert.ok(!calculate(65,30000,10000,{age:37,term:28,smoker:"smoker"}).supplementalLifeNote);
+assert.ok(!calculate(65,30000,0,{age:37,term:28,smoker:"non_smoker"}).supplementalLifeNote);
+assert.ok(calculate(65,100000,0,{age:60,term:5,waiver:"No"}).supplementalLifeNote.includes("£26.48/mês em 2026-05-14 (a illustration confirma vida sem adicionais)"));
 run('globalThis.clockBeforeBudgetTest = Date.now; Date.now = () => Date.parse("2026-11-26T00:00:00Z")');
+const minimumBudget = run("lifeWithinBudget")({age:20,toAge:65,life:100000,ci:0,waiver:"Yes",smoker:"non_smoker",monthlyBudget:19}, {c:1,total:13}, []);
+assert.equal(minimumBudget.life, 99992);
+assert.equal(minimumBudget.total, 18);
+assert.equal(run("lifeWithinBudget")({age:20,toAge:65,life:100000,ci:0,waiver:"No",smoker:"non_smoker",monthlyBudget:19}, {c:1,total:13}, []), null);
 const overBudget = calculate(65, 150000, 0, {monthlyBudget:28, waiver:"No"});
 assert.ok(overBudget.affordableNote.includes("£75,000.00 de vida"));
 assert.ok(overBudget.affordableNote.includes("£14.91 + £13.00") && overBudget.affordableNote.includes("£27.91/mês"));
