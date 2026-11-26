@@ -449,6 +449,25 @@ function renderCiComparison(p, independentTpd = false) {
   return prices;
 }
 
+function avivaLifeInPackage(p) {
+  if (!p.life || p.ci || p.waiver === "Yes") return null;
+  const smoker = p.smoker === "smoker" ? "Yes" : "No";
+  const matches = [];
+  for (const offer of acceleratedOffers) {
+    if (offer.provider !== "Aviva" || offer.occupation_rated !== "No" || offer.smoker !== smoker ||
+        Number(offer.age) !== p.age || offer.quoted_term !== `To Age ${p.toAge}` ||
+        Number(offer.quoted_life_cover) !== p.life || Number(offer.quoted_earlier_ci_cover) <= 0) continue;
+    const part = coreBreakdowns.get("Aviva|" + offer.sha256);
+    if (part && part.reference === offer.reference && part.total_monthly === offer.monthly_premium &&
+        part.life_cover === offer.quoted_life_cover && part.earlier_ci_cover === offer.quoted_earlier_ci_cover &&
+        part.source_date === offer.source_date && Number(part.life_monthly) > 0) matches.push(part);
+  }
+  if (!matches.length) return null;
+  matches.sort((a, b) => b.source_date.localeCompare(a.source_date) || b.reference.localeCompare(a.reference));
+  const latest = matches[0];
+  return matches.some(r => r.source_date === latest.source_date && r.life_monthly !== latest.life_monthly) ? null : latest;
+}
+
 function illustratedLifeFor(p, provider) {
   if (!p.life || p.ci || p.waiver === "Yes") return null;
   const smoker = p.smoker === "smoker" ? "Yes" : "No";
@@ -1133,6 +1152,11 @@ function render(p) {
   if (r.aggregateOnly) {
     r.budgetNote = "Referência de orçamento calculada pelo modelo geral. O valor para Zurich, Legal & General ou Aviva precisa de confirmação.";
     warnings.unshift(r.budgetNote);
+    const part = !avivaRecord && avivaLifeInPackage(p);
+    if (part) r.componentNote = "Aviva · no pacote de " + part.source_date + " (ref. " + part.reference +
+      "), a parcela de vida de " + gbp(p.life) + " custava " + gbp(Number(part.life_monthly)) +
+      "/mês antes de adicionais. O pacote também incluía uma apólice de vida ou diagnóstico de " +
+      gbp(Number(part.earlier_ci_cover)) + ". O preço para contratar apenas vida precisa de confirmação.";
   }
   if (p.life && p.ci && !r.providerQuotes?.length && !priorityMatch.reported && r.supported) {
     r.reportNote = "A base histórica inclui coberturas em que o diagnóstico antecipa o pagamento de vida. Confirme o preço do pagamento independente no SolutionBuilder.";

@@ -709,3 +709,20 @@ assert.equal(smoker43WithWaiver.alternativePackage, undefined);
 assert.equal(node('alternativePackage').hidden, true);
 assert.equal(calculate(65, 50001, 0, smoker43).alternativePackage, undefined);
 assert.equal(calculate(65, 50000, 10000, smoker43).alternativePackage, undefined);
+
+const smoker47 = {...smoker40, age: 47, term: 18};
+const lifeWithItemisation = calculate(65, 30000, 0, smoker47);
+assert.ok(lifeWithItemisation.aggregateOnly);
+for (const part of ['Aviva', '£13.30/mês antes de adicionais', '2026-10-09', 'apenas vida precisa de confirmação']) {
+  assert.ok(lifeWithItemisation.componentNote.includes(part), part);
+  assert.ok(lifeWithItemisation.text.includes(part), part);
+  assert.ok(node('details').innerHTML.includes(part), part);
+}
+assert.equal(calculate(65, 30001, 0, smoker47).componentNote, undefined);
+ctx.bundleProfile = {age: 47, smoker: 'smoker', life: 30000, toAge: 65, ci: 0, waiver: 'No'};
+assert.equal(run('avivaLifeInPackage({...bundleProfile, waiver:"Yes"})'), null);
+assert.equal(run('avivaLifeInPackage({...bundleProfile, ci:5000})'), null);
+run('globalThis.availableBreakdowns = coreBreakdowns; coreBreakdowns = new Map()');
+assert.equal(calculate(65, 30000, 0, smoker47).main, lifeWithItemisation.main);
+assert.equal(calculate(65, 30000, 0, smoker47).componentNote, undefined);
+run('coreBreakdowns = availableBreakdowns');
