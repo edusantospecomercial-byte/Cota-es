@@ -392,6 +392,19 @@ assert.ok(unverifiedCi.partialCiNote.includes("34984397"));
 assert.ok(unverifiedCi.partialCiNote.includes("precisam de confirmação"));
 assert.ok(!calculate(65, 75000, 10000, {age:46, term:19}).providerQuotes?.length);
 assert.equal(run("historicalCiPrices")({age:46,toAge:65,life:50000,ci:10000,smoker:"smoker"}), "");
+const penceForDisplay = run("displayedPence");
+assert.deepEqual([1.005, 10.075, 1.00499, 999.995].map(penceForDisplay), [101,1008,100,100000]);
+assert.equal(run("monthlyTotal")(1.005, 13),14.01);
+const rangeForBudget = run("generalBudgetRangeNote");
+const budgetCase = {complete:true, aggregateOnly:true, low:13.5, high:15};
+assert.match(rangeForBudget({monthlyBudget:28},{total:13},budgetCase), /£26.50 a £28.00/);
+assert.match(rangeForBudget({monthlyBudget:28},{total:15},{...budgetCase,low:12,high:14}), /£27.00 a £29.00/);
+assert.match(rangeForBudget({monthlyBudget:28},{total:0},{...budgetCase,low:27,high:29}), /vai de £27.00 a £29.00/);
+for (const [budget, option, changes] of [
+  [0, {total:13}, {}], [28, {total:13}, {high:14.99}], [28, {total:13}, {low:15,high:16}],
+  [28, {total:13}, {low:null}], [28, {total:13}, {complete:false}], [28, {total:13}, {aggregateOnly:false}],
+  [28, {total:0,unavailable:true}, {low:20,high:32}],
+]) assert.equal(rangeForBudget({monthlyBudget:budget},option,{...budgetCase,...changes}), "");
 const liveExact = calculate(75, 50000, 10000);
 assert.equal(liveExact.main, 27.04);
 assert.equal(liveExact.priorityExact, true);

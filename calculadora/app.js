@@ -41,6 +41,15 @@ const $ = (id) => document.getElementById(id),
     ({ low: "baixa", medium: "média", high: "alta" })[value] ||
     value ||
     "não classificada";
+const decimalPrice = new Intl.NumberFormat("en-GB", {
+  useGrouping: false, minimumFractionDigits: 2, maximumFractionDigits: 2,
+});
+function displayedPence(price) {
+  return Number(decimalPrice.format(price).replace(".", ""));
+}
+function monthlyTotal(premium, supplement) {
+  return (displayedPence(premium) + displayedPence(supplement)) / 100;
+}
 function toast(s) {
   $("toast").textContent = s;
   $("toast").classList.add("show");
@@ -359,7 +368,7 @@ function showCapitalAccuracy(trials, registered) {
 // The threshold is strict. Round the registered insurer premium to a penny before adding MetLife.
 function budgetEvidence(p, m, source = capitalTrials) {
   if (!(p.monthlyBudget > 0) || m.unavailable || p.waiver === "Yes") return null;
-  const limit = Math.round(p.monthlyBudget * 100), metlife = Math.round(m.total * 100);
+  const limit = displayedPence(p.monthlyBudget), metlife = displayedPence(m.total);
   const smoker = p.smoker === "smoker" ? "Yes" : "No";
   const trials = source.filter(({check}) => Number(check.age) === p.age && check.smoker === smoker &&
     Number(check.to_age) === p.toAge && check.quoted_term === "To Age " + p.toAge &&
@@ -407,11 +416,24 @@ function showBudgetEvidence(p, m, result) {
     " acabaram abaixo. A previsão testada mais próxima ficou a " + gbp(stats.closest / 100) + " do teto.";
   const provider = stats.byProvider.get(result.provider);
   if (!result.capitalRange || !result.complete || !provider) return "";
-  const margin = Math.round(p.monthlyBudget * 100) - Math.round((result.main + m.total) * 100);
+  const margin = displayedPence(p.monthlyBudget) - displayedPence(result.main) - displayedPence(m.total);
   if (!(margin > 0 && provider.largestIncrease >= margin)) return "";
   return "A estimativa deixa " + gbp(margin / 100) + " até o teto. Em " + provider.trials +
     " testes comparáveis da " + result.provider + ", a maior diferença para cima foi " +
     gbp(provider.largestIncrease / 100) + "/mês. Confirme o prêmio antes de contar com essa margem.";
+}
+
+function generalBudgetRangeNote(p, m, result) {
+  if (!result.complete || !result.aggregateOnly || m.unavailable || !(p.monthlyBudget > 0) ||
+      !Number.isFinite(result.low) || !Number.isFinite(result.high)) return "";
+  const limit = displayedPence(p.monthlyBudget);
+  const extra = displayedPence(m.total);
+  const low = displayedPence(result.low) + extra;
+  const high = displayedPence(result.high) + extra;
+  if (low >= limit || high < limit) return "";
+  const option = extra ? " com a MetLife selecionada" : "";
+  return "A faixa do modelo geral" + option + " vai de " + gbp(low / 100) + " a " + gbp(high / 100) +
+    "/mês. O teto de " + gbp(limit / 100) + " fica nessa faixa. A cotação da seguradora confirma se o pacote fica abaixo do teto.";
 }
 
 function buildCapitalRanges(comparable, holdout) {
@@ -735,7 +757,7 @@ function supplementalLifeNote(p, m, source = supplementalLifeRows) {
 
 function lifeWithinBudget(p, m, rows = reportedRows.concat(verifiedArchiveRows)) {
   if (!(p.monthlyBudget > 0 && p.life > 0) || m.unavailable) return null;
-  const budget = Math.round(p.monthlyBudget * 100), extra = Math.round(m.total * 100);
+  const budget = displayedPence(p.monthlyBudget), extra = displayedPence(m.total);
   const smoking = p.smoker === "smoker" ? "Yes" : "No";
   const groups = new Map();
   if (p.waiver === "Yes") {
@@ -1339,8 +1361,8 @@ function makeSummary(p, r) {
   if (r.separatePolicyNote) lines.push(r.separatePolicyNote);
   if (r.affordableNote) lines.push(r.affordableNote);
   if (r.complete)
-    lines.push("", r.aggregateOnly ? `Orçamento mensal indicativo de ${gbp(r.main + m.total)}. Seguradora a confirmar.` :
-      `Total estimado: ${gbp(r.main + m.total)}/mês`);
+    lines.push("", r.aggregateOnly ? `Orçamento mensal indicativo de ${gbp(monthlyTotal(r.main, m.total))}. Seguradora a confirmar.` :
+      `Total estimado: ${gbp(monthlyTotal(r.main, m.total))}/mês`);
   else lines.push("", "Total do pacote a confirmar.");
   lines.push(
     "",
@@ -1586,7 +1608,7 @@ function render(p) {
   if (p.life && p.ci && r.aggregateOnly && !r.documentedBudget && !r.termPending && !r.waiverPending) {
     const life = priceProtection({...p, ci: 0}, m).r;
     if (life.supported && !life.termPending && !life.waiverPending &&
-        Math.round(100 * r.main) <= Math.round(100 * life.main)) {
+        displayedPence(r.main) <= displayedPence(life.main)) {
       r.ciPending = true;
       r.complete = false;
       r.main = life.main;
@@ -1598,7 +1620,7 @@ function render(p) {
       r.alternativePackage += " A mensalidade adicional para " + gbp(p.ci) + " de doenças graves independentes precisa de confirmação.";
     }
   }
-  r.budgetMarginNote = showBudgetEvidence(p, m, r);
+  r.budgetMarginNote = showBudgetEvidence(p, m, r) || generalBudgetRangeNote(p, m, r);
   if (r.budgetMarginNote) warnings.unshift(r.budgetMarginNote);
   $("results").classList.remove("hidden");
   $("quoteCount").textContent = r.supported ? 1 : 0;
@@ -1612,7 +1634,7 @@ function render(p) {
     ? `${r.detailed && r.termPending ? "Faixa das alternativas devolvidas" : r.detailed ? "Faixa para a idade final solicitada" : r.providerQuotes?.length ? r.providerGap ? "Faixa observada entre seguradoras disponíveis" : r.priorityExact ? "Faixa observada entre seguradoras" : "Faixa estimada entre seguradoras" : "Faixa provável"}: ${gbp(r.low)} a ${gbp(r.high)}/mês`
     : "O motor não publica um preço sem validação suficiente.";
   $("totalPrice").textContent = r.complete
-    ? `${gbp(r.main + m.total)}/mês`
+    ? `${gbp(monthlyTotal(r.main, m.total))}/mês`
     : "A confirmar";
   $("warning").textContent = r.ciPending
     ? "A estimativa de vida está disponível. O modelo ainda precisa de uma referência comparável para precificar o diagnóstico adicional."
@@ -1716,7 +1738,7 @@ function render(p) {
         ` Comparativos de ${life.source_date}, referências ${life.model_id} e ${ci.model_id}. A contratação simultânea precisa de confirmação.`;
     }
   }
-  if (p.monthlyBudget > 0 && (!r.complete || r.aggregateOnly || Math.round(100 * (r.main + m.total)) >= Math.round(100 * p.monthlyBudget))) {
+  if (p.monthlyBudget > 0 && (!r.complete || r.aggregateOnly || displayedPence(r.main) + displayedPence(m.total) >= displayedPence(p.monthlyBudget))) {
     const choice = lifeWithinBudget(p, m);
     if (choice) {
       const coverage = gbp(choice.life) + " de vida" + (p.ci ? " e " + gbp(p.ci) + " de diagnóstico independente" : "") +
@@ -1725,7 +1747,7 @@ function render(p) {
         " anos pela " + choice.provider + ". " + gbp(choice.price) +
         (m.c ? " + " + gbp(m.total) + " da MetLife selecionada" : "") + " = " + gbp(choice.total) +
         "/mês. O preço da seguradora vem do comparativo de " + choice.date + ". É o maior capital de vida abaixo do solicitado encontrado nos comparativos compatíveis dos últimos 180 dias.";
-      if (r.complete && r.aggregateOnly && Math.round(r.main * 100) < Math.round(choice.price * 100))
+      if (r.complete && r.aggregateOnly && displayedPence(r.main) < displayedPence(choice.price))
         r.affordableNote += " O modelo geral estimou um preço menor para o capital maior. Confirme essa estimativa com a seguradora.";
     }
   }
