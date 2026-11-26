@@ -788,6 +788,44 @@ function matchedIndependentTpdVariants(offer, occupation, source = independentTp
     .sort((a,b) => Number(a.monthly_premium) - Number(b.monthly_premium));
 }
 
+function recentBudgetSource(row, asOf) {
+  const days = Math.floor(asOf / 86400000) - Date.parse(row.source_date) / 86400000;
+  return days >= 0 && days <= 180;
+}
+
+// Keep the latest response for a given capital, including refusals and changes to the offer.
+function latestBudgetResponse(rows, signature) {
+  if (!rows.length) return null;
+  const day = rows.reduce((latest, row) => row.source_date > latest ? row.source_date : latest, "");
+  const recent = rows.filter(row => row.source_date === day);
+  const first = recent[0], terms = signature(first);
+  return recent.every(row => signature(row) === terms) ? first : null;
+}
+
+function reductionsUnderBudget(p, metlife, rows, ciField, signature, eligible) {
+  const groups = {life:new Map(), ci:new Map()};
+  for (const row of rows) {
+    const life = Number(row.life_cover), ci = Number(row[ciField]);
+    const axis = life > 0 && life < p.life && ci === p.ci ? "life" : ci > 0 && ci < p.ci && life === p.life ? "ci" : "";
+    if (!axis) continue;
+    const amount = axis === "life" ? life : ci;
+    if (!groups[axis].has(amount)) groups[axis].set(amount, []);
+    groups[axis].get(amount).push(row);
+  }
+  const options = [];
+  for (const [axis, amounts] of Object.entries(groups)) {
+    for (const amount of [...amounts.keys()].sort((a,b) => b-a)) {
+      const row = latestBudgetResponse(amounts.get(amount), signature);
+      if (!row || !eligible(row) || !(Number(row.monthly_premium) > 0)) continue;
+      const total = monthlyTotal(Number(row.monthly_premium), metlife.c ? metlife.total : 0);
+      if (displayedPence(total) >= displayedPence(p.monthlyBudget)) continue;
+      options.push({axis, amount, row, total});
+      break;
+    }
+  }
+  return options;
+}
+
 function firstEventBudgetOptions(p, offer, metlife, source = acceleratedOffers, asOf = Date.now()) {
   const fee = metlife.c ? metlife.total : 0;
   if (p.toAge !== 65 || !["non_smoker", "smoker"].includes(p.smoker) || !p.life || !p.ci || metlife.unavailable || !(p.monthlyBudget > 0) ||
@@ -797,33 +835,50 @@ function firstEventBudgetOptions(p, offer, metlife, source = acceleratedOffers, 
       Number(offer.life_cover) !== p.life || Number(offer.earlier_ci_cover) !== p.ci ||
       (p.waiver === "Yes" && offer.waiver_to !== "Expiry" && !(Number(offer.waiver_to) >= p.toAge))) return [];
   const fields = ["provider", "product", "age", "smoker", "to_age", "quoted_term", "tpd_basis", "waiver_to", "occupation_rated"];
-  const recent = row => {
-    const days = Math.floor(asOf / 86400000) - Date.parse(row.source_date) / 86400000;
-    return days >= 0 && days <= 180;
-  };
   const quotedAsRequested = row => row.life_cover === row.quoted_life_cover && row.earlier_ci_cover === row.quoted_earlier_ci_cover;
-  if (!recent(offer) || !quotedAsRequested(offer)) return [];
-
-  // Resolve the latest source per requested capital before comparing its premium with the budget.
-  const latest = new Map();
-  for (const row of source) {
-    if (!fields.every(k => row[k] === offer[k]) || !recent(row) || !quotedAsRequested(row) || !(Number(row.monthly_premium) > 0)) continue;
-    const life = Number(row.life_cover), ci = Number(row.earlier_ci_cover);
-    const axis = life > 0 && life < p.life && ci === p.ci ? "life" : ci > 0 && ci < p.ci && life === p.life ? "ci" : "";
-    if (!axis) continue;
-    const key = life + "|" + ci, previous = latest.get(key);
-    if (!previous || row.source_date > previous.row.source_date) latest.set(key, {row, axis, conflict:false});
-    else if (row.source_date === previous.row.source_date && row.monthly_premium !== previous.row.monthly_premium) previous.conflict = true;
-  }
-  const best = {};
-  for (const {row, axis, conflict} of latest.values()) {
-    const total = monthlyTotal(Number(row.monthly_premium), fee);
-    if (conflict || displayedPence(total) >= displayedPence(p.monthlyBudget)) continue;
-    const amount = Number(axis === "life" ? row.life_cover : row.earlier_ci_cover);
-    if (!best[axis] || amount > best[axis].amount) best[axis] = {axis, amount, row, total};
-  }
-  return [best.life, best.ci].filter(Boolean);
+  if (!recentBudgetSource(offer, asOf) || !quotedAsRequested(offer)) return [];
+  const sameContract = source.filter(row => fields.every(k => row[k] === offer[k]) && recentBudgetSource(row, asOf));
+  const signature = row => [row.quoted_life_cover, row.quoted_earlier_ci_cover, row.monthly_premium].join("|");
+  return reductionsUnderBudget(p, metlife, sameContract, "earlier_ci_cover", signature, quotedAsRequested);
 }
+
+function independentBudgetOptions(p, metlife, report, source = reportedRows.concat(verifiedArchiveRows), asOf = Date.now()) {
+  if (!report?.reported || !report.sourceHash || p.waiver === "Yes" || !p.life || !p.ci || p.toAge !== 65 ||
+      !["smoker", "non_smoker"].includes(p.smoker) || !(p.monthlyBudget > 0) || metlife.unavailable) return [];
+  const rows = source.filter(row => Number(row.age) === p.age && Number(row.to_age) === p.toAge &&
+    row.smoker === (p.smoker === "smoker" ? "Yes" : "No") && recentBudgetSource(row, asOf));
+  const signature = row => [row.available, row.product, row.monthly_premium, row.quoted_term, row.occupation_rated,
+    row.quoted_tpd || "None", row.quoted_life_cover, row.quoted_critical_illness_cover].join("|");
+  const asRequested = row => row.available === "true" && Number(row.monthly_premium) > 0 &&
+    row.quoted_life_cover === row.life_cover && row.quoted_critical_illness_cover === row.critical_illness_cover &&
+    (row.quoted_tpd || "None") === "None";
+  const options = [];
+  for (const base of rows.filter(row => row.sha256 === report.sourceHash)) {
+    if (!asRequested(base) || Number(base.life_cover) !== p.life || Number(base.critical_illness_cover) !== p.ci ||
+        base.model_id !== report.modelId || !["Yes","No"].includes(base.occupation_rated)) continue;
+    const occupational = base.occupation_rated === "Yes";
+    const basis = occupationalBasis(p.occupation, base);
+    if (occupational && !basis.occupationMatched) continue;
+    if (base.quoted_term !== "To Age " + p.toAge && !(occupational && /^\d+ years?$/.test(base.quoted_term))) continue;
+    if (displayedPence(monthlyTotal(Number(base.monthly_premium), metlife.c ? metlife.total : 0)) < displayedPence(p.monthlyBudget)) continue;
+    const sameProvider = rows.filter(row => {
+      if (row.provider !== base.provider) return false;
+      // Unknown employment and refusals must still be able to invalidate an older offer.
+      if (!occupational || !reportedOccupations.has(row.sha256)) return true;
+      const candidate = reportedOccupations.get(row.sha256), original = reportedOccupations.get(base.sha256);
+      return candidate.occupation === original.occupation && candidate.employment === original.employment;
+    });
+    const current = latestBudgetResponse(sameProvider.filter(row => row.life_cover === base.life_cover &&
+      row.critical_illness_cover === base.critical_illness_cover), signature);
+    if (!current || signature(current) !== signature(base) || current.source_date !== base.source_date) continue;
+    const eligible = row => asRequested(row) && row.product === base.product && row.quoted_term === base.quoted_term &&
+      row.occupation_rated === base.occupation_rated && (!occupational || occupationalBasis(p.occupation, base, row).occupationMatched);
+    for (const option of reductionsUnderBudget(p, metlife, sameProvider, "critical_illness_cover", signature, eligible))
+      options.push({...option, occupationLabel:basis.occupationLabel});
+  }
+  return options;
+}
+
 
 function renderCiComparison(p, independentTpd = false) {
   const prefix = independentTpd ? "tpd" : "accelerated";
@@ -1965,6 +2020,7 @@ function makeSummary(p, r) {
   if (r.alternativePackage) lines.push(r.alternativePackage);
   if (r.separatePolicyNote) lines.push(r.separatePolicyNote);
   if (r.affordableNote) lines.push(r.affordableNote);
+  if (r.independentBudgetNote) lines.push(r.independentBudgetNote);
   if (r.complete)
     lines.push("", r.aggregateOnly ? `Orçamento mensal indicativo de ${gbp(monthlyTotal(r.main, m.total))}. Seguradora a confirmar.` :
       `Total estimado: ${gbp(monthlyTotal(r.main, m.total))}/mês`);
@@ -2291,6 +2347,22 @@ function render(p) {
     priorityDetail = `<dt>${r.composition ? "Estimativa por composição" : r.capitalRange ? "Estimativa por capital" : r.withWaiver ? "Comparativo com isenção" : "Comparativo sem isenção"}</dt><dd>SolutionBuilder · ${escapeHtml(r.providerQuotes[0].sourceDate)}</dd>${rows}`;
     if (r.complete)
       priorityDetail += `<dt>Preço usado no total</dt><dd>${escapeHtml(r.provider)} · até ${p.toAge} anos</dd>`;
+  }
+  const reductions = independentBudgetOptions(p, m, priorityMatch);
+  if (reductions.length) {
+    const lines = reductions.map(({axis, row, total, occupationLabel}) => {
+      const term = row.quoted_term === "To Age " + p.toAge ? "até os " + p.toAge + " anos" :
+        row.quoted_term.split(" ")[0] + " anos de prazo na oferta (pedido até os " + p.toAge + " anos)";
+      const capital = axis === "life" ? "Vida de " + gbp(Number(row.life_cover)) + ", mantendo " + gbp(p.ci) + " de diagnóstico independente" :
+        "Diagnóstico independente de " + gbp(Number(row.critical_illness_cover)) + ", mantendo " + gbp(p.life) + " de vida";
+      return row.product + " · " + capital + " · " + term + (occupationLabel ? " · " + occupationLabel : "") +
+        ". " + gbp(Number(row.monthly_premium)) + (m.c ? " + " + gbp(m.total) + " da MetLife = " + gbp(total) : "") +
+        "/mês. Comparativo de " + row.source_date + ", ref. " + row.model_id + ".";
+    });
+    const title = "Alternativas abaixo de " + gbp(p.monthlyBudget) + "/mês com um capital menor";
+    r.independentBudgetNote = [title, ...lines].join("\n");
+    priorityDetail += "<dt>Orçamento por seguradora</dt><dd><details><summary>" + escapeHtml(title) +
+      "</summary><ul>" + lines.map(line => "<li>" + escapeHtml(line) + "</li>").join("") + "</ul></details></dd>";
   }
   if (r.illustrationNote)
     priorityDetail += `<dt>Prêmio-base documentado</dt><dd>${escapeHtml(r.illustrationNote)}</dd>`;

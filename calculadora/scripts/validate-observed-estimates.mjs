@@ -761,6 +761,52 @@ assert.ok(calculate(65, 150000, 0, {monthlyBudget:27.91}).affordableNote.include
 const fixedCi = calculate(65, 300000, 20000, {age:31, term:34, monthlyBudget:28, waiver:"No"});
 assert.ok(fixedCi.affordableNote.includes("£115,000.00 de vida e £20,000.00 de diagnóstico independente"));
 assert.ok(fixedCi.affordableNote.includes("£27.93/mês"));
+const independentBudget = run("independentBudgetOptions");
+const basisDate = Date.parse("2026-11-26T12:00:00Z");
+const avivaFamily = {c:1,total:15}, target31 = {age:31,toAge:65,life:100000,ci:12000,monthlyBudget:28,
+  smoker:"non_smoker",waiver:"No",occupation:"Office administrator"};
+const base31 = reported.find(row => row.model_id === "35041403" && row.provider === "Aviva");
+const lower31 = reported.find(row => row.model_id === "35041435" && row.provider === "Aviva");
+const baseReport = {reported:true,modelId:base31.model_id,sourceHash:base31.sha256};
+const underAviva = (rows, p={}, m=avivaFamily, report=baseReport, day=basisDate) =>
+  independentBudget({...target31,...p},m,report,rows,day);
+assert.equal(underAviva([base31,lower31])[0].amount,55000);
+assert.equal(underAviva([base31,lower31])[0].total,25.59);
+for (const delta of [{quoted_life_cover:"56000"},{quoted_critical_illness_cover:"12200"},{quoted_term:"33 years"},
+    {quoted_tpd:"Own occupation"},{occupation_rated:"Yes"},{available:"false"},{monthly_premium:""},
+    {product:"Other"},{age:"32"},{smoker:"Yes"},{to_age:"66"},{provider:"Zurich"},{critical_illness_cover:"11000"}])
+  assert.equal(underAviva([base31,{...lower31,...delta}]).length,0);
+for (const delta of [{available:"false",monthly_premium:""},{product:"Different"},{quoted_life_cover:"56000"},
+    {quoted_term:"33 years"},{monthly_premium:"10.61"},{quoted_tpd:"Own occupation"}]) {
+  assert.equal(underAviva([base31,lower31,{...lower31,...delta}]).length,0);
+  assert.equal(underAviva([base31,{...lower31,source_date:"2026-11-25"},{...lower31,...delta,monthly_premium:"20.00"}]).length,0);
+}
+assert.equal(underAviva([base31,lower31,{...base31,source_date:"2026-11-26",available:"false"}]).length,0);
+for (const change of [{waiver:"Yes"},{ci:0},{life:0},{smoker:"unknown"},{smoker:"smoker"},{age:32},
+    {toAge:70},{monthlyBudget:25.59},{monthlyBudget:35}]) assert.equal(underAviva([base31,lower31],change).length,0);
+assert.equal(underAviva([base31,lower31],{monthlyBudget:25.60})[0].total,25.59);
+assert.equal(underAviva([base31,lower31],{},{c:1,total:15,unavailable:true}).length,0);
+for (const report of [{reported:false},{...baseReport,sourceHash:"wrong"},{...baseReport,modelId:"wrong"}])
+  assert.equal(underAviva([base31,lower31],{},avivaFamily,report).length,0);
+for (const day of ["2026-11-24","2027-06-01"])
+  assert.equal(underAviva([base31,lower31],{},avivaFamily,baseReport,Date.parse(day)).length,0);
+const baseLg=reported.find(row=>row.model_id==="35024594" && row.provider==="Legal & General");
+const cheaperLg=reported.find(row=>row.model_id==="35024592" && row.provider==="Legal & General");
+const lgBudgetProfile={...target31,age:50,life:50000,ci:5000,occupation:"Events Manager self-employed"};
+const lgBudgetReport={reported:true,modelId:baseLg.model_id,sourceHash:baseLg.sha256};
+const atLg = (occupation,extra=[])=>independentBudget({...lgBudgetProfile,occupation},avivaFamily,lgBudgetReport,[baseLg,cheaperLg,...extra],basisDate);
+assert.equal(atLg("Events Manager self-employed")[0].row.quoted_term,"14 years");
+assert.equal(atLg("Events Manager self-employed")[0].total,27.71);
+for (const occupation of ["Events Manager","Events Manager employed","Cleaner",""])
+  assert.equal(atLg(occupation).length,0);
+assert.equal(atLg("Events Manager self-employed",[{...cheaperLg,sha256:"missing",available:"unknown",source_date:"2026-11-26"}]).length,0);
+assert.equal(alternatives37(28,13,[suitable37,{...suitable37,source_date:"2026-11-05",quoted_life_cover:"18000"}]).length,0);
+node("metlifeChild").checked=true;
+const avivaAlternative=calculate(65,100000,12000,{...target31,term:34});
+assert.ok(avivaAlternative.independentBudgetNote.includes("£10.59 + £15.00 da MetLife = £25.59/mês"));
+assert.ok(avivaAlternative.text.includes(avivaAlternative.independentBudgetNote));
+assert.ok(node("details").innerHTML.includes("Orçamento por seguradora"));
+node("metlifeChild").checked=false;
 const capSearch = run("lifeWithinBudget");
 const budgetProfile = {age:50, smoker:"non_smoker", life:150000, ci:0, toAge:65, monthlyBudget:28};
 const capSource = reported.find(r => r.model_id === "35024582" && r.provider === "Zurich");
