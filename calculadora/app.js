@@ -731,7 +731,7 @@ function illustratedLifeFor(p, provider) {
   return newestByProvider[0] || null;
 }
 
-function lgTermReference(p) {
+function lgTermReference(p, metlife) {
   if (!p.life || p.ci) return "";
   const smoker = p.smoker === "smoker" ? "Yes" : "No";
   const matching = lgIllustratedTerms.filter(row => Number(row.age) === p.age && row.smoker === smoker &&
@@ -739,12 +739,15 @@ function lgTermReference(p) {
   if (!matching.length) return "";
   const latest = matching.reduce((a, b) => a.source_date >= b.source_date ? a : b);
   const contemporaries = matching.filter(row => row.source_date === latest.source_date);
-  const signature = row => [row.term_years, row.base_monthly, row.waiver_monthly, row.policy_monthly].join("|");
+  const signature = row => [row.term_years, row.base_monthly, row.waiver_monthly, row.policy_monthly, row.reported_tpd].join("|");
   if (contemporaries.some(row => signature(row) !== signature(latest))) return "";
   return "Legal & General · " + latest.source_date + " · pedido até os " + latest.to_age +
     " anos. Prazo oferecido de " + latest.term_years + " anos. Vida " + gbp(Number(latest.base_monthly)) +
     " + isenção " + gbp(Number(latest.waiver_monthly)) + " = " + gbp(Number(latest.policy_monthly)) +
-    "/mês na illustration " + latest.reference + ".";
+    "/mês na illustration " + latest.reference + "." +
+    (latest.reported_tpd === "Own" ? " O comparativo indica TPD para a própria profissão. A illustration discrimina vida e isenção." : "") +
+    (metlife.c && !metlife.unavailable ? " Com " + gbp(metlife.total) + " de MetLife, a referência para esse prazo soma " +
+      gbp(monthlyTotal(Number(latest.policy_monthly), metlife.total)) + "/mês." : "");
 }
 
 function supplementalLifeNote(p, m, source = supplementalLifeRows) {
@@ -1604,7 +1607,7 @@ function priceProtection(p, m) {
       }
     }
   }
-  r.lgTermNote = lgTermReference(p);
+  r.lgTermNote = lgTermReference(p, m);
   r.supplementalLifeNote = supplementalLifeNote(p, m);
   r.partialCiNote = [historicalPartialCiNote(p), historicalCiPrices(p)].filter(Boolean).join(" ");
   const avivaRecord = illustratedLifeFor(p, "Aviva");

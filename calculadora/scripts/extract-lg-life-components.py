@@ -9,7 +9,7 @@ import subprocess
 from illustration_pairs import extract_pairs
 
 FIELDS = ("source_date", "age", "smoker", "to_age", "life_cover", "base_monthly", "waiver_monthly",
-          "policy_monthly", "reference", "term_years", "sha256", "comparison_sha256")
+          "policy_monthly", "reference", "term_years", "reported_tpd", "sha256", "comparison_sha256")
 DATE = r"(\d{2}/\d{2}/\d{4})"
 AMOUNT = r"£([\d,]+)"
 MONEY = r"£([\d,]+\.\d{2})"
@@ -77,5 +77,13 @@ def read_pair(illustration, comparison, tpd_column="None", offered_life=None):
             waiver, premium, ref[1], duration, hashlib.sha256(illustration).hexdigest(), hashlib.sha256(comparison).hexdigest())
 
 
+def read_printed_terms(illustration, comparison):
+    for basis in ("None", "Own"):
+        row = read_pair(illustration, comparison, tpd_column=basis)
+        if row:
+            return (*row[:-2], basis, *row[-2:])
+    return None
+
+
 if __name__ == "__main__":
-    extract_pairs("Legal & General Life", FIELDS, read_pair, __doc__)
+    extract_pairs("Legal & General Life", FIELDS, read_printed_terms, __doc__)

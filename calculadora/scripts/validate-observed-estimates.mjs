@@ -716,6 +716,15 @@ for (const term of ["10 anos", "£23.94", "£0.72", "£24.66", "1082481714"]) {
 assert.ok(!calculate(65, 20000, 0, {age:59, smoker:"smoker", term:6}).lgTermNote?.includes("1082481714"));
 assert.ok(!calculate(70, 20000, 0, {age:59, smoker:"non_smoker", term:11}).lgTermNote?.includes("1082481714"));
 assert.ok(!calculate(70, 20000, 10000, {age:59, smoker:"smoker", term:11}).lgTermNote);
+for (const [age, life, term, price] of [[37, 30000, '27 anos', '£6.57'], [40, 100000, '24 anos', '£20.63']]) {
+  const input = {age, smoker: "smoker", term: 65 - age};
+  const result = calculate(65, life, 0, input);
+  assert.ok(result.lgTermNote.includes(term) && result.lgTermNote.includes(price));
+  assert.ok(result.lgTermNote.includes("O comparativo indica TPD para a própria profissão"));
+  assert.ok(result.lgTermNote.includes(age === 37 ? "£19.57/mês" : "£33.63/mês"));
+  assert.ok(result.text.includes(result.lgTermNote));
+  assert.ok(!calculate(65, life, 0, {...input, smoker:"non_smoker"}).lgTermNote?.includes(price));
+}
 for (const row of run("lgIllustratedTerms")) {
   const fee = f => Math.round(100 * Number(row[f]));
   assert.equal(fee("base_monthly") + fee("waiver_monthly"), fee("policy_monthly"));

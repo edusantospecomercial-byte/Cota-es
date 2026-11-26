@@ -3,6 +3,7 @@
 import argparse
 import csv
 import hashlib
+from itertools import chain
 from pathlib import Path
 import subprocess
 import sys
@@ -38,13 +39,20 @@ def illustration_files(roots):
 
 
 def extract_pairs(folder, fields, read_pair, description, roots=None):
+    explicit_pairs = []
     if roots is None:
         parser = argparse.ArgumentParser(description=description)
-        parser.add_argument("roots", nargs="+", type=Path)
-        roots = parser.parse_args().roots
-    files = illustration_files(roots)
+        parser.add_argument("roots", nargs="*", type=Path)
+        parser.add_argument("--pair", nargs=2, action="append", type=Path, default=[],
+                            metavar=("ILLUSTRATION", "COMPARISON"), help="Read an explicitly matched pair of PDFs")
+        args = parser.parse_args()
+        if not args.roots and not args.pair:
+            parser.error("provide a search folder or --pair ILLUSTRATION COMPARISON")
+        roots, explicit_pairs = args.roots, args.pair
+    files = illustration_files(roots) if roots else []
+    supplied = ((illustration.read_bytes(), comparison.read_bytes()) for illustration, comparison in explicit_pairs)
     seen, rows = set(), {}
-    for illustration, comparison in pairs(files, folder):
+    for illustration, comparison in chain(pairs(files, folder), supplied):
         digest = (hashlib.sha256(illustration).digest(),hashlib.sha256(comparison).digest())
         if digest in seen:
             continue
