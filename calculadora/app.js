@@ -289,6 +289,7 @@ async function init() {
   if (temporalHoldout) {
     baseStatus.push(`Arquivo histórico · teste temporal: ${Number(temporalHoldout.mape * 100).toFixed(2)}% de erro médio percentual absoluto em ${temporalHoldout.predicted} preços · cobertura ${Number(temporalHoldout.coverage * 100).toFixed(2)}%`);
   }
+  showTemporalAccuracy(temporalHoldout);
   $("baseStatus").textContent = baseStatus.join(". ");
   updateProfile();
   updateMetlife();
@@ -486,6 +487,27 @@ function evaluateCapitalTrials(reports, holdout) {
     comparable.push({ lower, upper, check, axis, error, forecast: trial.predicted_monthly, passed: error <= 1 && error / Number(check.monthly_premium) <= 0.05 });
   }
   return comparable;
+}
+
+function showTemporalAccuracy(holdout) {
+  const panel = $("temporalAccuracy"), stats = holdout?.priceTolerance;
+  panel.hidden = !stats?.overall?.predicted;
+  if (panel.hidden) return;
+  const pct = (n, d) => (n / d).toLocaleString("pt-BR", {style:"percent", maximumFractionDigits:1});
+  const all = stats.overall, age65 = stats.to65;
+  $("temporalAccuracySummary").textContent = "O teste histórico usou preços anteriores a " +
+    holdout.cutoff.split("-").reverse().join("/") + " para estimar mensalidades posteriores de cada seguradora, antes da MetLife. " +
+    "Havia referências comparáveis para " + all.predicted + " de " + all.eligible + " preços (" + pct(all.predicted, all.eligible) + ").";
+  $("temporalAccuracyHits").textContent = "Entre os " + all.predicted + " estimados, " + all.withinBoth + " (" +
+    pct(all.withinBoth, all.predicted) + ") ficaram ao mesmo tempo a até £1 e a até 5% do preço registrado. " +
+    "Nos pedidos até os 65 anos, " + age65.withinBoth + " de " + age65.predicted + " estimativas ficaram nessa margem, em " +
+    age65.eligible + " preços avaliados.";
+  $("temporalAccuracyProviders").textContent = Object.entries(stats.byProvider)
+    .map(([name, values]) => name + " " + values.withinBoth + "/" + values.predicted).join(" · ") +
+    ". Cada fração mostra quantas estimativas ficaram dentro das duas margens.";
+  $("temporalAccuracySmokers").textContent = "Para fumantes, o teste conseguiu estimar " +
+    stats.smokerLife.predicted + " de " + stats.smokerLife.eligible + " preços de vida e " +
+    stats.smokerCI.predicted + " de " + stats.smokerCI.eligible + " com doenças graves.";
 }
 
 function showCapitalAccuracy(trials, registered) {

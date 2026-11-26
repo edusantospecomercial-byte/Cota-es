@@ -95,7 +95,9 @@ for (const target of testing) {
     const signed = (predicted - target.premium) / target.premium;
     errors.push(ape);
     signedErrors.push(signed);
-    errorRows.push({ provider: target.provider, smoker: target.smoker, ci: target.ci, ape, signed });
+    const premiumPence = Math.round(target.premium * 100);
+    const differencePence = Math.abs(Math.round(predicted * 100) - premiumPence);
+    errorRows.push({ ...target, ape, signed, withinBoth: differencePence <= 100 && 20 * differencePence <= premiumPence });
   }
 }
 errors.sort((left, right) => left - right);
@@ -124,6 +126,13 @@ const bySegment = Object.fromEntries(
     ["smokerCI", (row) => row.smoker === "Yes" && row.ci > 0],
   ].map(([name, predicate]) => [name, summarize(errorRows.filter(predicate))]),
 );
+// The hit rate applies only where the historical method produced an estimate.
+function countWithinTolerance(select) {
+  const estimated = errorRows.filter(select);
+  return { eligible: testing.filter(select).length, predicted: estimated.length,
+    withinBoth: estimated.filter(row => row.withinBoth).length };
+}
+
 const calculated = {
   cutoff,
   trainingAnchors: training.length,
@@ -141,6 +150,14 @@ const calculated = {
   overestimates: Number((signedErrors.filter((value) => value > 0).length / signedErrors.length).toFixed(4)),
   byProvider,
   bySegment,
+  priceTolerance: {
+    overall: countWithinTolerance(() => true),
+    to65: countWithinTolerance(row => row.toAge === 65),
+    byProvider: Object.fromEntries(["Zurich", "Legal & General", "Aviva"].map(provider =>
+      [provider, countWithinTolerance(row => row.provider === provider)])),
+    smokerLife: countWithinTolerance(row => row.smoker === "Yes" && row.ci === 0),
+    smokerCI: countWithinTolerance(row => row.smoker === "Yes" && row.ci > 0),
+  },
 };
 
 const catalog = JSON.parse(readFileSync(join(dataDir, "models.json"), "utf8"));

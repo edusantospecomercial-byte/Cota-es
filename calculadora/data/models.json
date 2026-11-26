@@ -13829,6 +13829,45 @@
         "nonSmokerCI": { "predicted": 42, "mape": 0.0344, "p95": 0.0766, "within20": 1, "maximum": 0.097, "bias": 0.0205 },
         "smokerLife": { "predicted": 3, "mape": 0.0033, "p95": 0.0071, "within20": 1, "maximum": 0.0078, "bias": 0.0033 },
         "smokerCI": { "predicted": 0, "mape": null, "p95": null, "within20": null, "maximum": null, "bias": null }
+      },
+      "priceTolerance": {
+        "overall": {
+          "eligible": 456,
+          "predicted": 141,
+          "withinBoth": 92
+        },
+        "to65": {
+          "eligible": 231,
+          "predicted": 81,
+          "withinBoth": 54
+        },
+        "byProvider": {
+          "Zurich": {
+            "eligible": 152,
+            "predicted": 47,
+            "withinBoth": 33
+          },
+          "Legal & General": {
+            "eligible": 152,
+            "predicted": 47,
+            "withinBoth": 30
+          },
+          "Aviva": {
+            "eligible": 152,
+            "predicted": 47,
+            "withinBoth": 29
+          }
+        },
+        "smokerLife": {
+          "eligible": 27,
+          "predicted": 3,
+          "withinBoth": 3
+        },
+        "smokerCI": {
+          "eligible": 6,
+          "predicted": 0,
+          "withinBoth": 0
+        }
       }
     },
     "priorityProviderRollingTemporalHoldout": [

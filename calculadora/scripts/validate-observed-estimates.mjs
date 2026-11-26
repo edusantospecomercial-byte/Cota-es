@@ -156,6 +156,15 @@ console.log(JSON.stringify({ verifiedReportsWithWaiver: reports.size, resolvedPr
 
 const reported = run("reportedRows");
 const verifiedReports = group(reported, "model_id");
+const temporalTest = run("catalog.audit.priorityProviderTemporalHoldout");
+const allowances = temporalTest.priceTolerance;
+assert.equal(node("temporalAccuracy").hidden,false);
+assert.ok(node("temporalAccuracySummary").textContent.includes(allowances.overall.predicted + " de " + allowances.overall.eligible));
+assert.ok(node("temporalAccuracyHits").textContent.includes("até £1 e a até 5%"));
+for(const [name, t] of Object.entries(allowances.byProvider))assert.ok(node("temporalAccuracyProviders").textContent.includes(name+" "+t.withinBoth+"/"+t.predicted));
+assert.ok(node("temporalAccuracySmokers").textContent.includes(allowances.smokerCI.predicted+" de "+allowances.smokerCI.eligible+" com doenças graves"));
+run("showTemporalAccuracy({})");assert.equal(node("temporalAccuracy").hidden,true);
+run("showTemporalAccuracy(catalog.audit.priorityProviderTemporalHoldout)");assert.equal(node("temporalAccuracy").hidden,false);
 assert.ok(node("baseStatus").textContent.includes(verifiedReports.size + " cenários"));
 assert.ok(node("baseStatus").textContent.includes("508 registros em 392 illustrations distintas"));
 assert.ok(node("baseStatus").textContent.includes(reported.filter(r => r.available === "true").length + " mensalidades"));
