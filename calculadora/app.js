@@ -898,11 +898,11 @@ function makeSummary(p, r) {
     lines.push(r.waiverPending ? "Isenção de mensalidade solicitada · preço a confirmar" :
       `Isenção de mensalidade incluída · comparativo de ${r.providerQuotes[0].sourceDate}`);
   lines.push(
-    r.supported
+    r.ciPending ? `Estimativa só de vida: ${gbp(r.main)}/mês` : r.supported
       ? `${r.waiverPending || r.termPending || (r.reportNote && !r.providerQuotes?.length) ? "Referência geral para a proteção principal" : "Estimativa"}: ${gbp(r.main)}/mês`
       : "Estimativa principal: requer cotação oficial",
   );
-  if (r.supported && !r.illustratedBase && !r.ageEstimate)
+  if (r.supported && !r.ciPending && !r.illustratedBase && !r.ageEstimate)
     lines.push(
       `${r.detailed && r.termPending ? "Faixa das alternativas devolvidas" : r.detailed ? "Faixa para a idade final solicitada" : r.providerQuotes?.length ? r.providerGap ? "Faixa observada entre seguradoras disponíveis" : r.priorityExact ? "Faixa observada entre seguradoras" : "Faixa estimada entre seguradoras" : "Faixa provável"}: ${gbp(r.low)}–${gbp(r.high)}/mês`,
     );
@@ -926,7 +926,7 @@ function makeSummary(p, r) {
   if (r.detailed)
     for (const q of r.providerQuotes)
       lines.push(`${q.provider} · ${quotedTerm(q)} · ${gbp(q.premium)}/mês${m.c ? ` · com MetLife ${gbp(q.premium + m.total)}/mês` : ""}${q.occupationRated ? " · preço do perfil profissional de referência" : ""}`);
-  if (r.budgetNote) lines.push(r.budgetNote);
+  if (r.budgetNote && !r.ciPending) lines.push(r.budgetNote);
   if (r.reportNote) lines.push(r.reportNote);
   if (r.illustrationNote) lines.push(r.illustrationNote);
   if (r.ageNote) lines.push(r.ageNote);
@@ -943,18 +943,8 @@ function makeSummary(p, r) {
   );
   return lines.join("\n");
 }
-function render(p) {
-  renderFractureComparison(p);
-  renderCiComparison(p);
-  const tpdPrices = renderCiComparison(p, true) || [];
-  $("coverError").textContent = "";
-  if (p.toAge <= p.age)
-    throw Error(`A cobertura até ${p.toAge} anos exige idade atual menor.`);
-  if (!p.life && !p.ci) throw Error("Selecione ao menos uma cobertura.");
-  if (![p.life, p.ci].every(amount => Number.isSafeInteger(amount) && amount >= 0))
-    throw Error("Informe os capitais em libras inteiras.");
-  let m = metlifeForAge(ml(), p.age),
-    key =
+function priceProtection(p, m) {
+  let key =
       p.life && p.ci
         ? "life_plus_standalone_ci:standard_core_ci"
         : p.life
@@ -985,6 +975,7 @@ function render(p) {
       estimate = predictBudget(model, p, directLookup ? model.lookup[lookupKey] : null);
     if (Number.isFinite(estimate)) {
       r.supported = true;
+      r.documentedBudget = directLookup;
       r.main = estimate;
       let range = globalThis.quoteRange(model, r.main, {
         outside,
@@ -1164,6 +1155,35 @@ function render(p) {
   }
   if (r.waiverPending) warnings.unshift(waiverMatch.note + " O preço-base apresentado é a estimativa geral.");
   r.complete = r.supported && !r.waiverPending && !m.unavailable && !priorityMatch.termPending;
+  return { r, warnings, model, priorityMatch, priorityQuotes };
+}
+function render(p) {
+  renderFractureComparison(p);
+  renderCiComparison(p);
+  const tpdPrices = renderCiComparison(p, true) || [];
+  $("coverError").textContent = "";
+  if (p.toAge <= p.age)
+    throw Error(`A cobertura até ${p.toAge} anos exige idade atual menor.`);
+  if (!p.life && !p.ci) throw Error("Selecione ao menos uma cobertura.");
+  if (![p.life, p.ci].every(amount => Number.isSafeInteger(amount) && amount >= 0))
+    throw Error("Informe os capitais em libras inteiras.");
+  const m = metlifeForAge(ml(), p.age);
+  const {r, model, priorityMatch, priorityQuotes, warnings} = priceProtection(p, m);
+  if (p.life && p.ci && r.aggregateOnly && !r.documentedBudget && !r.termPending && !r.waiverPending) {
+    const life = priceProtection({...p, ci: 0}, m).r;
+    if (life.supported && !life.termPending && !life.waiverPending &&
+        Math.round(100 * r.main) <= Math.round(100 * life.main)) {
+      r.ciPending = true;
+      r.complete = false;
+      r.main = life.main;
+      r.low = r.high = null;
+      r.lifeSource = life.provider || "modelo geral";
+      r.alternativePackage = "Referência só de vida (" + r.lifeSource + "): " + gbp(life.main) + "/mês.";
+      if (m.c) r.alternativePackage += " Com " + gbp(m.total) + " de MetLife, o subtotal é " +
+        gbp(life.main + m.total) + "/mês antes do diagnóstico.";
+      r.alternativePackage += " A mensalidade adicional para " + gbp(p.ci) + " de doenças graves independentes precisa de confirmação.";
+    }
+  }
   $("results").classList.remove("hidden");
   $("quoteCount").textContent = r.supported ? 1 : 0;
   $("unsupportedCount").textContent = r.complete ? 0 : 1;
@@ -1172,13 +1192,15 @@ function render(p) {
   $("mainPrice").textContent = r.supported
     ? `${gbp(r.main)}/mês`
     : "Não publicado";
-  $("range").textContent = r.ageEstimate ? "Estimativa Zurich por idade para vida individual, antes de adicionais" : r.illustratedBase ? "Prêmio-base de vida registrado na illustration " + r.provider : r.supported
+  $("range").textContent = r.ciPending ? "Somente vida · adicional de diagnóstico independente a confirmar" : r.ageEstimate ? "Estimativa Zurich por idade para vida individual, antes de adicionais" : r.illustratedBase ? "Prêmio-base de vida registrado na illustration " + r.provider : r.supported
     ? `${r.detailed && r.termPending ? "Faixa das alternativas devolvidas" : r.detailed ? "Faixa para a idade final solicitada" : r.providerQuotes?.length ? r.providerGap ? "Faixa observada entre seguradoras disponíveis" : r.priorityExact ? "Faixa observada entre seguradoras" : "Faixa estimada entre seguradoras" : "Faixa provável"}: ${gbp(r.low)} a ${gbp(r.high)}/mês`
     : "O motor não publica um preço sem validação suficiente.";
   $("totalPrice").textContent = r.complete
     ? `${gbp(r.main + m.total)}/mês`
     : "A confirmar";
-  $("warning").textContent = warnings.join(" ");
+  $("warning").textContent = r.ciPending
+    ? "A estimativa de vida está disponível. O modelo ainda precisa de uma referência comparável para precificar o diagnóstico adicional."
+    : warnings.join(" ");
   let bmi = (p.weight / (p.height / 100) ** 2).toFixed(1);
   const confidenceSegmentKey = p.ci > 0
     ? p.smoker === "smoker"
@@ -1220,7 +1242,7 @@ function render(p) {
   if (r.ageNote) priorityDetail += `<dt>Estimativa entre idades</dt><dd>${escapeHtml(r.ageNote)}</dd>`;
   if (r.lgTermNote) priorityDetail += `<dt>Prazo e preço documentados pela L&amp;G</dt><dd>${escapeHtml(r.lgTermNote)}</dd>`;
   if (r.componentNote) priorityDetail += `<dt>Composição da apólice histórica</dt><dd>${escapeHtml(r.componentNote)}</dd>`;
-  const evidence = r.ageEstimate ? "2 idades de referência e conferência com illustration posterior na mesma faixa" : r.illustratedBase ? `1 illustration ${escapeHtml(r.provider)} · vida em apólice individual` : r.detailed
+  const evidence = r.ciPending ? "Referência de vida: " + escapeHtml(r.lifeSource) : r.ageEstimate ? "2 idades de referência e conferência com illustration posterior na mesma faixa" : r.illustratedBase ? `1 illustration ${escapeHtml(r.provider)} · vida em apólice individual` : r.detailed
     ? r.capitalRange ? `2 capitais de referência · 1 capital de teste · ${r.providerQuotes.length} ${r.providerQuotes.length === 1 ? "seguradora" : "seguradoras"}` : `1 comparativo · ${r.providerQuotes.length} preços históricos`
     : `${model?.records || 0} registros na família · confiança ${escapeHtml(confidenceLabel)}`;
   $("details").innerHTML =

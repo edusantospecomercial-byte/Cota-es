@@ -633,12 +633,12 @@ ctx.adjustedCapital = {age:33,toAge:65,smoker:'non_smoker',life:49408,ci:0,waive
 assert.equal(run('illustratedLifeFor(adjustedCapital,"Aviva")').base_monthly,'4.99');
 assert.notEqual(run('illustratedLifeFor({...adjustedCapital,life:10000},"Aviva")')?.reference,'1083310818');
 
-const generalBudget = calculate(65,50000,10000,{age:42,smoker:'smoker',term:23,waiver:'No'});
+const generalBudget = calculate(65,50000,10000,{age:25,smoker:'smoker',term:40,waiver:'No'});
 assert.ok(generalBudget.complete && generalBudget.aggregateOnly);
 assert.equal(node('resultTitle').textContent,'Referência de orçamento');
-assert.ok(generalBudget.text.includes('Orçamento mensal indicativo de £22.99. Seguradora a confirmar.'));
+assert.ok(generalBudget.text.includes('Orçamento mensal indicativo de £25.91. Seguradora a confirmar.'));
 assert.ok(generalBudget.text.includes('valor para Zurich, Legal & General ou Aviva precisa de confirmação'));
-assert.equal(node('totalPrice').textContent,'£22.99/mês');
+assert.equal(node('totalPrice').textContent,'£25.91/mês');
 const namedBudget = calculate(65,50000,0,{age:32,smoker:'smoker',term:33,waiver:'No'});
 assert.ok(namedBudget.complete && !namedBudget.aggregateOnly);
 assert.ok(!namedBudget.text.includes('Seguradora a confirmar.'));
@@ -708,7 +708,7 @@ assert.equal(smoker43WithWaiver.main, 15.30);
 assert.equal(smoker43WithWaiver.alternativePackage, undefined);
 assert.equal(node('alternativePackage').hidden, true);
 assert.equal(calculate(65, 50001, 0, smoker43).alternativePackage, undefined);
-assert.equal(calculate(65, 50000, 10000, smoker43).alternativePackage, undefined);
+assert.ok(!calculate(65, 50000, 10000, smoker43).alternativePackage?.includes('Opção com isenção'));
 
 const smoker47 = {...smoker40, age: 47, term: 18};
 const lifeWithItemisation = calculate(65, 30000, 0, smoker47);
@@ -726,3 +726,22 @@ run('globalThis.availableBreakdowns = coreBreakdowns; coreBreakdowns = new Map()
 assert.equal(calculate(65, 30000, 0, smoker47).main, lifeWithItemisation.main);
 assert.equal(calculate(65, 30000, 0, smoker47).componentNote, undefined);
 run('coreBreakdowns = availableBreakdowns');
+
+for (const [age, life, expected, subtotal] of [[42,50000,'13.53','26.53'], [44,50000,'16.06','29.06'], [45,50000,'17.69','30.69'], [55,100000,'57.24','70.24']]) {
+  const profile = {age, smoker:'smoker', term:65-age, waiver:'No'};
+  const base = calculate(65, life, 0, profile);
+  const bundle = calculate(65, life, life / 5, profile);
+  assert.equal(bundle.ciPending, true);
+  assert.equal(bundle.complete, false);
+  assert.equal(bundle.main, base.main);
+  assert.equal(bundle.main.toFixed(2), expected);
+  assert.equal(node('totalPrice').textContent, 'A confirmar');
+  assert.equal(node('resultTitle').textContent, 'Estimativa parcial');
+  assert.ok(node('range').textContent.includes('Somente vida'));
+  assert.ok(bundle.text.includes('Estimativa só de vida: £' + expected));
+  assert.ok(bundle.text.includes('subtotal é £' + subtotal + '/mês antes do diagnóstico'));
+  assert.ok(!bundle.text.includes('Faixa provável:') && !bundle.text.includes('Orçamento mensal indicativo de'));
+}
+const fullAgain = calculate(65, 50000, 10000, {age:25, smoker:'smoker',term:40,waiver:'No'});
+assert.ok(!fullAgain.ciPending && fullAgain.complete);
+assert.equal(node('totalPrice').textContent, '£25.91/mês');
