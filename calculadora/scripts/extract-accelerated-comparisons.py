@@ -22,11 +22,15 @@ PRODUCTS = {
     "Aviva": "Aviva Multi-Product with Core CI",
 }
 BENEFIT = re.compile(
-    r"Level Term Assurance: 1st life, £([\d,]+) life & £([\d,]+) (life or earlier )?"
+    r"Level Term Assurance: 1st life, (?:£([\d,]+) life & )?£([\d,]+) (life or earlier )?"
     r"critical illness cover \(TPD: own occupation\), policy duration is to age (\d+), premiums are guaranteed"
 )
 OFFER = re.compile(
     r"£([\d,]+\.\d{2})\s+Guaranteed\s+(Yes|No)\s+Monthly\s+£([\d,]+)\s+£([\d,]+)"
+    r"\s+(To Age \d+|\d+ years?)\s+Level\s+(?:(Expiry|\d+|No data)\s+)?(Own|Specified|FATs)\s+No"
+)
+SINGLE_ACCELERATED_OFFER = re.compile(
+    r"£([\d,]+\.\d{2})\s+Guaranteed\s+(Yes|No)\s+Monthly\s+£([\d,]+)"
     r"\s+(To Age \d+|\d+ years?)\s+Level\s+(?:(Expiry|\d+|No data)\s+)?(Own|Specified|FATs)\s+No"
 )
 
@@ -56,27 +60,39 @@ def read_report(path, independent=False):
         return []
     date, birth = [datetime.strptime(s, "%d/%m/%Y").date() for s in (requested[1], person[2])]
     age = date.year - birth.year - ((date.month, date.day) < (birth.month, birth.day))
-    life, ci, end = [int(s.replace(",", "")) for s in (benefit[1], benefit[2], benefit[4])]
-    if min(life, ci) <= 0 or age >= end:
+    single_accelerated = benefit[1] is None and not independent
+    life, ci, end = [int(s.replace(",", "")) for s in (benefit[1] or "0", benefit[2], benefit[4])]
+    if (not single_accelerated and life <= 0) or ci <= 0 or age >= end:
         return []
     results, _, unavailable = remaining.partition("Products Not Quoting:")
     if "Non Underwritten Results" not in results:
         return []
     if independent and not re.search(r"Life Cover[ \t]+Critical[ \t]+Life or", results):
         return []
+    pattern = INDEPENDENT_OFFER if independent else OFFER
+    if single_accelerated:
+        header = results.partition("Non Underwritten Results")[0]
+        if not re.search(r"Life or[ \t]+Policy", header) or re.search(r"Life Cover|Critical[ \t]+Life or", header):
+            return []
+        pattern = SINGLE_ACCELERATED_OFFER
     source = hashlib.sha256(path.read_bytes()).hexdigest()
     rows = []
     for provider, product in PRODUCTS.items():
+        if single_accelerated and provider == "Aviva":
+            product = "Aviva Life Insurance+ with Core CI"
         prefix = r"^[ \t]*" + re.escape(product) + r"[ \t]{2,}"
         lines = {s.strip() for s in re.findall(prefix + r"(£[^\n]+)", results, re.M)}
         if not lines and re.search(prefix + r"\S", unavailable, re.M):
             continue
         if len(lines) != 1:
             return []
-        offer = (INDEPENDENT_OFFER if independent else OFFER).fullmatch(lines.pop())
+        offer = pattern.fullmatch(lines.pop())
         if not offer:
             return []
-        price, rated, quoted_life, *ci_columns, term, waiver, tpd = offer.groups()
+        values = list(offer.groups())
+        if single_accelerated:
+            values.insert(2, "0")  # Only the shared life-or-earlier-CI amount is quoted.
+        price, rated, quoted_life, *ci_columns, term, waiver, tpd = values
         price = price.replace(",", "")
         quoted_life = int(quoted_life.replace(",", ""))
         returned_ci = tuple(0 if amount == "No data" else int(amount.lstrip("£").replace(",", "")) for amount in ci_columns)
@@ -84,7 +100,7 @@ def read_report(path, independent=False):
             return []
         term_number = int(re.search(r"\d+", term)[0])
         valid_term = term_number == end if term.startswith("To Age") else term_number in (end-age-1, end-age)
-        if not valid_term or quoted_life <= 0 or float(price) <= 0:
+        if not valid_term or (not single_accelerated and quoted_life <= 0) or float(price) <= 0:
             return []
         rows.append((date.isoformat(), reference[1], age, "Yes" if person[1].lower() == "smoker" else "No",
                      end, life, ci, provider, product, price, quoted_life, *returned_ci, term,

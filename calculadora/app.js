@@ -290,7 +290,7 @@ function renderCiComparison(p, independentTpd = false) {
   panel.hidden = true;
   panel.open = false;
   $(prefix + "Offers").textContent = "";
-  if (!p.life || !p.ci) return;
+  if (!p.ci || (independentTpd && !p.life)) return;
   const smoker = p.smoker === "smoker" ? "Yes" : "No";
   const matching = offers.filter(row => row.smoker === smoker &&
     Number(row.age) === p.age && Number(row.to_age) === p.toAge &&
@@ -310,7 +310,8 @@ function renderCiComparison(p, independentTpd = false) {
       "prazo de isenção sem confirmação";
     const term = row.quoted_term.startsWith("To Age ") ? "até os " + row.quoted_term.slice(7) + " anos" :
       row.quoted_term.split(" ")[0] + " anos de prazo";
-    const detail = [term, "vida " + gbp(Number(row.quoted_life_cover))];
+    const detail = [term];
+    if (Number(row.quoted_life_cover) > 0) detail.push("vida " + gbp(Number(row.quoted_life_cover)));
     if (Number(row.quoted_independent_ci_cover) > 0)
       detail.push("diagnóstico independente " + gbp(Number(row.quoted_independent_ci_cover)));
     if (Number(row.quoted_earlier_ci_cover) > 0)

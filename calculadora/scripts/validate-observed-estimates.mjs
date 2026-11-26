@@ -297,9 +297,17 @@ for (const row of variantRows) {
   assert.match(row.sha256, /^[0-9a-f]{64}$/);
   assert.ok(["Zurich", "Legal & General", "Aviva"].includes(row.provider));
   assert.ok(Number(row.age) < Number(row.to_age) && Number(row.quoted_earlier_ci_cover) > 0 &&
-    Number(row.quoted_life_cover) > 0 && Number(row.monthly_premium) > 0);
+    (Number(row.life_cover) > 0 ? Number(row.quoted_life_cover) > 0 : row.quoted_life_cover === "0") &&
+    Number(row.monthly_premium) > 0);
   assert.ok(["Own", "Specified", "FATs"].includes(row.tpd_basis));
 }
+calculate(65, 0, 20000, { age: 47, term: 18, smoker: "smoker" });
+assert.equal(node("acceleratedComparison").hidden, false);
+assert.equal(node("tpdComparison").hidden, true);
+for (const detail of ["£29.45", "£31.75", "£33.64", "vida ou diagnóstico £20,000.00", "17 anos de prazo"])
+  assert.ok(node("acceleratedOffers").innerHTML.includes(detail), detail);
+assert.ok(!node("acceleratedOffers").innerHTML.includes("vida £0.00"));
+assert.ok(node("acceleratedSource").textContent.includes("1083439983"));
 const independent = calculate(65, 100000, 10000, age31);
 assert.equal(independent.main, 11.08);
 assert.equal(node("acceleratedComparison").hidden, false);
