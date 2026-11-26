@@ -311,3 +311,38 @@ source_date,sha256,provider,standard_product,standard_monthly,product,age,smoker
 2026-11-26,1053879c653e6af8156d64fcc5af5e796a18ccc5bef3341ecc7dd7370349782f,Zurich,Zurich Life & CI,14.63,Zurich Life & CI + Child,31,No,65,100000,20000,15.23,No,not_shown,Specified
 2026-11-26,614f92df0e0922c678687cd95e76a32bd5287f838bf0f924db172ee14dbff119,Aviva,Aviva Multi-Product with Core CI,17.81,Aviva Multi-Product Upgraded CI with Child Upgrade,31,No,65,100000,20000,24.08,No,70,Own
 2026-11-26,614f92df0e0922c678687cd95e76a32bd5287f838bf0f924db172ee14dbff119,Zurich,Zurich Life & CI,14.63,Zurich Life & CI + Child,31,No,65,100000,20000,15.23,No,No data,Specified
+2025-11-08,dd8dc8a78d6a0b55b307813d8e2e6d12a35153fb879b78aa9ae3cc5885dc8ea5,Aviva,Aviva Life Insurance+ with Core CI,11.47,Aviva Life Insurance+ Upgraded CI with Child Upgrade,36,No,65,0,20000,19.01,No,not_shown,Own
+2025-11-08,dd8dc8a78d6a0b55b307813d8e2e6d12a35153fb879b78aa9ae3cc5885dc8ea5,Aviva,Aviva Life Insurance+ with Core CI,11.47,Aviva Life Insurance+ Upgraded CI/No Child Upgrade,36,No,65,0,20000,14.91,No,not_shown,Own
+2025-11-08,dd8dc8a78d6a0b55b307813d8e2e6d12a35153fb879b78aa9ae3cc5885dc8ea5,Zurich,Zurich Life & CI,11.87,Zurich Life & CI + Child,36,No,65,0,20000,12.47,No,not_shown,None
+2025-11-08,dd8dc8a78d6a0b55b307813d8e2e6d12a35153fb879b78aa9ae3cc5885dc8ea5,Zurich,Zurich Life & CI,11.87,Zurich Life & CI + Child + Pregnancy and Early Childhood Cover,36,No,65,0,20000,15.20,No,not_shown,None
+2025-11-08,dd8dc8a78d6a0b55b307813d8e2e6d12a35153fb879b78aa9ae3cc5885dc8ea5,Zurich,Zurich Life & CI,11.87,Zurich Life & CI Enhanced,36,No,65,0,20000,13.93,No,not_shown,None
+2025-11-08,dd8dc8a78d6a0b55b307813d8e2e6d12a35153fb879b78aa9ae3cc5885dc8ea5,Zurich,Zurich Life & CI,11.87,Zurich Life & CI Enhanced + Child Enhanced,36,No,65,0,20000,15.76,No,not_shown,None
+2025-11-08,dd8dc8a78d6a0b55b307813d8e2e6d12a35153fb879b78aa9ae3cc5885dc8ea5,Zurich,Zurich Life & CI,11.87,Zurich Life & CI Enhanced Plus,36,No,65,0,20000,14.67,No,not_shown,None
+2026-03-26,075e48b3e0e4cc4a1333c9cf7d592dfa94749070ed1d7a4a9ad837cabae81c5c,Aviva,Aviva Life Insurance+ with Core CI,8.50,Aviva Life Insurance+ Upgraded CI with Child Upgrade,28,No,65,0,20000,13.81,No,70,Own
+2026-03-26,075e48b3e0e4cc4a1333c9cf7d592dfa94749070ed1d7a4a9ad837cabae81c5c,Aviva,Aviva Life Insurance+ with Core CI,8.50,Aviva Life Insurance+ Upgraded CI/No Child Upgrade,28,No,65,0,20000,10.94,No,70,Own
+2026-03-26,075e48b3e0e4cc4a1333c9cf7d592dfa94749070ed1d7a4a9ad837cabae81c5c,Zurich,Zurich Life & CI,9.62,Zurich Life & CI + Child,28,No,65,0,20000,10.24,No,70,Own
+2026-03-26,075e48b3e0e4cc4a1333c9cf7d592dfa94749070ed1d7a4a9ad837cabae81c5c,Zurich,Zurich Life & CI,9.62,Zurich Life & CI + Child + Pregnancy and Early Childhood Cover,28,No,65,0,20000,13.04,No,70,Own
+2026-03-26,075e48b3e0e4cc4a1333c9cf7d592dfa94749070ed1d7a4a9ad837cabae81c5c,Zurich,Zurich Life & CI,9.62,Zurich Life & CI Enhanced,28,No,65,0,20000,11.43,No,70,Own
+2026-03-26,075e48b3e0e4cc4a1333c9cf7d592dfa94749070ed1d7a4a9ad837cabae81c5c,Zurich,Zurich Life & CI,9.62,Zurich Life & CI Enhanced + Child Enhanced,28,No,65,0,20000,13.31,No,70,Own
+2026-03-26,075e48b3e0e4cc4a1333c9cf7d592dfa94749070ed1d7a4a9ad837cabae81c5c,Zurich,Zurich Life & CI,9.62,Zurich Life & CI Enhanced Plus,28,No,65,0,20000,11.97,No,70,Own
+2026-07-25,fa45a193c849b5bc8323d171c3a9bb02b2217c892123dd4fcb17f69d8bb40b6f,Aviva,Aviva Life Insurance+ with Core CI,7.24,Aviva Life Insurance+ Upgraded CI with Child Upgrade,42,No,65,0,10000,15.13,No,70,Own
+2026-07-25,fa45a193c849b5bc8323d171c3a9bb02b2217c892123dd4fcb17f69d8bb40b6f,Aviva,Aviva Life Insurance+ with Core CI,7.24,Aviva Life Insurance+ Upgraded CI/No Child Upgrade,42,No,65,0,10000,9.47,No,70,Own
+2026-07-25,fa45a193c849b5bc8323d171c3a9bb02b2217c892123dd4fcb17f69d8bb40b6f,Zurich,Zurich Life & CI,10.14,Zurich Life & CI + Child,42,No,65,0,10000,10.76,No,70,Specified
+2026-07-25,fa45a193c849b5bc8323d171c3a9bb02b2217c892123dd4fcb17f69d8bb40b6f,Zurich,Zurich Life & CI,10.14,Zurich Life & CI + Child + Pregnancy and Early Childhood Cover,42,No,65,0,10000,13.59,No,70,Specified
+2026-07-25,fa45a193c849b5bc8323d171c3a9bb02b2217c892123dd4fcb17f69d8bb40b6f,Zurich,Zurich Life & CI,10.14,Zurich Life & CI Enhanced,42,No,65,0,10000,11.67,No,70,Specified
+2026-07-25,fa45a193c849b5bc8323d171c3a9bb02b2217c892123dd4fcb17f69d8bb40b6f,Zurich,Zurich Life & CI,10.14,Zurich Life & CI Enhanced + Child Enhanced,42,No,65,0,10000,13.56,No,70,Specified
+2026-07-25,fa45a193c849b5bc8323d171c3a9bb02b2217c892123dd4fcb17f69d8bb40b6f,Zurich,Zurich Life & CI,10.14,Zurich Life & CI Enhanced Plus,42,No,65,0,10000,12.22,No,70,Specified
+2026-08-05,d2096336c23e3535fc9beb2b0c997870eafa9eb4da72ea6fab6a829dc99cc507,Aviva,Aviva Life Insurance+ with Core CI,17.23,Aviva Life Insurance+ Upgraded CI with Child Upgrade,37,No,65,0,30000,27.05,No,70,Own
+2026-08-05,d2096336c23e3535fc9beb2b0c997870eafa9eb4da72ea6fab6a829dc99cc507,Aviva,Aviva Life Insurance+ with Core CI,17.23,Aviva Life Insurance+ Upgraded CI/No Child Upgrade,37,No,65,0,30000,22.63,No,70,Own
+2026-08-05,d2096336c23e3535fc9beb2b0c997870eafa9eb4da72ea6fab6a829dc99cc507,Zurich,Zurich Life & CI,18.12,Zurich Life & CI + Child,37,No,65,0,30000,19.05,No,70,Specified
+2026-08-05,d2096336c23e3535fc9beb2b0c997870eafa9eb4da72ea6fab6a829dc99cc507,Zurich,Zurich Life & CI,18.12,Zurich Life & CI + Child + Pregnancy and Early Childhood Cover,37,No,65,0,30000,23.25,No,70,Specified
+2026-08-05,d2096336c23e3535fc9beb2b0c997870eafa9eb4da72ea6fab6a829dc99cc507,Zurich,Zurich Life & CI,18.12,Zurich Life & CI Enhanced,37,No,65,0,30000,21.64,No,70,Specified
+2026-08-05,d2096336c23e3535fc9beb2b0c997870eafa9eb4da72ea6fab6a829dc99cc507,Zurich,Zurich Life & CI,18.12,Zurich Life & CI Enhanced + Child Enhanced,37,No,65,0,30000,24.47,No,70,Specified
+2026-08-05,d2096336c23e3535fc9beb2b0c997870eafa9eb4da72ea6fab6a829dc99cc507,Zurich,Zurich Life & CI,18.12,Zurich Life & CI Enhanced Plus,37,No,65,0,30000,22.82,No,70,Specified
+2026-08-07,f1e306df600512cc9751bf6ffbe949417b932a963c5310de5b5d56b2e38bc437,Aviva,Aviva Life Insurance+ with Core CI,17.12,Aviva Life Insurance+ Upgraded CI with Child Upgrade,37,No,65,0,30000,26.81,No,not_shown,Own
+2026-08-07,f1e306df600512cc9751bf6ffbe949417b932a963c5310de5b5d56b2e38bc437,Aviva,Aviva Life Insurance+ with Core CI,17.12,Aviva Life Insurance+ Upgraded CI/No Child Upgrade,37,No,65,0,30000,22.45,No,not_shown,Own
+2026-08-07,f1e306df600512cc9751bf6ffbe949417b932a963c5310de5b5d56b2e38bc437,Zurich,Zurich Life & CI,17.53,Zurich Life & CI + Child,37,No,65,0,30000,18.44,No,not_shown,Specified
+2026-08-07,f1e306df600512cc9751bf6ffbe949417b932a963c5310de5b5d56b2e38bc437,Zurich,Zurich Life & CI,17.53,Zurich Life & CI + Child + Pregnancy and Early Childhood Cover,37,No,65,0,30000,22.54,No,not_shown,Specified
+2026-08-07,f1e306df600512cc9751bf6ffbe949417b932a963c5310de5b5d56b2e38bc437,Zurich,Zurich Life & CI,17.53,Zurich Life & CI Enhanced,37,No,65,0,30000,20.90,No,not_shown,Specified
+2026-08-07,f1e306df600512cc9751bf6ffbe949417b932a963c5310de5b5d56b2e38bc437,Zurich,Zurich Life & CI,17.53,Zurich Life & CI Enhanced + Child Enhanced,37,No,65,0,30000,23.66,No,not_shown,Specified
+2026-08-07,f1e306df600512cc9751bf6ffbe949417b932a963c5310de5b5d56b2e38bc437,Zurich,Zurich Life & CI,17.53,Zurich Life & CI Enhanced Plus,37,No,65,0,30000,22.04,No,not_shown,Specified

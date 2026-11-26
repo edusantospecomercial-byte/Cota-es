@@ -570,6 +570,24 @@ assert.equal(alternatives37(28,13,[suitable37,{...suitable37,monthly_premium:"13
 assert.equal(alternatives37(28,13,[suitable37,{...suitable37,source_date:"2026-10-11",monthly_premium:"15.09"}]).length,0);
 assert.equal(alternatives37(28,13,[suitable37],{},Date.parse("2027-03-15")).length,0);
 assert.equal(alternatives37(28,13,[suitable37],{},Date.parse("2026-07-10")).length,0);
+const onlyShared47 = sharedCatalogue.find(row=>row.reference==="1083439983" && row.provider==="Aviva");
+const singleBenefit47 = {...profile37,age:47,life:0,ci:20000,term:18,monthlyBudget:28,waiver:"Yes"};
+const singleNote = firstEventNote(singleBenefit47,{c:1,total:13},[onlyShared47]);
+for (const text of ["Cobertura única de £20,000.00","paga uma vez, por falecimento ou diagnóstico coberto","£29.45/mês","£42.45/mês","£14.45 acima do orçamento"])
+  assert.ok(singleNote.includes(text),text);
+assert.ok(!singleNote.includes("£0.00 de vida") && !singleNote.includes("diagnóstico independente"));
+assert.ok(firstEventNote({...singleBenefit47,monthlyBudget:42.45},{c:1,total:13},[onlyShared47]).includes("exatamente o orçamento"));
+for(const changes of [{age:46},{smoker:"non_smoker"},{smoker:"unknown"},{toAge:70},{ci:10000},{life:10000}])
+  assert.equal(firstEventNote({...singleBenefit47,...changes},{c:1,total:13},[onlyShared47]),"");
+for(const changes of [{quoted_earlier_ci_cover:"21000"},{quoted_life_cover:"10000"},{source_date:"2025-01-01"},
+    {waiver_to:"64"},{occupation_rated:"Yes"},{monthly_premium:"0"}])
+  assert.equal(firstEventNote(singleBenefit47,{c:1,total:13},[{...onlyShared47,...changes}]),"");
+const singleVersions=versionsForOffer(onlyShared47, "");
+assert.ok(singleVersions.some(row=>row.product==="Aviva Life Insurance+ Upgraded CI/No Child Upgrade" && row.monthly_premium==="38.53"));
+const singleRendered=calculate(65,0,20000,singleBenefit47);
+assert.ok(singleRendered.alternativePackage.includes("Cobertura única de £20,000.00") &&
+  singleRendered.text.includes(singleRendered.alternativePackage) && node("acceleratedSource").textContent.includes("um único capital"));
+assert.ok(node("acceleratedOffers").innerHTML.includes("£12.13 a mais que Aviva Life Insurance+ Upgraded CI/No Child Upgrade"));
 const firstEvent30 = calculate(65,50000,10000,smokerPackage);
 const upgradedAviva = "Aviva Multi-Product Upgraded CI/No Child Upgrade";
 const panelAge30 = node("acceleratedOffers").innerHTML;

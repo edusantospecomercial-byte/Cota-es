@@ -1011,6 +1011,8 @@ function renderCiComparison(p, independentTpd = false) {
     " · referência " + latest.reference + ". " +
     (referencesWithWaiverColumn.has(latest.reference) ? "O relatório traz uma coluna de isenção. Confira a resposta de cada seguradora." :
       "O relatório não informa isenção nas ofertas.");
+  if (!independentTpd && !p.life)
+    $(prefix + "Source").textContent += " A cobertura tem um único capital, pago por falecimento ou por diagnóstico coberto, o que ocorrer primeiro.";
   if (candidates.some(row => row.reference === latest.reference && occupationalBasis(p.occupation, row).occupationMatched))
     $(prefix + "Source").textContent += " O relatório corresponde à profissão e ao vínculo informados.";
   $(prefix + "Offers").innerHTML = entries.join("");
@@ -1019,10 +1021,11 @@ function renderCiComparison(p, independentTpd = false) {
 }
 
 function firstEventPackageNote(p, metlife, prices) {
-  if (!p.life || !p.ci || metlife.unavailable) return "";
+  if (!p.ci || metlife.unavailable || (!p.life && (p.toAge !== 65 || !["smoker","non_smoker"].includes(p.smoker)))) return "";
   const smoker = p.smoker === "smoker" ? "Yes" : "No";
   const offer = prices.find(row => Number(row.age) === p.age && row.smoker === smoker && Number(row.to_age) === p.toAge &&
     Number(row.life_cover) === p.life && Number(row.earlier_ci_cover) === p.ci && Number(row.monthly_premium) > 0 &&
+    (p.life || recentBudgetSource(row, Date.now())) &&
     Number(row.quoted_life_cover) === p.life && Number(row.quoted_earlier_ci_cover) === p.ci && row.quoted_term === "To Age " + p.toAge &&
     (row.occupation_rated === "No" || occupationalBasis(p.occupation, row).occupationMatched) &&
     (p.waiver !== "Yes" || row.waiver_to === "Expiry" || Number(row.waiver_to) >= p.toAge));
@@ -1032,8 +1035,9 @@ function firstEventPackageNote(p, metlife, prices) {
     /^\d+$/.test(offer.waiver_to) ? "isenção de mensalidade com idade-limite de " + offer.waiver_to + " anos" : "isenção sem prazo confirmado";
   const tpd = {Own: "incapacidade permanente para a própria profissão", Specified: "incapacidade permanente pelo critério Specified",
     FATs: "incapacidade permanente pelo critério FATs", None: "sem cobertura de incapacidade permanente"};
+  const capital = p.life ? gbp(p.life) + " de vida e uma cobertura de " : "Cobertura única de ";
   let note = "Alternativa com diagnóstico antecipado · " + offer.product + ". " +
-    gbp(p.life) + " de vida e uma cobertura de " + gbp(p.ci) + " paga uma vez, por falecimento ou diagnóstico coberto, " +
+    capital + gbp(p.ci) + " paga uma vez, por falecimento ou diagnóstico coberto, " +
     "o que ocorrer primeiro. Cobertura até os " + p.toAge + " anos. No comparativo de " + offer.source_date +
     " (ref. " + offer.reference + "), o pacote custava " + gbp(premium) + "/mês, com " +
     waiver + " e " + (tpd[offer.tpd_basis] || "critério de incapacidade permanente a confirmar") + ".";
@@ -1042,6 +1046,11 @@ function firstEventPackageNote(p, metlife, prices) {
   if (detail?.reference === offer.reference && detail.total_monthly === offer.monthly_premium && Number(detail.discount_monthly) > 0)
     note += " O prêmio já inclui " + gbp(Number(detail.discount_monthly)) + " de desconto pelas apólices em conjunto.";
   if (metlife.c) note += " Com " + gbp(metlife.total) + " da MetLife, esta alternativa soma " + gbp(monthlyTotal(premium, metlife.total)) + "/mês.";
+  if (!p.life && p.monthlyBudget > 0) {
+    const excess = displayedPence(monthlyTotal(premium, metlife.c ? metlife.total : 0)) - displayedPence(p.monthlyBudget);
+    if (excess > 0) note += " Essa alternativa fica " + gbp(excess / 100) + " acima do orçamento mensal.";
+    if (excess === 0) note += " Essa alternativa usa exatamente o orçamento mensal.";
+  }
   const underBudget = matchedFirstEventVariants(offer).filter(v => monthlyTotal(Number(v.monthly_premium), metlife.total) < p.monthlyBudget);
   if (underBudget.length) {
     const prices = underBudget.map(v => v.product + " por " + gbp(monthlyTotal(Number(v.monthly_premium), metlife.total)) + "/mês");
@@ -1518,6 +1527,7 @@ const companionProducts = new Map([
   ["Legal & General CI (Standard + Child CI Extra)", "Legal & General CI (Standard)"],
   ["Aviva Multi-Product Upgraded CI with Child Upgrade", "Aviva Multi-Product Upgraded CI/No Child Upgrade"],
   ["Aviva Critical Illness+ Upgraded with Child Upgrade", "Aviva Critical Illness+ Upgraded/No Child Upgrade"],
+  ["Aviva Life Insurance+ Upgraded CI with Child Upgrade", "Aviva Life Insurance+ Upgraded CI/No Child Upgrade"],
 ]);
 function familyCiPriceDifference(row, otherVersions = exactCapitalVariants) {
   const product = companionProducts.get(row.product);
