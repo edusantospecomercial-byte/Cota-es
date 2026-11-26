@@ -14,6 +14,7 @@ let catalog = { models: {} },
   historicalAgeTests = new Map(),
   acceleratedOffers = [],
   maturityDeclines = [],
+  productDeclines = [],
   coreBreakdowns = new Map(),
   tpdOffers = [],
   fractureOffers = [],
@@ -70,6 +71,7 @@ async function init() {
     illustratedLife,
     loadedAccelerated,
     loadedMaturityDeclines,
+    loadedProductDeclines,
     loadedIndividualWaivers,
     avivaLife,
     loadedLgTerms,
@@ -140,6 +142,8 @@ async function init() {
       .then(response => response.ok ? response.text() : "")
       .then(parsePriorityCsv)
       .catch(() => []),
+    fetch("./data/comparison-product-declines.csv", { cache: "no-store" })
+      .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
     fetch("./data/waiver-individual-offers.csv", { cache: "no-store" })
       .then(response => response.ok ? response.text() : "")
       .then(parsePriorityCsv)
@@ -189,7 +193,7 @@ async function init() {
   supplementalLifeRows = loadedSupplementalLife;
   fixedTermLifeRows = loadedFixedTermLife;
   showComparisonInventory(comparisonIndex, [loadedReports, verifiedArchive, loadedWaiverRows,
-    loadedIndividualWaivers, loadedAccelerated, loadedMaturityDeclines, loadedTpdOffers, loadedFractureOffers, loadedFixedTermLife, loadedSupplementalLife]);
+    loadedIndividualWaivers, loadedAccelerated, loadedMaturityDeclines, loadedTpdOffers, loadedFractureOffers, loadedFixedTermLife, loadedProductDeclines, loadedSupplementalLife]);
   reportedOccupations = new Map(loadedOccupations.map(row => [row.sha256, row]));
   fractureOffers = loadedFractureOffers;
   fractureBreakdowns = new Map(loadedFractureBreakdowns.map(row => [row.provider + "|" + row.comparison_sha256, row]));
@@ -203,6 +207,7 @@ async function init() {
   individualWaivers = loadedIndividualWaivers;
   acceleratedOffers = loadedAccelerated;
   maturityDeclines = loadedMaturityDeclines;
+  productDeclines = loadedProductDeclines;
   illustratedLifeRows = illustratedLife.map(row => ({ ...row, provider: "Zurich" })).concat(
     avivaLife.map(row => ({ ...row, provider: "Aviva", policy_count: "1", discount_monthly: "0.00" })));
   historicalAgeTests = globalThis.validateIllustratedAges(illustratedLifeRows);
@@ -254,7 +259,7 @@ function parsePriorityCsv(csv) {
 }
 // Deduplicate reprints by the reference on the PDF, even when the PDF bytes differ.
 function comparisonInventory(index, tables) {
-  if (!index.length || tables.length !== 10 || tables.some(rows => !rows?.length)) return null;
+  if (!index.length || tables.length !== 11 || tables.some(rows => !rows?.length)) return null;
   const reportByHash = new Map(index.map(row => [row.sha256, row.report_key]));
   if (reportByHash.size !== index.length || index.some(row =>
     !/^[a-f0-9]{64}$/.test(row.sha256) || !/^[a-f0-9]{32}$/.test(row.report_key))) return null;
@@ -276,7 +281,12 @@ function comparisonInventory(index, tables) {
       if (smoker !== item.smoker || toAge !== item.toAge || termYears !== item.termYears) return null;
       if (termYears && item.available !== undefined && item.available !== row.available) return null;
       if (termYears) item.available = row.available;
+      if (["waiver_age_limit", "product_age_limit"].includes(row.unavailable_reason)) {
+        if (item.pence || row.available !== "false" || row.monthly_premium) return null;
+        item.declinedForAge = true;
+      }
       if (row.monthly_premium) {
+        if (item.declinedForAge) return null;
         if (!/^\d+\.\d{2}$/.test(row.monthly_premium)) return null;
         const pence = Math.round(Number(row.monthly_premium) * 100);
         if (pence <= 0 || (item.pence && item.pence !== pence)) return null;
@@ -634,6 +644,15 @@ function renderFractureComparison(p) {
   panel.hidden = false;
 }
 
+function documentedAgeDeclines(offer) {
+  return productDeclines.filter(row => row.sha256 === offer.sha256 && row.source_date === offer.source_date &&
+    row.age === offer.age && row.smoker === offer.smoker && row.to_age === offer.to_age &&
+    row.life_cover === offer.life_cover && row.earlier_ci_cover === (offer.earlier_ci_cover || "0"));
+}
+function ageDeclineReason(row) {
+  return row.unavailable_reason === "waiver_age_limit" ? "limite de idade da isenção de mensalidade" : "limite de idade do produto";
+}
+
 function renderCiComparison(p, independentTpd = false) {
   const prefix = independentTpd ? "tpd" : "accelerated";
   const offers = independentTpd ? tpdOffers : acceleratedOffers;
@@ -701,6 +720,10 @@ function renderCiComparison(p, independentTpd = false) {
       gbp(monthlyTotal(price, metlife.total)) + "/mês." : "";
     return `<dt>${escapeHtml(row.provider)}</dt><dd><b>${gbp(price)}/mês</b> · ${escapeHtml(detail.join(" · "))}${itemised}${packageText}</dd>`;
   });
+  if (!independentTpd) {
+    for (const row of documentedAgeDeclines(prices[0]))
+      entries.push("<dt>" + escapeHtml(row.product) + "</dt><dd>Sem preço neste relatório por " + ageDeclineReason(row) + ".</dd>");
+  }
   $(prefix + "Source").textContent = "Comparativo de " + latest.source_date +
     " · referência " + latest.reference + ". " +
     (referencesWithWaiverColumn.has(latest.reference) ? "O relatório traz uma coluna de isenção. Confira a resposta de cada seguradora." :
@@ -856,6 +879,10 @@ function supplementalLifeNote(p, m, source = supplementalLifeRows) {
       const original = Number(row.life_cover) !== p.life ? "Para um pedido original de " + gbp(Number(row.life_cover)) + ", " : "";
       notes.add(original + row.provider + " ofereceu " + gbp(Number(row.quoted_life_cover)) + " " + term + " por " + gbp(premium) +
         "/mês em " + newest + " (" + details + ")." + metlife);
+      if (Number(row.life_cover) === p.life) {
+        for (const decline of documentedAgeDeclines(row))
+          notes.add("No comparativo de " + newest + ", " + decline.product + " ficou sem preço por " + ageDeclineReason(decline) + ".");
+      }
     }
   }
   const adjusted = matching.some(row => Number(row.life_cover) !== p.life);

@@ -161,7 +161,7 @@ assert.ok(node("baseStatus").textContent.includes("508 registros em 392 illustra
 assert.ok(node("baseStatus").textContent.includes(reported.filter(r => r.available === "true").length + " mensalidades"));
 // The public inventory counts separately by insurer and the printed report identifier.
 const pdfIndex = run("parsePriorityCsv")(readFileSync(new URL("../data/comparison-pdf-index.csv", import.meta.url), "utf8"));
-const tables = run("[reportedRows, verifiedArchiveRows, waiverRows, individualWaivers, acceleratedOffers, maturityDeclines, tpdOffers, fractureOffers, fixedTermLifeRows, supplementalLifeRows]");
+const tables = run("[reportedRows, verifiedArchiveRows, waiverRows, individualWaivers, acceleratedOffers, maturityDeclines, tpdOffers, fractureOffers, fixedTermLifeRows, productDeclines, supplementalLifeRows]");
 const reportKeys = new Map(pdfIndex.map(item => [item.sha256, item.report_key]));
 const withPrice = tables.flat().filter(row => Number(row.monthly_premium) > 0);
 const distinct = rows => new Set(rows.map(row => reportKeys.get(row.sha256) + "|" + row.provider)).size;
@@ -248,6 +248,37 @@ const calculate = (toAge, life, ci, extra = {}) => {
   run("render({...payload(), ...inputs})");
   return run("lastPayload.result");
 };
+const ageDeclines = run("productDeclines");
+const declinesFor = run("documentedAgeDeclines");
+assert.equal(distinct(ageDeclines), ageDeclines.length);
+assert.ok(ageDeclines.length >= 18 && new Set(ageDeclines.map(row => row.sha256)).size >= 13);
+for (const row of ageDeclines) {
+  assert.equal(row.available, "false");
+  assert.ok(!row.monthly_premium);
+  assert.ok(row.unavailable_reason === (row.provider === "Aviva" ? "product_age_limit" : "waiver_age_limit"));
+  const offers = withPrice.filter(offer => offer.sha256 === row.sha256 && declinesFor(offer).includes(row));
+  assert.ok(offers.length && offers.every(offer => offer.provider !== row.provider));
+  assert.ok(!declinesFor({...offers[0], earlier_ci_cover: "1"}).includes(row));
+}
+const conflictedDecline = {...ageDeclines[0], available: "true", monthly_premium: "1.00", unavailable_reason: ""};
+assert.equal(inventory(pdfIndex, includeRow(conflictedDecline)), null);
+assert.equal(inventory(pdfIndex, [...tables.slice(0,-1), tables.at(-1).concat(conflictedDecline)]), null);
+const protectedLife = calculate(80,50000,0,{age:65,term:15,waiver:"No"});
+for (const clue of ["Zurich ofereceu £50,000.00 até os 80 anos por £40.60", "Legal & General Life ficou sem preço por limite de idade da isenção", "Aviva Life Insurance+ ficou sem preço por limite de idade do produto"]) {
+  assert.ok(protectedLife.supplementalLifeNote.includes(clue) && protectedLife.text.includes(clue), clue);
+}
+for (const change of [{toAge:70,term:5},{smoker:"smoker"},{life:50001},{ci:10000}]) {
+  const changed = calculate(80,50000,0,{age:65,term:15,waiver:"No",...change});
+  assert.ok(!changed.supplementalLifeNote.includes("ficou sem preço por"));
+}
+for (const [smoker, reference, premium] of [["smoker","1078909284","79.88"],["non_smoker","1081048286","34.10"]]) {
+  calculate(70,20000,10000,{age:64,term:6,smoker,waiver:"Yes"});
+  assert.ok(node("acceleratedSource").textContent.includes(reference));
+  const list = node("acceleratedOffers").innerHTML;
+  for (const clue of ["Legal &amp; General Life + CI (Standard)", "Sem preço neste relatório por limite de idade da isenção", "£" + premium])
+    assert.ok(list.includes(clue), clue);
+  assert.ok(node("tpdComparison").hidden || !node("tpdOffers").innerHTML.includes("Sem preço neste relatório por"));
+}
 const fixedLife = run("fixedTermLifeRows");
 assert.ok(fixedLife.length >= 6);
 const historical64 = calculate(85,20000,0,{age:64,term:21});

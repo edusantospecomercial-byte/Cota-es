@@ -1,0 +1,19 @@
+source_date,sha256,provider,product,age,smoker,to_age,life_cover,earlier_ci_cover,available,unavailable_reason
+2026-05-12,697019cbd260c9d79bdf055797cd42909134d0e444e418c5311332dde3136c64,Legal & General,Legal & General Life + CI (Standard),64,Yes,70,20000,10000,false,waiver_age_limit
+2026-05-19,ca4f1618dd8f722b44004dd9323a246dbd6ec5253f5eca78bf7649351fba01f3,Legal & General,Legal & General Life,64,No,70,50000,0,false,waiver_age_limit
+2026-06-04,a676c64480db97c65d7e1d63d12ffda12c9a9581706f35a98da5835816cb8272,Aviva,Aviva Life Insurance+,65,No,80,50000,0,false,product_age_limit
+2026-06-04,a676c64480db97c65d7e1d63d12ffda12c9a9581706f35a98da5835816cb8272,Legal & General,Legal & General Life,65,No,80,50000,0,false,waiver_age_limit
+2026-06-06,08accadfbb17ff1fc5f8a5013cb16fd23c7f30ce3307e9606cb0dca2cda88824,Aviva,Aviva Life Insurance+,65,No,80,20000,0,false,product_age_limit
+2026-06-06,08accadfbb17ff1fc5f8a5013cb16fd23c7f30ce3307e9606cb0dca2cda88824,Legal & General,Legal & General Life,65,No,80,20000,0,false,waiver_age_limit
+2026-06-06,59fd9213e830c9fcc9615911b732dd24bc05a432fe455405acbe8554a7b1ebfe,Aviva,Aviva Life Insurance+,65,No,80,20000,0,false,product_age_limit
+2026-06-06,59fd9213e830c9fcc9615911b732dd24bc05a432fe455405acbe8554a7b1ebfe,Legal & General,Legal & General Life,65,No,80,20000,0,false,waiver_age_limit
+2026-07-22,67545fd0ef070fad6b33471a81df5e40477aedc0ae6fdf8155115c1309ab0899,Legal & General,Legal & General Life,64,No,80,20000,0,false,waiver_age_limit
+2026-07-22,bd6d9084397f1de88031816069dabdf7128b8ffc22dc5601046847ee2ae4c52f,Legal & General,Legal & General Life + CI (Standard),64,No,70,20000,10000,false,waiver_age_limit
+2026-08-23,43d5b95ca9da3c2e0d66ae70ea2aa06147b7a73012bf11444b13d6d0ccd23fd1,Aviva,Aviva Life Insurance+,65,No,80,50000,0,false,product_age_limit
+2026-08-23,43d5b95ca9da3c2e0d66ae70ea2aa06147b7a73012bf11444b13d6d0ccd23fd1,Legal & General,Legal & General Life,65,No,80,50000,0,false,waiver_age_limit
+2026-08-23,4dc6cd996db33aab833af959cbeec4900304b7e226e67207ff0950b924a16f90,Aviva,Aviva Life Insurance+,65,No,80,20000,0,false,product_age_limit
+2026-08-23,4dc6cd996db33aab833af959cbeec4900304b7e226e67207ff0950b924a16f90,Legal & General,Legal & General Life,65,No,80,20000,0,false,waiver_age_limit
+2026-09-14,b3e6a0f8ce529f224c2d34aff9c92fb6479a6e1ffe80c01f091d1af4457f7abb,Legal & General,Legal & General Life,64,No,80,30000,0,false,waiver_age_limit
+2026-09-18,65df0f7871f1286f1d33373e75095d21932e7d8bceeea8fa7b64649f9b2f775f,Legal & General,Legal & General Life,64,No,80,30000,0,false,waiver_age_limit
+2026-10-08,8df1fc088a06fa833da646a408fec164227a573bbe4bfc2c2c2f970c1f0f05c4,Legal & General,Legal & General Life,64,No,70,50000,0,false,waiver_age_limit
+2026-10-08,9c43484c3a5c33175f76da07d7bc38a8aea730c82a4858e0bcadbcd2d0cafd41,Legal & General,Legal & General Life,64,No,80,30000,0,false,waiver_age_limit

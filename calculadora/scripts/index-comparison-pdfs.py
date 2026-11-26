@@ -19,7 +19,7 @@ DATA = Path(__file__).resolve().parents[1] / "data"
 INDEX = DATA / "comparison-pdf-index.csv"
 SOURCES = ("solutionbuilder-observed-2026-11-24", "verified-archive-terms",
            "comparisons-with-waiver", "waiver-individual-offers", "accelerated-comparisons",
-           "accelerated-maturity-declines", "independent-ci-tpd", "fracture-comparisons", "supplemental-life-offers", "fixed-term-life")
+           "accelerated-maturity-declines", "independent-ci-tpd", "fracture-comparisons", "supplemental-life-offers", "fixed-term-life", "comparison-product-declines")
 
 
 def main():
