@@ -247,6 +247,43 @@ const calculate = (toAge, life, ci, extra = {}) => {
   run("render({...payload(), ...inputs})");
   return run("lastPayload.result");
 };
+// Assess whether a pre-recorded total is strictly below the selected cap, after penny rounding.
+const checkBudget = run("budgetEvidence");
+const family31 = {age:31,toAge:65,life:152000,ci:10000,smoker:"non_smoker",waiver:"No",monthlyBudget:28};
+const familyMetlife = {c:1,total:15};
+const proofTrial = (model_id,forecast,monthly_premium,extra={}) => ({forecast,check:{age:"31",smoker:"No",provider:"Zurich",
+  to_age:"65",quoted_term:"To Age 65",occupation_rated:"No",life_cover:"100000",critical_illness_cover:"10000",
+  model_id,monthly_premium,...extra}});
+const sampleTrials = [proofTrial("1","12.9949","13.00"),proofTrial("2","12.9950","12.99"),proofTrial("3","12.5000","12.50"),
+  proofTrial("4","12","13",{quoted_term:"33 years"}),proofTrial("5","12","13",{smoker:"Yes"}),
+  proofTrial("6","12","13",{occupation_rated:"Yes"}),proofTrial("7","12","13",{quoted_tpd:"Own occupation"}),
+  proofTrial("8","12","13",{critical_illness_cover:"0"})];
+const atBoundary = checkBudget(family31,familyMetlife,sampleTrials);
+assert.deepEqual([atBoundary.count,atBoundary.reports,atBoundary.predictedBelow,atBoundary.stayedBelow,atBoundary.missedBelow,atBoundary.closest],
+  [3,3,2,1,1,0]);
+assert.equal(atBoundary.byProvider.get("Zurich").largestIncrease,1);
+assert.equal(checkBudget(family31,familyMetlife,sampleTrials.concat(sampleTrials[0])),null);
+assert.equal(checkBudget({...family31,waiver:"Yes"},familyMetlife,sampleTrials),null);
+assert.equal(checkBudget(family31,{unavailable:true,total:0},sampleTrials),null);
+assert.equal(checkBudget({...family31,monthlyBudget:0},familyMetlife,sampleTrials),null);
+ctx.boundaryTrials = sampleTrials;
+run("globalThis.previousBudgetTrials = capitalTrials; capitalTrials = boundaryTrials");
+const marginFor = run("showBudgetEvidence");
+assert.ok(marginFor(family31,familyMetlife,{provider:"Zurich",main:12.99,complete:true,capitalRange:true}).includes("deixa £0.01"));
+assert.equal(marginFor(family31,familyMetlife,{provider:"Zurich",main:12.98,complete:true,capitalRange:true}),"");
+assert.equal(marginFor(family31,familyMetlife,{provider:"Zurich",main:12.99,complete:true,capitalRange:false}),"");
+run("capitalTrials = previousBudgetTrials");
+const liveBudgetCheck = checkBudget(family31,familyMetlife);
+assert.ok(liveBudgetCheck.count > 0 && liveBudgetCheck.reports <= liveBudgetCheck.count);
+node("metlifeChild").checked = true;
+calculate(65,152000,10000,{...family31,term:34});
+assert.ok(!node("budgetAccuracy").hidden && node("budgetAccuracy").textContent.includes(liveBudgetCheck.count + " preços testados") &&
+  node("budgetAccuracy").textContent.includes("£15.00 da MetLife"));
+calculate(65,152000,10000,{...family31,smoker:"smoker",term:34});
+assert.ok(node("budgetAccuracy").textContent.includes("a base ainda não tem testes de orçamento comparáveis"));
+calculate(65,152000,10000,{...family31,monthlyBudget:0,term:34});
+assert.ok(node("budgetAccuracy").hidden && !node("budgetAccuracy").textContent);
+node("metlifeChild").checked = false;
 // The insurer can return a different capital or maturity at its minimum premium.
 const minimumOffer = calculate(65, 50000, 0, {age:20, term:45, waiver:"No"});
 const minimumNote = minimumOffer.supplementalLifeNote;

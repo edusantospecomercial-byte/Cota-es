@@ -7,6 +7,7 @@ let catalog = { models: {} },
   independentPlanQuotes = new Map(),
   verifiedArchiveRows = [],
   validatedCapitalRanges = [],
+  capitalTrials = [],
   waiverRows = null,
   individualWaivers = [],
   illustratedLifeRows = [],
@@ -187,6 +188,7 @@ async function init() {
   reportedRows = loadedReports;
   independentPlanQuotes = globalThis.buildIndependentPlans(reportedRows);
   const trials = evaluateCapitalTrials(loadedReports, capitalHoldout);
+  capitalTrials = trials;
   validatedCapitalRanges = buildCapitalRanges(trials, capitalHoldout);
   showCapitalAccuracy(trials, capitalHoldout.length);
   observedRows = loadedObservedRows;
@@ -333,7 +335,7 @@ function evaluateCapitalTrials(reports, holdout) {
     const estimate = priceAlongCapital(lower, upper, capital);
     const error = Math.abs(estimate - Number(check.monthly_premium));
     if (!Number.isFinite(Number(trial.predicted_monthly)) || Math.abs(estimate - Number(trial.predicted_monthly)) > 0.000051) continue;
-    comparable.push({ lower, upper, check, axis, error, passed: error <= 1 && error / Number(check.monthly_premium) <= 0.05 });
+    comparable.push({ lower, upper, check, axis, error, forecast: trial.predicted_monthly, passed: error <= 1 && error / Number(check.monthly_premium) <= 0.05 });
   }
   return comparable;
 }
@@ -352,6 +354,64 @@ function showCapitalAccuracy(trials, registered) {
   const scenarios = new Set(trials.map(({ check }) => check.model_id)).size;
   $("capitalAccuracyScope").textContent =
     `${registered} previsões registradas antes da consulta. Os preços comparáveis vieram de ${scenarios} simulações com capitais intermediários. Os perfis testados foram ${profiles.join(" · ")}. A medição cobre somente esses intervalos de capital e as condições registradas no relatório.`;
+}
+
+// The threshold is strict. Round the registered insurer premium to a penny before adding MetLife.
+function budgetEvidence(p, m, source = capitalTrials) {
+  if (!(p.monthlyBudget > 0) || m.unavailable || p.waiver === "Yes") return null;
+  const limit = Math.round(p.monthlyBudget * 100), metlife = Math.round(m.total * 100);
+  const smoker = p.smoker === "smoker" ? "Yes" : "No";
+  const trials = source.filter(({check}) => Number(check.age) === p.age && check.smoker === smoker &&
+    Number(check.to_age) === p.toAge && check.quoted_term === "To Age " + p.toAge &&
+    check.occupation_rated === "No" && (check.quoted_tpd || "None") === "None" &&
+    (Number(check.life_cover) > 0) === (p.life > 0) && (Number(check.critical_illness_cover) > 0) === (p.ci > 0));
+  if (!trials.length) return null;
+  const reports = new Set(), seen = new Set(), byProvider = new Map();
+  let predictedBelow = 0, stayedBelow = 0, missedBelow = 0, closest = Infinity;
+  for (const {check, forecast} of trials) {
+    const key = check.model_id + "|" + check.provider;
+    if (seen.has(key)) return null;
+    seen.add(key);
+    const predicted = Math.floor((Math.round(Number(forecast) * 10000) + 50) / 100) + metlife;
+    const actual = Math.round(Number(check.monthly_premium) * 100) + metlife;
+    if (predicted < limit) {
+      predictedBelow++;
+      if (actual < limit) stayedBelow++;
+    } else if (actual < limit) missedBelow++;
+    closest = Math.min(closest, Math.abs(predicted - limit));
+    const stats = byProvider.get(check.provider) || {trials:0, largestIncrease:0};
+    stats.trials++;
+    stats.largestIncrease = Math.max(stats.largestIncrease, actual - predicted);
+    byProvider.set(check.provider, stats);
+    reports.add(check.model_id);
+  }
+  return {count:trials.length, reports:reports.size, predictedBelow, stayedBelow, missedBelow, closest, byProvider};
+}
+
+function showBudgetEvidence(p, m, result) {
+  const el = $("budgetAccuracy"), stats = budgetEvidence(p,m);
+  el.hidden = !(p.monthlyBudget > 0) || m.unavailable;
+  if (el.hidden) { el.textContent = ""; return ""; }
+  const cover = p.ci && p.life ? "vida com diagnóstico independente" : p.life ? "vida" : "diagnóstico independente";
+  const scope = p.age + " anos, " + (p.smoker === "smoker" ? "fumante" : "não fumante") + ", " + cover + " até os " + p.toAge;
+  if (!stats) {
+    el.textContent = "Para " + scope + (p.waiver === "Yes" ? ", com isenção de mensalidade" : "") +
+      ", a base ainda não tem testes de orçamento comparáveis.";
+    return "";
+  }
+  const threshold = gbp(p.monthlyBudget);
+  el.textContent = "Orçamento de " + threshold + "/mês. Para " + scope + ", houve " + stats.count +
+    " preços testados em " + stats.reports + " comparativos, com a mesma modalidade e prazo. Somando " + gbp(m.total) +
+    " da MetLife a cada prêmio, " + stats.predictedBelow + " previsões ficaram abaixo do teto e " + stats.stayedBelow +
+    " delas continuaram abaixo no comparativo. Entre as demais, " + stats.missedBelow +
+    " acabaram abaixo. A previsão testada mais próxima ficou a " + gbp(stats.closest / 100) + " do teto.";
+  const provider = stats.byProvider.get(result.provider);
+  if (!result.capitalRange || !result.complete || !provider) return "";
+  const margin = Math.round(p.monthlyBudget * 100) - Math.round((result.main + m.total) * 100);
+  if (!(margin > 0 && provider.largestIncrease >= margin)) return "";
+  return "A estimativa deixa " + gbp(margin / 100) + " até o teto. Em " + provider.trials +
+    " testes comparáveis da " + result.provider + ", a maior diferença para cima foi " +
+    gbp(provider.largestIncrease / 100) + "/mês. Confirme o prêmio antes de contar com essa margem.";
 }
 
 function buildCapitalRanges(comparable, holdout) {
@@ -1233,6 +1293,7 @@ function makeSummary(p, r) {
     for (const q of r.providerQuotes)
       lines.push(`${q.provider} · ${quotedTerm(q, p)} · ${gbp(q.premium)}/mês${m.c ? ` · com MetLife ${gbp(q.premium + m.total)}/mês` : ""}`);
   if (r.budgetNote && !r.ciPending) lines.push(r.budgetNote);
+  if (r.budgetMarginNote) lines.push(r.budgetMarginNote);
   if (r.reportNote) lines.push(r.reportNote);
   if (r.illustrationNote) lines.push(r.illustrationNote);
   if (r.ageNote) lines.push(r.ageNote);
@@ -1503,6 +1564,8 @@ function render(p) {
       r.alternativePackage += " A mensalidade adicional para " + gbp(p.ci) + " de doenças graves independentes precisa de confirmação.";
     }
   }
+  r.budgetMarginNote = showBudgetEvidence(p, m, r);
+  if (r.budgetMarginNote) warnings.unshift(r.budgetMarginNote);
   $("results").classList.remove("hidden");
   $("quoteCount").textContent = r.supported ? 1 : 0;
   $("unsupportedCount").textContent = r.complete ? 0 : 1;
