@@ -17,6 +17,7 @@ let catalog = { models: {} },
   productDeclines = [],
   exactCapitalVariants = [],
   firstEventVariants = [],
+  fixedTermFirstEventVariants = [],
   coreBreakdowns = new Map(),
   tpdOffers = [],
   fractureOffers = [],
@@ -77,6 +78,7 @@ async function init() {
     loadedCapitalVariants,
     loadedSmokerFirstEventVariants,
     loadedNonSmokerFirstEventVariants,
+    loadedFixedTermFirstEventVariants,
     loadedIndividualWaivers,
     avivaLife,
     loadedLgTerms,
@@ -155,6 +157,8 @@ async function init() {
       .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
     fetch("./data/non-smoker-first-event-product-variants.csv", { cache: "no-store" })
       .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
+    fetch("./data/lg-fixed-term-first-event-product-variants.csv", { cache: "no-store" })
+      .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
     fetch("./data/waiver-individual-offers.csv", { cache: "no-store" })
       .then(response => response.ok ? response.text() : "")
       .then(parsePriorityCsv)
@@ -203,6 +207,7 @@ async function init() {
     ["None", "Waiver of Premium"].includes(row.optional_features));
   exactCapitalVariants = loadedCapitalVariants;
   firstEventVariants = loadedSmokerFirstEventVariants.concat(loadedNonSmokerFirstEventVariants);
+  fixedTermFirstEventVariants = loadedFixedTermFirstEventVariants;
   supplementalLifeRows = loadedSupplementalLife;
   fixedTermLifeRows = loadedFixedTermLife;
   showComparisonInventory(comparisonIndex, [loadedReports, verifiedArchive, loadedWaiverRows,
@@ -350,7 +355,8 @@ function showComparisonInventory(index, tables) {
   const reports = new Map(index.map(row => [row.sha256, row.report_key]));
   for (const [rows, scope] of [[exactCapitalVariants, "com os capitais pedidos para diagnóstico independente"],
     [firstEventVariants.filter(v => v.smoker === "Yes"), "para fumantes que pediram cobertura por falecimento ou diagnóstico no primeiro evento"],
-    [firstEventVariants.filter(v => v.smoker === "No"), "para não fumantes que pediram cobertura por falecimento ou diagnóstico no primeiro evento"]]) {
+    [firstEventVariants.filter(v => v.smoker === "No"), "para não fumantes que pediram cobertura por falecimento ou diagnóstico no primeiro evento"],
+    [fixedTermFirstEventVariants, "da Legal & General para o primeiro evento, com prazo fixo e preço específico da profissão e do vínculo"]]) {
     const variants = rows.map(row => [reports.get(row.sha256), row.provider, row.product]);
     if (variants.length && variants.every(([key]) => key)) {
       const products = new Set(variants.map(parts => parts.join("|")));
@@ -678,13 +684,18 @@ function ageDeclineReason(row) {
   return row.unavailable_reason === "waiver_age_limit" ? "limite de idade da isenção de mensalidade" : "limite de idade do produto";
 }
 
-function matchedFirstEventVariants(offer) {
-  return firstEventVariants.filter(v => v.sha256 === offer.sha256 && v.source_date === offer.source_date &&
+function matchedFirstEventVariants(offer, occupation) {
+  const fixedTerm = /^\d+ years?$/.test(offer.quoted_term);
+  const rating = fixedTerm ? "Yes" : "No";
+  if (offer.occupation_rated !== rating || (fixedTerm && !occupationalBasis(occupation, offer).occupationMatched)) return [];
+  const variants = fixedTerm ? fixedTermFirstEventVariants : firstEventVariants;
+  return variants.filter(v => v.sha256 === offer.sha256 && v.source_date === offer.source_date &&
     v.provider === offer.provider && v.standard_product === offer.product && v.standard_monthly === offer.monthly_premium &&
-    v.age === offer.age && v.smoker === offer.smoker && v.to_age === offer.to_age && offer.quoted_term === "To Age " + v.to_age &&
+    v.age === offer.age && v.smoker === offer.smoker && v.to_age === offer.to_age &&
+    offer.quoted_term === (fixedTerm ? v.quoted_term : "To Age " + v.to_age) &&
     v.life_cover === offer.quoted_life_cover && v.life_cover === offer.life_cover && v.earlier_ci_cover === offer.quoted_earlier_ci_cover &&
     v.earlier_ci_cover === offer.earlier_ci_cover && v.waiver_to === offer.waiver_to && v.tpd_basis === offer.tpd_basis &&
-    v.occupation_rated === "No" && offer.occupation_rated === "No" && Number(v.monthly_premium) > 0)
+    v.occupation_rated === rating && Number(v.monthly_premium) > 0)
     .sort((a,b) => Number(a.monthly_premium) - Number(b.monthly_premium));
 }
 
@@ -753,14 +764,18 @@ function renderCiComparison(p, independentTpd = false) {
     const price = Number(row.monthly_premium);
     const packageText = metlife.c ? "<br>Com " + gbp(metlife.total) + " de MetLife, esta opção soma " +
       gbp(monthlyTotal(price, metlife.total)) + "/mês." : "";
-    const variants = independentTpd ? [] : matchedFirstEventVariants(row);
+    const variants = independentTpd ? [] : matchedFirstEventVariants(row, p.occupation);
     const otherPrices = variants.map(v => {
       const charge = Number(v.monthly_premium);
       const total = metlife.c && !metlife.unavailable ? " · com a MetLife " + gbp(monthlyTotal(charge, metlife.total)) + "/mês" : "";
       return "<li>" + escapeHtml(v.product) + " · " + gbp(charge) + "/mês" + total + "</li>";
     });
+    const fixedYears = variants.length && variants[0].quoted_term ? Number(variants[0].quoted_term.split(" ")[0]) : 0;
+    const fixedTermNote = fixedYears ? "<p>Prazo de " + fixedYears + " anos na oferta. O pedido até os " +
+      p.toAge + " anos corresponde a " + (p.toAge - p.age) + " anos pela idade informada. Child CI Extra é um adicional da Legal &amp; General. " +
+      "A cobertura de filhos da MetLife segue a seleção no formulário.</p>" : "";
     const otherProducts = variants.length ? "<details><summary>Comparar versões de " + escapeHtml(row.provider) +
-      "</summary><ul>" + otherPrices.join("") + "</ul></details>" : "";
+      (fixedYears ? " · prazo fixo de " + fixedYears + " anos" : "") + "</summary>" + fixedTermNote + "<ul>" + otherPrices.join("") + "</ul></details>" : "";
     return `<dt>${escapeHtml(row.provider)}</dt><dd><b>${gbp(price)}/mês</b> · ${escapeHtml(detail.join(" · "))}${itemised}${packageText}${otherProducts}</dd>`;
   });
   if (!independentTpd) {

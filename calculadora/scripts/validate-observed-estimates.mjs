@@ -391,6 +391,37 @@ calculate(65,50000,10000,{...smokerPackage,age:34,term:31,smoker:"non_smoker"});
 assert.ok(!node("acceleratedComparison").hidden && node("acceleratedOffers").innerHTML.includes("£11.80/mês · com a MetLife £24.80/mês"));
 calculate(65,50000,10000,{...smokerPackage,age:34,term:31});
 assert.ok(node("acceleratedComparison").hidden || !node("acceleratedOffers").innerHTML.includes("£11.80/mês · com a MetLife £24.80/mês"));
+const lgFirstEventVersions = run("fixedTermFirstEventVariants");
+const occupationIndex = run("reportedOccupations");
+assert.ok(lgFirstEventVersions.length > 0);
+assert.equal(lgFirstEventVersions.length,new Set(lgFirstEventVersions.map(row =>
+  [reportKeys.get(row.sha256),row.provider,row.product].join("|"))).size);
+for (const v of lgFirstEventVersions) {
+  const standard = sharedCatalogue.find(offer => offer.sha256 === v.sha256 && offer.provider === v.provider);
+  const job = occupationIndex.get(v.sha256);
+  const occupation = job.occupation + " " + job.employment;
+  assert.equal(v.provider,"Legal & General");
+  assert.equal(v.occupation_rated,"Yes");
+  assert.match(v.quoted_term,/^\d+ years?$/);
+  assert.ok(versionsForOffer(standard,occupation).includes(v));
+  assert.equal(versionsForOffer(standard,job.occupation).length,0);
+  assert.equal(versionsForOffer({...standard,quoted_term:"To Age 65"},occupation).length,0);
+}
+const lg30 = sharedCatalogue.find(row => row.reference === "1082519950" && row.provider === "Legal & General");
+for (const wrong of [{source_date:"x"},{sha256:"x"},{reference:"0"},{quoted_term:"35 years"},{age:"29"},{smoker:"No"},
+  {quoted_life_cover:"49999"},{quoted_earlier_ci_cover:"9999"},{tpd_basis:"None"},{occupation_rated:"No"},{monthly_premium:"0.99"}])
+  assert.equal(versionsForOffer({...lg30,...wrong},"Carpenter self-employed").length,0);
+assert.equal(versionsForOffer(lg30,"Carpenter employed").length,0);
+const jobMatched = calculate(65,50000,10000,{...smokerPackage,occupation:"Carpenter self-employed"});
+const lgPanel = node("acceleratedOffers").innerHTML;
+for (const clue of ["Comparar versões de Legal &amp; General · prazo fixo de 34 anos","corresponde a 35 anos",
+  "£14.07/mês · com a MetLife £27.07/mês","£14.24/mês · com a MetLife £27.24/mês","£15.61/mês · com a MetLife £28.61/mês",
+  "Child CI Extra é um adicional da Legal &amp; General"]) assert.ok(lgPanel.includes(clue),clue);
+assert.ok(!(jobMatched.alternativePackage||"").includes("Legal & General Life + CI Extra"));
+for (const occupation of ["Carpenter","Carpenter employed","Stock manager"]) {
+  calculate(65,50000,10000,{...smokerPackage,occupation});
+  assert.ok(!node("acceleratedOffers").innerHTML.includes("Comparar versões de Legal &amp; General"));
+}
 const fixedLife = run("fixedTermLifeRows");
 assert.ok(fixedLife.length >= 6);
 const historical64 = calculate(85,20000,0,{age:64,term:21});
