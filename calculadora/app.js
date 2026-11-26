@@ -76,6 +76,7 @@ async function init() {
     loadedMaturityDeclines,
     loadedProductDeclines,
     loadedCapitalVariants,
+    loadedStandardCapitalVariants,
     loadedSmokerFirstEventVariants,
     loadedNonSmokerFirstEventVariants,
     loadedFixedTermFirstEventVariants,
@@ -153,6 +154,8 @@ async function init() {
       .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
     fetch("./data/exact-capital-product-variants.csv", { cache: "no-store" })
       .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
+    fetch("./data/independent-ci-product-variants.csv", { cache: "no-store" })
+      .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
     fetch("./data/smoker-first-event-product-variants.csv", { cache: "no-store" })
       .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
     fetch("./data/non-smoker-first-event-product-variants.csv", { cache: "no-store" })
@@ -205,7 +208,7 @@ async function init() {
   lgFixedLife = historicalPolicies.filter(row => row.provider === "Legal & General" && row.to_age === "" &&
     row.product === "Life" && row.critical_illness_component === "0" &&
     ["None", "Waiver of Premium"].includes(row.optional_features));
-  exactCapitalVariants = loadedCapitalVariants;
+  exactCapitalVariants = loadedCapitalVariants.concat(loadedStandardCapitalVariants);
   firstEventVariants = loadedSmokerFirstEventVariants.concat(loadedNonSmokerFirstEventVariants);
   fixedTermFirstEventVariants = loadedFixedTermFirstEventVariants;
   supplementalLifeRows = loadedSupplementalLife;
@@ -353,7 +356,9 @@ function showComparisonInventory(index, tables) {
     " correspondem ao prazo e aos capitais pedidos para vida ou doenças graves independentes, com tarifa sem ajuste por profissão e sem adicionais. " +
     n(count.standardSmokers65) + " desses preços são para fumantes. Há ainda " + n(count.withoutPrice) + " respostas sem valor.";
   const reports = new Map(index.map(row => [row.sha256, row.report_key]));
-  for (const [rows, scope] of [[exactCapitalVariants, "com os capitais pedidos para diagnóstico independente"],
+  for (const [rows, scope] of [
+    [exactCapitalVariants.filter(standardChangedCapital), "com os capitais pedidos para diagnóstico independente quando o produto padrão alterou o capital"],
+    [exactCapitalVariants.filter(v => !standardChangedCapital(v)), "com os mesmos capitais de diagnóstico independente da versão padrão"],
     [firstEventVariants.filter(v => v.smoker === "Yes"), "para fumantes que pediram cobertura por falecimento ou diagnóstico no primeiro evento"],
     [firstEventVariants.filter(v => v.smoker === "No"), "para não fumantes que pediram cobertura por falecimento ou diagnóstico no primeiro evento"],
     [fixedTermFirstEventVariants, "da Legal & General para o primeiro evento, com prazo fixo e preço específico da profissão e do vínculo"]]) {
@@ -1116,6 +1121,9 @@ function capturedReportFor(p, source = reportedRows) {
       provider: missing.map(row => row.provider).join(", "), reason: reasons.join(". "), modelId: latest.model_id,
     } : null };
 }
+function standardChangedCapital(row) {
+  return row.standard_life_cover !== row.life_cover || row.standard_ci_cover !== row.independent_ci_cover;
+}
 function exactCapitalVariant(p, metlife, report) {
   if (!report.reported || !p.ci || p.waiver === "Yes") return null;
   const variants = exactCapitalVariants.filter(row => row.sha256 === report.sourceHash && row.source_date === report.sourceDate &&
@@ -1123,7 +1131,8 @@ function exactCapitalVariant(p, metlife, report) {
     Number(row.life_cover) === p.life && Number(row.independent_ci_cover) === p.ci && Number(row.to_age) === p.toAge &&
     row.quoted_term === "To Age " + p.toAge && row.quoted_tpd === "None" &&
     (row.occupation_rated === "No" || occupationalBasis(p.occupation, {...row, model_id: report.modelId}).occupationMatched) &&
-    report.quotes.some(q => q.provider === row.provider && q.product === row.standard_product && q.differentCapital &&
+    report.quotes.some(q => q.provider === row.provider && q.product === row.standard_product && q.differentCapital === standardChangedCapital(row) &&
+      q.tpd === row.quoted_tpd && q.term === row.quoted_term && q.occupationRated === (row.occupation_rated === "Yes") &&
       q.premium === Number(row.standard_monthly) && q.quotedLife === Number(row.standard_life_cover) && q.quotedCi === Number(row.standard_ci_cover)));
   if (!variants.length) return null;
   variants.sort((a,b) => Number(a.monthly_premium) - Number(b.monthly_premium));

@@ -317,22 +317,24 @@ for (const row of capitalVariants) {
   assert.equal(row.independent_ci_cover,base.critical_illness_cover);
   assert.deepEqual([row.standard_life_cover,row.standard_ci_cover,row.standard_monthly],
     [base.quoted_life_cover,base.quoted_critical_illness_cover,base.monthly_premium]);
-  assert.ok(row.standard_life_cover !== row.life_cover || row.standard_ci_cover !== row.independent_ci_cover);
+  assert.equal(row.quoted_term,base.quoted_term); assert.equal(row.occupation_rated,base.occupation_rated);
   assert.equal(row.quoted_tpd,"None"); assert.equal(row.quoted_term,"To Age " + row.to_age);
   assert.ok(row.product !== base.product && /^\d+\.\d{2}$/.test(row.monthly_premium) && +row.monthly_premium > 0);
   exactProductKeys.add([reportKeys.get(row.sha256),row.provider,row.product].join("|"));
 }
 assert.ok(exactProductKeys.size >= 29);
 assert.equal(exactProductKeys.size,capitalVariants.length);
-assert.ok(node("comparisonInventoryScope").textContent.includes(exactProductKeys.size + " preços de outras versões"));
+const standardAdjusted = capitalVariants.filter(run("standardChangedCapital"));
+for (const [count,scope] of [[standardAdjusted.length,"com os capitais pedidos"],[capitalVariants.length-standardAdjusted.length,"com os mesmos capitais"]])
+  assert.ok(count > 0 && node("comparisonInventoryScope").textContent.includes(count + " preços de outras versões do produto " + scope));
 node("metlifeChild").checked = true;
 const variant31 = {age:31,term:34,smoker:"non_smoker",occupation:"Stock manager",waiver:"No"};
 const familyVariant = calculate(65,150000,10000,variant31);
 assert.equal(familyVariant.main,12.92);
 assert.equal(node("totalPrice").textContent,"£27.92/mês");
-for (const clue of ["35041290","Aviva Multi-Product Upgraded CI/No Child Upgrade por £16.71/mês","£31.71/mês com a MetLife"]) {
+for (const clue of ["35041290","Aviva Multi-Product Upgraded CI/No Child Upgrade por £16.71/mês","£31.71/mês com a MetLife","Zurich Life & CI Enhanced Plus por £14.29/mês","£29.29/mês com a MetLife","Zurich Life & CI Enhanced por £14.57/mês"]) {
   assert.ok(familyVariant.capitalVariantNote.includes(clue) && familyVariant.text.includes(clue));
-  assert.ok(node("details").innerHTML.includes(clue));
+  assert.ok(node("details").innerHTML.includes(clue.replaceAll("&","&amp;")));
 }
 node("metlifeChild").checked = false;
 const coreCI = calculate(65,0,10000,variant31);
@@ -350,6 +352,10 @@ const variantReport = run("capturedReportFor")({...variant31,life:150000,ci:1000
 for (const change of [{sourceHash:"wrong"},{sourceDate:"2021-10-22"},{reported:false},
   {quotes:variantReport.quotes.map(q=>({...q,quotedCi:1}))}])
   assert.equal(exactVariants({...variant31,life:150000,ci:10000,toAge:65},addOn,{...variantReport,...change}),null);
+for (const change of [{term:"33 years"},{tpd:"Own"},{occupationRated:true}]) {
+  const changed = {...variantReport,quotes:variantReport.quotes.map(q=>({...q,...change}))};
+  assert.equal(exactVariants({...variant31,life:150000,ci:10000,toAge:65},addOn,changed),null);
+}
 const firstEventVersions = run("firstEventVariants");
 const versionsForOffer = run("matchedFirstEventVariants");
 assert.equal(firstEventVersions.length,new Set(firstEventVersions.map(v => [reportKeys.get(v.sha256),v.provider,v.product].join("|"))).size);

@@ -9,6 +9,7 @@ const dataFiles = [
   "./data/fixed-term-life.csv",
   "./data/comparison-product-declines.csv",
   "./data/exact-capital-product-variants.csv",
+  "./data/independent-ci-product-variants.csv",
   "./data/smoker-first-event-product-variants.csv",
   "./data/non-smoker-first-event-product-variants.csv",
   "./data/lg-fixed-term-first-event-product-variants.csv",
