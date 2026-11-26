@@ -293,6 +293,11 @@ for (const text of ["Pedido histórico de £50,000.00", "Aviva ofereceu £99,992
   assert.ok(minimumOffer.text.includes(text), text);
 }
 assert.ok(node("details").innerHTML.includes("Condições de vida no comparativo"));
+const returnedMinimum = calculate(65,99992,0,{age:20,term:45,waiver:"Yes"});
+assert.ok(returnedMinimum.supplementalLifeNote.includes("pedido original de £50,000.00, Aviva ofereceu £99,992.00"));
+assert.ok(returnedMinimum.text.includes("valor oferecido em um pedido diferente"));
+assert.ok(!returnedMinimum.providerQuotes?.some(q => q.premium === 5 && q.provider === "Aviva"));
+assert.equal(calculate(65,99991,0,{age:20,term:45,waiver:"Yes"}).supplementalLifeNote,"");
 const standardProofs = new Map(run("illustratedLifeRows").filter(r => r.provider === "Zurich").map(r => [r.sha256,r]));
 const baselineInsurers = new Set(tables.slice(0,-1).flat().map(r => reportKeys.get(r.sha256) + "|" + r.provider));
 for (const row of run("supplementalLifeRows")) {

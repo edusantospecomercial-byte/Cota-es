@@ -696,12 +696,12 @@ function supplementalLifeNote(p, m, source = supplementalLifeRows) {
   if (!p.life || p.ci) return "";
   const smoker = p.smoker === "smoker" ? "Yes" : "No";
   const matching = source.filter(row => row.smoker === smoker && Number(row.age) === p.age &&
-    Number(row.to_age) === p.toAge && Number(row.life_cover) === p.life);
+    Number(row.to_age) === p.toAge && (Number(row.life_cover) === p.life || Number(row.quoted_life_cover) === p.life));
   if (!matching.length) return "";
   const notes = new Set();
   const configurations = new Map();
   for (const row of matching) {
-    const key = [row.provider, row.quoted_tpd, row.waiver_to, row.quoted_life_cover, row.quoted_term].join("|");
+    const key = [row.provider, row.quoted_tpd, row.waiver_to, row.life_cover, row.quoted_life_cover, row.quoted_term].join("|");
     if (!configurations.has(key)) configurations.set(key, []);
     configurations.get(key).push(row);
   }
@@ -722,11 +722,15 @@ function supplementalLifeNote(p, m, source = supplementalLifeRows) {
         if (row.waiver_illustration_sha256 && Number(row.illustrated_waiver_monthly) > 0)
           details += ". A illustration discrimina " + gbp(Number(row.illustrated_waiver_monthly)) + "/mês de isenção dentro do prêmio";
       }
-      notes.add(row.provider + " ofereceu " + gbp(Number(row.quoted_life_cover)) + " " + term + " por " + gbp(premium) +
+      const original = Number(row.life_cover) !== p.life ? "Para um pedido original de " + gbp(Number(row.life_cover)) + ", " : "";
+      notes.add(original + row.provider + " ofereceu " + gbp(Number(row.quoted_life_cover)) + " " + term + " por " + gbp(premium) +
         "/mês em " + newest + " (" + details + ")." + metlife);
     }
   }
-  return "Pedido histórico de " + gbp(p.life) + " de vida até os " + p.toAge + " anos. " + [...notes].join(" ");
+  const adjusted = matching.some(row => Number(row.life_cover) !== p.life);
+  const intro = adjusted ? "O capital desta simulação aparece como valor oferecido em um pedido diferente. " :
+    "Pedido histórico de " + gbp(p.life) + " de vida até os " + p.toAge + " anos. ";
+  return intro + [...notes].join(" ");
 }
 
 function lifeWithinBudget(p, m, rows = reportedRows.concat(verifiedArchiveRows)) {
