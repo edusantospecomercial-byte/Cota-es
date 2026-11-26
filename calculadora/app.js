@@ -423,6 +423,16 @@ function showBudgetEvidence(p, m, result) {
     gbp(provider.largestIncrease / 100) + "/mês. Confirme o prêmio antes de contar com essa margem.";
 }
 
+function premiumRangeText(r) {
+  if (r.aggregateOnly && displayedPence(r.low) === 0)
+    return "Mensalidade mínima da proteção principal a confirmar. Limite superior estimado de " + gbp(r.high) + "/mês.";
+  let label = "Faixa provável";
+  if (r.detailed) label = r.termPending ? "Faixa das alternativas devolvidas" : "Faixa para a idade final solicitada";
+  else if (r.providerQuotes?.length) label = r.providerGap ? "Faixa observada entre seguradoras disponíveis" :
+    r.priorityExact ? "Faixa observada entre seguradoras" : "Faixa estimada entre seguradoras";
+  return label + " de " + gbp(r.low) + " a " + gbp(r.high) + "/mês";
+}
+
 function generalBudgetRangeNote(p, m, result) {
   if (!result.complete || !result.aggregateOnly || m.unavailable || !(p.monthlyBudget > 0) ||
       !Number.isFinite(result.low) || !Number.isFinite(result.high)) return "";
@@ -432,8 +442,10 @@ function generalBudgetRangeNote(p, m, result) {
   const high = displayedPence(result.high) + extra;
   if (low >= limit || high < limit) return "";
   const option = extra ? " com a MetLife selecionada" : "";
-  return "A faixa do modelo geral" + option + " vai de " + gbp(low / 100) + " a " + gbp(high / 100) +
-    "/mês. O teto de " + gbp(limit / 100) + " fica nessa faixa. A cotação da seguradora confirma se o pacote fica abaixo do teto.";
+  const range = low === extra
+    ? "A faixa do modelo geral" + option + " tem limite superior estimado de " + gbp(high / 100) + "/mês. A mensalidade mínima precisa de confirmação."
+    : "A faixa do modelo geral" + option + " vai de " + gbp(low / 100) + " a " + gbp(high / 100) + "/mês.";
+  return range + " A cotação da seguradora confirma se o pacote fica abaixo de " + gbp(limit / 100) + "/mês.";
 }
 
 function buildCapitalRanges(comparable, holdout) {
@@ -1325,9 +1337,7 @@ function makeSummary(p, r) {
       : "Estimativa principal: requer cotação oficial",
   );
   if (r.supported && !r.ciPending && !r.illustratedBase && !r.ageEstimate)
-    lines.push(
-      `${r.detailed && r.termPending ? "Faixa das alternativas devolvidas" : r.detailed ? "Faixa para a idade final solicitada" : r.providerQuotes?.length ? r.providerGap ? "Faixa observada entre seguradoras disponíveis" : r.priorityExact ? "Faixa observada entre seguradoras" : "Faixa estimada entre seguradoras" : "Faixa provável"}: ${gbp(r.low)}–${gbp(r.high)}/mês`,
-    );
+    lines.push(premiumRangeText(r));
   if (r.provider)
     lines.push(`Referência prioritária: ${r.provider} — ${gbp(r.main)}/mês`);
   if (r.providerQuotes?.length && !r.detailed)
@@ -1631,7 +1641,7 @@ function render(p) {
     ? `${gbp(r.main)}/mês`
     : "Não publicado";
   $("range").textContent = r.ciPending ? "Somente vida · adicional de diagnóstico independente a confirmar" : r.ageEstimate ? "Estimativa Zurich por idade para vida individual, antes de adicionais" : r.illustratedBase ? "Prêmio-base de vida registrado na illustration " + r.provider : r.supported
-    ? `${r.detailed && r.termPending ? "Faixa das alternativas devolvidas" : r.detailed ? "Faixa para a idade final solicitada" : r.providerQuotes?.length ? r.providerGap ? "Faixa observada entre seguradoras disponíveis" : r.priorityExact ? "Faixa observada entre seguradoras" : "Faixa estimada entre seguradoras" : "Faixa provável"}: ${gbp(r.low)} a ${gbp(r.high)}/mês`
+    ? premiumRangeText(r)
     : "O motor não publica um preço sem validação suficiente.";
   $("totalPrice").textContent = r.complete
     ? `${gbp(monthlyTotal(r.main, m.total))}/mês`

@@ -405,6 +405,13 @@ for (const [budget, option, changes] of [
   [28, {total:13}, {low:null}], [28, {total:13}, {complete:false}], [28, {total:13}, {aggregateOnly:false}],
   [28, {total:0,unavailable:true}, {low:20,high:32}],
 ]) assert.equal(rangeForBudget({monthlyBudget:budget},option,{...budgetCase,...changes}), "");
+const openLower = calculate(65, 20000, 0, {age:25, term:40, monthlyBudget:28});
+assert.equal(openLower.low,0);
+assert.ok(openLower.main>0 && openLower.complete);
+assert.match(node("range").textContent, /mínima da proteção principal a confirmar/);
+assert.ok(openLower.text.includes(node("range").textContent));
+assert.match(openLower.budgetMarginNote, /limite superior estimado/);
+assert.doesNotMatch(openLower.budgetMarginNote, /vai de £13.00/);
 const liveExact = calculate(75, 50000, 10000);
 assert.equal(liveExact.main, 27.04);
 assert.equal(liveExact.priorityExact, true);
@@ -942,7 +949,7 @@ for (const [age, life, expected, subtotal] of [[42,50000,'13.53','26.53'], [44,5
   assert.ok(node('range').textContent.includes('Somente vida'));
   assert.ok(bundle.text.includes('Estimativa só de vida: £' + expected));
   assert.ok(bundle.text.includes('subtotal é £' + subtotal + '/mês antes do diagnóstico'));
-  assert.ok(!bundle.text.includes('Faixa provável:') && !bundle.text.includes('Orçamento mensal indicativo de'));
+  assert.ok(!bundle.text.includes('Faixa provável') && !bundle.text.includes('Orçamento mensal indicativo de'));
 }
 const fullAgain = calculate(65, 50000, 10000, {age:25, smoker:'smoker',term:40,waiver:'No'});
 assert.ok(!fullAgain.ciPending && fullAgain.complete);
