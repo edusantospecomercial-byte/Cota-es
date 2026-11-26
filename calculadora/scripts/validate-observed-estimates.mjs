@@ -788,3 +788,34 @@ for (const change of [{monthly_premium:'12.51'},{quoted_term:'33 years'},{quoted
   assert.equal(fromParts(partOffers.map(r=>r.model_id==='10'?{...r,...change}:r)),undefined);
 }
 assert.equal(fromParts([...partOffers,{...partOffers.at(-1),model_id:'11',monthly_premium:'12.49'}]),undefined);
+
+const ratedSources = run('reportedOccupations');
+for (const [digest, basis] of ratedSources) {
+  const rated = reported.find(r => r.sha256 === digest && r.occupation_rated === 'Yes');
+  assert.ok(rated && rated.source_date === basis.source_date && rated.model_id === basis.model_id);
+  assert.ok(basis.employment === 'employed' || basis.employment === 'self-employed');
+}
+const occupationInput={age:31,term:34,waiver:'No',occupation:'Housekeeper (empregada)'};
+const jobPrice=calculate(65,0,30000,occupationInput);
+assert.equal(jobPrice.main,12.89);
+assert.equal(jobPrice.provider,'Legal & General');
+assert.equal(node('totalPrice').textContent,'£25.89/mês');
+assert.ok(jobPrice.text.includes('profissão e vínculo conferidos: Housekeeper (empregado)'));
+for (const occupation of ['Housekeeper','Housekeeper autônoma','Employed Stock Manager','Housekeeper supervisor (empregado)']) {
+  const other=calculate(65,0,30000,{...occupationInput,occupation});
+  assert.notEqual(other.provider,'Legal & General');
+  assert.ok(other.text.includes('Housekeeper (empregado)'));
+}
+const largerCapital=calculate(65,0,10000,occupationInput);
+assert.ok(largerCapital.providerQuotes.find(q=>q.provider==='Legal & General').differentCapital);
+assert.notEqual(largerCapital.provider,'Legal & General');
+const manager=calculate(75,0,50000,{age:50,term:25,waiver:'No',occupation:'Self-employed Events Manager'});
+assert.equal(manager.provider,'Legal & General');
+assert.equal(manager.main,63.11);
+assert.notEqual(calculate(75,0,50000,{age:50,term:25,waiver:'No',occupation:'employed Events Manager'}).provider,'Legal & General');
+const shortTerm=calculate(65,100000,10000,occupationInput);
+assert.ok(shortTerm.providerQuotes.some(q=>q.provider==='Legal & General' && q.occupationMatched && q.term!=='To Age 65'));
+assert.notEqual(shortTerm.provider,'Legal & General');
+const withNoProof=run('reportedOccupations');run('reportedOccupations=new Map()');
+assert.notEqual(calculate(65,0,30000,occupationInput).provider,'Legal & General');
+ctx.restoredOccupations=withNoProof;run('reportedOccupations=restoredOccupations');

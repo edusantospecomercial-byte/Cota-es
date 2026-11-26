@@ -3,6 +3,7 @@ let catalog = { models: {} },
   priorityGapRows = [],
   observedRows = [],
   reportedRows = [],
+  reportedOccupations = new Map(),
   independentPlanQuotes = new Map(),
   verifiedArchiveRows = [],
   validatedCapitalRanges = [],
@@ -65,6 +66,7 @@ async function init() {
     loadedLgBreakdowns,
     loadedFractureOffers,
     loadedFractureBreakdowns,
+    loadedOccupations,
   ] = await Promise.all([
     fetch("./data/models.json", { cache: "no-store" })
       .then((r) => r.json())
@@ -153,7 +155,10 @@ async function init() {
       .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
     fetch("./data/fracture-breakdowns.csv", { cache: "no-store" })
       .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
+    fetch("./data/occupation-basis.csv", { cache: "no-store" })
+      .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
   ]);
+  reportedOccupations = new Map(loadedOccupations.map(row => [row.sha256, row]));
   fractureOffers = loadedFractureOffers;
   fractureBreakdowns = new Map(loadedFractureBreakdowns.map(row => [row.provider + "|" + row.comparison_sha256, row]));
   coreBreakdowns = new Map([
@@ -281,6 +286,23 @@ function buildCapitalRanges(comparable, holdout) {
   return ranges.filter(({ lower, upper, check }) => !rejected.has(keyOf(lower.model_id, upper.model_id, check.provider)));
 }
 
+function occupationalBasis(input, ...rows) {
+  if (rows.some(r => r.occupation_rated !== "Yes")) return {};
+  const evidence = rows.map(r => reportedOccupations.get(r.sha256));
+  const first = evidence[0];
+  if (!first || !["employed", "self-employed"].includes(first.employment) || !first.occupation ||
+      evidence.some((e, i) => !e || e.source_date !== rows[i].source_date || e.model_id !== rows[i].model_id ||
+        e.employment !== first.employment || e.occupation !== first.occupation)) return {};
+  const normalize = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase().replace(/[()\s-]+/g, " ").trim();
+  const job = normalize(first.occupation), entered = normalize(input);
+  const statuses = first.employment === "self-employed" ? ["self employed", "autonomo", "autonoma"] :
+    ["employed", "empregado", "empregada", "assalariado", "assalariada"];
+  const matched = statuses.some(s => entered === job + " " + s || entered === s + " " + job);
+  const label = first.occupation + (first.employment === "self-employed" ? " (autônomo)" : " (empregado)");
+  return {occupationLabel: label, occupationMatched: matched, occupationNeedsStatus: entered === job};
+}
+
 function validatedCapitalQuotes(p) {
   const smoker = p.smoker === "smoker" ? "Yes" : "No";
   const groups = new Map();
@@ -295,7 +317,7 @@ function validatedCapitalQuotes(p) {
     groups.get(key).quotes.push({ provider: lower.provider, product: lower.product, term: lower.quoted_term,
       sourceDate: check.source_date, premium: priceAlongCapital(lower, upper, capital),
       testErrorGBP: Math.abs(priceAlongCapital(lower, upper, Number(check[axis])) - Number(check.monthly_premium)),
-      occupationRated: lower.occupation_rated === "Yes" });
+      occupationRated: lower.occupation_rated === "Yes", ...occupationalBasis(p.occupation, lower, upper, check) });
   }
   const compatible = [...groups.values()].filter(group =>
     new Set(group.quotes.map(q => q.provider)).size === group.quotes.length);
@@ -305,7 +327,7 @@ function validatedCapitalQuotes(p) {
   const range = compatible[0];
   if (!range) return null;
   const quotes = range.quotes.sort((a, b) => a.premium - b.premium);
-  const sameEndAge = quotes.filter(q => !q.occupationRated && q.term === `To Age ${p.toAge}`);
+  const sameEndAge = quotes.filter(q => (!q.occupationRated || q.occupationMatched) && q.term === `To Age ${p.toAge}`);
   return { quotes, exact: false, capitalRange: range, sameEndAge: sameEndAge.length ? sameEndAge : undefined,
     termPending: !sameEndAge.length, sourceDate: range.check.source_date };
 }
@@ -525,7 +547,7 @@ function capturedReportFor(p, source = reportedRows) {
       sourceDate: row.source_date, modelId: row.model_id, term: row.quoted_term,
       differentCapital: Number(row.quoted_life_cover) !== p.life || Number(row.quoted_critical_illness_cover) !== p.ci,
       quotedLife: Number(row.quoted_life_cover), quotedCi: Number(row.quoted_critical_illness_cover),
-      tpd: row.quoted_tpd || "None", occupationRated: row.occupation_rated === "Yes" })).sort((a, b) => a.premium - b.premium);
+      tpd: row.quoted_tpd || "None", occupationRated: row.occupation_rated === "Yes", ...occupationalBasis(p.occupation, row) })).sort((a, b) => a.premium - b.premium);
   const missing = rows.filter(row => row.available === "false" ||
     (row.available === "unknown" && row.unavailable_reason === "product_not_listed"));
   if (quotes.length + missing.length !== 3) return null;
@@ -536,7 +558,7 @@ function capturedReportFor(p, source = reportedRows) {
       row.unavailable_reason === "end_age_not_supported" ? "idade final fora do limite do produto" : "produto sem preço no relatório";
     return `${row.provider} · ${reason}`;
   });
-  const exactTerms = quotes.filter(q => !q.differentCapital && !q.occupationRated && q.tpd === "None" && q.term === `To Age ${p.toAge}`);
+  const exactTerms = quotes.filter(q => !q.differentCapital && (!q.occupationRated || q.occupationMatched) && q.tpd === "None" && q.term === `To Age ${p.toAge}`);
   return { quotes, exact: true, reported: true, sourceDate: latest.source_date, modelId: latest.model_id,
     sameEndAge: exactTerms.length ? exactTerms : undefined, termPending: !exactTerms.length,
     partial: Boolean(missing.length), gap: missing.length ? {
@@ -839,6 +861,12 @@ function quotedTerm(quote) {
   let term = quote.term.startsWith("To Age ")
     ? `até ${quote.term.slice(7)} anos`
     : `${parseInt(quote.term, 10)} anos de prazo`;
+  if (quote.occupationRated) {
+    if (!quote.occupationLabel) term += " · depende da profissão de referência";
+    else if (quote.occupationMatched) term += " · profissão e vínculo conferidos: " + quote.occupationLabel;
+    else if (quote.occupationNeedsStatus) term += " · para comparar este preço, informe a profissão com o vínculo: " + quote.occupationLabel;
+    else term += " · preço do perfil profissional de referência: " + quote.occupationLabel;
+  }
   if (quote.baseCi != null) {
     term += " · vida " + gbp(quote.baseLife) + " + diagnóstico independente " + gbp(quote.baseCi);
     if (quote.offset) term += " − diferença de " + gbp(quote.offset) + " observada nos pacotes";
@@ -944,7 +972,7 @@ function makeSummary(p, r) {
     );
   if (r.detailed)
     for (const q of r.providerQuotes)
-      lines.push(`${q.provider} · ${quotedTerm(q)} · ${gbp(q.premium)}/mês${m.c ? ` · com MetLife ${gbp(q.premium + m.total)}/mês` : ""}${q.occupationRated ? " · preço do perfil profissional de referência" : ""}`);
+      lines.push(`${q.provider} · ${quotedTerm(q)} · ${gbp(q.premium)}/mês${m.c ? ` · com MetLife ${gbp(q.premium + m.total)}/mês` : ""}`);
   if (r.budgetNote && !r.ciPending) lines.push(r.budgetNote);
   if (r.reportNote) lines.push(r.reportNote);
   if (r.illustrationNote) lines.push(r.illustrationNote);
@@ -1258,7 +1286,7 @@ function render(p) {
     ? `<dt>Seguradoras prioritárias</dt><dd>${r.providerQuotes.map((quote) => `${escapeHtml(quote.provider)} ${gbp(quote.premium)}`).join(" · ")}${r.providerGap ? ` · ${escapeHtml(r.providerGap.provider)} sem preço no relatório` : ""}</dd><dt>Preço-base usado</dt><dd>${escapeHtml(r.provider)} · ${escapeHtml(r.product)}</dd><dt>Origem do preço</dt><dd>${r.priorityExact ? `SolutionBuilder ref. ${escapeHtml(r.providerQuotes[0].modelId)}${r.providerQuotes[0].sourceDate ? ` · ${escapeHtml(r.providerQuotes[0].sourceDate)}` : ""}` : "Interpolação de múltiplas âncoras oficiais do SolutionBuilder"}</dd>`
     : "";
   if (r.detailed) {
-    const rows = r.providerQuotes.map(q => `<dt>${escapeHtml(q.provider)}</dt><dd>${gbp(q.premium)}/mês · ${escapeHtml(quotedTerm(q))}${m.c ? ` · com MetLife ${gbp(q.premium + m.total)}/mês` : ""}${q.occupationRated ? " · depende da profissão de referência" : ""}</dd>`).join("");
+    const rows = r.providerQuotes.map(q => `<dt>${escapeHtml(q.provider)}</dt><dd>${gbp(q.premium)}/mês · ${escapeHtml(quotedTerm(q))}${m.c ? ` · com MetLife ${gbp(q.premium + m.total)}/mês` : ""}</dd>`).join("");
     priorityDetail = `<dt>${r.composition ? "Estimativa por composição" : r.capitalRange ? "Estimativa por capital" : r.withWaiver ? "Comparativo com isenção" : "Comparativo sem isenção"}</dt><dd>SolutionBuilder · ${escapeHtml(r.providerQuotes[0].sourceDate)}</dd>${rows}`;
     if (r.complete)
       priorityDetail += `<dt>Preço usado no total</dt><dd>${escapeHtml(r.provider)} · até ${p.toAge} anos</dd>`;
@@ -1274,7 +1302,7 @@ function render(p) {
   $("details").innerHTML =
     `<dt>Perfil</dt><dd>${p.age} anos · ${p.smoker === "smoker" ? "fumante" : "não fumante"}</dd><dt>Profissão</dt><dd>${escapeHtml(p.occupation)}</dd><dt>Peso · altura · IMC</dt><dd>${p.weight}kg · ${p.height}cm · ${bmi}</dd><dt>Cobertura solicitada</dt><dd>até ${p.toAge} · ${p.term} anos</dd><dt>Vida</dt><dd>${gbp(p.life)}</dd><dt>Doenças Graves</dt><dd>${gbp(p.ci)}</dd><dt>Premium</dt><dd>Garantido</dd>${priorityDetail}<dt>Base de referência</dt><dd>${evidence}</dd>`;
   if (priorityMatch.reported && r.termPending && !r.waiverPending && !m.unavailable) {
-    const alternative = priorityQuotes.find(q => q.differentCapital && !q.occupationRated &&
+    const alternative = priorityQuotes.find(q => q.differentCapital && (!q.occupationRated || q.occupationMatched) &&
       q.term === `To Age ${p.toAge}` && q.quotedLife >= p.life && q.quotedCi >= p.ci);
     if (alternative) {
       const cover = [alternative.quotedLife && "vida " + gbp(alternative.quotedLife),
