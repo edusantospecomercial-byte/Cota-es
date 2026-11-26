@@ -5,6 +5,8 @@ import { fileURLToPath } from "node:url";
 const here = dirname(fileURLToPath(import.meta.url));
 const source = readFileSync(join(here, "../app.js"), "utf8");
 const dataFiles = [
+  "./data/fracture-comparisons.csv",
+  "./data/fracture-breakdowns.csv",
   "./data/aviva-core-breakdowns.csv",
   "./data/zurich-core-breakdowns.csv",
   "./data/lg-core-breakdowns.csv",

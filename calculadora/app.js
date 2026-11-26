@@ -13,6 +13,8 @@ let catalog = { models: {} },
   maturityDeclines = [],
   coreBreakdowns = new Map(),
   tpdOffers = [],
+  fractureOffers = [],
+  fractureBreakdowns = new Map(),
   lgIllustratedTerms = [],
   lastPayload = null;
 const $ = (id) => document.getElementById(id),
@@ -60,6 +62,8 @@ async function init() {
     loadedAvivaBreakdowns,
     loadedZurichBreakdowns,
     loadedLgBreakdowns,
+    loadedFractureOffers,
+    loadedFractureBreakdowns,
   ] = await Promise.all([
     fetch("./data/models.json", { cache: "no-store" })
       .then((r) => r.json())
@@ -144,7 +148,13 @@ async function init() {
       .then(response => response.ok ? response.text() : "")
       .then(parsePriorityCsv)
       .catch(() => []),
+    fetch("./data/fracture-comparisons.csv", { cache: "no-store" })
+      .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
+    fetch("./data/fracture-breakdowns.csv", { cache: "no-store" })
+      .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
   ]);
+  fractureOffers = loadedFractureOffers;
+  fractureBreakdowns = new Map(loadedFractureBreakdowns.map(row => [row.provider + "|" + row.comparison_sha256, row]));
   coreBreakdowns = new Map([
     ...loadedAvivaBreakdowns.map(row => ["Aviva|" + row.comparison_sha256, row]),
     ...loadedZurichBreakdowns.map(row => ["Zurich|" + row.comparison_sha256, row]),
@@ -320,13 +330,51 @@ function itemisedCiPremium(row, breakdown) {
     policies.push("vida ou diagnóstico " + gbp(Number(breakdown.earlier_ci_policy_monthly)));
     return "<br>Mensalidade cobrada por apólice neste pacote · " + policies.join(" + ") + ".";
   }
-  const charges = [["vida adicional", breakdown.life_monthly], ["vida ou diagnóstico", breakdown.earlier_ci_monthly],
-    ["isenção", breakdown.waiver_monthly], ["incapacidade permanente", breakdown.tpd_monthly]];
+  const charges = [[Number(row.quoted_earlier_ci_cover) > 0 ? "vida adicional" : "vida", breakdown.life_monthly], ["vida ou diagnóstico", breakdown.earlier_ci_monthly],
+    ["isenção", breakdown.waiver_monthly], ["incapacidade permanente", breakdown.tpd_monthly],
+    ["fraturas da seguradora", breakdown.fracture_monthly]];
   const listed = charges.filter(([, value]) => Number(value) > 0)
     .map(([label, value]) => label + " " + gbp(Number(value))).join(" + ");
   const discount = Number(breakdown.discount_monthly || 0);
   return "<br>Na illustration, a mensalidade reúne " + listed +
     (discount > 0 ? " − desconto por múltiplas apólices " + gbp(discount) : "") + ".";
+}
+
+function renderFractureComparison(p) {
+  const panel = $("fractureComparison");
+  panel.hidden = true;
+  panel.open = false;
+  $("fractureOffers").innerHTML = "";
+  $("fractureSource").textContent = "";
+  const smoking = p.smoker === "smoker" ? "Yes" : "No";
+  const matching = fractureOffers.filter(row => Number(row.age) === p.age && row.smoker === smoking &&
+    Number(row.to_age) === p.toAge && Number(row.life_cover) === p.life && Number(row.earlier_ci_cover) === p.ci);
+  if (!matching.length) return;
+  const date = matching.reduce((d, row) => row.source_date > d ? row.source_date : d, "");
+  const report = matching.filter(row => row.source_date === date);
+  $("fractureSource").textContent = "Comparativo de " + date + (p.ci ?
+    ". O capital de diagnóstico abaixo é pago por morte ou diagnóstico, no primeiro evento coberto." :
+    ". O pedido foi de seguro de vida com adicional de fraturas.");
+  const reasons = { fracture_not_supported: "O produto recusou o adicional de fraturas solicitado.",
+    age_not_supported: "A seguradora informou que a idade estava fora do limite do produto.",
+    term_not_supported: "A seguradora recusou o prazo solicitado." };
+  $("fractureOffers").innerHTML = report.map(row => {
+    const label = `<dt>${escapeHtml(row.provider)} · ${escapeHtml(row.reference)}</dt>`;
+    if (row.response !== "quoted") return label + "<dd>" + escapeHtml(reasons[row.response] || "Consultar a seguradora.") + "</dd>";
+    const detail = [];
+    if (Number(row.quoted_life_cover)) detail.push("vida " + gbp(Number(row.quoted_life_cover)));
+    if (Number(row.quoted_earlier_ci_cover)) detail.push("vida ou diagnóstico " + gbp(Number(row.quoted_earlier_ci_cover)));
+    detail.push(row.quoted_term.startsWith("To Age ") ? "até os " + row.quoted_term.slice(7) + " anos" : row.quoted_term);
+    if (row.tpd_basis !== "None") detail.push("TPD " + row.tpd_basis);
+    if (/^\d+$/.test(row.waiver_to)) detail.push("idade-limite da isenção " + row.waiver_to + " anos");
+    else if (row.waiver_to === "Expiry") detail.push("isenção até o fim do contrato");
+    if (row.occupation_rated === "Yes") detail.push("preço depende da profissão");
+    const part = fractureBreakdowns.get(row.provider + "|" + row.sha256);
+    const itemised = itemisedCiPremium(row, part);
+    if (itemised && /^\d+$/.test(part.fracture_to_age)) detail.push("fraturas até os " + part.fracture_to_age + " anos");
+    return label + `<dd><b>${gbp(Number(row.monthly_premium))}/mês</b> · ${escapeHtml(detail.join(" · "))}${itemised || "<br>O pedido incluía fraturas. A inclusão do adicional precisa de confirmação na illustration da seguradora."}</dd>`;
+  }).join("");
+  panel.hidden = false;
 }
 
 function renderCiComparison(p, independentTpd = false) {
@@ -903,6 +951,7 @@ function makeSummary(p, r) {
   return lines.join("\n");
 }
 function render(p) {
+  renderFractureComparison(p);
   renderCiComparison(p);
   const tpdPrices = renderCiComparison(p, true) || [];
   $("coverError").textContent = "";

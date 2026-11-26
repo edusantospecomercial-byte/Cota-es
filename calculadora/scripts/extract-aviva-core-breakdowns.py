@@ -1,4 +1,5 @@
 """Reconcile the separate Aviva policy premiums in life-or-earlier-CI illustrations."""
+import argparse
 import csv
 from datetime import datetime
 from decimal import Decimal
@@ -27,10 +28,14 @@ def pdf_text(document):
     return subprocess.check_output(["pdftotext", "-layout", "-", "-"], input=document).decode("utf-8")
 
 
-def read_pair(illustration, comparison):
+def read_pair(illustration, comparison, offers=None, fracture_requested=False):
     digest = hashlib.sha256(comparison).hexdigest()
-    offer = offers.get(digest)
-    if not offer:
+    if fracture_requested:
+        from fracture_comparison import read_offer
+        offer = read_offer(comparison, "Aviva")
+    else:
+        offer = offers.get(digest)
+    if not offer or offer.get("response", "quoted") != "quoted":
         return None
     cover = pdf_text(comparison).split("\f", 1)[0]
     dob = re.search(r"born on (\d{2}/\d{2}/\d{4})", cover)
@@ -42,12 +47,16 @@ def read_pair(illustration, comparison):
         return None
     sections = re.split(r"^[ \t]*Page 1 of \d+[ \t]*$", text.replace("\f", "\n"), flags=re.M)
     policies = [part for part in sections if "How your premium is made up" in part]
-    expected = {SHARED: int(offer["quoted_earlier_ci_cover"])}
+    expected = {}
+    if int(offer["quoted_earlier_ci_cover"]):
+        expected[SHARED] = int(offer["quoted_earlier_ci_cover"])
     if int(offer["quoted_life_cover"]):
         expected[LIFE] = int(offer["quoted_life_cover"])
     if len(policies) != len(expected) or text.count("Date of birth:") != len(policies):
         return None
     totals = {label: Decimal("0.00") for label in (LIFE, SHARED, WAIVER, TPD)}
+    if fracture_requested:
+        totals["Fracture cover"] = Decimal("0.00")
     paid = Decimal("0.00")
     for policy in policies:
         details, breakdown = policy.split("How your premium is made up", 1)
@@ -76,13 +85,26 @@ def read_pair(illustration, comparison):
         paid += pounds(monthly[1])
     if expected or paid != pounds(offer["monthly_premium"]) or paid != sum(totals.values()):
         return None
+    if fracture_requested:
+        from fracture_comparison import fracture_row
+        return fracture_row(offer, totals[LIFE], totals[SHARED], totals[WAIVER], totals[TPD],
+                            Decimal("0.00"), totals["Fracture cover"], paid, illustration)
     return (offer["source_date"], offer["age"], offer["smoker"], offer["to_age"], offer["quoted_life_cover"],
             offer["quoted_earlier_ci_cover"], totals[LIFE], totals[SHARED], offer["reference"],
             totals[WAIVER], totals[TPD], paid, hashlib.sha256(illustration).hexdigest(), digest)
 
 
 if __name__ == "__main__":
-    with (Path(__file__).resolve().parents[1] / "data/accelerated-comparisons.csv").open() as source:
-        offers = {r["sha256"]: r for r in csv.DictReader(source) if r["provider"] == "Aviva"}
-    extract_pairs(("Aviva Multi-Product with Core CI", "Aviva Life Insurance+ with Core CI"),
-                  FIELDS, read_pair, __doc__)
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("roots", nargs="+", type=Path)
+    parser.add_argument("--paired-fracture", action="store_true")
+    args = parser.parse_args()
+    folders = ("Aviva Multi-Product with Core CI", "Aviva Life Insurance+ with Core CI")
+    if args.paired_fracture:
+        from fracture_comparison import FRACTURE_FIELDS
+        extract_pairs(folders + ("Aviva Life Insurance+",), FRACTURE_FIELDS,
+                      lambda i, c: read_pair(i, c, fracture_requested=True), __doc__, args.roots)
+    else:
+        with (Path(__file__).resolve().parents[1] / "data/accelerated-comparisons.csv").open() as source:
+            offers = {r["sha256"]: r for r in csv.DictReader(source) if r["provider"] == "Aviva"}
+        extract_pairs(folders, FIELDS, lambda i, c: read_pair(i, c, offers), __doc__, args.roots)

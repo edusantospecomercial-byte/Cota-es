@@ -10,6 +10,8 @@ const localIndex = readFileSync(join(calculatorDir, "index.html"), "utf8");
 const localCatalog = JSON.parse(readFileSync(join(calculatorDir, "data/models.json"), "utf8"));
 const expectedAppVersion = localIndex.match(/app\.js\?v=([a-f0-9]+)/)?.[1];
 const criticalAssets = [
+  "data/fracture-comparisons.csv",
+  "data/fracture-breakdowns.csv",
   "data/aviva-core-breakdowns.csv",
   "data/zurich-core-breakdowns.csv",
   "data/lg-core-breakdowns.csv",

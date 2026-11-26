@@ -48,12 +48,15 @@ def read_pair(illustration, comparison):
     cover, _, results = report.partition("\f")
     if "Non Underwritten Results" not in results:
         return None
-    benefits = re.findall(r"^\s*•\s+([^\n]+)", cover, re.M)
+    benefits = [" ".join(line.split()) for line in re.findall(
+        r"^[ \t]*•[ \t]+([^\n]+(?:\n[ \t]{6,}[^\s•][^\n]*)*)", cover, re.M)]
     benefit = re.fullmatch(r"Level Term Assurance: 1st life, £([\d,]+) life cover, policy duration is to age (\d+), premiums are guaranteed(?:, Fracture Cover selected)?", benefits[0].strip()) if len(benefits) == 1 else None
     ref = re.search(r"Your Reference:\s*(\d+)", cover)
     dated = re.search(r"Date Requested:\s*([\d/]+)", cover)
     person = re.search(r"^Client:.*?\ba (?:Male|Female) (smoker|non-smoker)(?: who has never smoked)?, born on ([\d/]+)", cover, re.M | re.I)
-    if not benefit or price(benefit[1]) != lump or int(benefit[2]) != to_age or not all((ref, dated, person)):
+    # The provider can increase the capital to reach its minimum premium.
+    # Only the amount printed in both the offer and illustration may enter the lookup.
+    if not benefit or price(benefit[1]) <= 0 or int(benefit[2]) != to_age or not all((ref, dated, person)):
         return None
     issued, born = [datetime.strptime(m[1], "%d %B %Y").date() for m in (prepared, birth)]
     if (issued != datetime.strptime(dated[1], "%d/%m/%Y").date() or

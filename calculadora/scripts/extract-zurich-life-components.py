@@ -91,11 +91,15 @@ def illustrations(source):
                 yield archive.read(member)
 
 
-def earlier_ci_reader(offers):
+def earlier_ci_reader(offers, fracture_requested=False):
     def read_pair(illustration, comparison):
         comparison_hash = hashlib.sha256(comparison).hexdigest()
-        offer = offers.get(comparison_hash)
-        if not offer:
+        if fracture_requested:
+            from fracture_comparison import read_offer
+            offer = read_offer(comparison, "Zurich")
+        else:
+            offer = offers.get(comparison_hash)
+        if not offer or offer.get("response", "quoted") != "quoted":
             return None
         quote = subprocess.check_output(["pdftotext", "-layout", "-", "-"], input=illustration).decode().replace("\f", "\n")
         if "your zurich personal protection quote" not in quote.lower() or "standard rates and your current age" not in quote.lower():
@@ -112,14 +116,17 @@ def earlier_ci_reader(offers):
             return None
         shared = "Level Life Cover and Critical Illness"
         life = "Level Life Cover"
-        expected = {shared: int(offer["quoted_earlier_ci_cover"])}
+        expected = {}
+        if int(offer["quoted_earlier_ci_cover"]):
+            expected[shared] = int(offer["quoted_earlier_ci_cover"])
         if int(offer["quoted_life_cover"]):
             expected[life] = int(offer["quoted_life_cover"])
         parts = re.split(r"^[ \t]*Date of birth[ \t]+", quote, flags=re.I | re.M)[1:]
         if len(parts) != len(expected):
             return None
         zero = Decimal("0.00")
-        amounts = dict.fromkeys([life, shared, "waiver", "tpd", "discount", "paid"], zero)
+        amounts = dict.fromkeys([life, shared, "waiver", "tpd", "discount", "fracture", "paid"], zero)
+        fracture_limits = set()
         for part in parts:
             part_birth = re.match(DATE, part)
             kind = field(part, "Cover provided", r"(.+?)")
@@ -142,15 +149,30 @@ def earlier_ci_reader(offers):
             disability = pounds(tpd[0]) if tpd else zero
             additional = pounds(field(part, "Additional benefits", MONEY) or "0")
             discount = pounds(field(part, "Multi-policy discount", MONEY) or "0")
-            if waiver + disability != additional or pounds(base) + additional - discount != pounds(total):
+            fracture = zero
+            if fracture_requested:
+                # The rider and waiver can terminate before the policy's end age.
+                ending = r"(?:[ \t]+payable until [^\n]+)?"
+                fracture = pounds(field(part, "Multi-Fracture Cover", MONEY + ending) or "0")
+                waiver = pounds(field(part, "Waiver of Premium", MONEY + ending) or "0")
+                if fracture > 0:
+                    limit = re.search(r"^[ \t]*Multi-Fracture Cover[ \t]+£[\d,.]+[ \t]+payable until the benefit ends when you reach age (\d+)\.[ \t]*$", part, re.M | re.I)
+                    fracture_limits.add(limit[1] if limit else "")
+            if waiver + disability + fracture != additional or pounds(base) + additional - discount != pounds(total):
                 return None
             amounts[kind] += pounds(base)
+            amounts["fracture"] += fracture
             amounts["waiver"] += waiver
             amounts["tpd"] += disability
             amounts["discount"] += discount
             amounts["paid"] += pounds(total)
         if expected or amounts["paid"] != pounds(offer["monthly_premium"]):
             return None
+        if fracture_requested:
+            from fracture_comparison import fracture_row
+            return fracture_row(offer, amounts[life], amounts[shared], amounts["waiver"], amounts["tpd"],
+                                amounts["discount"], amounts["fracture"], amounts["paid"], illustration,
+                                fracture_limits.pop() if len(fracture_limits) == 1 else "")
         return (offer["source_date"], offer["age"], offer["smoker"], offer["to_age"], offer["quoted_life_cover"],
                 offer["quoted_earlier_ci_cover"], amounts[life], amounts[shared], offer["reference"], amounts["waiver"],
                 amounts["tpd"], amounts["discount"], amounts["paid"], hashlib.sha256(illustration).hexdigest(), comparison_hash)
@@ -160,8 +182,15 @@ def earlier_ci_reader(offers):
 def main():
     cli = argparse.ArgumentParser(description=__doc__)
     cli.add_argument("folders", type=Path, nargs="+")
-    cli.add_argument("--paired-earlier-ci", action="store_true", help="Reconcile itemised shared life/CI cover against the original comparison.")
+    modes = cli.add_mutually_exclusive_group()
+    modes.add_argument("--paired-fracture", action="store_true", help="Verify fracture riders against the provider comparison.")
+    modes.add_argument("--paired-earlier-ci", action="store_true", help="Reconcile itemised shared life/CI cover against the original comparison.")
     args = cli.parse_args()
+    if args.paired_fracture:
+        from fracture_comparison import FRACTURE_FIELDS
+        from illustration_pairs import extract_pairs
+        extract_pairs(("Zurich Life & CI", "Zurich Life"), FRACTURE_FIELDS, earlier_ci_reader({}, True), __doc__, args.folders)
+        return
     if args.paired_earlier_ci:
         from illustration_pairs import extract_pairs
         fields = ("source_date", "age", "smoker", "to_age", "life_cover", "earlier_ci_cover", "life_monthly",

@@ -573,3 +573,62 @@ run("Date.now = () => Date.parse('2030-12-01')");
 assert.equal(calculate(65, 100000, 0, {age: 39, term: 26, waiver: "No"}).ageNote, undefined);
 run("Date.now = originalClock");
 console.log(JSON.stringify({age39: {usedForTotal: Boolean(lifeAt39.ageEstimate), main: lifeAt39.main}, age57: {usedForTotal: Boolean(lifeAt57.ageEstimate), main: lifeAt57.main}}));
+
+const fractureReports = run('fractureOffers');
+const fractureDocuments = run('fractureBreakdowns');
+const fractureKeys = new Set();
+for (const row of fractureReports) {
+  const key = row.provider + '|' + row.reference;
+  assert.ok(!fractureKeys.has(key));
+  fractureKeys.add(key);
+  assert.match(row.sha256, /^[\da-f]{64}$/);
+  assert.ok(['Aviva', 'Zurich', 'Legal & General'].includes(row.provider));
+  assert.ok(['quoted', 'fracture_not_supported', 'age_not_supported', 'term_not_supported'].includes(row.response));
+  if (row.response !== 'quoted') {
+    assert.equal(row.monthly_premium, '');
+    continue;
+  }
+  assert.ok(Number(row.monthly_premium) > 0);
+  assert.equal(Boolean(Number(row.quoted_earlier_ci_cover)), Boolean(Number(row.earlier_ci_cover)));
+  assert.equal(Boolean(Number(row.quoted_life_cover)), Boolean(Number(row.life_cover)));
+  assert.ok(!variantRows.some(r => r.sha256 === row.sha256));
+  assert.ok(!evidence.some(r => r.sha256 === row.sha256));
+}
+for (const [key, part] of fractureDocuments) {
+  const offer = fractureReports.find(row => row.provider + '|' + row.sha256 === key);
+  assert.ok(offer);
+  for (const field of ['reference', 'age', 'smoker', 'to_age', 'life_cover', 'earlier_ci_cover', 'quoted_life_cover', 'quoted_earlier_ci_cover']) {
+    assert.equal(offer[field], part[field]);
+  }
+  assert.ok(Number(part.fracture_monthly) > 0);
+  const cost = name => Math.round(Number(part[name]) * 100);
+  assert.equal(cost('life_monthly') + cost('earlier_ci_monthly') + cost('waiver_monthly') + cost('tpd_monthly') + cost('fracture_monthly') - cost('discount_monthly'), cost('total_monthly'));
+  assert.equal(offer.monthly_premium, part.total_monthly);
+}
+const riderProfile = {age:32, smoker:'smoker', term:33, waiver:'No'};
+const withRiderPanel = calculate(65,50000,0,riderProfile);
+assert.equal(node('fractureComparison').hidden, false);
+for (const clue of ['£11.72/mês', 'vida £7.70 + isenção £0.02 + fraturas da seguradora £4.00', 'recusou o adicional', '£15.98/mês', 'precisa de confirmação']) {
+  assert.ok(node('fractureOffers').innerHTML.includes(clue), clue);
+}
+run('globalThis.savedRiderReports = fractureOffers; fractureOffers = []');
+const withoutPanel = calculate(65,50000,0,riderProfile);
+assert.equal(withRiderPanel.main, withoutPanel.main);
+assert.equal(withRiderPanel.text, withoutPanel.text);
+assert.equal(node('fractureComparison').hidden,true);
+run('fractureOffers = savedRiderReports');
+calculate(65,20000,10000,{age:48, term:17});
+assert.ok(node('fractureOffers').innerHTML.includes('vida £21,859.00'));
+assert.ok(node('fractureOffers').innerHTML.includes('vida ou diagnóstico £10,000.00'));
+assert.ok(node('fractureSource').textContent.includes('primeiro evento'));
+calculate(75,50000,0,{age:54,term:21});
+assert.ok(node('fractureOffers').innerHTML.includes('fraturas até os 70 anos'));
+calculate(80,50000,0,{age:61,term:19});
+assert.ok(node('fractureOffers').innerHTML.includes('idade estava fora do limite'));
+calculate(70,100000,10000,{age:20,term:50});
+assert.ok(node('fractureOffers').innerHTML.includes('recusou o prazo'));
+calculate(65,10001,0,{age:33,term:32});
+assert.equal(node('fractureComparison').hidden,true);
+ctx.adjustedCapital = {age:33,toAge:65,smoker:'non_smoker',life:49408,ci:0,waiver:'No'};
+assert.equal(run('illustratedLifeFor(adjustedCapital,"Aviva")').base_monthly,'4.99');
+assert.notEqual(run('illustratedLifeFor({...adjustedCapital,life:10000},"Aviva")')?.reference,'1083310818');
