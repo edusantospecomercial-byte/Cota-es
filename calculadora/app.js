@@ -617,6 +617,53 @@ function lgTermReference(p) {
     "/mês na illustration " + latest.reference + ".";
 }
 
+function lifeWithinBudget(p, m, rows = reportedRows.concat(verifiedArchiveRows)) {
+  if (!(p.monthlyBudget > 0 && p.life > 0) || m.unavailable) return null;
+  const budget = Math.round(p.monthlyBudget * 100), extra = Math.round(m.total * 100);
+  const smoking = p.smoker === "smoker" ? "Yes" : "No";
+  const groups = new Map();
+  if (p.waiver === "Yes") {
+    if (p.ci || !waiverRows) return null;
+    const candidates = waiverRows.concat(individualWaivers).filter(row => Number(row.age) === p.age &&
+      Number(row.to_age) === p.toAge && (row.smoker === "True") === (smoking === "Yes"));
+    for (const life of new Set(candidates.map(row => Number(row.life_cover)))) {
+      if (!(life > 0 && life < p.life)) continue;
+      for (const quote of waiverComparisonFor({...p, life}).sameEndAge || []) {
+        // The waiver must last through the requested protection term.
+        if (quote.waiverTo !== "Expiry" && !(Number(quote.waiverTo) >= p.toAge)) continue;
+        groups.set(life + "|" + quote.provider, [{life, price: quote.premium, provider: quote.provider,
+          date: quote.sourceDate, ref: quote.modelId, product: quote.product}]);
+      }
+    }
+  } else {
+    for (const row of rows) {
+      const life = Number(row.life_cover);
+      if (Number(row.age) !== p.age || Number(row.to_age) !== p.toAge || row.smoker !== smoking ||
+          Number(row.critical_illness_cover) !== p.ci || !(life > 0 && life < p.life)) continue;
+      const valid = row.available === "true" && row.quoted_life_cover === row.life_cover &&
+        row.quoted_critical_illness_cover === row.critical_illness_cover && row.quoted_term === "To Age " + p.toAge &&
+        (row.quoted_tpd || "None") === "None" && (row.occupation_rated === "No" ||
+          (row.occupation_rated === "Yes" && occupationalBasis(p.occupation, row).occupationMatched));
+      const key = life + "|" + row.provider, group = groups.get(key) || [];
+      group.push({life, provider: row.provider, product: row.product, date: row.source_date, ref: row.model_id,
+        price: valid ? Number(row.monthly_premium) : null});
+      groups.set(key, group);
+    }
+  }
+  const choices = [];
+  for (const group of groups.values()) {
+    const latest = group.reduce((day, row) => day > row.date ? day : row.date, "");
+    const days = (Date.now() - Date.parse(latest)) / 86400000;
+    if (!(days >= 0 && days <= 180)) continue;
+    const recent = group.filter(row => row.date === latest), choice = recent[0];
+    if (!(choice.price > 0) || !recent.every(row => row.price === choice.price && row.product === choice.product)) continue;
+    const total = Math.round(choice.price * 100) + extra;
+    if (total < budget) choices.push({...choice, total: total / 100});
+  }
+  choices.sort((a,b) => b.life - a.life || a.total - b.total || b.date.localeCompare(a.date) || a.provider.localeCompare(b.provider));
+  return choices[0] || null;
+}
+
 function separatePolicyOptions(p, rows = reportedRows.concat(verifiedArchiveRows)) {
   if (!p.life || !p.ci || p.waiver === "Yes") return [];
   const smoker = p.smoker === "smoker" ? "Yes" : "No";
@@ -1033,6 +1080,7 @@ function payload() {
     weight: num("weight"),
     height: num("height"),
     occupation: $("occupation").value.trim(),
+    monthlyBudget: num("monthlyBudget"),
     term: end - age,
     toAge: end,
     life: num("life"),
@@ -1124,6 +1172,7 @@ function makeSummary(p, r) {
   if (r.partialCiNote) lines.push(r.partialCiNote);
   if (r.alternativePackage) lines.push(r.alternativePackage);
   if (r.separatePolicyNote) lines.push(r.separatePolicyNote);
+  if (r.affordableNote) lines.push(r.affordableNote);
   if (r.complete)
     lines.push("", r.aggregateOnly ? `Orçamento mensal indicativo de ${gbp(r.main + m.total)}. Seguradora a confirmar.` :
       `Total estimado: ${gbp(r.main + m.total)}/mês`);
@@ -1498,7 +1547,20 @@ function render(p) {
         ` Comparativos de ${life.source_date}, referências ${life.model_id} e ${ci.model_id}. A contratação simultânea precisa de confirmação.`;
     }
   }
-  $("alternativePackage").textContent = [r.alternativePackage, r.separatePolicyNote].filter(Boolean).join(" ");
+  if (p.monthlyBudget > 0 && (!r.complete || r.aggregateOnly || Math.round(100 * (r.main + m.total)) >= Math.round(100 * p.monthlyBudget))) {
+    const choice = lifeWithinBudget(p, m);
+    if (choice) {
+      const coverage = gbp(choice.life) + " de vida" + (p.ci ? " e " + gbp(p.ci) + " de diagnóstico independente" : "") +
+        (p.waiver === "Yes" ? " com isenção de mensalidade" : "");
+      r.affordableNote = "A opção abaixo de " + gbp(p.monthlyBudget) + "/mês cobre " + coverage + " até os " + p.toAge +
+        " anos pela " + choice.provider + ". " + gbp(choice.price) +
+        (m.c ? " + " + gbp(m.total) + " da MetLife selecionada" : "") + " = " + gbp(choice.total) +
+        "/mês. O preço da seguradora vem do comparativo de " + choice.date + ". É o maior capital de vida abaixo do solicitado encontrado nos comparativos compatíveis dos últimos 180 dias.";
+      if (r.complete && r.aggregateOnly && Math.round(r.main * 100) < Math.round(choice.price * 100))
+        r.affordableNote += " O modelo geral estimou um preço menor para o capital maior. Confirme essa estimativa com a seguradora.";
+    }
+  }
+  $("alternativePackage").textContent = [r.alternativePackage, r.separatePolicyNote, r.affordableNote].filter(Boolean).join(" ");
   $("alternativePackage").hidden = !$("alternativePackage").textContent;
   $("metlifeResult").textContent = m.unavailable
     ? "MultiProtect indisponível para nova contratação após 65 anos"

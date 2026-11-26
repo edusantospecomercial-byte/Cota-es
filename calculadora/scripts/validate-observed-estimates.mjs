@@ -240,6 +240,30 @@ const calculate = (toAge, life, ci, extra = {}) => {
   run("render({...payload(), ...inputs})");
   return run("lastPayload.result");
 };
+run('globalThis.clockBeforeBudgetTest = Date.now; Date.now = () => Date.parse("2026-11-26T00:00:00Z")');
+const overBudget = calculate(65, 150000, 0, {monthlyBudget:28, waiver:"No"});
+assert.ok(overBudget.affordableNote.includes("£75,000.00 de vida"));
+assert.ok(overBudget.affordableNote.includes("£14.91 + £13.00") && overBudget.affordableNote.includes("£27.91/mês"));
+assert.ok(node("alternativePackage").textContent.includes(overBudget.affordableNote) && overBudget.text.includes(overBudget.affordableNote));
+assert.equal(calculate(65, 150000, 0, {monthlyBudget:0}).main, overBudget.main);
+assert.ok(!calculate(65, 150000, 0, {monthlyBudget:0}).affordableNote);
+assert.ok(!calculate(65, 75000, 0, {monthlyBudget:28}).affordableNote);
+assert.ok(calculate(65, 150000, 0, {monthlyBudget:27.91}).affordableNote.includes("£73,000.00 de vida"));
+const fixedCi = calculate(65, 300000, 20000, {age:31, term:34, monthlyBudget:28, waiver:"No"});
+assert.ok(fixedCi.affordableNote.includes("£115,000.00 de vida e £20,000.00 de diagnóstico independente"));
+assert.ok(fixedCi.affordableNote.includes("£27.93/mês"));
+const capSearch = run("lifeWithinBudget");
+const budgetProfile = {age:50, smoker:"non_smoker", life:150000, ci:0, toAge:65, monthlyBudget:28};
+const capSource = reported.find(r => r.model_id === "35024582" && r.provider === "Zurich");
+assert.ok(capSource);
+const extra = {c:1,total:13};
+assert.equal(capSearch(budgetProfile, extra, [capSource, {...capSource,source_date:"2026-11-25",available:"false",monthly_premium:""}]), null);
+assert.equal(capSearch(budgetProfile, extra, [capSource,{...capSource, monthly_premium:"10.00"}]), null);
+for (const changes of [{quoted_term:"14 years"}, {quoted_life_cover:"76000"}, {occupation_rated:"Yes"}, {quoted_tpd:"Own occupation"},
+  {source_date:"2025-11-26"}, {smoker:"Yes"}, {critical_illness_cover:"10000"}]) {
+  assert.equal(capSearch(budgetProfile, extra, [{...capSource, ...changes}]), null);
+}
+run("Date.now = clockBeforeBudgetTest");
 const archiveWithDisability = calculate(70, 200000, 0, { age: 62, term: 8 });
 assert.equal(archiveWithDisability.provider, "Zurich");
 assert.equal(archiveWithDisability.main, 71.66);
