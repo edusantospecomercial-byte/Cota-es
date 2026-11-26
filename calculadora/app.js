@@ -141,9 +141,11 @@ async function init() {
   const reportCount = new Set(reportedRows.map(row => row.model_id)).size;
   const priceCount = reportedRows.filter(row => row.available === "true").length;
   const unavailableCount = reportedRows.filter(row => row.available === "false").length;
+  const unlistedCount = reportedRows.filter(row => row.available === "unknown").length;
   const baseStatus = reportCount
     ? [`Coleta iniciada em 24/11/2026 · ${reportCount} cenários · ${priceCount} mensalidades · ${unavailableCount} respostas sem preço`]
     : ["Comparativos da coleta de novembro indisponíveis"];
+  if (unlistedCount) baseStatus.push(`Produto ausente do relatório em ${unlistedCount} consultas por seguradora`);
   if (catalog.calibratedRecords) {
     const count = new Intl.NumberFormat("pt-BR").format(catalog.calibratedRecords);
     baseStatus.push(`Catálogo histórico com ${count} registros`);
@@ -380,11 +382,13 @@ function capturedReportFor(p, source = reportedRows) {
       differentCapital: Number(row.quoted_life_cover) !== p.life || Number(row.quoted_critical_illness_cover) !== p.ci,
       quotedLife: Number(row.quoted_life_cover), quotedCi: Number(row.quoted_critical_illness_cover),
       occupationRated: row.occupation_rated === "Yes" })).sort((a, b) => a.premium - b.premium);
-  const missing = rows.filter(row => row.available === "false");
+  const missing = rows.filter(row => row.available === "false" ||
+    (row.available === "unknown" && row.unavailable_reason === "product_not_listed"));
   if (quotes.length + missing.length !== 3) return null;
   const reasons = missing.map(row => {
     const limit = /^maximum_end_age_(\d+)$/.exec(row.unavailable_reason);
     const reason = limit ? `idade final máxima de ${limit[1]} anos` :
+      row.available === "unknown" ? "produto ausente do comparativo. Disponibilidade a confirmar" :
       row.unavailable_reason === "end_age_not_supported" ? "idade final fora do limite do produto" : "produto sem preço no relatório";
     return `${row.provider} · ${reason}`;
   });
@@ -788,7 +792,7 @@ function makeSummary(p, r) {
     lines.push(`Referência prioritária: ${r.provider} — ${gbp(r.main)}/mês`);
   if (r.providerQuotes?.length && !r.detailed)
     lines.push(
-      `Seguradoras prioritárias: ${r.providerQuotes.map((quote) => `${quote.provider} ${gbp(quote.premium)}`).join(" · ")}${r.providerGap ? ` · ${r.providerGap.provider} indisponível` : ""}`,
+      `Seguradoras prioritárias: ${r.providerQuotes.map((quote) => `${quote.provider} ${gbp(quote.premium)}`).join(" · ")}${r.providerGap ? ` · ${r.providerGap.provider} sem preço no relatório` : ""}`,
     );
   if (m.unavailable)
     lines.push(
@@ -962,7 +966,7 @@ function render(p) {
       );
     warnings.unshift(
       priorityMatch.partial
-        ? `Preços históricos disponíveis para ${priorityQuotes.map((quote) => quote.provider).join(" e ")}; ${priorityMatch.gap.provider} ficou indisponível neste cenário.`
+        ? `O comparativo traz preços para ${priorityQuotes.map((quote) => quote.provider).join(" e ")}. ${priorityMatch.gap.provider} ficou sem preço no relatório.`
         : r.withWaiver
         ? "Comparativo histórico com isenção incluída, sem análise médica individual. Confira o prazo de cada seguradora."
         : priorityMatch.exact
@@ -1049,7 +1053,7 @@ function render(p) {
       ? `modelo histórico agregado (${confidencePt(model.confidence)})`
       : "insuficiente";
   let priorityDetail = r.providerQuotes?.length
-    ? `<dt>Seguradoras prioritárias</dt><dd>${r.providerQuotes.map((quote) => `${escapeHtml(quote.provider)} ${gbp(quote.premium)}`).join(" · ")}${r.providerGap ? ` · ${escapeHtml(r.providerGap.provider)} indisponível` : ""}</dd><dt>Preço-base usado</dt><dd>${escapeHtml(r.provider)} · ${escapeHtml(r.product)}</dd><dt>Origem do preço</dt><dd>${r.priorityExact ? `SolutionBuilder ref. ${escapeHtml(r.providerQuotes[0].modelId)}${r.providerQuotes[0].sourceDate ? ` · ${escapeHtml(r.providerQuotes[0].sourceDate)}` : ""}` : "Interpolação de múltiplas âncoras oficiais do SolutionBuilder"}</dd>`
+    ? `<dt>Seguradoras prioritárias</dt><dd>${r.providerQuotes.map((quote) => `${escapeHtml(quote.provider)} ${gbp(quote.premium)}`).join(" · ")}${r.providerGap ? ` · ${escapeHtml(r.providerGap.provider)} sem preço no relatório` : ""}</dd><dt>Preço-base usado</dt><dd>${escapeHtml(r.provider)} · ${escapeHtml(r.product)}</dd><dt>Origem do preço</dt><dd>${r.priorityExact ? `SolutionBuilder ref. ${escapeHtml(r.providerQuotes[0].modelId)}${r.providerQuotes[0].sourceDate ? ` · ${escapeHtml(r.providerQuotes[0].sourceDate)}` : ""}` : "Interpolação de múltiplas âncoras oficiais do SolutionBuilder"}</dd>`
     : "";
   if (r.detailed) {
     const rows = r.providerQuotes.map(q => `<dt>${escapeHtml(q.provider)}</dt><dd>${gbp(q.premium)}/mês · ${escapeHtml(quotedTerm(q))}${m.c ? ` · com MetLife ${gbp(q.premium + m.total)}/mês` : ""}${q.occupationRated ? " · depende da profissão de referência" : ""}</dd>`).join("");

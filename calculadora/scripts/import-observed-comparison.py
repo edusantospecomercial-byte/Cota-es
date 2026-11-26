@@ -22,7 +22,7 @@ PRODUCTS = {
 }
 
 
-def extract(path, model_id, age, smoker, to_age, life, ci):
+def extract(path, model_id, age, smoker, to_age, life, ci, *, allow_unlisted=False):
     text = subprocess.check_output(["pdftotext", "-layout", str(path), "-"], encoding="utf-8")
     cover = text.split("\f", 1)[0]
     result, _, unavailable = text.partition("Products Not Quoting:")
@@ -48,6 +48,11 @@ def extract(path, model_id, age, smoker, to_age, life, ci):
     if actual_age != age or (client[1].lower() == "smoker") != (smoker == "Yes"):
         raise ValueError("Age or smoking status differs from the requested scenario.")
     digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    numbered_pages = re.findall(r"^\s*Page:\s*(\d+) of (\d+)\s*$", text, re.M)
+    complete_pages = bool(numbered_pages) and all(
+        int(page) == index and int(total) == len(numbered_pages)
+        for index, (page, total) in enumerate(numbered_pages, 1)
+    )
     data = []
     for provider, products in PRODUCTS.items():
         product = products[2 if not life else int(bool(ci))]
@@ -57,6 +62,12 @@ def extract(path, model_id, age, smoker, to_age, life, ci):
         if not lines:
             reason = re.search(prefix + r"(\S[^\n]*)", unavailable, re.M)
             if not reason:
+                # A complete report may omit a product from both tables. This is distinct
+                # from an insurer explicitly declining to quote or imposing an age limit.
+                if (allow_unlisted and complete_pages and unavailable.strip()
+                        and product.casefold() not in " ".join(text.casefold().split())):
+                    data.append(base + ["", "unknown", "", "", digest, "product_not_listed", "", ""])
+                    continue
                 raise ValueError(f"Missing explicit unavailable result for {provider}.")
             limit = re.search(r"(?:maturity age of|expiry exceeds maximum allowed)\s+(\d+)", reason[1], re.I)
             if limit:
@@ -92,6 +103,8 @@ def extract(path, model_id, age, smoker, to_age, life, ci):
         if not valid_term or float(price.replace(",", "")) <= 0:
             raise ValueError(f"Term mismatch or invalid premium for {provider}.")
         data.append(base + [price.replace(",", ""), "true", term, based_on_job, digest, "", *returned])
+    if any(row[10] == "unknown" for row in data) and sum(row[10] == "true" for row in data) < 2:
+        raise ValueError("An unlisted product requires verified prices from both other priority insurers.")
     return data
 
 
@@ -104,8 +117,11 @@ def main():
     parser.add_argument("to_age", type=int)
     parser.add_argument("life", type=int)
     parser.add_argument("ci", type=int)
+    parser.add_argument("--allow-unlisted", action="store_true",
+                        help="Retain two verified prices if the third product is absent from a complete report.")
     args = parser.parse_args()
-    parsed = extract(args.pdf, args.model_id, args.age, args.smoker, args.to_age, args.life, args.ci)
+    parsed = extract(args.pdf, args.model_id, args.age, args.smoker, args.to_age, args.life, args.ci,
+                     allow_unlisted=args.allow_unlisted)
     buffer = io.StringIO()
     writer = csv.writer(buffer, lineterminator="\n")
     writer.writerow(FIELDS)
