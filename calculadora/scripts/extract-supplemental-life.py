@@ -38,6 +38,13 @@ def recorded_keys():
     return keys
 
 
+def own_occupation(table, match):
+    # The disability definition wraps across two lines in the same column.
+    column = match.start(1) - match.start() + match[1].rindex("Own")
+    following = table[match.end():].split("\n", 2)
+    return len(following) > 1 and following[1][column:column + 10].strip().lower() == "occupation"
+
+
 def extract(text, digest):
     cover, _, tables = text.partition("\f")
     benefits = re.findall(r"^[ \t]*•[ \t]+([^\n]+(?:\n[ \t]{6,}[^\s•][^\n]*)*)", cover, re.M)
@@ -60,7 +67,8 @@ def extract(text, digest):
     table = table.partition("Products Not Quoting:")[0]
     out = []
     for product, provider in PRODUCTS.items():
-        lines = set(re.findall(r"^[ \t]*" + re.escape(product) + r"[ \t]{2,}(£[^\n]+)", table, re.M))
+        matches = list(re.finditer(r"^[ \t]*" + re.escape(product) + r"[ \t]{2,}(£[^\n]+)", table, re.M))
+        lines = {m[1] for m in matches}
         if len(lines) != 1:
             continue
         match = re.fullmatch(r"£([\d,]+\.\d{2})\s+Guaranteed\s+(No)\s+Monthly\s+£([\d,]+)\s+(To Age \d+|\d+ years?)\s+Level\s+" +
@@ -68,7 +76,7 @@ def extract(text, digest):
         if not match:
             continue
         price, rated, capital, term, *waiver, tpd = match.groups()
-        if tpd == "Own" and provider != "Legal & General":
+        if tpd == "Own" and (provider != "Legal & General" or not all(own_occupation(table, m) for m in matches)):
             continue
         offered = int(capital.replace(",", ""))
         duration = int(re.search(r"\d+", term)[0])
