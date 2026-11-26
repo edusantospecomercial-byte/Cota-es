@@ -14,6 +14,7 @@ const criticalAssets = [
   "data/supplemental-life-offers.csv",
   "data/fixed-term-life.csv",
   "data/comparison-product-declines.csv",
+  "data/exact-capital-product-variants.csv",
   "data/accelerated-comparisons.csv",
   "data/waiver-individual-offers.csv",
   "data/independent-ci-tpd.csv",

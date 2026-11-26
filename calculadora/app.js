@@ -15,6 +15,7 @@ let catalog = { models: {} },
   acceleratedOffers = [],
   maturityDeclines = [],
   productDeclines = [],
+  exactCapitalVariants = [],
   coreBreakdowns = new Map(),
   tpdOffers = [],
   fractureOffers = [],
@@ -72,6 +73,7 @@ async function init() {
     loadedAccelerated,
     loadedMaturityDeclines,
     loadedProductDeclines,
+    loadedCapitalVariants,
     loadedIndividualWaivers,
     avivaLife,
     loadedLgTerms,
@@ -144,6 +146,8 @@ async function init() {
       .catch(() => []),
     fetch("./data/comparison-product-declines.csv", { cache: "no-store" })
       .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
+    fetch("./data/exact-capital-product-variants.csv", { cache: "no-store" })
+      .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
     fetch("./data/waiver-individual-offers.csv", { cache: "no-store" })
       .then(response => response.ok ? response.text() : "")
       .then(parsePriorityCsv)
@@ -190,6 +194,7 @@ async function init() {
   lgFixedLife = historicalPolicies.filter(row => row.provider === "Legal & General" && row.to_age === "" &&
     row.product === "Life" && row.critical_illness_component === "0" &&
     ["None", "Waiver of Premium"].includes(row.optional_features));
+  exactCapitalVariants = loadedCapitalVariants;
   supplementalLifeRows = loadedSupplementalLife;
   fixedTermLifeRows = loadedFixedTermLife;
   showComparisonInventory(comparisonIndex, [loadedReports, verifiedArchive, loadedWaiverRows,
@@ -334,6 +339,16 @@ function showComparisonInventory(index, tables) {
     " preços em pedidos até os 65 anos, " + n(count.standard65) +
     " correspondem ao prazo e aos capitais pedidos para vida ou doenças graves independentes, com tarifa sem ajuste por profissão e sem adicionais. " +
     n(count.standardSmokers65) + " desses preços são para fumantes. Há ainda " + n(count.withoutPrice) + " respostas sem valor.";
+  if (exactCapitalVariants.length) {
+    const reports = new Map(index.map(row => [row.sha256, row.report_key]));
+    const variants = exactCapitalVariants.map(row => [reports.get(row.sha256), row.provider, row.product]);
+    if (variants.every(([key]) => key)) {
+      const products = new Set(variants.map(parts => parts.join("|")));
+      const sources = new Set(variants.map(([key]) => key));
+      $("comparisonInventoryScope").textContent += " Em " + n(sources.size) + " desses relatórios, há ainda " +
+        n(products.size) + " preços de outras versões do produto que ofereceram os capitais pedidos.";
+    }
+  }
   if (count.legal65Shorter) $("comparisonInventoryScope").textContent += " Em " + n(count.legal65Shorter) +
     " de " + n(count.legal65) + " preços da Legal & General para pedidos até os 65, o prazo oferecido em anos foi um ano menor que a diferença entre 65 e a idade informada.";
 }
@@ -1046,12 +1061,35 @@ function capturedReportFor(p, source = reportedRows) {
     return `${row.provider} · ${reason}`;
   });
   const exactTerms = quotes.filter(q => !q.differentCapital && (!q.occupationRated || q.occupationMatched) && q.tpd === "None" && q.term === `To Age ${p.toAge}`);
-  return { quotes, exact: true, reported: true, sourceDate: latest.source_date, modelId: latest.model_id,
+  return { quotes, exact: true, reported: true, sourceDate: latest.source_date, modelId: latest.model_id, sourceHash: latest.sha256,
     sameEndAge: exactTerms.length ? exactTerms : undefined, termPending: !exactTerms.length,
     partial: Boolean(missing.length), gap: missing.length ? {
       provider: missing.map(row => row.provider).join(", "), reason: reasons.join(". "), modelId: latest.model_id,
     } : null };
 }
+function exactCapitalVariant(p, metlife, report) {
+  if (!report.reported || !p.ci || p.waiver === "Yes") return null;
+  const variants = exactCapitalVariants.filter(row => row.sha256 === report.sourceHash && row.source_date === report.sourceDate &&
+    Number(row.age) === p.age && row.smoker === (p.smoker === "smoker" ? "Yes" : "No") &&
+    Number(row.life_cover) === p.life && Number(row.independent_ci_cover) === p.ci && Number(row.to_age) === p.toAge &&
+    row.quoted_term === "To Age " + p.toAge && row.quoted_tpd === "None" &&
+    (row.occupation_rated === "No" || occupationalBasis(p.occupation, {...row, model_id: report.modelId}).occupationMatched) &&
+    report.quotes.some(q => q.provider === row.provider && q.product === row.standard_product && q.differentCapital &&
+      q.premium === Number(row.standard_monthly) && q.quotedLife === Number(row.standard_life_cover) && q.quotedCi === Number(row.standard_ci_cover)));
+  if (!variants.length) return null;
+  variants.sort((a,b) => Number(a.monthly_premium) - Number(b.monthly_premium));
+  const prices = variants.map(row => {
+    const premium = Number(row.monthly_premium);
+    let price = row.product + " por " + gbp(premium) + "/mês";
+    if (row.occupation_rated === "Yes") price += " para a profissão e o vínculo informados";
+    if (metlife.c && !metlife.unavailable) price += " (" + gbp(monthlyTotal(premium, metlife.total)) + "/mês com a MetLife selecionada)";
+    return price;
+  });
+  const cover = (p.life ? gbp(p.life) + " de vida e " : "") + gbp(p.ci) + " de diagnóstico independente até os " + p.toAge + " anos";
+  return {minimum: Number(variants[0].monthly_premium), text: "No comparativo de " + report.sourceDate + " (ref. " + report.modelId +
+    "), os produtos abaixo também ofereceram " + cover + ". " + prices.join(". ") + "."};
+}
+
 // The early index stores the requested CI amount but does not identify how it pays.
 function historicalCiPrices(p) {
   if (!p.life || !p.ci || p.waiver === "Yes") return "";
@@ -1518,6 +1556,7 @@ function makeSummary(p, r) {
   if (r.lgTermNote) lines.push(r.lgTermNote);
   if (r.supplementalLifeNote) lines.push(r.supplementalLifeNote);
   if (r.partialCiNote) lines.push(r.partialCiNote);
+  if (r.capitalVariantNote) lines.push(r.capitalVariantNote);
   if (r.alternativePackage) lines.push(r.alternativePackage);
   if (r.separatePolicyNote) lines.push(r.separatePolicyNote);
   if (r.affordableNote) lines.push(r.affordableNote);
@@ -1851,6 +1890,10 @@ function render(p) {
     priorityDetail += `<dt>Prêmio-base documentado</dt><dd>${escapeHtml(r.illustrationNote)}</dd>`;
   if (r.ageNote) priorityDetail += `<dt>Estimativa entre idades</dt><dd>${escapeHtml(r.ageNote)}</dd>`;
   if (r.supplementalLifeNote) priorityDetail += `<dt>Condições de vida no comparativo</dt><dd>${escapeHtml(r.supplementalLifeNote)}</dd>`;
+  const variant = exactCapitalVariant(p, m, priorityMatch);
+  r.capitalVariantNote = variant?.text || "";
+  const highlightVariant = variant && (!r.complete || displayedPence(variant.minimum) < displayedPence(r.main));
+  if (variant && !highlightVariant) priorityDetail += `<dt>Versões com os capitais pedidos</dt><dd>${escapeHtml(r.capitalVariantNote)}</dd>`;
   if (r.partialCiNote) priorityDetail += `<dt>Outras condições encontradas</dt><dd>${escapeHtml(r.partialCiNote)}</dd>`;
   if (r.lgTermNote) priorityDetail += `<dt>Prazo e preço documentados pela L&amp;G</dt><dd>${escapeHtml(r.lgTermNote)}</dd>`;
   if (r.componentNote) priorityDetail += `<dt>Composição da apólice histórica</dt><dd>${escapeHtml(r.componentNote)}</dd>`;
@@ -1923,7 +1966,7 @@ function render(p) {
         r.affordableNote += " O modelo geral estimou um preço menor para o capital maior. Confirme essa estimativa com a seguradora.";
     }
   }
-  $("alternativePackage").textContent = [r.alternativePackage, r.separatePolicyNote, r.affordableNote].filter(Boolean).join(" ");
+  $("alternativePackage").textContent = [highlightVariant && r.capitalVariantNote, r.alternativePackage, r.separatePolicyNote, r.affordableNote].filter(Boolean).join(" ");
   $("alternativePackage").hidden = !$("alternativePackage").textContent;
   $("metlifeResult").textContent = m.unavailable
     ? "MultiProtect indisponível para nova contratação após 65 anos"

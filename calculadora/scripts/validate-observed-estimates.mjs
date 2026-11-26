@@ -307,6 +307,49 @@ for (const change of [{smoker:"No"},{age:"38"},{to_age:"70"},{life_cover:"21000"
   assert.equal(firstEventNote(p37,addOn,[{...offer37,...change}]),"");
 assert.equal(firstEventNote(p37,{...addOn,unavailable:true},[offer37]),"");
 assert.ok(!firstEventNote(p37,{c:0,total:0},[offer37]).includes("MetLife"));
+const capitalVariants = run("exactCapitalVariants");
+const standardByReport = new Map(tables[0].concat(tables[1]).map(row => [row.sha256 + "|" + row.provider, row]));
+const exactProductKeys = new Set();
+for (const row of capitalVariants) {
+  const base = standardByReport.get(row.sha256 + "|" + row.provider);
+  assert.ok(base && base.source_date === row.source_date && base.product === row.standard_product);
+  for (const key of ["age","smoker","to_age","life_cover"]) assert.equal(row[key],base[key]);
+  assert.equal(row.independent_ci_cover,base.critical_illness_cover);
+  assert.deepEqual([row.standard_life_cover,row.standard_ci_cover,row.standard_monthly],
+    [base.quoted_life_cover,base.quoted_critical_illness_cover,base.monthly_premium]);
+  assert.ok(row.standard_life_cover !== row.life_cover || row.standard_ci_cover !== row.independent_ci_cover);
+  assert.equal(row.quoted_tpd,"None"); assert.equal(row.quoted_term,"To Age " + row.to_age);
+  assert.ok(row.product !== base.product && /^\d+\.\d{2}$/.test(row.monthly_premium) && +row.monthly_premium > 0);
+  exactProductKeys.add([reportKeys.get(row.sha256),row.provider,row.product].join("|"));
+}
+assert.ok(exactProductKeys.size >= 29);
+assert.equal(exactProductKeys.size,capitalVariants.length);
+assert.ok(node("comparisonInventoryScope").textContent.includes(exactProductKeys.size + " preços de outras versões"));
+node("metlifeChild").checked = true;
+const variant31 = {age:31,term:34,smoker:"non_smoker",occupation:"Stock manager",waiver:"No"};
+const familyVariant = calculate(65,150000,10000,variant31);
+assert.equal(familyVariant.main,12.92);
+assert.equal(node("totalPrice").textContent,"£27.92/mês");
+for (const clue of ["35041290","Aviva Multi-Product Upgraded CI/No Child Upgrade por £16.71/mês","£31.71/mês com a MetLife"]) {
+  assert.ok(familyVariant.capitalVariantNote.includes(clue) && familyVariant.text.includes(clue));
+  assert.ok(node("details").innerHTML.includes(clue));
+}
+node("metlifeChild").checked = false;
+const coreCI = calculate(65,0,10000,variant31);
+assert.ok(coreCI.capitalVariantNote.includes("Aviva Critical Illness+ Upgraded/No Child Upgrade por £5.99/mês"));
+assert.ok(coreCI.capitalVariantNote.includes("£18.99/mês") && !coreCI.capitalVariantNote.includes("Legal & General"));
+assert.ok(node("alternativePackage").textContent.includes(coreCI.capitalVariantNote));
+const matchedJob = calculate(65,0,10000,{...variant31,occupation:"Housekeeper employed"});
+assert.ok(matchedJob.capitalVariantNote.includes("Legal & General CI Extra por £6.40/mês para a profissão e o vínculo informados"));
+const changedTerm = calculate(70,150000,10000,{...variant31,term:39});
+assert.equal(changedTerm.capitalVariantNote,"");
+for (const different of [{age:32,term:33},{smoker:"smoker"},{waiver:"Yes"},{ci:10001},{life:149999}])
+  assert.equal(calculate(65,150000,10000,{...variant31,...different}).capitalVariantNote,"");
+const exactVariants = run("exactCapitalVariant");
+const variantReport = run("capturedReportFor")({...variant31,life:150000,ci:10000,toAge:65});
+for (const change of [{sourceHash:"wrong"},{sourceDate:"2021-10-22"},{reported:false},
+  {quotes:variantReport.quotes.map(q=>({...q,quotedCi:1}))}])
+  assert.equal(exactVariants({...variant31,life:150000,ci:10000,toAge:65},addOn,{...variantReport,...change}),null);
 const fixedLife = run("fixedTermLifeRows");
 assert.ok(fixedLife.length >= 6);
 const historical64 = calculate(85,20000,0,{age:64,term:21});
