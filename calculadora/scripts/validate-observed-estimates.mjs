@@ -356,6 +356,56 @@ for (const change of [{term:"33 years"},{tpd:"Own"},{occupationRated:true}]) {
   const changed = {...variantReport,quotes:variantReport.quotes.map(q=>({...q,...change}))};
   assert.equal(exactVariants({...variant31,life:150000,ci:10000,toAge:65},addOn,changed),null);
 }
+const checkedVariants = run("checkedVariantRanges");
+const verifyVariantRanges = run("checkedCiVariantRanges");
+const guessVariant = run("estimatedCiVariantNote");
+const certificates = run("parsePriorityCsv")(readFileSync(new URL("../data/independent-ci-variant-capital-checks.csv", import.meta.url),"utf8"));
+const checkedSources = tables[0].concat(tables[1]);
+assert.equal(checkedVariants.length,certificates.length);
+assert.ok(checkedVariants.length >= 8 && checkedVariants.every(r => r.count >= 2 && r.start < r.end && r.worst <= 100));
+const certificate = certificates[0];
+const verifyFirst = (rows, proof=certificate, idx=pdfIndex, original=checkedSources) =>
+  verifyVariantRanges(rows,[proof],idx,original);
+assert.equal(verifyFirst(capitalVariants).length,1);
+for (const hash of [certificate.lower_sha256,certificate.upper_sha256,certificate.first_check_sha256,certificate.last_check_sha256])
+  assert.equal(verifyFirst(capitalVariants.filter(row=>row.sha256!==hash)).length,0);
+assert.equal(verifyFirst(capitalVariants,{...certificate,last_check_sha256:certificate.first_check_sha256}).length,0);
+const confirmHash=certificate.first_check_sha256;
+assert.equal(verifyFirst(capitalVariants,certificate,pdfIndex.map(r=>r.sha256===confirmHash?
+  {...r,report_key:reportKeys.get(certificate.lower_sha256)}:r)).length,0);
+for (const change of [{monthly_premium:"999.00"},{smoker:"Yes"},{quoted_tpd:"Own"},{quoted_term:"14 years"},
+  {occupation_rated:"Yes"},{independent_ci_cover:"1"},{age:"49"},{source_date:"2026-01-01"}])
+  assert.equal(verifyFirst(capitalVariants.map(r=>r.sha256===confirmHash?{...r,...change}:r)).length,0);
+assert.equal(verifyFirst(capitalVariants,certificate,pdfIndex,checkedSources.filter(r=>r.sha256!==confirmHash)).length,0);
+const originalCheck=capitalVariants.find(r=>r.product===certificate.product&&r.sha256===confirmHash);
+const originalBase=checkedSources.find(r=>r.provider===certificate.provider&&r.sha256===confirmHash);
+const lateRow={...originalCheck,sha256:"late-contradiction",source_date:"2026-11-27",monthly_premium:"99.00"};
+const lateIndex=pdfIndex.concat({sha256:lateRow.sha256,report_key:"new-original-reference"});
+const lateBase={...originalBase,sha256:lateRow.sha256,source_date:lateRow.source_date};
+assert.equal(verifyFirst(capitalVariants.concat(lateRow),certificate,lateIndex,checkedSources.concat(lateBase)).length,0);
+const fixedTestDay=Date.parse("2026-11-26T12:00:00Z");
+const testVariantProfile={...variant31,life:80000,ci:15000,toAge:65,monthlyBudget:28};
+const preview=(p,m=addOn,asOf=fixedTestDay)=>guessVariant(p,m,checkedVariants,asOf);
+const preview31=preview(testVariantProfile);
+for(const note of ["Zurich Life & CI Enhanced Plus por cerca de £14.25/mês","£27.25/mês com a MetLife","£27.39/mês com a MetLife","Nos 2 comparativos posteriores","£50,000.00 e £100,000.00 de vida"])
+  assert.ok(preview31.includes(note),note);
+assert.ok(preview({...testVariantProfile,monthlyBudget:27.25}).includes("proximidade do teto"));
+assert.ok(!preview31.includes("proximidade do teto"));
+assert.ok(preview(testVariantProfile,{c:1,total:15}).includes("£29.25/mês com a MetLife"));
+assert.ok(!preview(testVariantProfile,{c:0,total:0}).includes("com a MetLife"));
+assert.equal(preview(testVariantProfile,{c:1,total:13,unavailable:true}),"");
+for(const change of [{age:32},{smoker:"smoker"},{smoker:"unknown"},{toAge:70},{life:75000},{life:90000},{life:95000},{life:0},{ci:0},{ci:10000},{waiver:"Yes"}])
+  assert.equal(preview({...testVariantProfile,...change}),"");
+assert.equal(preview(testVariantProfile,addOn,Date.parse("2026-11-24")),"");
+assert.equal(preview(testVariantProfile,addOn,Date.parse("2027-08-26")),"");
+const preview50=preview({...testVariantProfile,age:50,life:30000,ci:10000});
+for(const price of ["£21.04/mês","£20.88/mês","£21.06/mês","£34.04/mês com a MetLife"]) assert.ok(preview50.includes(price),price);
+const previousClock=run("Date.now");
+run("Date.now=()=>Date.parse('2026-11-26T12:00:00Z')");
+const renderedVariant=calculate(65,80000,15000,testVariantProfile);
+assert.equal(renderedVariant.estimatedVariantNote,preview31);
+assert.ok(renderedVariant.text.includes(preview31)&&node("details").innerHTML.includes("Versões com preço estimado"));
+ctx.clockAfterVariant=previousClock;run("Date.now=clockAfterVariant");
 const firstEventVersions = run("firstEventVariants");
 const versionsForOffer = run("matchedFirstEventVariants");
 assert.equal(firstEventVersions.length,new Set(firstEventVersions.map(v => [reportKeys.get(v.sha256),v.provider,v.product].join("|"))).size);

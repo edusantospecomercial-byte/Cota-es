@@ -16,6 +16,7 @@ let catalog = { models: {} },
   maturityDeclines = [],
   productDeclines = [],
   exactCapitalVariants = [],
+  checkedVariantRanges = [],
   firstEventVariants = [],
   fixedTermFirstEventVariants = [],
   coreBreakdowns = new Map(),
@@ -77,6 +78,7 @@ async function init() {
     loadedProductDeclines,
     loadedCapitalVariants,
     loadedStandardCapitalVariants,
+    variantChecks,
     loadedSmokerFirstEventVariants,
     loadedNonSmokerFirstEventVariants,
     loadedFixedTermFirstEventVariants,
@@ -156,6 +158,8 @@ async function init() {
       .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
     fetch("./data/independent-ci-product-variants.csv", { cache: "no-store" })
       .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
+    fetch("./data/independent-ci-variant-capital-checks.csv", { cache: "no-store" })
+      .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
     fetch("./data/smoker-first-event-product-variants.csv", { cache: "no-store" })
       .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
     fetch("./data/non-smoker-first-event-product-variants.csv", { cache: "no-store" })
@@ -209,6 +213,8 @@ async function init() {
     row.product === "Life" && row.critical_illness_component === "0" &&
     ["None", "Waiver of Premium"].includes(row.optional_features));
   exactCapitalVariants = loadedCapitalVariants.concat(loadedStandardCapitalVariants);
+  checkedVariantRanges = loadedCapitalVariants.length && loadedStandardCapitalVariants.length && loadedReports.length && verifiedArchive.length
+    ? checkedCiVariantRanges(exactCapitalVariants, variantChecks, comparisonIndex, loadedReports.concat(verifiedArchive)) : [];
   firstEventVariants = loadedSmokerFirstEventVariants.concat(loadedNonSmokerFirstEventVariants);
   fixedTermFirstEventVariants = loadedFixedTermFirstEventVariants;
   supplementalLifeRows = loadedSupplementalLife;
@@ -1121,6 +1127,96 @@ function capturedReportFor(p, source = reportedRows) {
       provider: missing.map(row => row.provider).join(", "), reason: reasons.join(". "), modelId: latest.model_id,
     } : null };
 }
+// Interpolate in pennies, with a single rounding step at the output.
+function variantPenceAt(range, capital) {
+  const {axis, lower, upper} = range;
+  const lo = Number(lower[axis]), hi = Number(upper[axis]);
+  return Math.round(((hi - capital) * displayedPence(lower.monthly_premium) +
+    (capital - lo) * displayedPence(upper.monthly_premium)) / (hi - lo));
+}
+
+function checkedCiVariantRanges(rows, checks, index, standard) {
+  const references = new Map(index.map(r => [r.sha256, r.report_key]));
+  const sources = new Map(standard.map(r => [r.sha256 + "|" + r.provider, r]));
+  const eligible = rows.filter(r => {
+    const base = sources.get(r.sha256 + "|" + r.provider);
+    return base && Number.isFinite(Date.parse(r.source_date)) && base.available === "true" && base.source_date === r.source_date && base.product === r.standard_product &&
+      base.monthly_premium === r.standard_monthly && base.quoted_life_cover === r.standard_life_cover &&
+      base.quoted_critical_illness_cover === r.standard_ci_cover && base.age === r.age && base.smoker === r.smoker &&
+      base.to_age === r.to_age && base.life_cover === r.life_cover && base.critical_illness_cover === r.independent_ci_cover &&
+      base.occupation_rated === "No" && r.occupation_rated === "No" && (base.quoted_tpd || "None") === "None" &&
+      r.quoted_tpd === "None" && base.quoted_term === r.quoted_term && r.quoted_term === "To Age " + r.to_age &&
+      Number(r.life_cover) > 0 && Number(r.independent_ci_cover) > 0 && Number(r.monthly_premium) > 0 && references.get(r.sha256);
+  });
+  const ranges = [];
+  for (const check of checks) {
+    const axis = check.axis;
+    if (!["life_cover", "independent_ci_cover"].includes(axis)) continue;
+    const other = axis === "life_cover" ? "independent_ci_cover" : "life_cover";
+    const product = eligible.filter(r => r.provider === check.provider && r.product === check.product);
+    const hashes = [check.lower_sha256, check.upper_sha256, check.first_check_sha256, check.last_check_sha256];
+    if (new Set(hashes.map(hash => references.get(hash))).size !== 4) continue;
+    const basis = hashes.map(hash => product.find(r => r.sha256 === hash));
+    if (basis.some(r => !r)) continue;
+    const [lower, upper, first, last] = basis;
+    const sameTerms = r => r.age === lower.age && r.smoker === lower.smoker && r.to_age === lower.to_age && r[other] === lower[other];
+    const lo = Number(lower[axis]), hi = Number(upper[axis]), start = Number(first[axis]), end = Number(last[axis]);
+    const anchorDate = lower.source_date > upper.source_date ? lower.source_date : upper.source_date;
+    if (!basis.every(sameTerms) || !(lo < start && start < end && end < hi) ||
+        Number(lower.monthly_premium) > Number(upper.monthly_premium) ||
+        first.source_date <= anchorDate || last.source_date <= anchorDate) continue;
+    const range = {axis, other, lower, upper, start, end};
+    const nearby = product.filter(r => sameTerms(r) && Number(r[axis]) >= lo && Number(r[axis]) <= hi);
+    if ([lower, upper].some(anchor => nearby.some(r => r[axis] === anchor[axis] &&
+      r.source_date >= anchor.source_date && r.monthly_premium !== anchor.monthly_premium))) continue;
+    const checked = nearby.filter(r => r.source_date > anchorDate && Number(r[axis]) > lo && Number(r[axis]) < hi);
+    const error = r => Math.abs(variantPenceAt(range, Number(r[axis])) - displayedPence(r.monthly_premium));
+    if (checked.some(r => error(r) > 100 || error(r) * 20 > displayedPence(r.monthly_premium))) continue;
+    const dates = basis.concat(checked).map(r => r.source_date).sort();
+    ranges.push({...range, earliest: dates[0], latest: dates[dates.length - 1],
+      count: new Set(checked.map(r => references.get(r.sha256))).size, worst: Math.max(...checked.map(error))});
+  }
+  return ranges;
+}
+
+function estimatedCiVariantNote(p, m, ranges = checkedVariantRanges, asOf = Date.now()) {
+  if (!p.life || !p.ci || p.waiver === "Yes" || m.unavailable || !["non_smoker","smoker"].includes(p.smoker)) return "";
+  const tobacco = p.smoker === "smoker" ? "Yes" : "No";
+  const match = row => Number(row.age) === p.age && row.smoker === tobacco && Number(row.to_age) === p.toAge;
+  // An original response for this exact request, even one without a price, takes precedence.
+  if (reportedRows.concat(verifiedArchiveRows).some(row => match(row) &&
+    Number(row.life_cover) === p.life && Number(row.critical_illness_cover) === p.ci)) return "";
+  const results = [];
+  for (const range of ranges) {
+    const {lower, start, end} = range, lifeVaries = range.axis === "life_cover";
+    const capital = lifeVaries ? p.life : p.ci;
+    if (!match(lower) || Number(lower[range.other]) !== (lifeVaries ? p.ci : p.life) ||
+        capital <= start || capital >= end || Date.parse(range.latest) > asOf ||
+        asOf - Date.parse(range.earliest) > 180 * 86400000) continue;
+    const pence = variantPenceAt(range, capital), total = pence + displayedPence(m.total);
+    let text = lower.product + " por cerca de " + gbp(pence / 100) + "/mês";
+    if (m.c) text += " (" + gbp(total / 100) + "/mês com a MetLife)";
+    text += ". Nos " + range.count + " comparativos posteriores, a maior diferença foi " +
+      gbp(range.worst / 100) + "/mês. Última conferência em " + range.latest + ".";
+    if (p.monthlyBudget > 0 && Math.abs(total - displayedPence(p.monthlyBudget)) <= range.worst)
+      text += " A proximidade do teto de " + gbp(p.monthlyBudget) + " exige confirmação da mensalidade.";
+    results.push({price:pence, product:lower.product, text, range});
+  }
+  if (!results.length) return "";
+  // If a future release contains overlapping certificates, require one unambiguous result per named product.
+  const ranked = results.filter(r => !results.some(other => other.product === r.product && other.price !== r.price))
+    .sort((a,b) => a.price - b.price || b.range.latest.localeCompare(a.range.latest))
+    .filter((r, i, all) => all.findIndex(other => other.product === r.product) === i);
+  if (!ranked.length) return "";
+  const first = ranked[0].range;
+  const common = ranked.every(({range}) => range.axis === first.axis &&
+    range.lower[range.axis] === first.lower[first.axis] && range.upper[range.axis] === first.upper[first.axis]);
+  const basis = common ? " Foram usados preços entre " + gbp(Number(first.lower[first.axis])) + " e " +
+    gbp(Number(first.upper[first.axis])) + (first.axis === "life_cover" ? " de vida." : " de diagnóstico independente.") : "";
+  return "Estimativas por capital para " + gbp(p.life) + " de vida e " + gbp(p.ci) +
+    " de diagnóstico independente até os " + p.toAge + " anos." + basis + " " + ranked.map(v => v.text).join(" ");
+}
+
 function standardChangedCapital(row) {
   return row.standard_life_cover !== row.life_cover || row.standard_ci_cover !== row.independent_ci_cover;
 }
@@ -1615,6 +1711,7 @@ function makeSummary(p, r) {
   if (r.supplementalLifeNote) lines.push(r.supplementalLifeNote);
   if (r.partialCiNote) lines.push(r.partialCiNote);
   if (r.capitalVariantNote) lines.push(r.capitalVariantNote);
+  if (r.estimatedVariantNote) lines.push(r.estimatedVariantNote);
   if (r.alternativePackage) lines.push(r.alternativePackage);
   if (r.separatePolicyNote) lines.push(r.separatePolicyNote);
   if (r.affordableNote) lines.push(r.affordableNote);
@@ -1950,6 +2047,8 @@ function render(p) {
   if (r.supplementalLifeNote) priorityDetail += `<dt>Condições de vida no comparativo</dt><dd>${escapeHtml(r.supplementalLifeNote)}</dd>`;
   const variant = exactCapitalVariant(p, m, priorityMatch);
   r.capitalVariantNote = variant?.text || "";
+  r.estimatedVariantNote = estimatedCiVariantNote(p, m);
+  if (r.estimatedVariantNote) priorityDetail += `<dt>Versões com preço estimado</dt><dd>${escapeHtml(r.estimatedVariantNote)}</dd>`;
   const highlightVariant = variant && (!r.complete || displayedPence(variant.minimum) < displayedPence(r.main));
   if (variant && !highlightVariant) priorityDetail += `<dt>Versões com os capitais pedidos</dt><dd>${escapeHtml(r.capitalVariantNote)}</dd>`;
   if (r.partialCiNote) priorityDetail += `<dt>Outras condições encontradas</dt><dd>${escapeHtml(r.partialCiNote)}</dd>`;
