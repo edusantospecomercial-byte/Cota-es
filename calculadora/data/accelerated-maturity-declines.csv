@@ -1,0 +1,13 @@
+source_date,reference,age,smoker,to_age,life_cover,earlier_ci_cover,provider,product,maturity_reason,waiver_column,sha256
+2026-01-23,1075386495,61,No,80,10000,10000,Zurich,Zurich Life & CI,maturity_not_supported,No,0bdc4f0677d39c2d6adbaf520988aa30996aa92792a88844eccd76af4d9d827c
+2026-01-23,1075386495,61,No,80,10000,10000,Legal & General,Legal & General Life + CI (Standard),maximum_maturity_75,No,0bdc4f0677d39c2d6adbaf520988aa30996aa92792a88844eccd76af4d9d827c
+2026-01-23,1075386495,61,No,80,10000,10000,Aviva,Aviva Multi-Product with Core CI,maximum_maturity_76,No,0bdc4f0677d39c2d6adbaf520988aa30996aa92792a88844eccd76af4d9d827c
+2026-06-04,1079629367,65,No,80,25000,10000,Zurich,Zurich Life & CI,maturity_not_supported,No,41b195dd30eccca9bfcb5076b233ca74bac71e4e167d503794907d56d14cb14e
+2026-06-04,1079629367,65,No,80,25000,10000,Legal & General,Legal & General Life + CI (Standard),maximum_maturity_75,No,41b195dd30eccca9bfcb5076b233ca74bac71e4e167d503794907d56d14cb14e
+2026-06-04,1079629367,65,No,80,25000,10000,Aviva,Aviva Multi-Product with Core CI,maximum_maturity_76,No,41b195dd30eccca9bfcb5076b233ca74bac71e4e167d503794907d56d14cb14e
+2026-07-22,1081066433,41,No,80,50000,10000,Zurich,Zurich Life & CI,maturity_not_supported,Yes,a311aad307a665cc5edaaa2bfa7086dea81ca8cb07ab1d16d3d40a917dffbc4a
+2026-07-22,1081066433,41,No,80,50000,10000,Legal & General,Legal & General Life + CI (Standard),maximum_maturity_75,Yes,a311aad307a665cc5edaaa2bfa7086dea81ca8cb07ab1d16d3d40a917dffbc4a
+2026-07-22,1081066433,41,No,80,50000,10000,Aviva,Aviva Multi-Product with Core CI,maximum_maturity_76,Yes,a311aad307a665cc5edaaa2bfa7086dea81ca8cb07ab1d16d3d40a917dffbc4a
+2026-10-12,1083480226,60,No,80,0,20000,Zurich,Zurich Life & CI,maturity_not_supported,No,26cc6bef8bcd60a0f4b9c6382012435281c48b5e433770becb259fa163d572aa
+2026-10-12,1083480226,60,No,80,0,20000,Legal & General,Legal & General Life + CI (Standard),maximum_maturity_75,No,26cc6bef8bcd60a0f4b9c6382012435281c48b5e433770becb259fa163d572aa
+2026-10-12,1083480226,60,No,80,0,20000,Aviva,Aviva Life Insurance+ with Core CI,maximum_maturity_76,No,26cc6bef8bcd60a0f4b9c6382012435281c48b5e433770becb259fa163d572aa

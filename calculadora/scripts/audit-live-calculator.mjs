@@ -13,6 +13,7 @@ const criticalAssets = [
   "data/aviva-core-breakdowns.csv",
   "data/zurich-core-breakdowns.csv",
   "data/lg-core-breakdowns.csv",
+  "data/accelerated-maturity-declines.csv",
   "index.html",
   "style.css",
   "app.js",

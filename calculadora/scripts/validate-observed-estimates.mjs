@@ -329,7 +329,28 @@ for (const row of variantRows) {
     Number(row.monthly_premium) > 0);
   assert.ok(["Own", "Specified", "FATs", "None"].includes(row.tpd_basis));
 }
-calculate(70, 0, 10000, {age: 57, term: 13});
+const maturities = run("maturityDeclines");
+const maturityKeys = new Set();
+for (const row of maturities) {
+  assert.match(row.maturity_reason, /^(maximum_maturity_\d+|maturity_not_supported)$/);
+  assert.match(row.sha256, /^[0-9a-f]{64}$/);
+  assert.ok(!maturityKeys.has(row.reference + "|" + row.provider));
+  maturityKeys.add(row.reference + "|" + row.provider);
+}
+calculate(80, 50000, 10000, {age: 41, term: 39});
+assert.equal(node("acceleratedComparison").hidden, false);
+assert.ok(node("acceleratedSource").textContent.includes("1081066433"));
+assert.ok(node("acceleratedOffers").innerHTML.includes("até os 75 anos nesse relatório"));
+assert.ok(node("acceleratedOffers").innerHTML.includes("até os 76 anos nesse relatório"));
+assert.ok(node("acceleratedOffers").innerHTML.includes("idade de término estava fora do limite"));
+calculate(80, 51000, 10000, {age: 41, term: 39});
+assert.equal(node("acceleratedComparison").hidden, true);
+const ciWithTpdOnly = calculate(70, 0, 10000, {age: 57, term: 13, waiver: "Yes"});
+assert.ok(ciWithTpdOnly.alternativePackage.includes("Aviva · £10,000.00 de diagnóstico independente até os 70 anos por £16.54/mês"));
+assert.ok(ciWithTpdOnly.alternativePackage.includes("o pacote soma £29.54/mês"));
+assert.ok(ciWithTpdOnly.alternativePackage.includes("isenção até o fim do contrato precisa de confirmação"));
+assert.equal(node("alternativePackage").hidden, false);
+assert.ok(ciWithTpdOnly.text.includes(ciWithTpdOnly.alternativePackage));
 assert.equal(node("tpdComparison").hidden, false);
 assert.ok(node("tpdSource").textContent.includes("1081121809"));
 assert.match(node("tpdOffers").innerHTML, /Aviva<\/dt><dd><b>£16\.54\/mês<\/b>[^<]*diagnóstico independente £10,000\.00/);

@@ -8,6 +8,7 @@ const dataFiles = [
   "./data/aviva-core-breakdowns.csv",
   "./data/zurich-core-breakdowns.csv",
   "./data/lg-core-breakdowns.csv",
+  "./data/accelerated-maturity-declines.csv",
   "./data/models.json",
   "./data/comparisons-with-waiver.csv",
   "./data/solutionbuilder-observed-2026-11-24.csv",

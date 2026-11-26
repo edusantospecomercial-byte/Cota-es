@@ -16,6 +16,7 @@ FIELDS = ("source_date", "reference", "age", "smoker", "to_age", "life_cover",
           "occupation_rated", "waiver_to", "tpd_basis", "sha256")
 INDEPENDENT_FIELDS = tuple("independent_ci_cover" if field == "earlier_ci_cover" else field for field in FIELDS)
 INDEPENDENT_FIELDS = INDEPENDENT_FIELDS[:11] + ("quoted_independent_ci_cover",) + INDEPENDENT_FIELDS[11:]
+DECLINE_FIELDS = FIELDS[:9] + ("maturity_reason", "waiver_column", "sha256")
 PRODUCTS = {
     "Zurich": "Zurich Life & CI",
     "Legal & General": "Legal & General Life + CI (Standard)",
@@ -34,7 +35,20 @@ def offer_pattern(independent, single):
     return re.compile(prefix + life + ci + terms)
 
 
-def read_report(path, independent=False):
+def maturity_reason(rows):
+    if len(rows) != 1:
+        return None
+    reason = rows.pop().strip()
+    limit = re.fullmatch(r"(?:First/Second client age plus term exceeds the maximum maturity age of |"
+                         r"Age at expiry exceeds maximum allowed )(\d+)\.?", reason, re.I)
+    if limit:
+        return "maximum_maturity_" + limit[1]
+    if reason == "The age of the client(s) at policy termination is not supported.":
+        return "maturity_not_supported"
+    return None
+
+
+def read_report(path, independent=False, maturity_declines=False):
     text = subprocess.check_output(["pdftotext", "-layout", str(path), "-"], encoding="utf8")
     cover, _, remaining = text.partition("\f")
     if "critical illness cover (TPD: own occupation)" not in cover:
@@ -68,7 +82,7 @@ def read_report(path, independent=False):
         return []
     pattern = offer_pattern(independent, single)
     source = hashlib.sha256(path.read_bytes()).hexdigest()
-    rows = []
+    rows, declines = [], []
     for provider, product in PRODUCTS.items():
         if single:
             if independent and provider == "Zurich":
@@ -78,6 +92,11 @@ def read_report(path, independent=False):
         prefix = r"^[ \t]*" + re.escape(product) + r"[ \t]{2,}"
         lines = {s.strip() for s in re.findall(prefix + r"(£[^\n]+)", results, re.M)}
         if not lines and re.search(prefix + r"\S", unavailable, re.M):
+            if maturity_declines:
+                reason = maturity_reason(set(re.findall(prefix + r"(\S[^\n]*)", unavailable, re.M)))
+                if reason:
+                    declines.append((date.isoformat(), reference[1], age, "Yes" if person[1].lower() == "smoker" else "No",
+                                    end, life, ci, provider, product, reason, "Yes" if re.search(r"\bWaiver\b", header, re.I) else "No", source))
             continue
         if len(lines) != 1:
             return []
@@ -100,13 +119,17 @@ def read_report(path, independent=False):
         rows.append((date.isoformat(), reference[1], age, "Yes" if person[1].lower() == "smoker" else "No",
                      end, life, ci, provider, product, price, quoted_life, *returned_ci, term,
                      rated, waiver or "not_shown", tpd, source))
+    if maturity_declines:
+        return declines if len(declines) == len(PRODUCTS) and not rows else []
     return rows
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("roots", nargs="+", type=Path)
-    parser.add_argument("--independent-tpd", action="store_true", help="Extract the separate independent CI request, including the cover actually returned.")
+    selection = parser.add_mutually_exclusive_group()
+    selection.add_argument("--maturity-declines", action="store_true", help="Return reports with explicit maturity refusals from all three providers.")
+    selection.add_argument("--independent-tpd", action="store_true", help="Extract the separate independent CI request, including the cover actually returned.")
     args = parser.parse_args()
     files = subprocess.run(["rg", "--files", "--hidden", "--no-ignore", "-0", "-g", "!**/.git/**",
                             "-g", "!**/node_modules/**", "-g", "Comparison Report - without commission.pdf",
@@ -120,7 +143,7 @@ def main():
         if digest in seen:
             continue
         seen.add(digest)
-        rows = read_report(path, args.independent_tpd)
+        rows = read_report(path, args.independent_tpd, args.maturity_declines)
         if not rows:
             continue
         ref = rows[0][1]
@@ -129,7 +152,7 @@ def main():
         if ref not in reports or digest < reports[ref][0][-1]:
             reports[ref] = rows
     writer = csv.writer(sys.stdout, lineterminator="\n")
-    writer.writerow(INDEPENDENT_FIELDS if args.independent_tpd else FIELDS)
+    writer.writerow(DECLINE_FIELDS if args.maturity_declines else INDEPENDENT_FIELDS if args.independent_tpd else FIELDS)
     for rows in sorted(reports.values(), key=lambda rows: (rows[0][0], rows[0][1])):
         writer.writerows(rows)
     print(f"{len(seen)} distinct PDFs scanned, {len(reports)} qualifying reports", file=sys.stderr)

@@ -10,6 +10,7 @@ let catalog = { models: {} },
   illustratedLifeRows = [],
   historicalAgeTests = new Map(),
   acceleratedOffers = [],
+  maturityDeclines = [],
   coreBreakdowns = new Map(),
   tpdOffers = [],
   lgIllustratedTerms = [],
@@ -51,6 +52,7 @@ async function init() {
     capitalHoldout,
     illustratedLife,
     loadedAccelerated,
+    loadedMaturityDeclines,
     loadedIndividualWaivers,
     avivaLife,
     loadedLgTerms,
@@ -110,6 +112,10 @@ async function init() {
       .then(response => response.ok ? response.text() : "")
       .then(parsePriorityCsv)
       .catch(() => []),
+    fetch("./data/accelerated-maturity-declines.csv", { cache: "no-store" })
+      .then(response => response.ok ? response.text() : "")
+      .then(parsePriorityCsv)
+      .catch(() => []),
     fetch("./data/waiver-individual-offers.csv", { cache: "no-store" })
       .then(response => response.ok ? response.text() : "")
       .then(parsePriorityCsv)
@@ -148,6 +154,7 @@ async function init() {
   lgIllustratedTerms = loadedLgTerms;
   individualWaivers = loadedIndividualWaivers;
   acceleratedOffers = loadedAccelerated;
+  maturityDeclines = loadedMaturityDeclines;
   illustratedLifeRows = illustratedLife.map(row => ({ ...row, provider: "Zurich" })).concat(
     avivaLife.map(row => ({ ...row, provider: "Aviva", policy_count: "1", discount_monthly: "0.00" })));
   historicalAgeTests = globalThis.validateIllustratedAges(illustratedLifeRows);
@@ -335,7 +342,26 @@ function renderCiComparison(p, independentTpd = false) {
   const matching = offers.filter(row => row.smoker === smoker &&
     Number(row.age) === p.age && Number(row.to_age) === p.toAge &&
     Number(row.life_cover) === p.life && Number(row[requestedCi]) === p.ci);
-  if (!matching.length) return;
+  if (!matching.length) {
+    if (independentTpd) return;
+    const refusals = maturityDeclines.filter(row => row.smoker === smoker && Number(row.age) === p.age &&
+      Number(row.to_age) === p.toAge && Number(row.life_cover) === p.life && Number(row.earlier_ci_cover) === p.ci);
+    if (!refusals.length) return;
+    const latest = refusals.reduce((a, b) => a.source_date > b.source_date ||
+      (a.source_date === b.source_date && Number(a.reference) > Number(b.reference)) ? a : b);
+    const report = refusals.filter(row => row.reference === latest.reference);
+    if (report.length !== 3 || new Set(report.map(row => row.provider)).size !== 3) return;
+    $(prefix + "Source").textContent = "Em " + latest.source_date + ", as três seguradoras responderam ao pedido de vida ou diagnóstico antecipado até os " +
+      p.toAge + " anos. Referência " + latest.reference + ".";
+    $(prefix + "Offers").innerHTML = report.map(row => {
+      const maximum = /^maximum_maturity_(\d+)$/.exec(row.maturity_reason);
+      const reason = maximum ? "O produto admitia término até os " + maximum[1] + " anos nesse relatório." :
+        "A seguradora informou que a idade de término estava fora do limite do produto.";
+      return "<dt>" + escapeHtml(row.provider) + "</dt><dd>Sem preço. " + reason + "</dd>";
+    }).join("");
+    panel.hidden = false;
+    return;
+  }
   const referencesWithWaiverColumn = new Set(matching.filter(row => row.waiver_to !== "not_shown").map(row => row.reference));
   const requestedWaiver = p.waiver === "Yes";
   const comparable = matching.filter(row => referencesWithWaiverColumn.has(row.reference) === requestedWaiver);
@@ -368,6 +394,7 @@ function renderCiComparison(p, independentTpd = false) {
       "O relatório não informa isenção nas ofertas.");
   $(prefix + "Offers").innerHTML = entries.join("");
   panel.hidden = false;
+  return prices;
 }
 
 function illustratedLifeFor(p, provider) {
@@ -877,7 +904,7 @@ function makeSummary(p, r) {
 }
 function render(p) {
   renderCiComparison(p);
-  renderCiComparison(p, true);
+  const tpdPrices = renderCiComparison(p, true) || [];
   $("coverError").textContent = "";
   if (p.toAge <= p.age)
     throw Error(`A cobertura até ${p.toAge} anos exige idade atual menor.`);
@@ -1160,6 +1187,19 @@ function render(p) {
       const total = gbp(alternative.premium + m.total);
       r.alternativePackage = `Alternativa com capital ajustado · ${alternative.provider} oferece ${cover} até os ${p.toAge} anos. ` +
         (m.c ? `${gbp(alternative.premium)} + ${gbp(m.total)} de MetLife = ${total}/mês.` : `Mensalidade de ${total}.`);
+    }
+  }
+  if (!r.complete && !r.alternativePackage && !m.unavailable && !p.life && p.ci) {
+    const alternative = tpdPrices.find(row => Number(row.quoted_independent_ci_cover) === p.ci &&
+      row.quoted_term === `To Age ${p.toAge}` && row.occupation_rated === "No" && row.tpd_basis !== "None");
+    if (alternative) {
+      const premium = Number(alternative.monthly_premium);
+      r.alternativePackage = "Alternativa documentada com TPD · " + alternative.provider + " · " +
+        gbp(p.ci) + " de diagnóstico independente até os " + p.toAge + " anos por " + gbp(premium) + "/mês.";
+      if (m.c) r.alternativePackage += " Com a MetLife selecionada (" + gbp(m.total) + "), o pacote soma " + gbp(premium + m.total) + "/mês.";
+      if (p.waiver === "Yes" && alternative.waiver_to !== "Expiry" && !(Number(alternative.waiver_to) >= p.toAge))
+        r.alternativePackage += " A isenção até o fim do contrato precisa de confirmação.";
+      r.alternativePackage += " Comparativo de " + alternative.source_date + ".";
     }
   }
   $("alternativePackage").textContent = r.alternativePackage || "";
