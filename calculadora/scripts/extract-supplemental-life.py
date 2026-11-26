@@ -24,7 +24,7 @@ BASE = ("solutionbuilder-observed-2026-11-24", "verified-archive-terms", "compar
         "independent-ci-tpd", "fracture-comparisons")
 PRODUCTS = {"Zurich Life": "Zurich", "Aviva Life Insurance+": "Aviva", "Legal & General Life": "Legal & General"}
 FIELDS = ("source_date", "reference", "sha256", "provider", "product", "age", "smoker", "to_age",
-          "life_cover", "quoted_life_cover", "monthly_premium", "quoted_term", "waiver_to", "occupation_rated")
+          "life_cover", "quoted_life_cover", "monthly_premium", "quoted_term", "waiver_to", "occupation_rated", "quoted_tpd")
 
 
 def recorded_keys():
@@ -64,10 +64,12 @@ def extract(text, digest):
         if len(lines) != 1:
             continue
         match = re.fullmatch(r"£([\d,]+\.\d{2})\s+Guaranteed\s+(No)\s+Monthly\s+£([\d,]+)\s+(To Age \d+|\d+ years?)\s+Level\s+" +
-                             (r"(Expiry|\d+|No data)\s+" if waiver_column else "") + r"None\s+No", lines.pop().strip())
+                             (r"(Expiry|\d+|No data)\s+" if waiver_column else "") + r"(None|Own)\s+No", lines.pop().strip())
         if not match:
             continue
-        price, rated, capital, term, *waiver = match.groups()
+        price, rated, capital, term, *waiver, tpd = match.groups()
+        if tpd == "Own" and provider != "Legal & General":
+            continue
         offered = int(capital.replace(",", ""))
         duration = int(re.search(r"\d+", term)[0])
         if not (float(price.replace(",", "")) > 0 and offered > 0 and requested > 0 and
@@ -76,22 +78,27 @@ def extract(text, digest):
         out.append(dict(source_date=date.isoformat(), reference=ref[1], sha256=digest, provider=provider, product=product,
                         age=age, smoker="Yes" if insured[1].lower()=="smoker" else "No", to_age=end, life_cover=requested,
                         quoted_life_cover=offered, monthly_premium=price.replace(",",""), quoted_term=term,
-                        waiver_to=waiver[0] if waiver else "not_requested", occupation_rated=rated))
+                        waiver_to=waiver[0] if waiver else "not_requested", occupation_rated=rated, quoted_tpd=tpd))
     return out
 
 
-def confirm_zurich_benefits(offers, roots):
-    """Resolve an unspecified waiver only with the illustration bundled with the same comparison."""
+def illustration_paths(roots):
     if not roots:
-        return {}
-    reader = runpy.run_path(str(Path(__file__).with_name("extract-zurich-life-components.py")))
-    wanted = {r["sha256"]: r for r in offers if r["provider"] == "Zurich" and r["waiver_to"] == "No data"}
+        return []
     documents = subprocess.run(["rg", "--files", "--hidden", "--no-ignore", "-0", "-g", "!**/.git/**",
                                 "-g", "!**/node_modules/**", "--iglob", "Illustration.pdf",
                                 "--iglob", "*supporting*documents*.zip", *roots], capture_output=True)
     if documents.returncode not in (0, 1):
         raise SystemExit(documents.stderr.decode())
-    paths = sorted(Path(n) for n in documents.stdout.decode().split("\0") if n)
+    return sorted(Path(n) for n in documents.stdout.decode().split("\0") if n)
+
+
+def confirm_zurich_benefits(offers, paths):
+    """Resolve an unspecified waiver only with the illustration bundled with the same comparison."""
+    if not paths:
+        return {}
+    reader = runpy.run_path(str(Path(__file__).with_name("extract-zurich-life-components.py")))
+    wanted = {r["sha256"]: r for r in offers if r["provider"] == "Zurich" and r["waiver_to"] == "No data"}
     confirmed, seen = {}, set()
     for illustration, comparison in pairs(paths, "Zurich Life"):
         source = sha256(comparison).hexdigest()
@@ -121,6 +128,34 @@ def confirm_zurich_benefits(offers, roots):
     return confirmed
 
 
+def confirm_lg_waiver(offers, paths):
+    """Confirm the actual waiver charge separately from the comparison's TPD column."""
+    reader = runpy.run_path(str(Path(__file__).with_name("extract-lg-life-components.py")))["read_pair"]
+    wanted = {r["sha256"]: r for r in offers if r["provider"] == "Legal & General" and r["quoted_tpd"] == "Own"}
+    checked, results = set(), {}
+    for illustration, comparison in pairs(paths, "Legal & General Life"):
+        source = sha256(comparison).hexdigest()
+        if source not in wanted:
+            continue
+        proof = sha256(illustration).hexdigest()
+        if (source, proof) in checked:
+            continue
+        checked.add((source, proof))
+        matched = reader(illustration, comparison, tpd_column="Own")
+        if not matched:
+            continue
+        if str(matched[7]) != wanted[source]["monthly_premium"] or matched[6] <= 0:
+            continue
+        details = {"illustrated_waiver_monthly": str(matched[6]), "waiver_illustration_sha256": proof}
+        if source in results:
+            if results[source]["illustrated_waiver_monthly"] != details["illustrated_waiver_monthly"]:
+                raise ValueError("Different waiver prices for the same comparison")
+            if proof >= results[source]["waiver_illustration_sha256"]:
+                continue
+        results[source] = details
+    return results
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("paths", nargs="*", type=Path)
@@ -147,12 +182,15 @@ def main():
                     raise ValueError("Conflicting official offers for reference " + r["reference"])
                 if key not in kept or digest < kept[key]["sha256"]:
                     kept[key] = r
-    confirmed = confirm_zurich_benefits(kept.values(), args.illustration_root)
-    public_fields = [f for f in FIELDS if f != "reference"] + ["no_riders_illustration_sha256"]
+    paths = illustration_paths(args.illustration_root)
+    confirmed = confirm_zurich_benefits(kept.values(), paths)
+    lg_charges = confirm_lg_waiver(kept.values(), paths)
+    public_fields = [f for f in FIELDS if f != "reference"] + ["no_riders_illustration_sha256", "illustrated_waiver_monthly", "waiver_illustration_sha256"]
     writer = csv.DictWriter(sys.stdout, fieldnames=public_fields, extrasaction="ignore", lineterminator="\n")
     writer.writeheader()
     for row in sorted(kept.values(), key=lambda r: (r["source_date"], r["reference"], r["provider"])):
-        writer.writerow({**row, "no_riders_illustration_sha256": confirmed.get(row["sha256"], "") if row["provider"] == "Zurich" else ""})
+        charges = lg_charges.get(row["sha256"], {}) if row["provider"] == "Legal & General" else {}
+        writer.writerow({**row, **charges, "no_riders_illustration_sha256": confirmed.get(row["sha256"], "") if row["provider"] == "Zurich" else ""})
 
 
 if __name__ == "__main__":

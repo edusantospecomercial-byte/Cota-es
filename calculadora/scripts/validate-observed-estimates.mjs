@@ -275,6 +275,23 @@ for (const row of run("supplementalLifeRows")) {
   assert.equal(row.monthly_premium,evidence.policy_monthly);
 }
 assert.ok(calculate(65,30000,0,{age:37,term:28,smoker:"smoker",waiver:"No"}).supplementalLifeNote.includes("£7.17/mês em 2026-08-11 (isenção de mensalidade sem confirmação)"));
+const subjectToTerms = calculate(65,30000,0,{age:37,term:28,smoker:"smoker",waiver:"No"});
+for (const clue of ["Legal & General ofereceu £30,000.00 por 27 anos de prazo por £6.57/mês",
+  "própria profissão na coluna de incapacidade permanente (TPD)", "£0.07/mês de isenção dentro do prêmio", "£19.57/mês"]) {
+  assert.ok(subjectToTerms.supplementalLifeNote.includes(clue),clue);
+  assert.ok(subjectToTerms.text.includes(clue),clue);
+}
+assert.ok(!subjectToTerms.providerQuotes?.some(q => q.provider === "Legal & General" && q.premium === 6.57));
+const ownRows = run("supplementalLifeRows").filter(row => row.quoted_tpd === "Own");
+assert.ok(ownRows.length && ownRows.some(r => r.smoker === "Yes") && ownRows.some(r => r.waiver_illustration_sha256));
+for (const row of ownRows) {
+  assert.equal(row.provider,"Legal & General");
+  assert.equal(row.waiver_to,"Expiry");
+  assert.equal(row.no_riders_illustration_sha256,"");
+  if (!row.waiver_illustration_sha256) { assert.equal(row.illustrated_waiver_monthly,""); continue; }
+  assert.match(row.waiver_illustration_sha256,/^[a-f0-9]{64}$/);
+  assert.ok(+row.illustrated_waiver_monthly > 0 && +row.illustrated_waiver_monthly < +row.monthly_premium);
+}
 assert.ok(!calculate(65,30000,10000,{age:37,term:28,smoker:"smoker"}).supplementalLifeNote);
 assert.ok(!calculate(65,30000,0,{age:37,term:28,smoker:"non_smoker"}).supplementalLifeNote);
 assert.ok(calculate(65,100000,0,{age:60,term:5,waiver:"No"}).supplementalLifeNote.includes("£26.48/mês em 2026-05-14 (a illustration confirma vida sem adicionais)"));

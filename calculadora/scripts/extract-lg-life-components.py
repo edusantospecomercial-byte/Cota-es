@@ -23,7 +23,7 @@ def number(value):
     return Decimal(value.replace(",", ""))
 
 
-def read_pair(illustration, comparison):
+def read_pair(illustration, comparison, tpd_column="None"):
     first = layout(illustration).partition("\f")[0]
     report, _, results = layout(comparison).partition("\f")
     if "Life Insurance Quotation" not in first or "Non Underwritten Results" not in results:
@@ -52,7 +52,8 @@ def read_pair(illustration, comparison):
     if len(offers) != 1:
         return None
     offer = re.fullmatch(MONEY + r"\s+Guaranteed\s+No\s+Monthly\s+" + AMOUNT +
-                         r"\s+(\d+) years?\s+Level\s+(?:(Expiry)\s+)?None\s+No", offers.pop().strip())
+                         r"\s+(\d+) years?\s+Level\s+(?:(Expiry)\s+)?" + re.escape(tpd_column) +
+                         r"\s+No", offers.pop().strip())
     if not offer or number(offer[1]) != number(total[1]) or number(offer[2]) != number(amount[1]) or offer[3] != term[1]:
         return None
     optional = re.findall(r"•\s+Waiver of Premium for [^\n]+? is included at " + MONEY + r" monthly", first)

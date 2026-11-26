@@ -639,8 +639,13 @@ function supplementalLifeNote(p, m, source = supplementalLifeRows) {
     Number(row.to_age) === p.toAge && Number(row.life_cover) === p.life);
   if (!matching.length) return "";
   const notes = new Set();
-  for (const provider of new Set(matching.map(row => row.provider))) {
-    const offers = matching.filter(row => row.provider === provider);
+  const configurations = new Map();
+  for (const row of matching) {
+    const key = [row.provider, row.quoted_tpd, row.waiver_to, row.quoted_life_cover, row.quoted_term].join("|");
+    if (!configurations.has(key)) configurations.set(key, []);
+    configurations.get(key).push(row);
+  }
+  for (const offers of configurations.values()) {
     const newest = offers.reduce((date, row) => row.source_date > date ? row.source_date : date, "");
     for (const row of offers.filter(row => row.source_date === newest)) {
       const waiver = row.no_riders_illustration_sha256 ? "a illustration confirma vida sem adicionais" :
@@ -651,8 +656,14 @@ function supplementalLifeNote(p, m, source = supplementalLifeRows) {
         "por " + row.quoted_term.split(" ")[0] + " anos de prazo";
       const premium = Number(row.monthly_premium);
       const metlife = m.c && !m.unavailable ? " Com a MetLife selecionada, esse cenário soma " + gbp(premium + m.total) + "/mês." : "";
-      notes.add(provider + " ofereceu " + gbp(Number(row.quoted_life_cover)) + " " + term + " por " + gbp(premium) +
-        "/mês em " + newest + " (" + waiver + ")." + metlife);
+      let details = waiver;
+      if (row.quoted_tpd === "Own") {
+        details += ". O relatório indica própria profissão na coluna de incapacidade permanente (TPD)";
+        if (row.waiver_illustration_sha256 && Number(row.illustrated_waiver_monthly) > 0)
+          details += ". A illustration discrimina " + gbp(Number(row.illustrated_waiver_monthly)) + "/mês de isenção dentro do prêmio";
+      }
+      notes.add(row.provider + " ofereceu " + gbp(Number(row.quoted_life_cover)) + " " + term + " por " + gbp(premium) +
+        "/mês em " + newest + " (" + details + ")." + metlife);
     }
   }
   return "Pedido histórico de " + gbp(p.life) + " de vida até os " + p.toAge + " anos. " + [...notes].join(" ");
@@ -695,7 +706,8 @@ function lifeWithinBudget(p, m, rows = reportedRows.concat(verifiedArchiveRows))
     for (const row of supplementalLifeRows) {
       const life = Number(row.quoted_life_cover);
       if (Number(row.age) !== p.age || Number(row.to_age) !== p.toAge || row.smoker !== smoking ||
-          row.occupation_rated !== "No" || row.quoted_term !== "To Age " + p.toAge || !(life > 0 && life < p.life)) continue;
+          (row.quoted_tpd || "None") !== "None" || row.occupation_rated !== "No" ||
+          row.quoted_term !== "To Age " + p.toAge || !(life > 0 && life < p.life)) continue;
       const eligible = p.waiver === "Yes" ? row.waiver_to === "Expiry" || Number(row.waiver_to) >= p.toAge :
         Boolean(row.no_riders_illustration_sha256);
       if (!eligible) continue;
