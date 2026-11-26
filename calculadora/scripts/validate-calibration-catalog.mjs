@@ -98,6 +98,19 @@ if (catalog.calibratedRecords !== 1394 || model.records !== 522 || catalog.model
   });
 }
 
+// The single-policy L&G illustration pays £20,000 for life or earlier critical illness.
+const extraCi = illustrationRows.find(row => row.sha256 === 'd720579e7cc2358cb34640ef807741afdb3d6d3c88c7d576479b5360c690a189');
+if (extraCi?.product !== 'Life + CI Extra' || extraCi.critical_illness_component !== '20000'
+    || extraCi.base_ci_monthly !== '12.85' || extraCi.optional_monthly !== '0.15'
+    || extraCi.total_monthly !== '13.00') {
+  failures.push({ issue: 'L&G enhanced critical illness and TPD premium differs from the illustration' });
+}
+const lifeAtSameTerms = illustrationRows.filter(row => row.age === '36' && row.smoker === 'false'
+  && row.to_age === '64' && row.life_component === '20000' && row.critical_illness_component === '0');
+if (!lifeAtSameTerms.length && catalog.models.life_only.lookup['36|64|20000|0|0'] === 13) {
+  failures.push({ issue: 'Enhanced L&G premium attached to life-only cover' });
+}
+
 const hashes = illustrationRows.map((row) => row.sha256);
 const illustrationFingerprints = illustrationRows.map((row) => [
   row.sha256,
