@@ -745,3 +745,46 @@ for (const [age, life, expected, subtotal] of [[42,50000,'13.53','26.53'], [44,5
 const fullAgain = calculate(65, 50000, 10000, {age:25, smoker:'smoker',term:40,waiver:'No'});
 assert.ok(!fullAgain.ciPending && fullAgain.complete);
 assert.equal(node('totalPrice').textContent, '£25.91/mês');
+
+run("Date.now = () => Date.parse('2026-11-26T00:00:00Z')");
+const composedProfile = {age:31, smoker:'non_smoker', term:34, waiver:'No'};
+const composed = calculate(65,150000,15000,composedProfile);
+assert.ok(composed.complete && composed.composition && !composed.priorityExact);
+assert.equal(composed.provider, 'Zurich');
+assert.deepEqual(Array.from(composed.providerQuotes, q => [q.provider,q.premium,q.offset,q.tested]), [
+  ['Zurich',14.57,2.5,12],['Aviva',17.54,0,6],
+]);
+for (const clue of ['£14.57/mês','£27.57/mês','diagnóstico independente £8.40','diferença de £2.50','£30.54/mês','Preço a confirmar para Legal & General']) {
+  assert.ok(composed.text.includes(clue), clue);
+}
+assert.equal(node('totalPrice').textContent, '£27.57/mês');
+assert.ok(node('details').innerHTML.includes('Estimativa por composição'));
+assert.equal(calculate(65,150000,15000,{...composedProfile,smoker:'smoker'}).composition,false);
+assert.equal(calculate(65,150000,15000,{...composedProfile,waiver:'Yes'}).composition,false);
+assert.equal(calculate(65,150000,20000,composedProfile).priorityExact,true);
+run("Date.now = () => Date.parse('2030-01-01')");
+assert.equal(calculate(65,150000,15000,composedProfile).composition,false);
+run('Date.now = originalClock');
+
+function independentOffer(id,life,ci,premium) {
+  return {provider:'Zurich',age:'31',smoker:'No',to_age:'65',source_date:'2026-11-25',model_id:String(id),
+    available:'true',occupation_rated:'No',quoted_term:'To Age 65',life_cover:String(life),quoted_life_cover:String(life),
+    critical_illness_cover:String(ci),quoted_critical_illness_cover:String(ci),monthly_premium:premium.toFixed(2),
+    product:life && ci?'Life & CI':life?'Life':'CI'};
+}
+const partOffers = [
+  independentOffer(1,50000,0,6),independentOffer(2,75000,0,7),independentOffer(3,100000,0,10),independentOffer(4,80000,0,9),
+  independentOffer(5,0,10000,6),independentOffer(6,0,20000,10),independentOffer(7,0,15000,8),
+  independentOffer(8,50000,10000,9.5),independentOffer(9,100000,20000,17.5),independentOffer(10,75000,15000,12.5),
+];
+function fromParts(rows) {
+  ctx.partOffers=rows;
+  return run("buildIndependentPlans(partOffers).get('31|No|65|80000|15000')?.[0]");
+}
+assert.equal(fromParts(partOffers)?.premium,14.5);
+assert.equal(fromParts(partOffers.filter(r=>r.model_id!=='10')),undefined);
+for (const change of [{monthly_premium:'12.51'},{quoted_term:'33 years'},{quoted_tpd:'Own occupation'},{occupation_rated:'Yes'},
+  {model_id:'0'},{age:'32'},{smoker:'Yes'},{quoted_critical_illness_cover:'14999'},{source_date:'2026-11-24'}]) {
+  assert.equal(fromParts(partOffers.map(r=>r.model_id==='10'?{...r,...change}:r)),undefined);
+}
+assert.equal(fromParts([...partOffers,{...partOffers.at(-1),model_id:'11',monthly_premium:'12.49'}]),undefined);

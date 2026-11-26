@@ -181,6 +181,64 @@
     }
     return groups;
   };
+  // Calibrate the difference between two separate premiums and the same carrier's
+  // combined offer. Keep the policy terms, day, profile and products together.
+  root.buildIndependentPlans = function(rows) {
+    const groups = new Map();
+    for (const row of rows) {
+      if (row.available !== 'true' || row.occupation_rated !== 'No' || (row.quoted_tpd || 'None') !== 'None' ||
+          row.quoted_term !== 'To Age ' + row.to_age || row.quoted_life_cover !== row.life_cover ||
+          row.quoted_critical_illness_cover !== row.critical_illness_cover || !(Number(row.monthly_premium) > 0)) continue;
+      const key = [row.provider, row.source_date, row.age, row.smoker, row.to_age].join('|');
+      if (!groups.has(key)) groups.set(key, new Map());
+      const grid = groups.get(key);
+      const cell = row.life_cover + '|' + row.critical_illness_cover;
+      const current = grid.get(cell);
+      if (grid.has(cell) && (!current || current.monthly_premium !== row.monthly_premium || current.product !== row.product)) {
+        grid.set(cell, null);
+      } else if (!current || Number(row.model_id) < Number(current.model_id)) {
+        grid.set(cell, row);
+      }
+    }
+    const penny = row => Math.round(Number(row.monthly_premium) * 100);
+    const encloses = (examples, life, ci) => examples.length >= 2 &&
+      examples.some(t => t.life <= life) && examples.some(t => t.life >= life) &&
+      examples.some(t => t.ci <= ci) && examples.some(t => t.ci >= ci);
+    const index = new Map();
+    for (const grid of groups.values()) {
+      const examples = [];
+      for (const combo of grid.values()) {
+        if (!combo || !Number(combo.life_cover) || !Number(combo.critical_illness_cover)) continue;
+        const a = grid.get(combo.life_cover + '|0'), b = grid.get('0|' + combo.critical_illness_cover);
+        if (!a || !b) continue;
+        examples.push({life: Number(a.life_cover), ci: Number(b.critical_illness_cover),
+          a, b, combo, offset: penny(a) + penny(b) - penny(combo),
+          id: Number(combo.model_id), knownAt: Math.max(Number(combo.model_id), Number(a.model_id), Number(b.model_id))});
+      }
+      if (examples.length < 3) continue;
+      const first = examples[0];
+      if (first.offset < 0 || examples.some(t => t.offset !== first.offset || t.a.product !== first.a.product ||
+          t.b.product !== first.b.product || t.combo.product !== first.combo.product)) continue;
+      const checks = examples.filter(t => t.knownAt === t.id && Number(t.a.model_id) < t.id && Number(t.b.model_id) < t.id &&
+        encloses(examples.filter(p => p.knownAt < t.id), t.life, t.ci));
+      if (!checks.length) continue;
+      const lifePlans = [...grid.values()].filter(r => r && r.critical_illness_cover === '0' && r.product === first.a.product);
+      const ciPlans = [...grid.values()].filter(r => r && r.life_cover === '0' && r.product === first.b.product);
+      for (const a of lifePlans) for (const b of ciPlans) {
+        const life = Number(a.life_cover), ci = Number(b.critical_illness_cover);
+        if (grid.has(life + '|' + ci) || !encloses(examples, life, ci)) continue;
+        const price = (penny(a) + penny(b) - first.offset) / 100;
+        if (price <= 0) continue;
+        const key = [a.age, a.smoker, a.to_age, life, ci].join('|');
+        if (!index.has(key)) index.set(key, []);
+        index.get(key).push({provider: a.provider, product: first.combo.product,
+          sourceDate: a.source_date, term: a.quoted_term, premium: price,
+          baseLife: Number(a.monthly_premium), baseCi: Number(b.monthly_premium), offset: first.offset / 100,
+          lifeId: a.model_id, ciId: b.model_id, modelId: a.model_id + ' / ' + b.model_id, tested: checks.length});
+      }
+    }
+    return index;
+  };
   root.quoteRange=function(model,main,{outside=false,directLookup=false}={}){
     const spread=directLookup
       ? main*(model?.strictlyValidated?0.2:0.35)

@@ -3,6 +3,7 @@ let catalog = { models: {} },
   priorityGapRows = [],
   observedRows = [],
   reportedRows = [],
+  independentPlanQuotes = new Map(),
   verifiedArchiveRows = [],
   validatedCapitalRanges = [],
   waiverRows = null,
@@ -169,6 +170,7 @@ async function init() {
     avivaLife.map(row => ({ ...row, provider: "Aviva", policy_count: "1", discount_monthly: "0.00" })));
   historicalAgeTests = globalThis.validateIllustratedAges(illustratedLifeRows);
   reportedRows = loadedReports;
+  independentPlanQuotes = globalThis.buildIndependentPlans(reportedRows);
   const trials = evaluateCapitalTrials(loadedReports, capitalHoldout);
   validatedCapitalRanges = buildCapitalRanges(trials, capitalHoldout);
   showCapitalAccuracy(trials, capitalHoldout.length);
@@ -653,6 +655,18 @@ function priorityQuotesFor(p) {
   if (archived) return archived;
   const capitalMatch = validatedCapitalQuotes(p);
   if (capitalMatch) return capitalMatch;
+  if (p.life && p.ci && p.waiver !== "Yes" && !exact.length) {
+    const key = [p.age, expectedSmoker, p.toAge, p.life, p.ci].join("|");
+    const eligible = (independentPlanQuotes.get(key) || []).filter(q => {
+      const days = (Date.now() - Date.parse(q.sourceDate)) / 86400000;
+      return days >= 0 && days <= 180;
+    });
+    if (eligible.length) {
+      const latest = eligible.reduce((d, q) => d > q.sourceDate ? d : q.sourceDate, "");
+      const quotes = eligible.filter(q => q.sourceDate === latest).sort((a, b) => a.premium - b.premium);
+      return {quotes, sameEndAge: quotes, composition: true, sourceDate: latest, exact: false};
+    }
+  }
   let providers = ["Legal & General", "Zurich", "Aviva"],
     interpolated = providers.map((provider) => {
       let rows = candidates.filter((row) => row.provider === provider),
@@ -825,6 +839,11 @@ function quotedTerm(quote) {
   let term = quote.term.startsWith("To Age ")
     ? `até ${quote.term.slice(7)} anos`
     : `${parseInt(quote.term, 10)} anos de prazo`;
+  if (quote.baseCi != null) {
+    term += " · vida " + gbp(quote.baseLife) + " + diagnóstico independente " + gbp(quote.baseCi);
+    if (quote.offset) term += " − diferença de " + gbp(quote.offset) + " observada nos pacotes";
+    term += " · referências " + quote.lifeId + " e " + quote.ciId + " · conferências no mesmo perfil: " + quote.tested;
+  }
   if (quote.tpd === "Own occupation") term += " · inclui incapacidade permanente para a própria profissão (TPD)";
   if (quote.waiverTo) {
     const waiver = quote.waiverTo === "Expiry" ? "isenção até o fim do contrato" :
@@ -1014,7 +1033,14 @@ function priceProtection(p, m) {
   }
   r.termPending = Boolean(priorityMatch.termPending);
   r.capitalRange = Boolean(priorityMatch.capitalRange);
-  r.detailed = r.withWaiver || r.capitalRange || Boolean(priorityMatch.reported && priorityQuotes.length);
+  r.composition = Boolean(priorityMatch.composition);
+  r.detailed = r.withWaiver || r.capitalRange || r.composition || Boolean(priorityMatch.reported && priorityQuotes.length);
+  if (r.composition) {
+    r.reportNote = "Estimativa por composição a partir das cotações de vida e diagnóstico independente de " +
+      priorityMatch.sourceDate + ". A diferença entre a soma dos dois prêmios e o preço do pacote foi conferida em outros capitais deste perfil.";
+    const missing = ["Zurich", "Legal & General", "Aviva"].filter(provider => !priorityQuotes.some(q => q.provider === provider));
+    if (missing.length) r.reportNote += " Preço a confirmar para " + missing.join(" e ") + ".";
+  }
   if (r.capitalRange) {
     const { lower, upper, check, axis } = priorityMatch.capitalRange;
     r.reportNote = `Estimativa entre capitais de ${axis === "life_cover" ? "vida" : "doenças graves"} de ${gbp(Number(lower[axis]))} e ${gbp(Number(upper[axis]))}. O cálculo foi conferido com uma cotação independente de ${gbp(Number(check[axis]))} para este perfil e prazo em ${check.source_date}.`;
@@ -1036,11 +1062,11 @@ function priceProtection(p, m) {
   }
   if (priorityMatch.gap && !priorityMatch.reported)
     warnings.unshift(
-      priorityMatch.partial
+      r.composition ? r.reportNote : priorityMatch.partial
         ? `Cotação oficial ${priorityMatch.gap.modelId}: ${priorityMatch.gap.provider} não retornou preço (${priorityMatch.gap.reason}). Os preços oficiais disponíveis foram preservados sem inventar o valor ausente.`
         : `Cotação oficial ${priorityMatch.gap.modelId}: ${priorityMatch.gap.provider} não retornou preço (${priorityMatch.gap.reason}). A estimativa geral permanece disponível, sem inventar preço específico dessa seguradora.`,
     );
-  if (priorityQuotes.length === 3 || ((r.capitalRange || r.withWaiver || priorityMatch.partial) && priorityQuotes.length)) {
+  if (priorityQuotes.length === 3 || ((r.capitalRange || r.withWaiver || r.composition || priorityMatch.partial) && priorityQuotes.length)) {
     const comparable = priorityMatch.sameEndAge || priorityQuotes;
     let selected = comparable[0];
     const segmentKey = p.ci > 0
@@ -1071,7 +1097,7 @@ function priceProtection(p, m) {
     );
     if (
       !priorityMatch.exact &&
-      !priorityMatch.partial && !r.capitalRange &&
+      !priorityMatch.partial && !r.capitalRange && !r.composition &&
       (segmentValidation.tested || 0) < 30
     )
       warnings.push(
@@ -1233,7 +1259,7 @@ function render(p) {
     : "";
   if (r.detailed) {
     const rows = r.providerQuotes.map(q => `<dt>${escapeHtml(q.provider)}</dt><dd>${gbp(q.premium)}/mês · ${escapeHtml(quotedTerm(q))}${m.c ? ` · com MetLife ${gbp(q.premium + m.total)}/mês` : ""}${q.occupationRated ? " · depende da profissão de referência" : ""}</dd>`).join("");
-    priorityDetail = `<dt>${r.capitalRange ? "Estimativa por capital" : r.withWaiver ? "Comparativo com isenção" : "Comparativo sem isenção"}</dt><dd>SolutionBuilder · ${escapeHtml(r.providerQuotes[0].sourceDate)}</dd>${rows}`;
+    priorityDetail = `<dt>${r.composition ? "Estimativa por composição" : r.capitalRange ? "Estimativa por capital" : r.withWaiver ? "Comparativo com isenção" : "Comparativo sem isenção"}</dt><dd>SolutionBuilder · ${escapeHtml(r.providerQuotes[0].sourceDate)}</dd>${rows}`;
     if (r.complete)
       priorityDetail += `<dt>Preço usado no total</dt><dd>${escapeHtml(r.provider)} · até ${p.toAge} anos</dd>`;
   }
@@ -1242,7 +1268,7 @@ function render(p) {
   if (r.ageNote) priorityDetail += `<dt>Estimativa entre idades</dt><dd>${escapeHtml(r.ageNote)}</dd>`;
   if (r.lgTermNote) priorityDetail += `<dt>Prazo e preço documentados pela L&amp;G</dt><dd>${escapeHtml(r.lgTermNote)}</dd>`;
   if (r.componentNote) priorityDetail += `<dt>Composição da apólice histórica</dt><dd>${escapeHtml(r.componentNote)}</dd>`;
-  const evidence = r.ciPending ? "Referência de vida: " + escapeHtml(r.lifeSource) : r.ageEstimate ? "2 idades de referência e conferência com illustration posterior na mesma faixa" : r.illustratedBase ? `1 illustration ${escapeHtml(r.provider)} · vida em apólice individual` : r.detailed
+  const evidence = r.composition ? "Prêmios individuais e comparativos de pacotes para os mesmos produtos, perfil e data" : r.ciPending ? "Referência de vida: " + escapeHtml(r.lifeSource) : r.ageEstimate ? "2 idades de referência e conferência com illustration posterior na mesma faixa" : r.illustratedBase ? `1 illustration ${escapeHtml(r.provider)} · vida em apólice individual` : r.detailed
     ? r.capitalRange ? `2 capitais de referência · 1 capital de teste · ${r.providerQuotes.length} ${r.providerQuotes.length === 1 ? "seguradora" : "seguradoras"}` : `1 comparativo · ${r.providerQuotes.length} preços históricos`
     : `${model?.records || 0} registros na família · confiança ${escapeHtml(confidenceLabel)}`;
   $("details").innerHTML =
