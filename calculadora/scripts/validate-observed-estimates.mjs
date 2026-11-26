@@ -628,6 +628,8 @@ for (const row of fractureReports) {
   }
   assert.ok(Number(row.monthly_premium) > 0);
   assert.equal(Boolean(Number(row.quoted_earlier_ci_cover)), Boolean(Number(row.earlier_ci_cover)));
+  assert.equal(Boolean(Number(row.quoted_independent_ci_cover)), Boolean(Number(row.independent_ci_cover)));
+  assert.ok(!(Number(row.independent_ci_cover) > 0 && Number(row.earlier_ci_cover) > 0));
   assert.equal(Boolean(Number(row.quoted_life_cover)), Boolean(Number(row.life_cover)));
   assert.ok(!variantRows.some(r => r.sha256 === row.sha256));
   assert.ok(!evidence.some(r => r.sha256 === row.sha256));
@@ -640,9 +642,15 @@ for (const [key, part] of fractureDocuments) {
   }
   assert.ok(Number(part.fracture_monthly) > 0);
   const cost = name => Math.round(Number(part[name]) * 100);
-  assert.equal(cost('life_monthly') + cost('earlier_ci_monthly') + cost('waiver_monthly') + cost('tpd_monthly') + cost('fracture_monthly') - cost('discount_monthly'), cost('total_monthly'));
+  assert.equal(cost('life_monthly') + cost('earlier_ci_monthly') + cost('waiver_monthly') + cost('tpd_monthly') + cost('fracture_monthly') + cost('independent_ci_monthly') - cost('discount_monthly'), cost('total_monthly'));
   assert.equal(offer.monthly_premium, part.total_monthly);
 }
+const withFractureAndIndependent = calculate(70, 100000, 10000, {age:51, smoker:'non_smoker', term:19, waiver:'No'});
+assert.equal(node('fractureComparison').hidden, false);
+for (const amount of ['£44.55/mês','£42.24/mês','diagnóstico independente £10,000.00','diagnóstico independente £16.89',
+  'fraturas da seguradora £7.75','incapacidade permanente £0.32','desconto por múltiplas apólices £2.50'])
+  assert.ok(node('fractureOffers').innerHTML.includes(amount), amount);
+assert.ok(!withFractureAndIndependent.providerQuotes?.some(q => ['1076894193','1076894354'].includes(q.modelId)));
 const riderProfile = {age:32, smoker:'smoker', term:33, waiver:'No'};
 const withRiderPanel = calculate(65,50000,0,riderProfile);
 assert.equal(node('fractureComparison').hidden, false);

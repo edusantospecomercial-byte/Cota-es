@@ -12,6 +12,7 @@ import sys
 
 LIFE = r"£([\d,]+) life cover"
 ACCELERATED = r"(?:£([\d,]+) life & )?£([\d,]+) life or earlier critical illness cover \(TPD: own occupation\)"
+INDEPENDENT = r"£([\d,]+) life & £([\d,]+) critical illness cover \(TPD: own occupation\)"
 ENDING = r", policy duration is to age (\d+), premiums are guaranteed, Fracture Cover selected"
 
 
@@ -29,11 +30,12 @@ def read_offer(comparison, provider, text=None):
     benefit = " ".join(benefits[0].split())
     life = re.fullmatch("Level Term Assurance: 1st life, " + LIFE + ENDING, benefit)
     shared = re.fullmatch("Level Term Assurance: 1st life, " + ACCELERATED + ENDING, benefit)
-    if not (life or shared):
+    independent = re.fullmatch("Level Term Assurance: 1st life, " + INDEPENDENT + ENDING, benefit)
+    if not (life or shared or independent):
         return None
-    requested_life = amount(life[1] if life else shared[1])
-    requested_ci = amount(shared[2]) if shared else 0
-    end = int((life or shared).groups()[-1])
+    requested_life = amount((life or shared or independent)[1])
+    requested_ci = amount((shared or independent)[2]) if (shared or independent) else 0
+    end = int((life or shared or independent).groups()[-1])
     client = re.search(r"^Client:.*?\ba (?:Male|Female) (non-smoker|smoker)(?: who has never smoked)?, born on ([\d/]+)", cover, re.M | re.I)
     date = re.search(r"Date Requested:\s*([\d/]+)", cover)
     reference = re.search(r"Your Reference:\s*(\d+)", cover)
@@ -45,19 +47,22 @@ def read_offer(comparison, provider, text=None):
         return None
     table = results.partition("Products Not Quoting:")[0]
     header, found, table = table.partition("Non Underwritten Results")
-    if not found or bool(re.search(r"\bLife Cover\b", header)) != bool(requested_life) or bool(re.search(r"\bLife or\b", header)) != bool(requested_ci):
+    if not found or bool(re.search(r"\bLife Cover\b", header)) != bool(requested_life) or bool(re.search(r"\bLife or\b", header)) != bool(shared):
+        return None
+    if independent and not re.search(r"Life Cover[ \t]+Critical[ \t]+Policy", header):
         return None
     if provider == "Zurich":
-        product = "Zurich Life & CI" if shared else "Zurich Life"
+        product = "Zurich Life & CI" if requested_ci else "Zurich Life"
     elif provider == "Aviva":
-        product = ("Aviva Multi-Product with Core CI" if requested_life else "Aviva Life Insurance+ with Core CI") if shared else "Aviva Life Insurance+"
+        product = ("Aviva Multi-Product with Core CI" if requested_life else "Aviva Life Insurance+ with Core CI") if requested_ci else "Aviva Life Insurance+"
     elif provider == "Legal & General":
-        product = "Legal & General Life + CI (Standard)" if shared else "Legal & General Life"
+        product = "Legal & General Life + CI (Standard)" if requested_ci else "Legal & General Life"
     else:
         raise ValueError("Unsupported illustration provider")
     lines = set(re.findall(r"^[ \t]*" + re.escape(product) + r"[ \t]{2,}(£[^\n]+)", table, re.M))
     base = dict(source_date=issued.isoformat(), age=str(age), smoker="Yes" if client[1].lower() == "smoker" else "No",
-                to_age=str(end), life_cover=str(requested_life), earlier_ci_cover=str(requested_ci), provider=provider,
+                to_age=str(end), life_cover=str(requested_life), earlier_ci_cover=str(requested_ci if shared else 0),
+                independent_ci_cover=str(requested_ci if independent else 0), provider=provider,
                 reference=reference[1], product=product, sha256=hashlib.sha256(comparison).hexdigest())
     if not lines:
         reasons = set(re.findall(r"^[ \t]*" + re.escape(product) + r"[ \t]{2,}(\S[^\n]*)",
@@ -83,28 +88,31 @@ def read_offer(comparison, provider, text=None):
         return None
     return dict(base, response="quoted", monthly_premium=price.replace(",", ""), occupation_rated=rated,
                 quoted_life_cover=str(amount(capitals[0]) if requested_life else 0),
-                quoted_earlier_ci_cover=str(amount(capitals[-1]) if requested_ci else 0),
+                quoted_earlier_ci_cover=str(amount(capitals[-1]) if shared else 0),
+                quoted_independent_ci_cover=str(amount(capitals[-1]) if independent else 0),
                 quoted_term=term, waiver_to=waiver or "not_shown", tpd_basis=tpd)
 
 
 FRACTURE_FIELDS = ("source_date", "age", "smoker", "to_age", "life_cover", "earlier_ci_cover", "life_monthly",
                    "earlier_ci_monthly", "reference", "waiver_monthly", "tpd_monthly", "discount_monthly", "fracture_monthly",
                    "total_monthly", "provider", "quoted_life_cover", "quoted_earlier_ci_cover", "quoted_term", "occupation_rated",
-                   "waiver_to", "tpd_basis", "fracture_to_age", "sha256", "comparison_sha256")
+                   "waiver_to", "tpd_basis", "fracture_to_age", "sha256", "comparison_sha256",
+                   "independent_ci_cover", "quoted_independent_ci_cover", "independent_ci_monthly")
 
 
-def fracture_row(offer, base_life, base_ci, waiver, disability, discount, fracture, paid, illustration, fracture_to_age=""):
+def fracture_row(offer, base_life, base_ci, waiver, disability, discount, fracture, paid, illustration, fracture_to_age="", independent_ci=0):
     if fracture <= 0:
         return None
     return (offer["source_date"], offer["age"], offer["smoker"], offer["to_age"], offer["life_cover"], offer["earlier_ci_cover"],
             base_life, base_ci, offer["reference"], waiver, disability, discount, fracture, paid, offer["provider"],
             offer["quoted_life_cover"], offer["quoted_earlier_ci_cover"], offer["quoted_term"], offer["occupation_rated"],
-            offer["waiver_to"], offer["tpd_basis"], fracture_to_age, hashlib.sha256(illustration).hexdigest(), offer["sha256"])
+            offer["waiver_to"], offer["tpd_basis"], fracture_to_age, hashlib.sha256(illustration).hexdigest(), offer["sha256"],
+            offer.get("independent_ci_cover", "0"), offer.get("quoted_independent_ci_cover", "0"), independent_ci)
 
 
 OFFER_FIELDS = ("source_date", "reference", "age", "smoker", "to_age", "life_cover", "earlier_ci_cover", "provider",
                 "product", "response", "monthly_premium", "quoted_life_cover", "quoted_earlier_ci_cover", "quoted_term",
-                "occupation_rated", "waiver_to", "tpd_basis", "sha256")
+                "occupation_rated", "waiver_to", "tpd_basis", "sha256", "independent_ci_cover", "quoted_independent_ci_cover")
 
 
 def export_reports(roots):

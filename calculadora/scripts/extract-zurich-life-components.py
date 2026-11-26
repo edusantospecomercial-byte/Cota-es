@@ -115,17 +115,20 @@ def earlier_ci_reader(offers, fracture_requested=False):
         if issued.isoformat() != offer["source_date"] or expected_age != int(offer["age"]):
             return None
         shared = "Level Life Cover and Critical Illness"
+        independent = "Level Critical Illness"
         life = "Level Life Cover"
         expected = {}
         if int(offer["quoted_earlier_ci_cover"]):
             expected[shared] = int(offer["quoted_earlier_ci_cover"])
+        if int(offer.get("quoted_independent_ci_cover", 0)):
+            expected[independent] = int(offer["quoted_independent_ci_cover"])
         if int(offer["quoted_life_cover"]):
             expected[life] = int(offer["quoted_life_cover"])
         parts = re.split(r"^[ \t]*Date of birth[ \t]+", quote, flags=re.I | re.M)[1:]
         if len(parts) != len(expected):
             return None
         zero = Decimal("0.00")
-        amounts = dict.fromkeys([life, shared, "waiver", "tpd", "discount", "fracture", "paid"], zero)
+        amounts = dict.fromkeys([life, shared, independent, "waiver", "tpd", "discount", "fracture", "paid"], zero)
         fracture_limits = set()
         for part in parts:
             part_birth = re.match(DATE, part)
@@ -172,7 +175,7 @@ def earlier_ci_reader(offers, fracture_requested=False):
             from fracture_comparison import fracture_row
             return fracture_row(offer, amounts[life], amounts[shared], amounts["waiver"], amounts["tpd"],
                                 amounts["discount"], amounts["fracture"], amounts["paid"], illustration,
-                                fracture_limits.pop() if len(fracture_limits) == 1 else "")
+                                fracture_limits.pop() if len(fracture_limits) == 1 else "", amounts[independent])
         return (offer["source_date"], offer["age"], offer["smoker"], offer["to_age"], offer["quoted_life_cover"],
                 offer["quoted_earlier_ci_cover"], amounts[life], amounts[shared], offer["reference"], amounts["waiver"],
                 amounts["tpd"], amounts["discount"], amounts["paid"], hashlib.sha256(illustration).hexdigest(), comparison_hash)

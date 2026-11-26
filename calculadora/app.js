@@ -433,7 +433,7 @@ function itemisedCiPremium(row, breakdown) {
     policies.push("vida ou diagnóstico " + gbp(Number(breakdown.earlier_ci_policy_monthly)));
     return "<br>Mensalidade cobrada por apólice neste pacote · " + policies.join(" + ") + ".";
   }
-  const charges = [[Number(row.quoted_earlier_ci_cover) > 0 ? "vida adicional" : "vida", breakdown.life_monthly], ["vida ou diagnóstico", breakdown.earlier_ci_monthly],
+  const charges = [[Number(row.quoted_earlier_ci_cover) > 0 ? "vida adicional" : "vida", breakdown.life_monthly], ["vida ou diagnóstico", breakdown.earlier_ci_monthly], ["diagnóstico independente", breakdown.independent_ci_monthly],
     ["isenção", breakdown.waiver_monthly], ["incapacidade permanente", breakdown.tpd_monthly],
     ["fraturas da seguradora", breakdown.fracture_monthly]];
   const listed = charges.filter(([, value]) => Number(value) > 0)
@@ -451,14 +451,22 @@ function renderFractureComparison(p) {
   $("fractureSource").textContent = "";
   const smoking = p.smoker === "smoker" ? "Yes" : "No";
   const matching = fractureOffers.filter(row => Number(row.age) === p.age && row.smoker === smoking &&
-    Number(row.to_age) === p.toAge && Number(row.life_cover) === p.life && Number(row.earlier_ci_cover) === p.ci);
+    Number(row.to_age) === p.toAge && Number(row.life_cover) === p.life &&
+    Number(row.earlier_ci_cover || 0) + Number(row.independent_ci_cover || 0) === p.ci);
   if (!matching.length) return;
-  const jobReports = reportsForOccupation(matching, p);
-  const date = jobReports.reduce((d, row) => row.source_date > d ? row.source_date : d, "");
-  const report = jobReports.filter(row => row.source_date === date);
-  $("fractureSource").textContent = "Comparativo de " + date + (p.ci ?
-    ". O capital de diagnóstico abaixo é pago por morte ou diagnóstico, no primeiro evento coberto." :
-    ". O pedido foi de seguro de vida com adicional de fraturas.");
+  const report = [], sources = [];
+  for (const independent of [false, true]) {
+    const family = matching.filter(row => (Number(row.independent_ci_cover) > 0) === independent);
+    if (!family.length) continue;
+    const jobReports = reportsForOccupation(family, p);
+    const date = jobReports.reduce((d, row) => row.source_date > d ? row.source_date : d, "");
+    const terms = !p.ci ? "O pedido foi de seguro de vida com adicional de fraturas."
+      : independent ? "O pedido incluía vida, diagnóstico independente, incapacidade permanente e fraturas."
+      : "O capital de diagnóstico abaixo é pago por morte ou diagnóstico, no primeiro evento coberto.";
+    sources.push("Comparativo de " + date + ". " + terms);
+    report.push(...jobReports.filter(row => row.source_date === date));
+  }
+  $("fractureSource").textContent = sources.join(" ");
   const reasons = { fracture_not_supported: "O produto recusou o adicional de fraturas solicitado.",
     age_not_supported: "A seguradora informou que a idade estava fora do limite do produto.",
     term_not_supported: "A seguradora recusou o prazo solicitado." };
@@ -468,6 +476,7 @@ function renderFractureComparison(p) {
     const detail = [];
     if (Number(row.quoted_life_cover)) detail.push("vida " + gbp(Number(row.quoted_life_cover)));
     if (Number(row.quoted_earlier_ci_cover)) detail.push("vida ou diagnóstico " + gbp(Number(row.quoted_earlier_ci_cover)));
+    if (Number(row.quoted_independent_ci_cover)) detail.push("diagnóstico independente " + gbp(Number(row.quoted_independent_ci_cover)));
     detail.push(row.quoted_term.startsWith("To Age ") ? "até os " + row.quoted_term.slice(7) + " anos" : row.quoted_term);
     if (row.tpd_basis !== "None") detail.push("TPD " + row.tpd_basis);
     if (/^\d+$/.test(row.waiver_to)) detail.push("idade-limite da isenção " + row.waiver_to + " anos");
