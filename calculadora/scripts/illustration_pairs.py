@@ -28,13 +28,14 @@ def pairs(paths, folder):
                 yield path.read_bytes(), report.read_bytes()
 
 
-def extract_pairs(folder, fields, read_pair, description):
-    parser = argparse.ArgumentParser(description=description)
-    parser.add_argument("roots", nargs="+", type=Path)
-    args = parser.parse_args()
+def extract_pairs(folder, fields, read_pair, description, roots=None):
+    if roots is None:
+        parser = argparse.ArgumentParser(description=description)
+        parser.add_argument("roots", nargs="+", type=Path)
+        roots = parser.parse_args().roots
     found = subprocess.run(["rg","--files","--hidden","--no-ignore","-0","-g","!**/.git/**",
                             "-g","!**/node_modules/**","--iglob","*supporting*document*.zip",
-                            "--iglob","Illustration.pdf",*args.roots],capture_output=True)
+                            "--iglob","Illustration.pdf",*roots],capture_output=True)
     if found.returncode not in (0,1):
         raise SystemExit(found.stderr.decode())
     files = sorted(Path(p) for p in found.stdout.decode().split("\0") if p)

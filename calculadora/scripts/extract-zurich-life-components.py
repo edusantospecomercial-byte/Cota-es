@@ -91,10 +91,86 @@ def illustrations(source):
                 yield archive.read(member)
 
 
+def earlier_ci_reader(offers):
+    def read_pair(illustration, comparison):
+        comparison_hash = hashlib.sha256(comparison).hexdigest()
+        offer = offers.get(comparison_hash)
+        if not offer:
+            return None
+        quote = subprocess.check_output(["pdftotext", "-layout", "-", "-"], input=illustration).decode().replace("\f", "\n")
+        if "your zurich personal protection quote" not in quote.lower() or "standard rates and your current age" not in quote.lower():
+            return None
+        report = subprocess.check_output(["pdftotext", "-layout", "-", "-"], input=comparison).decode().split("\f", 1)[0]
+        birth = re.search(r"born on (\d{2}/\d{2}/\d{4})", report)
+        dates = set(re.findall(r"\bDate prepared\s+" + DATE + r"\b", quote, re.I))
+        if not birth or len(dates) != 1:
+            return None
+        issued = parse_date(dates.pop())
+        dob = datetime.strptime(birth[1], "%d/%m/%Y").date()
+        expected_age = issued.year - dob.year - ((issued.month, issued.day) < (dob.month, dob.day))
+        if issued.isoformat() != offer["source_date"] or expected_age != int(offer["age"]):
+            return None
+        shared = "Level Life Cover and Critical Illness"
+        life = "Level Life Cover"
+        expected = {shared: int(offer["quoted_earlier_ci_cover"])}
+        if int(offer["quoted_life_cover"]):
+            expected[life] = int(offer["quoted_life_cover"])
+        parts = re.split(r"^[ \t]*Date of birth[ \t]+", quote, flags=re.I | re.M)[1:]
+        if len(parts) != len(expected):
+            return None
+        zero = Decimal("0.00")
+        amounts = dict.fromkeys([life, shared, "waiver", "tpd", "discount", "paid"], zero)
+        for part in parts:
+            part_birth = re.match(DATE, part)
+            kind = field(part, "Cover provided", r"(.+?)")
+            smoker = field(part, "Smoker status", "(Non-Smoker|Smoker)")
+            sum_assured = field(part, "Sum assured", MONEY)
+            base = field(part, "Monthly premium for main cover", MONEY)
+            main_cover = field(part, "Main cover", MONEY)
+            total = field(part, "Total Monthly premium", MONEY)
+            if not all((part_birth, smoker, sum_assured, base, main_cover, total)) or kind not in expected:
+                return None
+            if (parse_date(part_birth[1]) != dob or (smoker.lower() == "smoker") != (offer["smoker"] == "Yes")
+                    or field(part, "Term", r"To age (\d+)") != offer["to_age"] or not field(part, "Premium type", "(Guaranteed)")
+                    or pounds(sum_assured) != expected.pop(kind) or pounds(base) != pounds(main_cover)):
+                return None
+            waiver = pounds(field(part, "Waiver of Premium", MONEY) or "0")
+            tpd = re.findall(r"^[ \t]*Total Permanent Disability[^£\n]*?" + MONEY +
+                             r"(?:[ \t]+payable until [^\n]+)?[ \t]*$", part, re.I | re.M)
+            if len(tpd) > 1:
+                return None
+            disability = pounds(tpd[0]) if tpd else zero
+            additional = pounds(field(part, "Additional benefits", MONEY) or "0")
+            discount = pounds(field(part, "Multi-policy discount", MONEY) or "0")
+            if waiver + disability != additional or pounds(base) + additional - discount != pounds(total):
+                return None
+            amounts[kind] += pounds(base)
+            amounts["waiver"] += waiver
+            amounts["tpd"] += disability
+            amounts["discount"] += discount
+            amounts["paid"] += pounds(total)
+        if expected or amounts["paid"] != pounds(offer["monthly_premium"]):
+            return None
+        return (offer["source_date"], offer["age"], offer["smoker"], offer["to_age"], offer["quoted_life_cover"],
+                offer["quoted_earlier_ci_cover"], amounts[life], amounts[shared], offer["reference"], amounts["waiver"],
+                amounts["tpd"], amounts["discount"], amounts["paid"], hashlib.sha256(illustration).hexdigest(), comparison_hash)
+    return read_pair
+
+
 def main():
     cli = argparse.ArgumentParser(description=__doc__)
     cli.add_argument("folders", type=Path, nargs="+")
+    cli.add_argument("--paired-earlier-ci", action="store_true", help="Reconcile itemised shared life/CI cover against the original comparison.")
     args = cli.parse_args()
+    if args.paired_earlier_ci:
+        from illustration_pairs import extract_pairs
+        fields = ("source_date", "age", "smoker", "to_age", "life_cover", "earlier_ci_cover", "life_monthly",
+                  "earlier_ci_monthly", "reference", "waiver_monthly", "tpd_monthly", "discount_monthly",
+                  "total_monthly", "sha256", "comparison_sha256")
+        with (Path(__file__).resolve().parents[1] / "data/accelerated-comparisons.csv").open() as source:
+            offers = {r["sha256"]: r for r in csv.DictReader(source) if r["provider"] == "Zurich"}
+        extract_pairs("Zurich Life & CI", fields, earlier_ci_reader(offers), __doc__, args.folders)
+        return
     listing = subprocess.run(["rg", "--files", "--null", "--hidden", "--no-ignore",
                               "--glob", "!**/.git/**", "--glob", "!**/node_modules/**",
                               "--iglob", "*illustration*.pdf", "--iglob", "*supporting documents*.zip",

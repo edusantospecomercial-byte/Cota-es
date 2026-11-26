@@ -11,6 +11,7 @@ const localCatalog = JSON.parse(readFileSync(join(calculatorDir, "data/models.js
 const expectedAppVersion = localIndex.match(/app\.js\?v=([a-f0-9]+)/)?.[1];
 const criticalAssets = [
   "data/aviva-core-breakdowns.csv",
+  "data/zurich-core-breakdowns.csv",
   "index.html",
   "style.css",
   "app.js",
