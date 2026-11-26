@@ -16,6 +16,7 @@ let catalog = { models: {} },
   maturityDeclines = [],
   productDeclines = [],
   exactCapitalVariants = [],
+  firstEventVariants = [],
   coreBreakdowns = new Map(),
   tpdOffers = [],
   fractureOffers = [],
@@ -74,6 +75,7 @@ async function init() {
     loadedMaturityDeclines,
     loadedProductDeclines,
     loadedCapitalVariants,
+    loadedFirstEventVariants,
     loadedIndividualWaivers,
     avivaLife,
     loadedLgTerms,
@@ -148,6 +150,8 @@ async function init() {
       .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
     fetch("./data/exact-capital-product-variants.csv", { cache: "no-store" })
       .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
+    fetch("./data/smoker-first-event-product-variants.csv", { cache: "no-store" })
+      .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
     fetch("./data/waiver-individual-offers.csv", { cache: "no-store" })
       .then(response => response.ok ? response.text() : "")
       .then(parsePriorityCsv)
@@ -195,6 +199,7 @@ async function init() {
     row.product === "Life" && row.critical_illness_component === "0" &&
     ["None", "Waiver of Premium"].includes(row.optional_features));
   exactCapitalVariants = loadedCapitalVariants;
+  firstEventVariants = loadedFirstEventVariants;
   supplementalLifeRows = loadedSupplementalLife;
   fixedTermLifeRows = loadedFixedTermLife;
   showComparisonInventory(comparisonIndex, [loadedReports, verifiedArchive, loadedWaiverRows,
@@ -339,14 +344,15 @@ function showComparisonInventory(index, tables) {
     " preços em pedidos até os 65 anos, " + n(count.standard65) +
     " correspondem ao prazo e aos capitais pedidos para vida ou doenças graves independentes, com tarifa sem ajuste por profissão e sem adicionais. " +
     n(count.standardSmokers65) + " desses preços são para fumantes. Há ainda " + n(count.withoutPrice) + " respostas sem valor.";
-  if (exactCapitalVariants.length) {
-    const reports = new Map(index.map(row => [row.sha256, row.report_key]));
-    const variants = exactCapitalVariants.map(row => [reports.get(row.sha256), row.provider, row.product]);
-    if (variants.every(([key]) => key)) {
+  const reports = new Map(index.map(row => [row.sha256, row.report_key]));
+  for (const [rows, scope] of [[exactCapitalVariants, "com os capitais pedidos para diagnóstico independente"],
+    [firstEventVariants, "para fumantes que pediram cobertura por falecimento ou diagnóstico no primeiro evento"]]) {
+    const variants = rows.map(row => [reports.get(row.sha256), row.provider, row.product]);
+    if (variants.length && variants.every(([key]) => key)) {
       const products = new Set(variants.map(parts => parts.join("|")));
       const sources = new Set(variants.map(([key]) => key));
       $("comparisonInventoryScope").textContent += " Em " + n(sources.size) + " desses relatórios, há ainda " +
-        n(products.size) + " preços de outras versões do produto que ofereceram os capitais pedidos.";
+        n(products.size) + " preços de outras versões do produto " + scope + ".";
     }
   }
   if (count.legal65Shorter) $("comparisonInventoryScope").textContent += " Em " + n(count.legal65Shorter) +
@@ -668,6 +674,16 @@ function ageDeclineReason(row) {
   return row.unavailable_reason === "waiver_age_limit" ? "limite de idade da isenção de mensalidade" : "limite de idade do produto";
 }
 
+function matchedFirstEventVariants(offer) {
+  return firstEventVariants.filter(v => v.sha256 === offer.sha256 && v.source_date === offer.source_date &&
+    v.provider === offer.provider && v.standard_product === offer.product && v.standard_monthly === offer.monthly_premium &&
+    v.age === offer.age && v.smoker === offer.smoker && v.to_age === offer.to_age && offer.quoted_term === "To Age " + v.to_age &&
+    v.life_cover === offer.quoted_life_cover && v.life_cover === offer.life_cover && v.earlier_ci_cover === offer.quoted_earlier_ci_cover &&
+    v.earlier_ci_cover === offer.earlier_ci_cover && v.waiver_to === offer.waiver_to && v.tpd_basis === offer.tpd_basis &&
+    v.occupation_rated === "No" && offer.occupation_rated === "No" && Number(v.monthly_premium) > 0)
+    .sort((a,b) => Number(a.monthly_premium) - Number(b.monthly_premium));
+}
+
 function renderCiComparison(p, independentTpd = false) {
   const prefix = independentTpd ? "tpd" : "accelerated";
   const offers = independentTpd ? tpdOffers : acceleratedOffers;
@@ -733,7 +749,15 @@ function renderCiComparison(p, independentTpd = false) {
     const price = Number(row.monthly_premium);
     const packageText = metlife.c ? "<br>Com " + gbp(metlife.total) + " de MetLife, esta opção soma " +
       gbp(monthlyTotal(price, metlife.total)) + "/mês." : "";
-    return `<dt>${escapeHtml(row.provider)}</dt><dd><b>${gbp(price)}/mês</b> · ${escapeHtml(detail.join(" · "))}${itemised}${packageText}</dd>`;
+    const variants = independentTpd ? [] : matchedFirstEventVariants(row);
+    const otherPrices = variants.map(v => {
+      const charge = Number(v.monthly_premium);
+      const total = metlife.c && !metlife.unavailable ? " · com a MetLife " + gbp(monthlyTotal(charge, metlife.total)) + "/mês" : "";
+      return "<li>" + escapeHtml(v.product) + " · " + gbp(charge) + "/mês" + total + "</li>";
+    });
+    const otherProducts = variants.length ? "<details><summary>Comparar versões de " + escapeHtml(row.provider) +
+      "</summary><ul>" + otherPrices.join("") + "</ul></details>" : "";
+    return `<dt>${escapeHtml(row.provider)}</dt><dd><b>${gbp(price)}/mês</b> · ${escapeHtml(detail.join(" · "))}${itemised}${packageText}${otherProducts}</dd>`;
   });
   if (!independentTpd) {
     for (const row of documentedAgeDeclines(prices[0]))
@@ -774,6 +798,12 @@ function firstEventPackageNote(p, metlife, prices) {
   if (detail?.reference === offer.reference && detail.total_monthly === offer.monthly_premium && Number(detail.discount_monthly) > 0)
     note += " O prêmio já inclui " + gbp(Number(detail.discount_monthly)) + " de desconto pelas apólices em conjunto.";
   if (metlife.c) note += " Com " + gbp(metlife.total) + " da MetLife, esta alternativa soma " + gbp(monthlyTotal(premium, metlife.total)) + "/mês.";
+  const underBudget = matchedFirstEventVariants(offer).filter(v => monthlyTotal(Number(v.monthly_premium), metlife.total) < p.monthlyBudget);
+  if (underBudget.length) {
+    const prices = underBudget.map(v => v.product + " por " + gbp(monthlyTotal(Number(v.monthly_premium), metlife.total)) + "/mês");
+    note += " Outras versões da mesma seguradora abaixo de " + gbp(p.monthlyBudget) +
+      (metlife.c ? " com a MetLife selecionada" : "") + " incluem " + prices.join(" e ") + ".";
+  }
   return note;
 }
 

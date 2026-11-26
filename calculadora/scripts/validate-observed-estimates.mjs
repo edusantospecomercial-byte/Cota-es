@@ -350,6 +350,40 @@ const variantReport = run("capturedReportFor")({...variant31,life:150000,ci:1000
 for (const change of [{sourceHash:"wrong"},{sourceDate:"2021-10-22"},{reported:false},
   {quotes:variantReport.quotes.map(q=>({...q,quotedCi:1}))}])
   assert.equal(exactVariants({...variant31,life:150000,ci:10000,toAge:65},addOn,{...variantReport,...change}),null);
+const firstEventVersions = run("firstEventVariants");
+const versionsForOffer = run("matchedFirstEventVariants");
+assert.equal(firstEventVersions.length,new Set(firstEventVersions.map(v => [reportKeys.get(v.sha256),v.provider,v.product].join("|"))).size);
+const sharedCatalogue = run("acceleratedOffers");
+for (const version of firstEventVersions) {
+  assert.equal(version.smoker,"Yes");
+  assert.equal(version.to_age,"65");
+  assert.ok(version.occupation_rated === "No" && Number(version.monthly_premium) > 0);
+  assert.ok(sharedCatalogue.some(offer => versionsForOffer(offer).includes(version)));
+}
+assert.ok(node("comparisonInventoryScope").textContent.includes(firstEventVersions.length + " preços de outras versões do produto para fumantes"));
+const smokerPackage = {age:30,term:35,toAge:65,life:50000,ci:10000,smoker:"smoker",waiver:"Yes",monthlyBudget:28};
+const firstEvent30 = calculate(65,50000,10000,smokerPackage);
+const upgradedAviva = "Aviva Multi-Product Upgraded CI/No Child Upgrade";
+const panelAge30 = node("acceleratedOffers").innerHTML;
+for (const clue of ["Comparar versões de Aviva",upgradedAviva,"£14.34/mês","£27.34/mês","Zurich Life &amp; CI Enhanced","£27.79/mês"])
+  assert.ok(panelAge30.includes(clue),clue);
+assert.equal(node("totalPrice").textContent,"A confirmar");
+assert.ok(firstEvent30.alternativePackage.includes(upgradedAviva + " por £27.34/mês"));
+assert.ok(firstEvent30.text.includes(firstEvent30.alternativePackage));
+const aviva30 = sharedCatalogue.find(row => row.reference === "1082519950" && row.provider === "Aviva");
+for (const changed of [{sha256:"other"},{source_date:"other"},{age:"31"},{to_age:"70"},{quoted_term:"35 years"},
+  {life_cover:"49999"},{quoted_life_cover:"49999"},{earlier_ci_cover:"9000"},{quoted_earlier_ci_cover:"9000"},
+  {smoker:"No"},{occupation_rated:"Yes"},{tpd_basis:"None"},{waiver_to:"Expiry"},{monthly_premium:"1.00"}])
+  assert.equal(versionsForOffer({...aviva30,...changed}).length,0);
+assert.ok(firstEventNote({...smokerPackage,monthlyBudget:27.35},addOn,[aviva30]).includes(upgradedAviva));
+assert.ok(!firstEventNote({...smokerPackage,monthlyBudget:27.34},addOn,[aviva30]).includes(upgradedAviva));
+node("metlifeChild").checked = true;
+const withChildren30=calculate(65,50000,10000,smokerPackage);
+assert.ok(node("acceleratedOffers").innerHTML.includes("£29.34/mês"));
+assert.ok(withChildren30.alternativePackage.includes("£27.59/mês") && !withChildren30.alternativePackage.includes(upgradedAviva));
+node("metlifeChild").checked = false;
+calculate(65,50000,10000,{...smokerPackage,smoker:"non_smoker"});
+assert.ok(node("acceleratedComparison").hidden || !node("acceleratedOffers").innerHTML.includes("Comparar versões de Aviva"));
 const fixedLife = run("fixedTermLifeRows");
 assert.ok(fixedLife.length >= 6);
 const historical64 = calculate(85,20000,0,{age:64,term:21});
