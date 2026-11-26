@@ -735,6 +735,33 @@ function renderCiComparison(p, independentTpd = false) {
   return prices;
 }
 
+function firstEventPackageNote(p, metlife, prices) {
+  if (!p.life || !p.ci || metlife.unavailable) return "";
+  const smoker = p.smoker === "smoker" ? "Yes" : "No";
+  const offer = prices.find(row => Number(row.age) === p.age && row.smoker === smoker && Number(row.to_age) === p.toAge &&
+    Number(row.life_cover) === p.life && Number(row.earlier_ci_cover) === p.ci && Number(row.monthly_premium) > 0 &&
+    Number(row.quoted_life_cover) === p.life && Number(row.quoted_earlier_ci_cover) === p.ci && row.quoted_term === "To Age " + p.toAge &&
+    (row.occupation_rated === "No" || occupationalBasis(p.occupation, row).occupationMatched) &&
+    (p.waiver !== "Yes" || row.waiver_to === "Expiry" || Number(row.waiver_to) >= p.toAge));
+  if (!offer) return "";
+  const premium = Number(offer.monthly_premium);
+  const waiver = offer.waiver_to === "Expiry" ? "isenção de mensalidade até o fim do contrato" :
+    /^\d+$/.test(offer.waiver_to) ? "isenção de mensalidade com idade-limite de " + offer.waiver_to + " anos" : "isenção sem prazo confirmado";
+  const tpd = {Own: "incapacidade permanente para a própria profissão", Specified: "incapacidade permanente pelo critério Specified",
+    FATs: "incapacidade permanente pelo critério FATs", None: "sem cobertura de incapacidade permanente"};
+  let note = "Alternativa com diagnóstico antecipado · " + offer.product + ". " +
+    gbp(p.life) + " de vida e uma cobertura de " + gbp(p.ci) + " paga uma vez, por falecimento ou diagnóstico coberto, " +
+    "o que ocorrer primeiro. Cobertura até os " + p.toAge + " anos. No comparativo de " + offer.source_date +
+    " (ref. " + offer.reference + "), o pacote custava " + gbp(premium) + "/mês, com " +
+    waiver + " e " + (tpd[offer.tpd_basis] || "critério de incapacidade permanente a confirmar") + ".";
+  if (offer.occupation_rated === "Yes") note += " " + historicalOccupationNote(offer, p) + ".";
+  const detail = coreBreakdowns.get(offer.provider + "|" + offer.sha256);
+  if (detail?.reference === offer.reference && detail.total_monthly === offer.monthly_premium && Number(detail.discount_monthly) > 0)
+    note += " O prêmio já inclui " + gbp(Number(detail.discount_monthly)) + " de desconto pelas apólices em conjunto.";
+  if (metlife.c) note += " Com " + gbp(metlife.total) + " da MetLife, esta alternativa soma " + gbp(monthlyTotal(premium, metlife.total)) + "/mês.";
+  return note;
+}
+
 function avivaLifeInPackage(p) {
   if (!p.life || p.ci || p.waiver === "Yes") return null;
   const smoker = p.smoker === "smoker" ? "Yes" : "No";
@@ -1736,7 +1763,7 @@ function priceProtection(p, m) {
 }
 function render(p) {
   renderFractureComparison(p);
-  renderCiComparison(p);
+  const firstEventPrices = renderCiComparison(p) || [];
   const tpdPrices = renderCiComparison(p, true) || [];
   $("coverError").textContent = "";
   if (p.toAge <= p.age)
@@ -1878,6 +1905,10 @@ function render(p) {
         (m.c ? ` Com ${gbp(m.total)} da MetLife selecionada, o total estimado em contratos separados é ${gbp(sum + m.total)}/mês.` : "") +
         ` Comparativos de ${life.source_date}, referências ${life.model_id} e ${ci.model_id}. A contratação simultânea precisa de confirmação.`;
     }
+  }
+  if (!r.complete && !r.alternativePackage && !r.separatePolicyNote) {
+    const alternative = firstEventPackageNote(p, m, firstEventPrices);
+    if (alternative) r.alternativePackage = alternative;
   }
   if (p.monthlyBudget > 0 && (!r.complete || r.aggregateOnly || displayedPence(r.main) + displayedPence(m.total) >= displayedPence(p.monthlyBudget))) {
     const choice = lifeWithinBudget(p, m);

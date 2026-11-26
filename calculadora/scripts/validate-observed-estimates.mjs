@@ -279,6 +279,34 @@ for (const [smoker, reference, premium] of [["smoker","1078909284","79.88"],["no
     assert.ok(list.includes(clue), clue);
   assert.ok(node("tpdComparison").hidden || !node("tpdOffers").innerHTML.includes("Sem preço neste relatório por"));
 }
+const shared37 = {age:37, term:28, smoker:"smoker", waiver:"Yes"};
+const sharedOption = calculate(65,20000,10000,shared37);
+for (const clue of ["Aviva Multi-Product with Core CI", "£20,000.00 de vida", "£10,000.00 paga uma vez",
+  "o que ocorrer primeiro", "£13.38/mês", "£26.38/mês", "incapacidade permanente para a própria profissão"])
+  assert.ok(sharedOption.alternativePackage.includes(clue), clue);
+assert.ok(sharedOption.alternativePackage.includes("1081657528"));
+assert.ok(sharedOption.text.includes(sharedOption.alternativePackage));
+assert.ok(node("alternativePackage").textContent.includes(sharedOption.alternativePackage));
+assert.equal(sharedOption.complete,false);
+assert.equal(node("totalPrice").textContent,"A confirmar");
+node("metlifeChild").checked = true;
+assert.ok(calculate(65,20000,10000,shared37).alternativePackage.includes("£28.38/mês"));
+node("metlifeChild").checked = false;
+const discountedFirstEvent = calculate(65,50000,20000,{age:40,term:25,waiver:"Yes"});
+for (const clue of ["Zurich Life & CI", "£18.59/mês", "£2.50 de desconto", "£31.59/mês", "Specified"])
+  assert.ok(discountedFirstEvent.alternativePackage.includes(clue),clue);
+const documentedWaiver = calculate(70,80000,5000,{age:60,term:10,waiver:"Yes"});
+assert.ok(documentedWaiver.alternativePackage.includes("Aviva") && documentedWaiver.alternativePackage.includes("£48.16/mês"));
+assert.ok(!calculate(65,50000,20000,{age:50,term:15,waiver:"Yes"}).alternativePackage?.includes("diagnóstico antecipado"));
+const firstEventNote=run("firstEventPackageNote");
+const offer37=run("acceleratedOffers").find(row => row.reference==="1081657528" && row.provider==="Aviva");
+const p37 = {...shared37,toAge:65,life:20000,ci:10000}, addOn={c:1,total:13};
+for (const change of [{smoker:"No"},{age:"38"},{to_age:"70"},{life_cover:"21000"},{earlier_ci_cover:"0"},
+  {quoted_life_cover:"22000"},{quoted_earlier_ci_cover:"8000"},{quoted_term:"28 years"},{waiver_to:"64"},
+  {waiver_to:"No data"},{occupation_rated:"Yes"},{monthly_premium:"0.00"}])
+  assert.equal(firstEventNote(p37,addOn,[{...offer37,...change}]),"");
+assert.equal(firstEventNote(p37,{...addOn,unavailable:true},[offer37]),"");
+assert.ok(!firstEventNote(p37,{c:0,total:0},[offer37]).includes("MetLife"));
 const fixedLife = run("fixedTermLifeRows");
 assert.ok(fixedLife.length >= 6);
 const historical64 = calculate(85,20000,0,{age:64,term:21});
