@@ -265,6 +265,15 @@ for (const label of ["£11.21", "£11.69", "£13.33", "£10,557.00", "preço dep
   assert.ok(node("acceleratedOffers").innerHTML.includes(label), label);
 }
 assert.ok(!independent.text.includes("£11.21"));
+ctx.accelInputs = {age:31, smoker:"non_smoker", toAge:65, life:100000, ci:20000, waiver:"No"};
+run("renderAcceleratedComparison(accelInputs)");
+assert.ok(node("acceleratedSource").textContent.includes("1084937859"));
+assert.ok(node("acceleratedOffers").innerHTML.includes("£17.77"));
+run('renderAcceleratedComparison({...accelInputs,waiver:"Yes"})');
+assert.ok(node("acceleratedSource").textContent.includes("1084937863"));
+assert.ok(node("acceleratedOffers").innerHTML.includes("£17.81"));
+assert.ok(node("acceleratedOffers").innerHTML.includes("prazo de isenção sem confirmação"));
+
 calculate(65, 50000, 10000, {age: 49, term: 16});
 assert.ok(node("acceleratedOffers").innerHTML.includes("£20.41"));
 assert.ok(node("acceleratedSource").textContent.includes("2026-11-25"));

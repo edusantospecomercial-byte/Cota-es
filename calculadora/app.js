@@ -283,7 +283,11 @@ function renderAcceleratedComparison(p) {
     Number(row.age) === p.age && Number(row.to_age) === p.toAge &&
     Number(row.life_cover) === p.life && Number(row.earlier_ci_cover) === p.ci);
   if (!matching.length) return;
-  const latest = matching.reduce((a, b) => a.source_date > b.source_date ||
+  const referencesWithWaiverColumn = new Set(matching.filter(row => row.waiver_to !== "not_shown").map(row => row.reference));
+  const requestedWaiver = p.waiver === "Yes";
+  const comparable = matching.filter(row => referencesWithWaiverColumn.has(row.reference) === requestedWaiver);
+  const candidates = comparable.length ? comparable : matching;
+  const latest = candidates.reduce((a, b) => a.source_date > b.source_date ||
     (a.source_date === b.source_date && Number(a.reference) > Number(b.reference)) ? a : b);
   const prices = matching.filter(row => row.reference === latest.reference)
     .sort((a, b) => Number(a.monthly_premium) - Number(b.monthly_premium));
@@ -299,7 +303,9 @@ function renderAcceleratedComparison(p) {
     return `<dt>${escapeHtml(row.provider)}</dt><dd><b>${gbp(Number(row.monthly_premium))}/mês</b> · ${escapeHtml(detail.join(" · "))}</dd>`;
   });
   $("acceleratedSource").textContent = "Comparativo de " + latest.source_date +
-    " · referência " + latest.reference + " · mensalidades antes da MetLife.";
+    " · referência " + latest.reference + " · mensalidades antes da MetLife. " +
+    (referencesWithWaiverColumn.has(latest.reference) ? "O relatório traz uma coluna de isenção. Confira a resposta de cada seguradora." :
+      "O relatório não informa isenção nas ofertas.");
   $("acceleratedOffers").innerHTML = entries.join("");
   panel.hidden = false;
 }
