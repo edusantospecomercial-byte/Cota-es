@@ -1,4 +1,7 @@
 source_date,reference,age,smoker,to_age,life_cover,earlier_ci_cover,provider,product,monthly_premium,quoted_life_cover,quoted_earlier_ci_cover,quoted_term,occupation_rated,waiver_to,tpd_basis,sha256
+2025-11-08,1073384339,36,No,65,0,20000,Zurich,Zurich Life & CI,11.87,0,20000,To Age 65,No,not_shown,None,dd8dc8a78d6a0b55b307813d8e2e6d12a35153fb879b78aa9ae3cc5885dc8ea5
+2025-11-08,1073384339,36,No,65,0,20000,Legal & General,Legal & General Life + CI (Standard),10.65,0,20000,28 years,Yes,not_shown,FATs,dd8dc8a78d6a0b55b307813d8e2e6d12a35153fb879b78aa9ae3cc5885dc8ea5
+2025-11-08,1073384339,36,No,65,0,20000,Aviva,Aviva Life Insurance+ with Core CI,11.47,0,20000,To Age 65,No,not_shown,Own,dd8dc8a78d6a0b55b307813d8e2e6d12a35153fb879b78aa9ae3cc5885dc8ea5
 2025-12-03,1074196311,48,No,65,40000,10000,Zurich,Zurich Life & CI,19.17,40000,10000,To Age 65,No,70,Specified,b6f7c986b5a35d68de0621f5bc73d458592ad9bdaaff7f97358fe8e2aa11f134
 2025-12-03,1074196311,48,No,65,40000,10000,Legal & General,Legal & General Life + CI (Standard),18.69,40000,10000,16 years,Yes,Expiry,Own,b6f7c986b5a35d68de0621f5bc73d458592ad9bdaaff7f97358fe8e2aa11f134
 2025-12-03,1074196311,48,No,65,40000,10000,Aviva,Aviva Multi-Product with Core CI,17.30,40000,10000,To Age 65,No,70,Own,b6f7c986b5a35d68de0621f5bc73d458592ad9bdaaff7f97358fe8e2aa11f134

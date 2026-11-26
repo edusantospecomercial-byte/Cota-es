@@ -327,8 +327,17 @@ for (const row of variantRows) {
   assert.ok(Number(row.age) < Number(row.to_age) && Number(row.quoted_earlier_ci_cover) > 0 &&
     (Number(row.life_cover) > 0 ? Number(row.quoted_life_cover) > 0 : row.quoted_life_cover === "0") &&
     Number(row.monthly_premium) > 0);
-  assert.ok(["Own", "Specified", "FATs"].includes(row.tpd_basis));
+  assert.ok(["Own", "Specified", "FATs", "None"].includes(row.tpd_basis));
 }
+calculate(70, 0, 10000, {age: 57, term: 13});
+assert.equal(node("tpdComparison").hidden, false);
+assert.ok(node("tpdSource").textContent.includes("1081121809"));
+assert.match(node("tpdOffers").innerHTML, /Aviva<\/dt><dd><b>£16\.54\/mês<\/b>[^<]*diagnóstico independente £10,000\.00/);
+assert.match(node("tpdOffers").innerHTML, /Legal &amp; General<\/dt><dd><b>£20\.41\/mês<\/b>[^<]*12 anos de prazo[^<]*vida ou diagnóstico £10,000\.00[^<]*preço depende da profissão/);
+assert.match(node("tpdOffers").innerHTML, /Zurich<\/dt><dd><b>£24\.08\/mês<\/b>[^<]*diagnóstico independente £10,000\.00/);
+calculate(65, 0, 20000, {age: 36, term: 29});
+assert.ok(node("acceleratedSource").textContent.includes("1073384339"));
+assert.match(node("acceleratedOffers").innerHTML, /Zurich<\/dt><dd><b>£11\.87\/mês<\/b>[^<]*oferta sem TPD/);
 calculate(65, 0, 20000, { age: 47, term: 18, smoker: "smoker" });
 assert.equal(node("acceleratedComparison").hidden, false);
 assert.equal(node("tpdComparison").hidden, true);
@@ -502,3 +511,44 @@ assert.equal(run("documentedLookupPrice(inputs, 18.52)"), false);
 ctx.inputs = { age: 50, smoker: "non_smoker", life: 50000, ci: 10000, toAge: 75 };
 assert.equal(run("documentedLookupPrice(inputs, 27.04)"), true);
 assert.equal(run("documentedLookupPrice(inputs, 0.99)"), false);
+
+// The dated archive is fixed; use the day following its last collection to test both eligibility and expiry.
+run("var originalClock = Date.now; Date.now = () => Date.parse('2026-11-26T00:00:00Z')");
+const lifeAt39 = calculate(65, 100000, 0, {age: 39, term: 26, waiver: "No"});
+assert.ok(lifeAt39.ageNote.includes("£9.75/mês"));
+assert.ok(lifeAt39.text.includes("Última conferência em 2026-11-17"));
+const lifeAt57 = calculate(70, 50000, 0, {age: 57, term: 13, waiver: "No"});
+assert.ok(lifeAt57.ageNote.includes("£17.87/mês"));
+const ageGroups = run("historicalAgeTests");
+for (const [key, expected] of [["No|65|100000", 0.20], ["No|70|50000", 0.46]]) {
+  const tests = ageGroups.get(key);
+  assert.equal(tests.length, 2);
+  assert.equal(Math.max(...tests.map(test => +test.error.toFixed(2))), expected);
+  assert.ok(tests.every(test => test.passed));
+}
+for (const unsupported of [
+  {waiver: "Yes"}, {smoker: "smoker"}, {life: 99000}, {ci: 5000}, {toAge: 80}, {age: 20},
+]) {
+  ctx.ageVariant = unsupported;
+  assert.equal(run('illustratedAgeEstimate(illustratedLifeRows,{age:39,toAge:65,life:100000,ci:0,smoker:"non_smoker",waiver:"No",...ageVariant})'), null);
+}
+// With the general carrier grid unavailable, a tested Zurich base still supplies a monthly estimate and total.
+ctx.originalPriorityRows = run("priorityRows");
+run("priorityRows = []");
+const standaloneEstimate = calculate(65, 100000, 0, {age: 39, term: 26, waiver: "No"});
+assert.equal(standaloneEstimate.ageEstimate, true);
+assert.equal(standaloneEstimate.provider, "Zurich");
+assert.equal(standaloneEstimate.main, 9.75);
+assert.equal(standaloneEstimate.low, null);
+assert.equal(standaloneEstimate.high, null);
+assert.ok(standaloneEstimate.complete);
+assert.equal(node("totalPrice").textContent, "£22.75/mês");
+assert.ok(standaloneEstimate.text.includes("Com a MetLife selecionada, a estimativa Zurich soma £22.75/mês"));
+assert.ok(!standaloneEstimate.text.includes("Faixa provável"));
+run("priorityRows = originalPriorityRows");
+const documentedAge = calculate(65, 100000, 0, {age: 41, term: 24, waiver: "No"});
+assert.equal(documentedAge.ageNote, undefined);
+run("Date.now = () => Date.parse('2030-12-01')");
+assert.equal(calculate(65, 100000, 0, {age: 39, term: 26, waiver: "No"}).ageNote, undefined);
+run("Date.now = originalClock");
+console.log(JSON.stringify({age39: {usedForTotal: Boolean(lifeAt39.ageEstimate), main: lifeAt39.main}, age57: {usedForTotal: Boolean(lifeAt57.ageEstimate), main: lifeAt57.main}}));

@@ -8,6 +8,9 @@ source_date,reference,age,smoker,to_age,life_cover,independent_ci_cover,provider
 2026-07-14,1080839019,40,No,70,200000,20000,Zurich,Zurich Life & CI,32.36,200000,20000,0,To Age 70,No,No data,Specified,67ca45c610525649943c74550a63561a3aad935a8c0fe91a4c2ddaee81d049b3
 2026-07-14,1080839019,40,No,70,200000,20000,Legal & General,Legal & General Life + CI (Standard),31.18,200000,0,20000,29 years,Yes,Expiry,Own,67ca45c610525649943c74550a63561a3aad935a8c0fe91a4c2ddaee81d049b3
 2026-07-14,1080839019,40,No,70,200000,20000,Aviva,Aviva Multi-Product with Core CI,36.48,200000,20000,0,To Age 70,No,70,Own,67ca45c610525649943c74550a63561a3aad935a8c0fe91a4c2ddaee81d049b3
+2026-07-23,1081121809,57,No,70,0,10000,Zurich,Zurich Critical Illness,24.08,0,10000,0,To Age 70,No,No data,Specified,16f9d6dec556d2b1af25504ff81f7ae6936cd8e279aa7c18bef15e679cb3d384
+2026-07-23,1081121809,57,No,70,0,10000,Legal & General,Legal & General Life + CI (Standard),20.41,0,0,10000,12 years,Yes,Expiry,Own,16f9d6dec556d2b1af25504ff81f7ae6936cd8e279aa7c18bef15e679cb3d384
+2026-07-23,1081121809,57,No,70,0,10000,Aviva,Aviva Critical Illness+ Core,16.54,0,10000,0,To Age 70,No,No data,Own,16f9d6dec556d2b1af25504ff81f7ae6936cd8e279aa7c18bef15e679cb3d384
 2026-11-25,1084937585,31,No,65,50000,10000,Zurich,Zurich Life & CI,9.88,50000,10000,0,To Age 65,No,not_shown,Specified,393b184bd9a49ed1d175b8f412b582a1320dbc5fb67e504ed0aaa3eccba72960
 2026-11-25,1084937585,31,No,65,50000,10000,Legal & General,Legal & General Life + CI (Standard),9.97,50000,10000,0,33 years,Yes,not_shown,FATs,393b184bd9a49ed1d175b8f412b582a1320dbc5fb67e504ed0aaa3eccba72960
 2026-11-25,1084937585,31,No,65,50000,10000,Aviva,Aviva Multi-Product with Core CI,10.00,53651,10896,0,To Age 65,No,not_shown,Own,393b184bd9a49ed1d175b8f412b582a1320dbc5fb67e504ed0aaa3eccba72960

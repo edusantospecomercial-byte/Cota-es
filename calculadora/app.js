@@ -8,6 +8,7 @@ let catalog = { models: {} },
   waiverRows = null,
   individualWaivers = [],
   illustratedLifeRows = [],
+  historicalAgeTests = new Map(),
   acceleratedOffers = [],
   coreBreakdowns = new Map(),
   tpdOffers = [],
@@ -149,6 +150,7 @@ async function init() {
   acceleratedOffers = loadedAccelerated;
   illustratedLifeRows = illustratedLife.map(row => ({ ...row, provider: "Zurich" })).concat(
     avivaLife.map(row => ({ ...row, provider: "Aviva", policy_count: "1", discount_monthly: "0.00" })));
+  historicalAgeTests = globalThis.validateIllustratedAges(illustratedLifeRows);
   reportedRows = loadedReports;
   const trials = evaluateCapitalTrials(loadedReports, capitalHoldout);
   validatedCapitalRanges = buildCapitalRanges(trials, capitalHoldout);
@@ -328,7 +330,7 @@ function renderCiComparison(p, independentTpd = false) {
   panel.hidden = true;
   panel.open = false;
   $(prefix + "Offers").textContent = "";
-  if (!p.ci || (independentTpd && !p.life)) return;
+  if (!p.ci) return;
   const smoker = p.smoker === "smoker" ? "Yes" : "No";
   const matching = offers.filter(row => row.smoker === smoker &&
     Number(row.age) === p.age && Number(row.to_age) === p.toAge &&
@@ -354,7 +356,7 @@ function renderCiComparison(p, independentTpd = false) {
       detail.push("diagnóstico independente " + gbp(Number(row.quoted_independent_ci_cover)));
     if (Number(row.quoted_earlier_ci_cover) > 0)
       detail.push("vida ou diagnóstico " + gbp(Number(row.quoted_earlier_ci_cover)));
-    detail.push(waiver, "TPD " + row.tpd_basis);
+    detail.push(waiver, row.tpd_basis === "None" ? "oferta sem TPD" : "TPD " + row.tpd_basis);
     if (row.occupation_rated === "Yes") detail.push("preço depende da profissão");
     const breakdown = independentTpd ? null : coreBreakdowns.get(row.provider + "|" + row.sha256);
     const itemised = itemisedCiPremium(row, breakdown);
@@ -834,7 +836,7 @@ function makeSummary(p, r) {
       ? `${r.waiverPending || r.termPending || (r.reportNote && !r.providerQuotes?.length) ? "Referência geral para a proteção principal" : "Estimativa"}: ${gbp(r.main)}/mês`
       : "Estimativa principal: requer cotação oficial",
   );
-  if (r.supported && !r.illustratedBase)
+  if (r.supported && !r.illustratedBase && !r.ageEstimate)
     lines.push(
       `${r.detailed && r.termPending ? "Faixa das alternativas devolvidas" : r.detailed ? "Faixa para a idade final solicitada" : r.providerQuotes?.length ? r.providerGap ? "Faixa observada entre seguradoras disponíveis" : r.priorityExact ? "Faixa observada entre seguradoras" : "Faixa estimada entre seguradoras" : "Faixa provável"}: ${gbp(r.low)}–${gbp(r.high)}/mês`,
     );
@@ -860,6 +862,7 @@ function makeSummary(p, r) {
       lines.push(`${q.provider} · ${quotedTerm(q)} · ${gbp(q.premium)}/mês${m.c ? ` · com MetLife ${gbp(q.premium + m.total)}/mês` : ""}${q.occupationRated ? " · preço do perfil profissional de referência" : ""}`);
   if (r.reportNote) lines.push(r.reportNote);
   if (r.illustrationNote) lines.push(r.illustrationNote);
+  if (r.ageNote) lines.push(r.ageNote);
   if (r.componentNote) lines.push(r.componentNote);
   if (r.lgTermNote) lines.push(r.lgTermNote);
   if (r.alternativePackage) lines.push(r.alternativePackage);
@@ -1042,6 +1045,33 @@ function render(p) {
       warnings.unshift(r.illustrationNote);
     }
   }
+  if (!illustrated && !priorityMatch.reported && !priorityMatch.exact && !priorityMatch.gap && !r.waiverPending) {
+    const between = globalThis.illustratedAgeEstimate(illustratedLifeRows, p);
+    if (between) {
+      r.ageNote = "Zurich · estimativa de vida de " + gbp(between.price) + "/mês antes de adicionais, calculada entre " +
+        between.lower.age + " anos (" + gbp(between.lower.price) + ") e " + between.upper.age +
+        " anos (" + gbp(between.upper.price) + "). Em " + between.testedAges + (between.testedAges === 1 ? " idade intermediária" : " idades intermediárias") +
+        " com illustration posterior, a maior diferença foi " + gbp(between.maxError) + "/mês. Última conferência em " + between.latestCheck + ".";
+      if (m.c && !m.unavailable) r.ageNote += " Com a MetLife selecionada, a estimativa Zurich soma " + gbp(between.price + m.total) + "/mês.";
+      const groupKey = [p.smoker === "smoker" ? "Yes" : "No", p.toAge, p.life].join("|");
+      const past = (historicalAgeTests.get(groupKey) || []).filter(test => Date.parse(test.date) <= Date.now());
+      if (past.length) {
+        const maxError = Math.max(...past.map(test => test.error));
+        r.ageNote += " Para esse capital e prazo, a regra pôde ser testada em " + past.length +
+          (past.length === 1 ? " cotação posterior de idade ainda sem preço" : " cotações posteriores de idades ainda sem preço") +
+          " na base recente. Maior erro de " + gbp(maxError) + "/mês.";
+      }
+      if (!priorityQuotes.length && past.length && past.every(test => test.passed)) {
+        r.supported = true;
+        r.ageEstimate = true;
+        r.provider = "Zurich";
+        r.main = between.price;
+        r.low = r.high = null;
+        warnings = warnings.filter(w => !w.startsWith("Baixa confiança:") && !w.startsWith("Perfil fora da faixa principal da base:") &&
+          !w.startsWith("Perfil ou capital fora da faixa validada"));
+      }
+    }
+  }
   r.lgTermNote = lgTermReference(p);
   const avivaRecord = illustratedLifeFor(p, "Aviva");
   if (avivaRecord) {
@@ -1049,7 +1079,7 @@ function render(p) {
       gbp(Number(avivaRecord.base_monthly)) + " + adicionais " + gbp(Number(avivaRecord.additional_monthly)) +
       " = " + gbp(Number(avivaRecord.policy_monthly)) + "/mês. Total conferido no comparativo " + avivaRecord.reference + ".";
   }
-  if (r.supported && !r.providerQuotes?.length && !r.illustratedBase)
+  if (r.supported && !r.providerQuotes?.length && !r.illustratedBase && !r.ageEstimate)
     warnings.unshift(
       "Estimativa do modelo histórico agregado; ainda sem interpolação validada das três seguradoras prioritárias para esta combinação.",
     );
@@ -1068,7 +1098,7 @@ function render(p) {
   $("mainPrice").textContent = r.supported
     ? `${gbp(r.main)}/mês`
     : "Não publicado";
-  $("range").textContent = r.illustratedBase ? "Prêmio-base de vida registrado na illustration " + r.provider : r.supported
+  $("range").textContent = r.ageEstimate ? "Estimativa Zurich por idade para vida individual, antes de adicionais" : r.illustratedBase ? "Prêmio-base de vida registrado na illustration " + r.provider : r.supported
     ? `${r.detailed && r.termPending ? "Faixa das alternativas devolvidas" : r.detailed ? "Faixa para a idade final solicitada" : r.providerQuotes?.length ? r.providerGap ? "Faixa observada entre seguradoras disponíveis" : r.priorityExact ? "Faixa observada entre seguradoras" : "Faixa estimada entre seguradoras" : "Faixa provável"}: ${gbp(r.low)} a ${gbp(r.high)}/mês`
     : "O motor não publica um preço sem validação suficiente.";
   $("totalPrice").textContent = r.complete
@@ -1113,9 +1143,10 @@ function render(p) {
   }
   if (r.illustrationNote)
     priorityDetail += `<dt>Prêmio-base documentado</dt><dd>${escapeHtml(r.illustrationNote)}</dd>`;
+  if (r.ageNote) priorityDetail += `<dt>Estimativa entre idades</dt><dd>${escapeHtml(r.ageNote)}</dd>`;
   if (r.lgTermNote) priorityDetail += `<dt>Prazo e preço documentados pela L&amp;G</dt><dd>${escapeHtml(r.lgTermNote)}</dd>`;
   if (r.componentNote) priorityDetail += `<dt>Composição da apólice histórica</dt><dd>${escapeHtml(r.componentNote)}</dd>`;
-  const evidence = r.illustratedBase ? `1 illustration ${escapeHtml(r.provider)} · vida em apólice individual` : r.detailed
+  const evidence = r.ageEstimate ? "2 idades de referência e conferência com illustration posterior na mesma faixa" : r.illustratedBase ? `1 illustration ${escapeHtml(r.provider)} · vida em apólice individual` : r.detailed
     ? r.capitalRange ? `2 capitais de referência · 1 capital de teste · ${r.providerQuotes.length} ${r.providerQuotes.length === 1 ? "seguradora" : "seguradoras"}` : `1 comparativo · ${r.providerQuotes.length} preços históricos`
     : `${model?.records || 0} registros na família · confiança ${escapeHtml(confidenceLabel)}`;
   $("details").innerHTML =

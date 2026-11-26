@@ -28,7 +28,9 @@ def read_comparison(path, partial=False):
         return None
     cover = pages[0]
     results = "\n".join(pages[1:]).partition("Products Not Quoting:")[0]
-    benefits = re.findall(r"^\s*•\s*([^\n]+)", cover, re.M)
+    benefits = [" ".join(line.split()) for line in re.findall(
+        r"^[ \t]*•[ \t]+([^\n]+(?:\n[ \t]{6,}[^\s•][^\n]*)*)", cover, re.M
+    )]
     if len(benefits) != 1 or not re.search(r"Quotation basis:\s*Benefit-led", cover):
         return None
     benefit = re.fullmatch(
