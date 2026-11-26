@@ -9,6 +9,7 @@ let catalog = { models: {} },
   individualWaivers = [],
   illustratedLifeRows = [],
   acceleratedOffers = [],
+  avivaCoreBreakdowns = new Map(),
   tpdOffers = [],
   lgIllustratedTerms = [],
   lastPayload = null;
@@ -53,6 +54,7 @@ async function init() {
     avivaLife,
     loadedLgTerms,
     loadedTpdOffers,
+    loadedAvivaBreakdowns,
   ] = await Promise.all([
     fetch("./data/models.json", { cache: "no-store" })
       .then((r) => r.json())
@@ -121,7 +123,12 @@ async function init() {
       .then(response => response.ok ? response.text() : "")
       .then(parsePriorityCsv)
       .catch(() => []),
+    fetch("./data/aviva-core-breakdowns.csv", { cache: "no-store" })
+      .then(response => response.ok ? response.text() : "")
+      .then(parsePriorityCsv)
+      .catch(() => []),
   ]);
+  avivaCoreBreakdowns = new Map(loadedAvivaBreakdowns.map(row => [row.comparison_sha256, row]));
   tpdOffers = loadedTpdOffers;
   lgIllustratedTerms = loadedLgTerms;
   individualWaivers = loadedIndividualWaivers;
@@ -318,7 +325,15 @@ function renderCiComparison(p, independentTpd = false) {
       detail.push("vida ou diagnóstico " + gbp(Number(row.quoted_earlier_ci_cover)));
     detail.push(waiver, "TPD " + row.tpd_basis);
     if (row.occupation_rated === "Yes") detail.push("preço depende da profissão");
-    return `<dt>${escapeHtml(row.provider)}</dt><dd><b>${gbp(Number(row.monthly_premium))}/mês</b> · ${escapeHtml(detail.join(" · "))}</dd>`;
+    const breakdown = row.provider === "Aviva" && !independentTpd ? avivaCoreBreakdowns.get(row.sha256) : null;
+    let itemised = "";
+    if (breakdown && breakdown.reference === row.reference && breakdown.total_monthly === row.monthly_premium) {
+      const charges = [["vida adicional", breakdown.life_monthly], ["vida ou diagnóstico", breakdown.earlier_ci_monthly],
+        ["isenção", breakdown.waiver_monthly], ["incapacidade permanente", breakdown.tpd_monthly]];
+      itemised = "<br>Na illustration, a mensalidade reúne " + charges.filter(([, value]) => Number(value) > 0)
+        .map(([label, value]) => label + " " + gbp(Number(value))).join(" + ") + ".";
+    }
+    return `<dt>${escapeHtml(row.provider)}</dt><dd><b>${gbp(Number(row.monthly_premium))}/mês</b> · ${escapeHtml(detail.join(" · "))}${itemised}</dd>`;
   });
   $(prefix + "Source").textContent = "Comparativo de " + latest.source_date +
     " · referência " + latest.reference + " · mensalidades antes da MetLife. " +

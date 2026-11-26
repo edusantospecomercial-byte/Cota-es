@@ -10,17 +10,19 @@ import zipfile
 
 
 def pairs(paths, folder):
+    folders = {name.lower() for name in ((folder,) if isinstance(folder, str) else folder)}
     for path in paths:
         if path.suffix.lower() == ".zip":
             with zipfile.ZipFile(path) as archive:
                 names = {n.replace("\\", "/"): n for n in archive.namelist()}
                 for standard_name, original in names.items():
-                    if tuple(standard_name.lower().split("/")[-2:]) != (folder.lower(), "illustration.pdf"):
+                    components = standard_name.lower().split("/")
+                    if len(components) < 2 or components[-2] not in folders or components[-1] != "illustration.pdf":
                         continue
                     report = standard_name.rsplit("/", 1)[0] + "/Comparison Report - without commission.pdf"
                     if report in names:
                         yield archive.read(original), archive.read(names[report])
-        elif path.parent.name.lower() == folder.lower():
+        elif path.parent.name.lower() in folders:
             report = path.with_name("Comparison Report - without commission.pdf")
             if report.exists():
                 yield path.read_bytes(), report.read_bytes()

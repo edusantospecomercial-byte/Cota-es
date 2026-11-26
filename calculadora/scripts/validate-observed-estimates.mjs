@@ -289,6 +289,22 @@ assert.equal(node("tpdComparison").hidden, false);
 for (const price of ["£12.22", "£12.04", "£13.82"]) assert.ok(node("tpdOffers").innerHTML.includes(price));
 
 const variantRows = run("acceleratedOffers");
+const breakdowns = run("avivaCoreBreakdowns");
+const penny = value => Math.round(Number(value) * 100);
+for (const [hash, part] of breakdowns) {
+  const offer = variantRows.find(row => row.sha256 === hash && row.provider === "Aviva");
+  assert.ok(offer);
+  assert.equal(part.reference, offer.reference);
+  assert.equal(part.source_date, offer.source_date);
+  assert.equal(part.age, offer.age);
+  assert.equal(part.smoker, offer.smoker);
+  assert.equal(part.to_age, offer.to_age);
+  assert.equal(part.life_cover, offer.quoted_life_cover);
+  assert.equal(part.earlier_ci_cover, offer.quoted_earlier_ci_cover);
+  assert.equal(part.total_monthly, offer.monthly_premium);
+  assert.equal(penny(part.life_monthly) + penny(part.earlier_ci_monthly) + penny(part.waiver_monthly) + penny(part.tpd_monthly),
+    penny(offer.monthly_premium));
+}
 const variantKeys = new Set();
 for (const row of variantRows) {
   const key = [row.reference, row.provider].join("|");
@@ -308,6 +324,7 @@ for (const detail of ["£29.45", "£31.75", "£33.64", "vida ou diagnóstico £2
   assert.ok(node("acceleratedOffers").innerHTML.includes(detail), detail);
 assert.ok(!node("acceleratedOffers").innerHTML.includes("vida £0.00"));
 assert.ok(node("acceleratedSource").textContent.includes("1083439983"));
+assert.ok(node("acceleratedOffers").innerHTML.includes("vida ou diagnóstico £28.98 + isenção £0.18 + incapacidade permanente £0.29"));
 const independent = calculate(65, 100000, 10000, age31);
 assert.equal(independent.main, 11.08);
 assert.equal(node("acceleratedComparison").hidden, false);
@@ -326,6 +343,7 @@ assert.ok(node("acceleratedOffers").innerHTML.includes("prazo de isenção sem c
 
 calculate(65, 50000, 10000, {age: 49, term: 16});
 assert.ok(node("acceleratedOffers").innerHTML.includes("£20.41"));
+assert.ok(node("acceleratedOffers").innerHTML.includes("vida adicional £10.34 + vida ou diagnóstico £9.83 + isenção £0.14 + incapacidade permanente £0.10"));
 assert.ok(node("acceleratedSource").textContent.includes("2026-11-25"));
 calculate(65, 50000, 0, age31);
 assert.equal(node("acceleratedComparison").hidden, true);
