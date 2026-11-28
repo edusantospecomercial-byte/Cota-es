@@ -544,6 +544,21 @@ function showAgeAccuracy(checks, rows) {
     "Registramos a previsão antes de obter o comparativo de teste. As mensalidades consideram apenas a proteção principal.";
   $("ageAccuracyProviders").textContent = [...counts].map(([name, v]) =>
     name + " " + v.hits + "/" + v.total).join(" · ") + ".";
+  const groups = [
+    ["Fumantes", t => t.actual.smoker === "Yes"],
+    ["Não fumantes", t => t.actual.smoker === "No"],
+    ["Somente vida", t => +t.actual.life_cover > 0 && +t.actual.critical_illness_cover === 0],
+    ["Vida e diagnóstico independente", t => +t.actual.life_cover > 0 && +t.actual.critical_illness_cover > 0],
+    ["Somente diagnóstico independente", t => +t.actual.life_cover === 0 && +t.actual.critical_illness_cover > 0],
+  ];
+  $("ageAccuracyGroups").textContent = groups.map(([label, matches]) => {
+    const subset = tests.filter(matches);
+    if (!subset.length) return label + " — sem comparações";
+    const hits = subset.filter(t => t.passed).length;
+    const mean = subset.reduce((sum, t) => sum + t.error, 0) / subset.length / 100;
+    return label + " — " + hits + "/" + subset.length + ", erro médio absoluto de " + gbp(mean);
+  }).join(". ") + ". A amostra usa preços anteriores à análise individual de saúde.";
+
 }
 
 function showTemporalAccuracy(holdout) {

@@ -30,7 +30,7 @@ def product_mentioned(text, product):
     return product.casefold() in " ".join(remaining.casefold().split())
 
 
-def extract(path, model_id, age, smoker, to_age, life, ci, *, allow_unlisted=False, include_tpd=False):
+def extract(path, model_id, age, smoker, to_age, life, ci, *, allow_unlisted=False, include_tpd=False, requested_own_tpd=False):
     text = subprocess.check_output(["pdftotext", "-layout", str(path), "-"], encoding="utf-8")
     cover = text.split("\f", 1)[0]
     result, _, unavailable = text.partition("Products Not Quoting:")
@@ -40,6 +40,10 @@ def extract(path, model_id, age, smoker, to_age, life, ci, *, allow_unlisted=Fal
     if not life and ci > 0:
         pattern = (r"Level Term Assurance: 1st life, £([\d,]+) critical illness cover, policy duration is to age (\d+),"
                    r" premiums are guaranteed")
+    if requested_own_tpd:
+        if not include_tpd or not ci:
+            raise ValueError("An own-occupation request requires illness cover and separate TPD output.")
+        pattern = pattern.replace("cover,", r"cover \(TPD: own occupation\),")
     benefit = re.fullmatch(pattern, summary[0].strip()) if len(summary) == 1 else None
     if not benefit or [int((v or "0").replace(",", "")) for v in benefit.groups()] != ([life, ci, to_age] if life else [ci, to_age]):
         raise ValueError("Benefit structure or requested capital/term differs from the report.")

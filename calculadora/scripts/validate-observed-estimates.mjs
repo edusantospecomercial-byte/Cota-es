@@ -173,6 +173,10 @@ assert.equal(node("ageAccuracy").hidden, false);
 const agePasses = ageTests.filter(t => t.passed).length;
 assert.ok(node("ageAccuracyScore").textContent.includes(agePasses + " de " + ageTests.length + " previsões"));
 assert.ok(agePasses > 0 && agePasses < ageTests.length);
+for (const [name, sm] of [["Fumantes", "Yes"], ["Não fumantes", "No"]]) {
+  const segment = ageTests.filter(t => t.actual.smoker === sm);
+  assert.ok(node("ageAccuracyGroups").textContent.includes(name + " — " + segment.filter(t => t.passed).length + "/" + segment.length));
+}
 const ageProof = ageTrialCsv[0];
 for (const change of [{registered_at:ageProof.check_received_at}, {lower_sha256:ageProof.check_sha256},
   {upper_sha256:"unverified"}, {predicted_pence:"99999"}]) {
@@ -214,7 +218,7 @@ assert.ok(totals && totals.prices === new Set(namedVersions.map(r=>[reportKeys.g
 assert.ok(node("comparisonInventoryTitle").textContent.includes((counts.prices+totals.prices).toLocaleString("pt-BR")+" preços por produto"));
 assert.ok(node("comparisonInventoryProviders").textContent.includes(counts.prices.toLocaleString("pt-BR")+" preços-base"));
 assert.ok(counts.distinctRequests > 0 && counts.distinctRequests < counts.reports);
-assert.ok(node("comparisonInventoryProviders").textContent.includes(counts.distinctRequests+" pedidos distintos"));
+assert.ok(node("comparisonInventoryProviders").textContent.includes(counts.distinctRequests.toLocaleString("pt-BR")+" pedidos distintos"));
 const v0=namedVersions[0];
 assert.equal(productTotal(reportKeys,tables,[[namedVersions.concat(v0)]]).prices,totals.prices);
 for (const change of [{sha256:"unknown"},{product:v0.standard_product},{standard_monthly:"0.01"},{monthly_premium:"0.00"},{monthly_premium:"999.99"}])
@@ -345,7 +349,9 @@ const includeRow = row => [tables[0].concat(row), ...tables.slice(1)];
 assert.equal(inventory(pdfIndex, includeRow(duplicate)).prices, counts.prices);
 assert.equal(inventory(pdfIndex, includeRow({...duplicate, monthly_premium: "1500.00"})), null);
 assert.equal(inventory(pdfIndex, includeRow({...duplicate, monthly_premium: "approximate"})), null);
-console.log(JSON.stringify({ documentedComparisonInventory: counts }));
+console.log(JSON.stringify({ documentedComparisonInventory: counts, productPrices: counts.prices + totals.prices,
+  productVersions: totals.prices, inventoryText: node("comparisonInventoryProviders").textContent,
+  ageTestText: node("ageAccuracyScore").textContent, ageSegments: node("ageAccuracyGroups").textContent }));
 
 const partialProfile = { age: 47, toAge: 65, life: 50000, ci: 10000, smoker: "non_smoker", waiver: "No" };
 const gapMatch = run("priorityQuotesFor")(partialProfile);
