@@ -1655,3 +1655,150 @@ source_date,model_id,age,smoker,to_age,life_cover,critical_illness_cover,provide
 2026-11-28,35071160,49,Yes,65,0,10000,Zurich,Zurich Critical Illness,23.17,true,To Age 65,No,927f625e71c63fd1128cf0c0894064129688bbfad90a8f4f325646dc54a250cd,,0,10000
 2026-11-28,35071160,49,Yes,65,0,10000,Legal & General,Legal & General CI (Standard),,false,,,927f625e71c63fd1128cf0c0894064129688bbfad90a8f4f325646dc54a250cd,product_not_quoted,,
 2026-11-28,35071160,49,Yes,65,0,10000,Aviva,Aviva Critical Illness+ Core,16.91,true,To Age 65,No,927f625e71c63fd1128cf0c0894064129688bbfad90a8f4f325646dc54a250cd,,0,10000
+2026-11-28,35071175,50,Yes,65,150000,0,Zurich,Zurich Life,78.75,true,To Age 65,No,d360866371bfc21cc21ac94bcbd253db2b5922d603dc04f077b3e529dbf33eac,,150000,0
+2026-11-28,35071175,50,Yes,65,150000,0,Legal & General,Legal & General Life,,false,,,d360866371bfc21cc21ac94bcbd253db2b5922d603dc04f077b3e529dbf33eac,product_not_quoted,,
+2026-11-28,35071175,50,Yes,65,150000,0,Aviva,Aviva Life Insurance+,71.37,true,To Age 65,No,d360866371bfc21cc21ac94bcbd253db2b5922d603dc04f077b3e529dbf33eac,,150000,0
+2026-11-28,35071184,53,Yes,65,20000,0,Zurich,Zurich Life,17.84,true,To Age 65,No,c39e9d404c3d030999deaea52518c1c39d84bf97fc8f46ab52df7c9ebe394470,,20000,0
+2026-11-28,35071184,53,Yes,65,20000,0,Legal & General,Legal & General Life,,false,,,c39e9d404c3d030999deaea52518c1c39d84bf97fc8f46ab52df7c9ebe394470,product_not_quoted,,
+2026-11-28,35071184,53,Yes,65,20000,0,Aviva,Aviva Life Insurance+,15.21,true,To Age 65,No,c39e9d404c3d030999deaea52518c1c39d84bf97fc8f46ab52df7c9ebe394470,,20000,0
+2026-11-28,35071174,50,Yes,65,75000,15000,Zurich,Zurich Life & CI,76.47,true,To Age 65,No,6160ef53d1d1a73a6e64bd87e65b2bacbd1dec39a4a1803db4b8e73ac1b05a8c,,75000,15000
+2026-11-28,35071174,50,Yes,65,75000,15000,Legal & General,Legal & General Life + CI (Standard),,unknown,,,6160ef53d1d1a73a6e64bd87e65b2bacbd1dec39a4a1803db4b8e73ac1b05a8c,product_not_listed,,
+2026-11-28,35071174,50,Yes,65,75000,15000,Aviva,Aviva Multi-Product with Core CI,65.11,true,To Age 65,No,6160ef53d1d1a73a6e64bd87e65b2bacbd1dec39a4a1803db4b8e73ac1b05a8c,,75000,15000
+2026-11-28,35071192,55,Yes,65,40000,10000,Zurich,Zurich Life & CI,66.31,true,To Age 65,No,60d1354918f5993d2b9c19f9ef53dfd5a1c6f861c1c9c6d80f0cb9030d25cb2a,,40000,10000
+2026-11-28,35071192,55,Yes,65,40000,10000,Legal & General,Legal & General Life + CI (Standard),,unknown,,,60d1354918f5993d2b9c19f9ef53dfd5a1c6f861c1c9c6d80f0cb9030d25cb2a,product_not_listed,,
+2026-11-28,35071192,55,Yes,65,40000,10000,Aviva,Aviva Multi-Product with Core CI,53.07,true,To Age 65,No,60d1354918f5993d2b9c19f9ef53dfd5a1c6f861c1c9c6d80f0cb9030d25cb2a,,40000,10000
+2026-11-28,35071183,51,Yes,65,150000,0,Zurich,Zurich Life,85.12,true,To Age 65,No,cb803907cb00ffae3d8b29f1075730867980f5ec79900c16450c63db126d4f5f,,150000,0
+2026-11-28,35071183,51,Yes,65,150000,0,Legal & General,Legal & General Life,,false,,,cb803907cb00ffae3d8b29f1075730867980f5ec79900c16450c63db126d4f5f,product_not_quoted,,
+2026-11-28,35071183,51,Yes,65,150000,0,Aviva,Aviva Life Insurance+,79.24,true,To Age 65,No,cb803907cb00ffae3d8b29f1075730867980f5ec79900c16450c63db126d4f5f,,150000,0
+2026-11-28,35071194,55,Yes,65,75000,15000,Zurich,Zurich Life & CI,106.51,true,To Age 65,No,3755b12ff9cad3bfb34522f99e12b21786eef9d6f8b422a2285f7ca2190ded8c,,75000,15000
+2026-11-28,35071194,55,Yes,65,75000,15000,Legal & General,Legal & General Life + CI (Standard),,unknown,,,3755b12ff9cad3bfb34522f99e12b21786eef9d6f8b422a2285f7ca2190ded8c,product_not_listed,,
+2026-11-28,35071194,55,Yes,65,75000,15000,Aviva,Aviva Multi-Product with Core CI,84.52,true,To Age 65,No,3755b12ff9cad3bfb34522f99e12b21786eef9d6f8b422a2285f7ca2190ded8c,,75000,15000
+2026-11-28,35071176,51,Yes,65,20000,0,Zurich,Zurich Life,15.72,true,To Age 65,No,0a1286030f85f9179dcf7ce743220d8605b4dab462716364959f42f615e90ab8,,20000,0
+2026-11-28,35071176,51,Yes,65,20000,0,Legal & General,Legal & General Life,,false,,,0a1286030f85f9179dcf7ce743220d8605b4dab462716364959f42f615e90ab8,product_not_quoted,,
+2026-11-28,35071176,51,Yes,65,20000,0,Aviva,Aviva Life Insurance+,13.80,true,To Age 65,No,0a1286030f85f9179dcf7ce743220d8605b4dab462716364959f42f615e90ab8,,20000,0
+2026-11-28,35071179,51,Yes,65,40000,10000,Zurich,Zurich Life & CI,51.93,true,To Age 65,No,575a23fb8146c1e6f570edba5fffa430d5f23a22d9c0e3d96027e1c22106daab,,40000,10000
+2026-11-28,35071179,51,Yes,65,40000,10000,Legal & General,Legal & General Life + CI (Standard),,unknown,,,575a23fb8146c1e6f570edba5fffa430d5f23a22d9c0e3d96027e1c22106daab,product_not_listed,,
+2026-11-28,35071179,51,Yes,65,40000,10000,Aviva,Aviva Multi-Product with Core CI,41.78,true,To Age 65,No,575a23fb8146c1e6f570edba5fffa430d5f23a22d9c0e3d96027e1c22106daab,,40000,10000
+2026-11-28,35071196,56,Yes,65,40000,0,Zurich,Zurich Life,38.52,true,To Age 65,No,e6d789b8fd07fea5279d02e375293f1fa73160f3c9cba7e1a1417add08e3fe9c,,40000,0
+2026-11-28,35071196,56,Yes,65,40000,0,Legal & General,Legal & General Life,,false,,,e6d789b8fd07fea5279d02e375293f1fa73160f3c9cba7e1a1417add08e3fe9c,product_not_quoted,,
+2026-11-28,35071196,56,Yes,65,40000,0,Aviva,Aviva Life Insurance+,29.74,true,To Age 65,No,e6d789b8fd07fea5279d02e375293f1fa73160f3c9cba7e1a1417add08e3fe9c,,40000,0
+2026-11-28,35071181,51,Yes,65,75000,0,Zurich,Zurich Life,49.22,true,To Age 65,No,d62af3439e970f05bb2d916e95115bfb545035d05f7fa1892e6df869a19f7a1d,,75000,0
+2026-11-28,35071181,51,Yes,65,75000,0,Legal & General,Legal & General Life,,false,,,d62af3439e970f05bb2d916e95115bfb545035d05f7fa1892e6df869a19f7a1d,product_not_quoted,,
+2026-11-28,35071181,51,Yes,65,75000,0,Aviva,Aviva Life Insurance+,39.62,true,To Age 65,No,d62af3439e970f05bb2d916e95115bfb545035d05f7fa1892e6df869a19f7a1d,,75000,0
+2026-11-28,35071177,51,Yes,65,30000,10000,Zurich,Zurich Life & CI,45.47,true,To Age 65,No,21b8b4123432f2af27043448bd806e84254c8b611c3f77e0aa7055712d14d706,,30000,10000
+2026-11-28,35071177,51,Yes,65,30000,10000,Legal & General,Legal & General Life + CI (Standard),,unknown,,,21b8b4123432f2af27043448bd806e84254c8b611c3f77e0aa7055712d14d706,product_not_listed,,
+2026-11-28,35071177,51,Yes,65,30000,10000,Aviva,Aviva Multi-Product with Core CI,37.15,true,To Age 65,No,21b8b4123432f2af27043448bd806e84254c8b611c3f77e0aa7055712d14d706,,30000,10000
+2026-11-28,35071173,50,Yes,65,75000,0,Zurich,Zurich Life,45.53,true,To Age 65,No,79b3b7042f3ed905dced7c04b4af9fa07e0301179cf1480e5ece40cb1dd9d9fb,,75000,0
+2026-11-28,35071173,50,Yes,65,75000,0,Legal & General,Legal & General Life,,false,,,79b3b7042f3ed905dced7c04b4af9fa07e0301179cf1480e5ece40cb1dd9d9fb,product_not_quoted,,
+2026-11-28,35071173,50,Yes,65,75000,0,Aviva,Aviva Life Insurance+,38.36,true,To Age 65,No,79b3b7042f3ed905dced7c04b4af9fa07e0301179cf1480e5ece40cb1dd9d9fb,,75000,0
+2026-11-28,35071172,50,Yes,65,40000,10000,Zurich,Zurich Life & CI,48.83,true,To Age 65,No,a1db331098f500136b6127dabc4e3fabde6cb319210f971fda04737441b1b0c0,,40000,10000
+2026-11-28,35071172,50,Yes,65,40000,10000,Legal & General,Legal & General Life + CI (Standard),,unknown,,,a1db331098f500136b6127dabc4e3fabde6cb319210f971fda04737441b1b0c0,product_not_listed,,
+2026-11-28,35071172,50,Yes,65,40000,10000,Aviva,Aviva Multi-Product with Core CI,38.78,true,To Age 65,No,a1db331098f500136b6127dabc4e3fabde6cb319210f971fda04737441b1b0c0,,40000,10000
+2026-11-28,35071185,53,Yes,65,30000,10000,Zurich,Zurich Life & CI,51.64,true,To Age 65,No,81cbc936a61dfeeb27cafcb384c890c37346d59b187e3d284c59ea360a19afe6,,30000,10000
+2026-11-28,35071185,53,Yes,65,30000,10000,Legal & General,Legal & General Life + CI (Standard),,unknown,,,81cbc936a61dfeeb27cafcb384c890c37346d59b187e3d284c59ea360a19afe6,product_not_listed,,
+2026-11-28,35071185,53,Yes,65,30000,10000,Aviva,Aviva Multi-Product with Core CI,42.63,true,To Age 65,No,81cbc936a61dfeeb27cafcb384c890c37346d59b187e3d284c59ea360a19afe6,,30000,10000
+2026-11-28,35071187,53,Yes,65,40000,10000,Zurich,Zurich Life & CI,59.16,true,To Age 65,No,52259b5c530f8a6adcd7570bae2ca7577af61e24dc6b26e85fe1b6273bd742fb,,40000,10000
+2026-11-28,35071187,53,Yes,65,40000,10000,Legal & General,Legal & General Life + CI (Standard),,unknown,,,52259b5c530f8a6adcd7570bae2ca7577af61e24dc6b26e85fe1b6273bd742fb,product_not_listed,,
+2026-11-28,35071187,53,Yes,65,40000,10000,Aviva,Aviva Multi-Product with Core CI,47.56,true,To Age 65,No,52259b5c530f8a6adcd7570bae2ca7577af61e24dc6b26e85fe1b6273bd742fb,,40000,10000
+2026-11-28,35071189,53,Yes,65,150000,0,Zurich,Zurich Life,103.90,true,To Age 65,No,9c4d30dd43b1af8f57ec9e081632866f21e66cb6db9b03c5fe6c46f47dd0a8e7,,150000,0
+2026-11-28,35071189,53,Yes,65,150000,0,Legal & General,Legal & General Life,,false,,,9c4d30dd43b1af8f57ec9e081632866f21e66cb6db9b03c5fe6c46f47dd0a8e7,product_not_quoted,,
+2026-11-28,35071189,53,Yes,65,150000,0,Aviva,Aviva Life Insurance+,89.10,true,To Age 65,No,9c4d30dd43b1af8f57ec9e081632866f21e66cb6db9b03c5fe6c46f47dd0a8e7,,150000,0
+2026-11-28,35071191,55,Yes,65,40000,0,Zurich,Zurich Life,37.18,true,To Age 65,No,a9b99517d47ef4db4fd73265dac30afffd9f421249d27555b57c966226d2d9e4,,40000,0
+2026-11-28,35071191,55,Yes,65,40000,0,Legal & General,Legal & General Life,,false,,,a9b99517d47ef4db4fd73265dac30afffd9f421249d27555b57c966226d2d9e4,product_not_quoted,,
+2026-11-28,35071191,55,Yes,65,40000,0,Aviva,Aviva Life Insurance+,29.02,true,To Age 65,No,a9b99517d47ef4db4fd73265dac30afffd9f421249d27555b57c966226d2d9e4,,40000,0
+2026-11-28,35071178,51,Yes,65,40000,0,Zurich,Zurich Life,28.65,true,To Age 65,No,3526b57a985b7ee16b3457f640ac2aca95ee8c557333566e8c8a57e9e48bf890,,40000,0
+2026-11-28,35071178,51,Yes,65,40000,0,Legal & General,Legal & General Life,,false,,,3526b57a985b7ee16b3457f640ac2aca95ee8c557333566e8c8a57e9e48bf890,product_not_quoted,,
+2026-11-28,35071178,51,Yes,65,40000,0,Aviva,Aviva Life Insurance+,22.88,true,To Age 65,No,3526b57a985b7ee16b3457f640ac2aca95ee8c557333566e8c8a57e9e48bf890,,40000,0
+2026-11-28,35071171,50,Yes,65,40000,0,Zurich,Zurich Life,26.90,true,To Age 65,No,2be5f4fca166bd1723ecd415684b548f09e02bd3efb1f6048b0530521f72e2be,,40000,0
+2026-11-28,35071171,50,Yes,65,40000,0,Legal & General,Legal & General Life,,false,,,2be5f4fca166bd1723ecd415684b548f09e02bd3efb1f6048b0530521f72e2be,product_not_quoted,,
+2026-11-28,35071171,50,Yes,65,40000,0,Aviva,Aviva Life Insurance+,20.95,true,To Age 65,No,2be5f4fca166bd1723ecd415684b548f09e02bd3efb1f6048b0530521f72e2be,,40000,0
+2026-11-28,35071190,55,Yes,65,30000,10000,Zurich,Zurich Life & CI,57.72,true,To Age 65,No,56a9fa492480467a133b376367db005626310d09ed020d64bc3ca00d0aded23b,,30000,10000
+2026-11-28,35071190,55,Yes,65,30000,10000,Legal & General,Legal & General Life + CI (Standard),,unknown,,,56a9fa492480467a133b376367db005626310d09ed020d64bc3ca00d0aded23b,product_not_listed,,
+2026-11-28,35071190,55,Yes,65,30000,10000,Aviva,Aviva Multi-Product with Core CI,47.86,true,To Age 65,No,56a9fa492480467a133b376367db005626310d09ed020d64bc3ca00d0aded23b,,30000,10000
+2026-11-28,35071193,55,Yes,65,75000,0,Zurich,Zurich Life,65.36,true,To Age 65,No,9185373155945deba91ee9ea4dbb9b22eba94b0ae6f78fba49ce63d3b6a799ed,,75000,0
+2026-11-28,35071193,55,Yes,65,75000,0,Legal & General,Legal & General Life,,false,,,9185373155945deba91ee9ea4dbb9b22eba94b0ae6f78fba49ce63d3b6a799ed,product_not_quoted,,
+2026-11-28,35071193,55,Yes,65,75000,0,Aviva,Aviva Life Insurance+,48.45,true,To Age 65,No,9185373155945deba91ee9ea4dbb9b22eba94b0ae6f78fba49ce63d3b6a799ed,,75000,0
+2026-11-28,35071170,50,Yes,65,30000,10000,Zurich,Zurich Life & CI,42.81,true,To Age 65,No,49e4999a1b2cf7b376a42b62eda416988536bbb60e4061bca7253b49e9a6c85d,,30000,10000
+2026-11-28,35071170,50,Yes,65,30000,10000,Legal & General,Legal & General Life + CI (Standard),,unknown,,,49e4999a1b2cf7b376a42b62eda416988536bbb60e4061bca7253b49e9a6c85d,product_not_listed,,
+2026-11-28,35071170,50,Yes,65,30000,10000,Aviva,Aviva Multi-Product with Core CI,34.38,true,To Age 65,No,49e4999a1b2cf7b376a42b62eda416988536bbb60e4061bca7253b49e9a6c85d,,30000,10000
+2026-11-28,35071195,56,Yes,65,30000,10000,Zurich,Zurich Life & CI,59.79,true,To Age 65,No,f1205e7cb5c42a02a8d59111a5358d7e2689d9a19358fcd2895b321ad39077f0,,30000,10000
+2026-11-28,35071195,56,Yes,65,30000,10000,Legal & General,Legal & General Life + CI (Standard),,unknown,,,f1205e7cb5c42a02a8d59111a5358d7e2689d9a19358fcd2895b321ad39077f0,product_not_listed,,
+2026-11-28,35071195,56,Yes,65,30000,10000,Aviva,Aviva Multi-Product with Core CI,50.79,true,To Age 65,No,f1205e7cb5c42a02a8d59111a5358d7e2689d9a19358fcd2895b321ad39077f0,,30000,10000
+2026-11-28,35071169,50,Yes,65,20000,0,Zurich,Zurich Life,14.85,true,To Age 65,No,3ab3727b2eade43b0c28fbbb8ce97fc8309a0e5101226cefa05ae6e194f1c308,,20000,0
+2026-11-28,35071169,50,Yes,65,20000,0,Legal & General,Legal & General Life,,false,,,3ab3727b2eade43b0c28fbbb8ce97fc8309a0e5101226cefa05ae6e194f1c308,product_not_quoted,,
+2026-11-28,35071169,50,Yes,65,20000,0,Aviva,Aviva Life Insurance+,12.10,true,To Age 65,No,3ab3727b2eade43b0c28fbbb8ce97fc8309a0e5101226cefa05ae6e194f1c308,,20000,0
+2026-11-28,35071188,53,Yes,65,75000,0,Zurich,Zurich Life,57.71,true,To Age 65,No,ba50b5c93a8da835cfcd06fa0bb4b057f921e4b8f29cd46479c43131cde27a9b,,75000,0
+2026-11-28,35071188,53,Yes,65,75000,0,Legal & General,Legal & General Life,,false,,,ba50b5c93a8da835cfcd06fa0bb4b057f921e4b8f29cd46479c43131cde27a9b,product_not_quoted,,
+2026-11-28,35071188,53,Yes,65,75000,0,Aviva,Aviva Life Insurance+,48.25,true,To Age 65,No,ba50b5c93a8da835cfcd06fa0bb4b057f921e4b8f29cd46479c43131cde27a9b,,75000,0
+2026-11-28,35071186,53,Yes,65,40000,0,Zurich,Zurich Life,32.88,true,To Age 65,No,cf6ce3cae06be516b6ff9d5ddd3cbb5d9243c561b7508952427768fadc925d8c,,40000,0
+2026-11-28,35071186,53,Yes,65,40000,0,Legal & General,Legal & General Life,,false,,,cf6ce3cae06be516b6ff9d5ddd3cbb5d9243c561b7508952427768fadc925d8c,product_not_quoted,,
+2026-11-28,35071186,53,Yes,65,40000,0,Aviva,Aviva Life Insurance+,25.97,true,To Age 65,No,cf6ce3cae06be516b6ff9d5ddd3cbb5d9243c561b7508952427768fadc925d8c,,40000,0
+2026-11-28,35071211,57,Yes,65,40000,10000,Zurich,Zurich Life & CI,70.74,true,To Age 65,No,29583f1a8c6414755a03ca3d567460a9d3b36931b54dc607eb3ee11392d6db20,,40000,10000
+2026-11-28,35071211,57,Yes,65,40000,10000,Legal & General,Legal & General Life + CI (Standard),,unknown,,,29583f1a8c6414755a03ca3d567460a9d3b36931b54dc607eb3ee11392d6db20,product_not_listed,,
+2026-11-28,35071211,57,Yes,65,40000,10000,Aviva,Aviva Multi-Product with Core CI,61.46,true,To Age 65,No,29583f1a8c6414755a03ca3d567460a9d3b36931b54dc607eb3ee11392d6db20,,40000,10000
+2026-11-28,35071197,56,Yes,65,40000,10000,Zurich,Zurich Life & CI,68.72,true,To Age 65,No,318f89260eb6db2f6cb47e336ab48228def3ade19b0bfca868dc135f7845e0c9,,40000,10000
+2026-11-28,35071197,56,Yes,65,40000,10000,Legal & General,Legal & General Life + CI (Standard),,unknown,,,318f89260eb6db2f6cb47e336ab48228def3ade19b0bfca868dc135f7845e0c9,product_not_listed,,
+2026-11-28,35071197,56,Yes,65,40000,10000,Aviva,Aviva Multi-Product with Core CI,55.93,true,To Age 65,No,318f89260eb6db2f6cb47e336ab48228def3ade19b0bfca868dc135f7845e0c9,,40000,10000
+2026-11-28,35071210,56,Yes,65,75000,15000,Zurich,Zurich Life & CI,110.44,true,To Age 65,No,2358435214cc9e215c5a3f3896fa413ec4a502ae9c29a699204f5596a7b6baec,,75000,15000
+2026-11-28,35071210,56,Yes,65,75000,15000,Legal & General,Legal & General Life + CI (Standard),,unknown,,,2358435214cc9e215c5a3f3896fa413ec4a502ae9c29a699204f5596a7b6baec,product_not_listed,,
+2026-11-28,35071210,56,Yes,65,75000,15000,Aviva,Aviva Multi-Product with Core CI,87.76,true,To Age 65,No,2358435214cc9e215c5a3f3896fa413ec4a502ae9c29a699204f5596a7b6baec,,75000,15000
+2026-11-28,35071212,57,Yes,65,75000,0,Zurich,Zurich Life,69.97,true,To Age 65,No,49be18b3302b1ddeb53333333b16e86f8a20650b545c33b1ec408bc45556c37d,,75000,0
+2026-11-28,35071212,57,Yes,65,75000,0,Legal & General,Legal & General Life,,false,,,49be18b3302b1ddeb53333333b16e86f8a20650b545c33b1ec408bc45556c37d,product_not_quoted,,
+2026-11-28,35071212,57,Yes,65,75000,0,Aviva,Aviva Life Insurance+,54.47,true,To Age 65,No,49be18b3302b1ddeb53333333b16e86f8a20650b545c33b1ec408bc45556c37d,,75000,0
+2026-11-28,35071229,57,Yes,65,100000,0,Zurich,Zurich Life,91.28,true,To Age 65,No,46caa0f3a0a30941691e143114313a851da651f9b715e056c59cb579549e517c,,100000,0
+2026-11-28,35071229,57,Yes,65,100000,0,Legal & General,Legal & General Life,,false,,,46caa0f3a0a30941691e143114313a851da651f9b715e056c59cb579549e517c,product_not_quoted,,
+2026-11-28,35071229,57,Yes,65,100000,0,Aviva,Aviva Life Insurance+,72.63,true,To Age 65,No,46caa0f3a0a30941691e143114313a851da651f9b715e056c59cb579549e517c,,100000,0
+2026-11-28,35071258,52,No,65,0,15000,Zurich,Zurich Critical Illness,20.68,true,To Age 65,No,d3a0fdf8f7e99133e5bff185fbe9fa4b833fb478b3005a740f3452df0de9060f,,0,15000
+2026-11-28,35071258,52,No,65,0,15000,Legal & General,Legal & General CI (Standard),,false,,,d3a0fdf8f7e99133e5bff185fbe9fa4b833fb478b3005a740f3452df0de9060f,product_not_quoted,,
+2026-11-28,35071258,52,No,65,0,15000,Aviva,Aviva Critical Illness+ Core,16.99,true,To Age 65,No,d3a0fdf8f7e99133e5bff185fbe9fa4b833fb478b3005a740f3452df0de9060f,,0,15000
+2026-11-28,35071209,56,Yes,65,75000,0,Zurich,Zurich Life,67.77,true,To Age 65,No,1b906ed4ea9fe510fd458eb61287aa7c0d9df7fc5236d91e5d824343030f4255,,75000,0
+2026-11-28,35071209,56,Yes,65,75000,0,Legal & General,Legal & General Life,,false,,,1b906ed4ea9fe510fd458eb61287aa7c0d9df7fc5236d91e5d824343030f4255,product_not_quoted,,
+2026-11-28,35071209,56,Yes,65,75000,0,Aviva,Aviva Life Insurance+,48.48,true,To Age 65,No,1b906ed4ea9fe510fd458eb61287aa7c0d9df7fc5236d91e5d824343030f4255,,75000,0
+2026-11-28,35071267,52,No,65,100000,10000,Zurich,Zurich Life & CI,34.02,true,To Age 65,No,a375a0bb76c021332f8fb992dcc51f6c0eaca790c5250f5b657dcdda6b725bdf,,100000,10000
+2026-11-28,35071267,52,No,65,100000,10000,Legal & General,Legal & General Life + CI (Standard),,unknown,,,a375a0bb76c021332f8fb992dcc51f6c0eaca790c5250f5b657dcdda6b725bdf,product_not_listed,,
+2026-11-28,35071267,52,No,65,100000,10000,Aviva,Aviva Multi-Product with Core CI,35.49,true,To Age 65,No,a375a0bb76c021332f8fb992dcc51f6c0eaca790c5250f5b657dcdda6b725bdf,,100000,10000
+2026-11-28,35071266,52,No,65,75000,10000,Zurich,Zurich Life & CI,29.53,true,To Age 65,No,79b9ba056088bdf7d35f5d0983b2a50bbff602092b47e063cad21e2a2b8a6aff,,75000,10000
+2026-11-28,35071266,52,No,65,75000,10000,Legal & General,Legal & General Life + CI (Standard),,unknown,,,79b9ba056088bdf7d35f5d0983b2a50bbff602092b47e063cad21e2a2b8a6aff,product_not_listed,,
+2026-11-28,35071266,52,No,65,75000,10000,Aviva,Aviva Multi-Product with Core CI,29.54,true,To Age 65,No,79b9ba056088bdf7d35f5d0983b2a50bbff602092b47e063cad21e2a2b8a6aff,,75000,10000
+2026-11-28,35071228,57,Yes,65,75000,15000,Zurich,Zurich Life & CI,114.15,true,To Age 65,No,46a17c66b04f44486e7bb9f911b251652940b5a1bfb94c1dab0bb99fde051447,,75000,15000
+2026-11-28,35071228,57,Yes,65,75000,15000,Legal & General,Legal & General Life + CI (Standard),,unknown,,,46a17c66b04f44486e7bb9f911b251652940b5a1bfb94c1dab0bb99fde051447,product_not_listed,,
+2026-11-28,35071228,57,Yes,65,75000,15000,Aviva,Aviva Multi-Product with Core CI,97.75,true,To Age 65,No,46a17c66b04f44486e7bb9f911b251652940b5a1bfb94c1dab0bb99fde051447,,75000,15000
+2026-11-28,35071265,52,No,65,50000,20000,Zurich,Zurich Life & CI,35.57,true,To Age 65,No,b9eaa1dded982ebe0037a809b6c736a8899abc99270914360c0e3af5f7a85959,,50000,20000
+2026-11-28,35071265,52,No,65,50000,20000,Legal & General,Legal & General Life + CI (Standard),,unknown,,,b9eaa1dded982ebe0037a809b6c736a8899abc99270914360c0e3af5f7a85959,product_not_listed,,
+2026-11-28,35071265,52,No,65,50000,20000,Aviva,Aviva Multi-Product with Core CI,35.18,true,To Age 65,No,b9eaa1dded982ebe0037a809b6c736a8899abc99270914360c0e3af5f7a85959,,50000,20000
+2026-11-28,35071262,52,No,65,40000,10000,Zurich,Zurich Life & CI,23.17,true,To Age 65,No,6971915c313e6f80ed85c17d5b337d20cb76bc4bc2205c1e2635b59e5274f983,,40000,10000
+2026-11-28,35071262,52,No,65,40000,10000,Legal & General,Legal & General Life + CI (Standard),,unknown,,,6971915c313e6f80ed85c17d5b337d20cb76bc4bc2205c1e2635b59e5274f983,product_not_listed,,
+2026-11-28,35071262,52,No,65,40000,10000,Aviva,Aviva Multi-Product with Core CI,21.95,true,To Age 65,No,6971915c313e6f80ed85c17d5b337d20cb76bc4bc2205c1e2635b59e5274f983,,40000,10000
+2026-11-28,35071263,52,No,65,50000,15000,Zurich,Zurich Life & CI,30.31,true,To Age 65,No,ba2b900e12e2860287069fd88d7bd54ef0e5e4da3386d79177c6e2fb128942fa,,50000,15000
+2026-11-28,35071263,52,No,65,50000,15000,Legal & General,Legal & General Life + CI (Standard),,unknown,,,ba2b900e12e2860287069fd88d7bd54ef0e5e4da3386d79177c6e2fb128942fa,product_not_listed,,
+2026-11-28,35071263,52,No,65,50000,15000,Aviva,Aviva Multi-Product with Core CI,29.52,true,To Age 65,No,ba2b900e12e2860287069fd88d7bd54ef0e5e4da3386d79177c6e2fb128942fa,,50000,15000
+2026-11-28,35071261,52,No,65,30000,10000,Zurich,Zurich Life & CI,21.31,true,To Age 65,No,f0d62b323d9e4609d23bfe6845a05e82dd6323e0c54fd7c553d1415b46a4db2c,,30000,10000
+2026-11-28,35071261,52,No,65,30000,10000,Legal & General,Legal & General Life + CI (Standard),,unknown,,,f0d62b323d9e4609d23bfe6845a05e82dd6323e0c54fd7c553d1415b46a4db2c,product_not_listed,,
+2026-11-28,35071261,52,No,65,30000,10000,Aviva,Aviva Multi-Product with Core CI,20.47,true,To Age 65,No,f0d62b323d9e4609d23bfe6845a05e82dd6323e0c54fd7c553d1415b46a4db2c,,30000,10000
+2026-11-28,35071260,52,No,65,0,20000,Zurich,Zurich Critical Illness,25.94,true,To Age 65,No,35cf46b2d631ac2dc27dc2bd9c3df6dfbd216ff8e750d90ea9098f6bda913980,,0,20000
+2026-11-28,35071260,52,No,65,0,20000,Legal & General,Legal & General CI (Standard),,false,,,35cf46b2d631ac2dc27dc2bd9c3df6dfbd216ff8e750d90ea9098f6bda913980,product_not_quoted,,
+2026-11-28,35071260,52,No,65,0,20000,Aviva,Aviva Critical Illness+ Core,22.65,true,To Age 65,No,35cf46b2d631ac2dc27dc2bd9c3df6dfbd216ff8e750d90ea9098f6bda913980,,0,20000
+2026-11-28,35071272,59,Yes,65,40000,0,Zurich,Zurich Life,40.13,true,To Age 65,No,cac69e1b79103ba36ac00e33ec6e11a68cef2a96d0a6caf9c4de4481551e06c1,,40000,0
+2026-11-28,35071272,59,Yes,65,40000,0,Legal & General,Legal & General Life,34.21,true,5 years,No,cac69e1b79103ba36ac00e33ec6e11a68cef2a96d0a6caf9c4de4481551e06c1,,40000,0
+2026-11-28,35071272,59,Yes,65,40000,0,Aviva,Aviva Life Insurance+,31.18,true,To Age 65,No,cac69e1b79103ba36ac00e33ec6e11a68cef2a96d0a6caf9c4de4481551e06c1,,40000,0
+2026-11-28,35071273,59,Yes,65,35000,0,Zurich,Zurich Life,35.47,true,To Age 65,No,f060e468ac46e38d7da2b2601379c46586901fe2415a86262b59216b455996ef,,35000,0
+2026-11-28,35071273,59,Yes,65,35000,0,Legal & General,Legal & General Life,30.18,true,5 years,No,f060e468ac46e38d7da2b2601379c46586901fe2415a86262b59216b455996ef,,35000,0
+2026-11-28,35071273,59,Yes,65,35000,0,Aviva,Aviva Life Insurance+,27.90,true,To Age 65,No,f060e468ac46e38d7da2b2601379c46586901fe2415a86262b59216b455996ef,,35000,0
+2026-11-28,35071275,44,Yes,65,75000,15000,Zurich,Zurich Life & CI,43.55,true,To Age 65,No,414fb65517679a17f99cbfb42d4ca8812da5fe2de7fcce2fdda8c7c758aa47ef,,75000,15000
+2026-11-28,35071275,44,Yes,65,75000,15000,Legal & General,Legal & General Life + CI (Standard),41.13,true,20 years,Yes,414fb65517679a17f99cbfb42d4ca8812da5fe2de7fcce2fdda8c7c758aa47ef,,75000,15000
+2026-11-28,35071275,44,Yes,65,75000,15000,Aviva,Aviva Multi-Product with Core CI,41.82,true,To Age 65,No,414fb65517679a17f99cbfb42d4ca8812da5fe2de7fcce2fdda8c7c758aa47ef,,75000,15000
+2026-11-28,35071271,59,Yes,65,75000,0,Zurich,Zurich Life,73.64,true,To Age 65,No,907699d29f36e912668b1aa885b660d28f5a9ca62dfb2efc94d93cd8e10700f8,,75000,0
+2026-11-28,35071271,59,Yes,65,75000,0,Legal & General,Legal & General Life,48.54,true,5 years,No,907699d29f36e912668b1aa885b660d28f5a9ca62dfb2efc94d93cd8e10700f8,,75000,0
+2026-11-28,35071271,59,Yes,65,75000,0,Aviva,Aviva Life Insurance+,54.82,true,To Age 65,No,907699d29f36e912668b1aa885b660d28f5a9ca62dfb2efc94d93cd8e10700f8,,75000,0
+2026-11-28,35071270,59,Yes,65,30000,10000,Zurich,Zurich Life & CI,64.14,true,To Age 65,No,3de92ac084d3126ca0d2b506b12602510c9ec32e7cbdab9d15392dd2b387a196,,30000,10000
+2026-11-28,35071270,59,Yes,65,30000,10000,Legal & General,Legal & General Life + CI (Standard),55.97,true,5 years,Yes,3de92ac084d3126ca0d2b506b12602510c9ec32e7cbdab9d15392dd2b387a196,,30000,10000
+2026-11-28,35071270,59,Yes,65,30000,10000,Aviva,Aviva Multi-Product with Core CI,56.93,true,To Age 65,No,3de92ac084d3126ca0d2b506b12602510c9ec32e7cbdab9d15392dd2b387a196,,30000,10000
+2026-11-28,35071268,51,No,65,75000,15000,Zurich,Zurich Life & CI,33.02,true,To Age 65,No,bbc6286429402794c9188a8ee147f2a784bdd651d46e6011215099d8896fd9fc,,75000,15000
+2026-11-28,35071268,51,No,65,75000,15000,Legal & General,Legal & General Life + CI (Standard),33.02,true,13 years,Yes,bbc6286429402794c9188a8ee147f2a784bdd651d46e6011215099d8896fd9fc,,75000,15000
+2026-11-28,35071268,51,No,65,75000,15000,Aviva,Aviva Multi-Product with Core CI,32.25,true,To Age 65,No,bbc6286429402794c9188a8ee147f2a784bdd651d46e6011215099d8896fd9fc,,75000,15000
+2026-11-28,35071269,51,No,65,60000,0,Zurich,Zurich Life,13.25,true,To Age 65,No,c0738986c6854639a321c28d06dc8b838fd7bf26a3734cd8a206c4a72f6cbf07,,60000,0
+2026-11-28,35071269,51,No,65,60000,0,Legal & General,Legal & General Life,12.89,true,13 years,No,c0738986c6854639a321c28d06dc8b838fd7bf26a3734cd8a206c4a72f6cbf07,,60000,0
+2026-11-28,35071269,51,No,65,60000,0,Aviva,Aviva Life Insurance+,13.52,true,To Age 65,No,c0738986c6854639a321c28d06dc8b838fd7bf26a3734cd8a206c4a72f6cbf07,,60000,0
+2026-11-28,35071274,44,Yes,65,30000,10000,Zurich,Zurich Life & CI,25.87,true,To Age 65,No,ca67e76555460ec9485a98f1db7602a9dde0cb2b997b8426aa2c9eb3dadbc4aa,,30000,10000
+2026-11-28,35071274,44,Yes,65,30000,10000,Legal & General,Legal & General Life + CI (Standard),22.97,true,20 years,Yes,ca67e76555460ec9485a98f1db7602a9dde0cb2b997b8426aa2c9eb3dadbc4aa,,30000,10000
+2026-11-28,35071274,44,Yes,65,30000,10000,Aviva,Aviva Multi-Product with Core CI,23.95,true,To Age 65,No,ca67e76555460ec9485a98f1db7602a9dde0cb2b997b8426aa2c9eb3dadbc4aa,,30000,10000

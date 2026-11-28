@@ -103,7 +103,7 @@ async function init() {
     loadedSupplementalLife,
     loadedFixedTermLife,
     historicalPolicies,
-    ageChecks,
+    ageChecks, ageCohorts,
   ] = await Promise.all([
     fetch("./data/models.json", { cache: "no-store" })
       .then((r) => r.json())
@@ -224,6 +224,8 @@ async function init() {
       .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
     fetch("./data/age-validation-holdout.csv", { cache: "no-store" })
       .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
+    fetch("./data/age-validation-cohorts.csv", { cache: "no-store" })
+      .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
   ]);
   lgFixedLife = historicalPolicies.filter(row => row.provider === "Legal & General" && row.to_age === "" &&
     row.product === "Life" && row.critical_illness_component === "0" &&
@@ -266,7 +268,7 @@ async function init() {
   capitalTrials = trials;
   validatedCapitalRanges = buildCapitalRanges(trials, capitalHoldout);
   showCapitalAccuracy(trials, capitalHoldout.length);
-  showAgeAccuracy(ageChecks, loadedReports.concat(verifiedArchive));
+  showAgeAccuracy(ageChecks, loadedReports.concat(verifiedArchive), ageCohorts);
   observedRows = loadedObservedRows;
   waiverRows = loadedWaiverRows;
   catalog = loadedCatalog;
@@ -522,11 +524,23 @@ function auditedAgeTrials(checks, rows) {
   return results;
 }
 
-function showAgeAccuracy(checks, rows) {
+function showAgeAccuracy(checks, rows, cohorts = []) {
   const tests = auditedAgeTrials(checks, rows), panel = $("ageAccuracy");
   panel.hidden = tests.length === 0;
   if (panel.hidden) return;
   const n = tests.length, passed = tests.filter(t => t.passed).length;
+  const auditable = new Map();
+  for (const row of checks) auditable.set(row.registered_at, (auditable.get(row.registered_at) || 0) + 1);
+  const stages = ["comparable", "changed", "unpriced", "unverified"];
+  const complete = cohorts.length === auditable.size && new Set(cohorts.map(c => c.registered_at)).size === cohorts.length &&
+    cohorts.every(c => auditable.get(c.registered_at) === Number(c.comparable) &&
+      ["registered", ...stages].every(k => /^\d+$/.test(c[k])) && Number(c.registered) ===
+      stages.reduce((sum, k) => sum + Number(c[k]), 0));
+  const totalFor = key => cohorts.reduce((sum, c) => sum + Number(c[key]), 0);
+  $("ageAccuracyCoverage").textContent = complete ? totalFor("registered") + " previsões registradas antes da consulta. " +
+    n + " têm preço nas mesmas condições, " + totalFor("changed") + " tiveram condições diferentes, " +
+    totalFor("unpriced") + " ficaram sem preço e " + totalFor("unverified") + " aguardam um comparativo independente." : "";
+
   const ages = tests.map(t => Number(t.actual.age));
   const counts = new Map();
   for (const {actual, passed} of tests) {

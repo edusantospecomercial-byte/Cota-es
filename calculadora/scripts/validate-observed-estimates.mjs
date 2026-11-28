@@ -171,6 +171,10 @@ const ageTests = verifyAgeTrials(ageTrialCsv, ageTrialSources);
 assert.ok(ageTests.length > 0 && ageTests.length === ageTrialCsv.length);
 assert.equal(node("ageAccuracy").hidden, false);
 const agePasses = ageTests.filter(t => t.passed).length;
+const ageCohorts = run("parsePriorityCsv")(readFileSync(new URL("../data/age-validation-cohorts.csv", import.meta.url), "utf8"));
+const prespecified = ageCohorts.reduce((sum, c) => sum + Number(c.registered), 0);
+assert.ok(node("ageAccuracyCoverage").textContent.includes(prespecified + " previsões registradas"));
+assert.ok(node("ageAccuracyCoverage").textContent.includes(ageTests.length + " têm preço nas mesmas condições"));
 assert.ok(node("ageAccuracyScore").textContent.includes(agePasses + " de " + ageTests.length + " previsões"));
 assert.ok(agePasses > 0 && agePasses < ageTests.length);
 for (const [name, sm] of [["Fumantes", "Yes"], ["Não fumantes", "No"]]) {
