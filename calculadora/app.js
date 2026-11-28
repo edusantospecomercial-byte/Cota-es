@@ -103,6 +103,7 @@ async function init() {
     loadedSupplementalLife,
     loadedFixedTermLife,
     historicalPolicies,
+    ageChecks,
   ] = await Promise.all([
     fetch("./data/models.json", { cache: "no-store" })
       .then((r) => r.json())
@@ -221,6 +222,8 @@ async function init() {
       .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
     fetch("./data/illustration-validation-2026-11-19.csv", { cache: "no-store" })
       .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
+    fetch("./data/age-validation-holdout.csv", { cache: "no-store" })
+      .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
   ]);
   lgFixedLife = historicalPolicies.filter(row => row.provider === "Legal & General" && row.to_age === "" &&
     row.product === "Life" && row.critical_illness_component === "0" &&
@@ -263,6 +266,7 @@ async function init() {
   capitalTrials = trials;
   validatedCapitalRanges = buildCapitalRanges(trials, capitalHoldout);
   showCapitalAccuracy(trials, capitalHoldout.length);
+  showAgeAccuracy(ageChecks, loadedReports.concat(verifiedArchive));
   observedRows = loadedObservedRows;
   waiverRows = loadedWaiverRows;
   catalog = loadedCatalog;
@@ -487,6 +491,59 @@ function evaluateCapitalTrials(reports, holdout) {
     comparable.push({ lower, upper, check, axis, error, forecast: trial.predicted_monthly, passed: error <= 1 && error / Number(check.monthly_premium) <= 0.05 });
   }
   return comparable;
+}
+
+function auditedAgeTrials(checks, rows) {
+  const originals = new Map(rows.map(row => [row.sha256 + "|" + row.provider, row]));
+  const tested = new Set();
+  const results = [];
+  for (const check of checks) {
+    const hashes = [check.lower_sha256, check.upper_sha256, check.check_sha256];
+    const [lower, upper, actual] = hashes.map(hash => originals.get(hash + "|" + check.provider));
+    if (new Set(hashes).size !== 3 || !actual || !lower || !upper) return [];
+    if (!(Date.parse(check.registered_at) < Date.parse(check.check_received_at))) return [];
+    const matching = [lower, upper, actual].every(row => row.available === "true" &&
+      row.occupation_rated === "No" && (row.quoted_tpd || "None") === "None" &&
+      row.product === actual.product && row.smoker === actual.smoker && row.to_age === actual.to_age &&
+      row.quoted_term === "To Age " + row.to_age && row.life_cover === actual.life_cover &&
+      row.critical_illness_cover === actual.critical_illness_cover && row.life_cover === row.quoted_life_cover &&
+      row.critical_illness_cover === row.quoted_critical_illness_cover && Number(row.monthly_premium) > 0);
+    const below = Number(actual.age) - Number(lower.age), above = Number(upper.age) - Number(actual.age);
+    if (!matching || below <= 0 || above <= 0 || Math.max(below, above) > 3 || below + above > 5) return [];
+    const lo = displayedPence(lower.monthly_premium), hi = displayedPence(upper.monthly_premium);
+    const prediction = Math.round(interpolateRiskPremium(lo, hi, below / (below + above)));
+    const key = [actual.provider, actual.product, actual.age, actual.smoker, actual.to_age,
+      actual.life_cover, actual.critical_illness_cover].join("|");
+    if (hi < lo || prediction !== Number(check.predicted_pence) || tested.has(key)) return [];
+    tested.add(key);
+    const price = displayedPence(actual.monthly_premium), error = Math.abs(prediction - price);
+    results.push({actual, lower, upper, error, passed: error <= 100 && error * 20 <= price});
+  }
+  return results;
+}
+
+function showAgeAccuracy(checks, rows) {
+  const tests = auditedAgeTrials(checks, rows), panel = $("ageAccuracy");
+  panel.hidden = tests.length === 0;
+  if (panel.hidden) return;
+  const n = tests.length, passed = tests.filter(t => t.passed).length;
+  const ages = tests.map(t => Number(t.actual.age));
+  const counts = new Map();
+  for (const {actual, passed} of tests) {
+    const summary = counts.get(actual.provider) || {hits:0, total:0};
+    summary.hits += Number(passed);
+    summary.total++;
+    counts.set(actual.provider, summary);
+  }
+  const average = tests.reduce((total, t) => total + t.error, 0) / n / 100;
+  $("ageAccuracyScore").textContent = passed + " de " + n + " previsões (" +
+    (passed/n).toLocaleString("pt-BR", {style:"percent", maximumFractionDigits:1}) +
+    ") ficaram a até £1 e a até 5% do prêmio mensal. Erro médio absoluto de " + gbp(average) + ".";
+  $("ageAccuracyScope").textContent = "Idades de " + Math.min(...ages) + " a " + Math.max(...ages) +
+    " anos, com término aos 65. Para cada previsão, usamos o mesmo produto, capital e tabagismo em duas idades próximas. " +
+    "Registramos a previsão antes de obter o comparativo de teste. As mensalidades consideram apenas a proteção principal.";
+  $("ageAccuracyProviders").textContent = [...counts].map(([name, v]) =>
+    name + " " + v.hits + "/" + v.total).join(" · ") + ".";
 }
 
 function showTemporalAccuracy(holdout) {

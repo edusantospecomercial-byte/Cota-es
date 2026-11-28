@@ -163,6 +163,27 @@ console.log(JSON.stringify({ verifiedReportsWithWaiver: reports.size, resolvedPr
 
 const reported = run("reportedRows");
 const verifiedReports = group(reported, "model_id");
+// Check the registered blind age estimates against independent originals, including failed predictions.
+const ageTrialCsv = run("parsePriorityCsv")(readFileSync(new URL("../data/age-validation-holdout.csv", import.meta.url), "utf8"));
+const ageTrialSources = reported.concat(run("verifiedArchiveRows"));
+const verifyAgeTrials = run("auditedAgeTrials");
+const ageTests = verifyAgeTrials(ageTrialCsv, ageTrialSources);
+assert.ok(ageTests.length > 0 && ageTests.length === ageTrialCsv.length);
+assert.equal(node("ageAccuracy").hidden, false);
+const agePasses = ageTests.filter(t => t.passed).length;
+assert.ok(node("ageAccuracyScore").textContent.includes(agePasses + " de " + ageTests.length + " previsões"));
+assert.ok(agePasses > 0 && agePasses < ageTests.length);
+const ageProof = ageTrialCsv[0];
+for (const change of [{registered_at:ageProof.check_received_at}, {lower_sha256:ageProof.check_sha256},
+  {upper_sha256:"unverified"}, {predicted_pence:"99999"}]) {
+  assert.equal(verifyAgeTrials([{...ageProof,...change}],ageTrialSources).length,0);
+}
+assert.equal(verifyAgeTrials([ageProof,ageProof],ageTrialSources).length,0);
+for (const change of [{quoted_term:"15 years"}, {occupation_rated:"Yes"}, {quoted_tpd:"Own occupation"},
+  {monthly_premium:"0"}, {smoker:"unexpected"}, {quoted_critical_illness_cover:"999999"}]) {
+  const modified = ageTrialSources.map(r => r.sha256 === ageProof.lower_sha256 ? {...r,...change} : r);
+  assert.equal(verifyAgeTrials([ageProof],modified).length,0);
+}
 const temporalTest = run("catalog.audit.priorityProviderTemporalHoldout");
 const allowances = temporalTest.priceTolerance;
 assert.equal(node("temporalAccuracy").hidden,false);
@@ -881,7 +902,10 @@ for (const [age, life, ci, reference] of [
   [34, 50000, 10000, "1084735012"], [38, 50000, 10000, "1084751490"], [34, 20000, 20000, "1084751726"],
 ]) {
   const result = calculate(65, life, ci, {age, term:65-age});
-  assert.ok(!result.priorityExact);
+  const separatePolicy = reported.some(row => row.age === String(age) && row.smoker === "No" &&
+    row.to_age === "65" && row.life_cover === String(life) && row.critical_illness_cover === String(ci) &&
+    row.available === "true" && row.quoted_critical_illness_cover === String(ci));
+  assert.equal(Boolean(result.priorityExact), separatePolicy);
   assert.match(result.partialCiNote, /primeiro evento coberto/);
   assert.ok(result.partialCiNote.includes(reference));
   assert.ok(result.text.includes(result.partialCiNote));
@@ -1279,6 +1303,19 @@ for (const row of illustratedRows.filter(r => r.provider === "Aviva")) {
   assert.match(row.comparison_sha256, /^[a-f0-9]{64}$/);
   assert.ok(row.sha256 !== row.comparison_sha256);
 }
+// Exercise historical fallbacks with the dated evidence that was available to them.
+function useComparisonSnapshot(cutoff) {
+  const saved = run("({reportedRows, independentPlanQuotes, validatedCapitalRanges})");
+  ctx.comparisonCutoff = cutoff;
+  run(`reportedRows = reportedRows.filter(r => r.source_date <= comparisonCutoff);
+    independentPlanQuotes = globalThis.buildIndependentPlans(reportedRows);
+    validatedCapitalRanges = validatedCapitalRanges.filter(r => r.check.source_date <= comparisonCutoff);`);
+  return () => {
+    ctx.savedComparisonSnapshot = saved;
+    run(`({reportedRows, independentPlanQuotes, validatedCapitalRanges} = savedComparisonSnapshot)`);
+  };
+}
+const restoreCurrentComparisons = useComparisonSnapshot("2026-11-26");
 // An individual life base remains identifiable when another insurer's most recent document is a discounted package.
 const solo34 = calculate(65,50000,0,{age:34,term:31});
 assert.equal(solo34.main,5.07);
@@ -1370,6 +1407,8 @@ assert.equal(calculate(65, 100000, 0, {age: 39, term: 26, waiver: "No"}).ageNote
 run("Date.now = originalClock");
 console.log(JSON.stringify({age39: {usedForTotal: Boolean(lifeAt39.ageEstimate), main: lifeAt39.main}, age57: {usedForTotal: Boolean(lifeAt57.ageEstimate), main: lifeAt57.main}}));
 
+restoreCurrentComparisons();
+
 const fractureReports = run('fractureOffers');
 const fractureDocuments = run('fractureBreakdowns');
 const fractureKeys = new Set();
@@ -1438,9 +1477,7 @@ assert.equal(run('illustratedLifeFor(adjustedCapital,"Aviva")').base_monthly,'4.
 assert.notEqual(run('illustratedLifeFor({...adjustedCapital,life:10000},"Aviva")')?.reference,'1083310818');
 
 // Exercise the general fallback without the later official reports for this smoker.
-const reportsBeforeGeneralTest = run("reportedRows");
-const plansBeforeGeneralTest = run("independentPlanQuotes");
-run("reportedRows = reportedRows.filter(row => row.source_date < '2026-11-27'); independentPlanQuotes = globalThis.buildIndependentPlans(reportedRows)");
+const restoreAfterGeneralFallback = useComparisonSnapshot("2026-11-26");
 const generalBudget = calculate(65,50000,10000,{age:25,smoker:'smoker',term:40,waiver:'No'});
 assert.ok(generalBudget.complete && generalBudget.aggregateOnly);
 assert.equal(node('resultTitle').textContent,'Referência de orçamento');
@@ -1583,9 +1620,7 @@ run("Date.now = () => Date.parse('2030-01-01')");
 assert.equal(calculate(65,150000,15000,composedProfile).composition,false);
 run('Date.now = originalClock');
 
-ctx.reportsBeforeGeneralTest = reportsBeforeGeneralTest;
-ctx.plansBeforeGeneralTest = plansBeforeGeneralTest;
-run("reportedRows = reportsBeforeGeneralTest; independentPlanQuotes = plansBeforeGeneralTest");
+restoreAfterGeneralFallback();
 
 function independentOffer(id,life,ci,premium) {
   return {provider:'Zurich',age:'31',smoker:'No',to_age:'65',source_date:'2026-11-25',model_id:String(id),
