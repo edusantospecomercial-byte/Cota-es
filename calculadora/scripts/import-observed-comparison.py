@@ -129,8 +129,8 @@ def extract(path, model_id, age, smoker, to_age, life, ci, *, allow_unlisted=Fal
             raise ValueError(f"Term mismatch or invalid premium for {provider}.")
         data.append(base + [price.replace(",", ""), "true", term, based_on_job, digest, "", *returned]
                     + ([tpd] if include_tpd else []))
-    if any(row[10] == "unknown" for row in data) and sum(row[10] == "true" for row in data) < 2:
-        raise ValueError("An unlisted product requires verified prices from both other priority insurers.")
+    if any(row[10] == "unknown" for row in data) and not any(row[10] == "true" for row in data):
+        raise ValueError("No verified priority price in a comparison with unlisted products.")
     return data
 
 
@@ -144,7 +144,7 @@ def main():
     parser.add_argument("life", type=int)
     parser.add_argument("ci", type=int)
     parser.add_argument("--allow-unlisted", action="store_true",
-                        help="Retain two verified prices if the third product is absent from a complete report.")
+                        help="Retain verified prices when other standard products are absent from a complete report.")
     args = parser.parse_args()
     parsed = extract(args.pdf, args.model_id, args.age, args.smoker, args.to_age, args.life, args.ci,
                      allow_unlisted=args.allow_unlisted)

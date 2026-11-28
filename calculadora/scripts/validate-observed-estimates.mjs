@@ -386,7 +386,8 @@ for (const [id, rows] of verifiedReports) {
   for (const row of rows.filter(r => r.available === "unknown")) {
     assert.equal(row.unavailable_reason, "product_not_listed");
     assert.equal(row.monthly_premium, "");
-    assert.equal(result.quotes.length, 2);
+    assert.ok(result.quotes.length >= 1 && result.quotes.length <= 2);
+    assert.ok(!result.quotes.some(q => q.provider === row.provider));
     assert.ok(result.gap.reason.includes(row.provider));
     assert.ok(result.gap.reason.includes("Disponibilidade a confirmar"));
   }
