@@ -132,7 +132,14 @@ for (const rows of scenarios.values()) {
   assert.equal(rows.length, 3);
   ctx.profile = { age: +row.age, toAge: +row.to_age, life: +row.life_cover,
     ci: +row.critical_illness_cover, smoker: row.smoker === "Yes" ? "smoker" : "non_smoker" };
+  const official = run("capturedReportFor(profile)");
   const result = run("priorityQuotesFor(profile)");
+  if (official) {
+    assert.equal(result.modelId, official.modelId);
+    assert.equal(result.sourceDate, official.sourceDate);
+    assert.ok(result.quotes.every(q => q.sourceDate === official.sourceDate));
+    continue;
+  }
   assert.equal(result.exact, true);
   assert.deepEqual(Array.from(result.quotes, q => q.provider).sort(), ["Aviva", "Legal & General", "Zurich"]);
   ctx.original = captures;
@@ -509,8 +516,15 @@ const lateIndex=pdfIndex.concat({sha256:lateRow.sha256,report_key:"new-original-
 const lateBase={...originalBase,sha256:lateRow.sha256,source_date:lateRow.source_date};
 assert.equal(verifyFirst(capitalVariants.concat(lateRow),certificate,lateIndex,checkedSources.concat(lateBase)).length,0);
 const fixedTestDay=Date.parse("2026-11-26T12:00:00Z");
+// Reproduce the prediction with only the comparisons available on the test date.
+const liveReportedRows = run("reportedRows");
+ctx.variantTestDay = new Date(fixedTestDay).toISOString().slice(0,10);
+run("reportedRows = reportedRows.filter(row => row.source_date <= variantTestDay)");
+const variantSourcesOnTestDay = capitalVariants.filter(row => row.source_date <= ctx.variantTestDay);
+ctx.rangesOnTestDay = verifyVariantRanges(variantSourcesOnTestDay, certificates, pdfIndex, checkedSources.filter(row => row.source_date <= ctx.variantTestDay));
+run("checkedVariantRanges = rangesOnTestDay");
 const testVariantProfile={...variant31,life:80000,ci:15000,toAge:65,monthlyBudget:28};
-const preview=(p,m=addOn,asOf=fixedTestDay)=>guessVariant(p,m,checkedVariants,asOf);
+const preview=(p,m=addOn,asOf=fixedTestDay)=>guessVariant(p,m,ctx.rangesOnTestDay,asOf);
 const preview31=preview(testVariantProfile);
 for(const note of ["Zurich Life & CI Enhanced Plus por cerca de £14.25/mês","£27.25/mês com a MetLife","£27.39/mês com a MetLife","Nos 2 comparativos posteriores","£50,000.00 e £100,000.00 de vida"])
   assert.ok(preview31.includes(note),note);
@@ -531,6 +545,13 @@ const renderedVariant=calculate(65,80000,15000,testVariantProfile);
 assert.equal(renderedVariant.estimatedVariantNote,preview31);
 assert.ok(renderedVariant.text.includes(preview31)&&node("details").innerHTML.includes("Versões com preço estimado"));
 ctx.clockAfterVariant=previousClock;run("Date.now=clockAfterVariant");
+ctx.liveReportedRows = liveReportedRows;
+ctx.currentVariantRanges = checkedVariants;
+run("reportedRows = liveReportedRows; checkedVariantRanges = currentVariantRanges");
+if (liveReportedRows.some(r => r.age === "31" && r.life_cover === "80000" &&
+    r.critical_illness_cover === "15000" && r.smoker === "No" && r.to_age === "65")) {
+  assert.equal(guessVariant(testVariantProfile,addOn,checkedVariants,Date.now()),"");
+}
 const firstEventVersions = run("firstEventVariants");
 const versionsForOffer = run("matchedFirstEventVariants");
 assert.equal(firstEventVersions.length,new Set(firstEventVersions.map(v => [reportKeys.get(v.sha256),v.provider,v.product].join("|"))).size);
@@ -1416,6 +1437,10 @@ ctx.adjustedCapital = {age:33,toAge:65,smoker:'non_smoker',life:49408,ci:0,waive
 assert.equal(run('illustratedLifeFor(adjustedCapital,"Aviva")').base_monthly,'4.99');
 assert.notEqual(run('illustratedLifeFor({...adjustedCapital,life:10000},"Aviva")')?.reference,'1083310818');
 
+// Exercise the general fallback without the later official reports for this smoker.
+const reportsBeforeGeneralTest = run("reportedRows");
+const plansBeforeGeneralTest = run("independentPlanQuotes");
+run("reportedRows = reportedRows.filter(row => row.source_date < '2026-11-27'); independentPlanQuotes = globalThis.buildIndependentPlans(reportedRows)");
 const generalBudget = calculate(65,50000,10000,{age:25,smoker:'smoker',term:40,waiver:'No'});
 assert.ok(generalBudget.complete && generalBudget.aggregateOnly);
 assert.equal(node('resultTitle').textContent,'Referência de orçamento');
@@ -1514,6 +1539,13 @@ for (const [age, life] of [[42,50000], [44,50000], [45,50000], [55,100000]]) {
   const profile = {age, smoker:'smoker', term:65-age, waiver:'No'};
   const base = calculate(65, life, 0, profile);
   const bundle = calculate(65, life, life / 5, profile);
+  const realReport = run("capturedReportFor")({...profile,toAge:65,life,ci:life/5});
+  if (realReport?.sameEndAge?.length) {
+    assert.equal(bundle.complete, true);
+    assert.equal(bundle.aggregateOnly ?? false, false);
+    assert.equal(bundle.main, Math.min(...realReport.sameEndAge.map(q => q.premium)));
+    continue;
+  }
   assert.equal(bundle.ciPending, true);
   assert.equal(bundle.complete, false);
   assert.equal(bundle.main, base.main);
@@ -1550,6 +1582,10 @@ assert.equal(calculate(65,150000,20000,composedProfile).priorityExact,true);
 run("Date.now = () => Date.parse('2030-01-01')");
 assert.equal(calculate(65,150000,15000,composedProfile).composition,false);
 run('Date.now = originalClock');
+
+ctx.reportsBeforeGeneralTest = reportsBeforeGeneralTest;
+ctx.plansBeforeGeneralTest = plansBeforeGeneralTest;
+run("reportedRows = reportsBeforeGeneralTest; independentPlanQuotes = plansBeforeGeneralTest");
 
 function independentOffer(id,life,ci,premium) {
   return {provider:'Zurich',age:'31',smoker:'No',to_age:'65',source_date:'2026-11-25',model_id:String(id),

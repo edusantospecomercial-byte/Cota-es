@@ -22,6 +22,14 @@ PRODUCTS = {
 }
 
 
+def product_mentioned(text, product):
+    # The report prints each product in the first column. Omit only identifiable
+    # longer variants before checking for a missing or unusually wrapped base row.
+    variant = re.compile(r"^\s*" + re.escape(product) + r" (?:\+ (?:Child|IP)|& CI|Enhanced)\b", re.I)
+    remaining = " ".join(line for line in text.splitlines() if not variant.match(line))
+    return product.casefold() in " ".join(remaining.casefold().split())
+
+
 def extract(path, model_id, age, smoker, to_age, life, ci, *, allow_unlisted=False, include_tpd=False):
     text = subprocess.check_output(["pdftotext", "-layout", str(path), "-"], encoding="utf-8")
     cover = text.split("\f", 1)[0]
@@ -53,6 +61,10 @@ def extract(path, model_id, age, smoker, to_age, life, ci, *, allow_unlisted=Fal
         int(page) == index and int(total) == len(numbered_pages)
         for index, (page, total) in enumerate(numbered_pages, 1)
     )
+    columns = result.split("Provider / Product", 1)[-1].split("Non Underwritten Results", 1)[0]
+    if ci and not all(label in columns for label in ("Critical", "Illness", "Policy", "Duration")):
+        raise ValueError("Missing independent illness cover or term column.")
+    earlier_column = r"\s+No data" if ci and "Life or" in columns and "Earlier" in columns else ""
     data = []
     for provider, products in PRODUCTS.items():
         product = products[2 if not life else int(bool(ci))]
@@ -66,10 +78,12 @@ def extract(path, model_id, age, smoker, to_age, life, ci, *, allow_unlisted=Fal
                 # A complete report may omit a product from both tables. This is distinct
                 # from an insurer explicitly declining to quote or imposing an age limit.
                 if (allow_unlisted and complete_pages and unavailable.strip()
-                        and product.casefold() not in " ".join(text.casefold().split())):
+                        and not product_mentioned(text, product)):
                     data.append(base + ["", "unknown", "", "", digest, "product_not_listed", "", ""] + ([""] if include_tpd else []))
                     continue
                 raise ValueError(f"Missing explicit unavailable result for {provider}.")
+            if re.search(r"being processed|awaiting (?:a )?response|response pending", reason[1], re.I):
+                raise ValueError(f"Result still pending for {provider}.")
             limit = re.search(r"(?:maturity age of|expiry exceeds maximum allowed)\s+(\d+)", reason[1], re.I)
             if limit:
                 code = "maximum_end_age_" + limit[1]
@@ -81,9 +95,9 @@ def extract(path, model_id, age, smoker, to_age, life, ci, *, allow_unlisted=Fal
             continue
         if len(set(lines)) != 1:
             raise ValueError(f"Conflicting prices for {provider}.")
-        capitals = r"£([\d,]+)" + (r"\s+£([\d,]+)\s+No data" if ci else "")
+        capitals = r"£([\d,]+)" + (r"\s+£([\d,]+)" + earlier_column if ci else "")
         if not life:
-            capitals = r"£([\d,]+)\s+No data"
+            capitals = r"£([\d,]+)" + earlier_column
         tpd = "None"
         if include_tpd and all(re.search(r"\bLevel\s+Own\s+No\s*$", line) for line in lines):
             # Verify the wrapped word is in the TPD column under Own on the next line.
