@@ -751,3 +751,37 @@ source_date,sha256,age,smoker,to_age,life_cover,independent_ci_cover,provider,st
 2026-11-28,ca67e76555460ec9485a98f1db7602a9dde0cb2b997b8426aa2c9eb3dadbc4aa,44,Yes,65,30000,10000,Zurich,Zurich Life & CI,25.87,30000,10000,Zurich Life & CI Enhanced,29.00,No,To Age 65,None
 2026-11-28,ca67e76555460ec9485a98f1db7602a9dde0cb2b997b8426aa2c9eb3dadbc4aa,44,Yes,65,30000,10000,Zurich,Zurich Life & CI,25.87,30000,10000,Zurich Life & CI Enhanced Plus,29.40,No,To Age 65,None
 2026-11-28,ca67e76555460ec9485a98f1db7602a9dde0cb2b997b8426aa2c9eb3dadbc4aa,44,Yes,65,30000,10000,Aviva,Aviva Multi-Product with Core CI,23.95,30000,10000,Aviva Multi-Product Upgraded CI/No Child Upgrade,27.78,No,To Age 65,None
+2026-11-28,2769af4b236114d816317ac26d626207ff5d95139aa3b80727f5ddcce2295625,37,No,65,0,10000,Zurich,Zurich Critical Illness,8.04,0,10000,Zurich Critical Illness Enhanced,9.31,No,To Age 65,None
+2026-11-28,2769af4b236114d816317ac26d626207ff5d95139aa3b80727f5ddcce2295625,37,No,65,0,10000,Zurich,Zurich Critical Illness,8.04,0,10000,Zurich Critical Illness Enhanced Plus,9.72,No,To Age 65,None
+2026-11-28,2769af4b236114d816317ac26d626207ff5d95139aa3b80727f5ddcce2295625,37,No,65,0,10000,Aviva,Aviva Critical Illness+ Core,5.62,0,10000,Aviva Critical Illness+ Upgraded/No Child Upgrade,7.44,No,To Age 65,None
+2026-11-28,01e7be203cdcea5ac3480217687a65baca29ec094cbb8b99730a414f4775a82e,38,No,65,0,10000,Zurich,Zurich Critical Illness,8.31,0,10000,Zurich Critical Illness Enhanced,9.59,No,To Age 65,None
+2026-11-28,01e7be203cdcea5ac3480217687a65baca29ec094cbb8b99730a414f4775a82e,38,No,65,0,10000,Zurich,Zurich Critical Illness,8.31,0,10000,Zurich Critical Illness Enhanced Plus,10.03,No,To Age 65,None
+2026-11-28,01e7be203cdcea5ac3480217687a65baca29ec094cbb8b99730a414f4775a82e,38,No,65,0,10000,Aviva,Aviva Critical Illness+ Core,5.79,0,10000,Aviva Critical Illness+ Upgraded/No Child Upgrade,7.67,No,To Age 65,None
+2026-11-28,6afb23ae75a9927cfc967d057eef624ccbfd237a5b3e1f6a6473abd1c72d31f8,60,No,65,50000,10000,Zurich,Zurich Life & CI,36.39,50000,10000,Zurich Life & CI Enhanced,42.20,No,To Age 65,None
+2026-11-28,6afb23ae75a9927cfc967d057eef624ccbfd237a5b3e1f6a6473abd1c72d31f8,60,No,65,50000,10000,Zurich,Zurich Life & CI,36.39,50000,10000,Zurich Life & CI Enhanced Plus,43.21,No,To Age 65,None
+2026-11-28,e7a824d677c8d241730de4b0df0bee646d4296cdd01e27ddef8be17d1930fe4f,38,No,65,50000,10000,Zurich,Zurich Life & CI,11.91,50000,10000,Zurich Life & CI Enhanced,13.79,No,To Age 65,None
+2026-11-28,e7a824d677c8d241730de4b0df0bee646d4296cdd01e27ddef8be17d1930fe4f,38,No,65,50000,10000,Zurich,Zurich Life & CI,11.91,50000,10000,Zurich Life & CI Enhanced Plus,13.63,No,To Age 65,None
+2026-11-28,e7a824d677c8d241730de4b0df0bee646d4296cdd01e27ddef8be17d1930fe4f,38,No,65,50000,10000,Aviva,Aviva Multi-Product with Core CI,11.94,50000,10000,Aviva Multi-Product Upgraded CI/No Child Upgrade,13.82,No,To Age 65,None
+2026-11-28,1cf7b18cef4c4550b46294a127e6db7bf701a9eed097f290ed49366b9a0f8a84,60,No,65,0,10000,Zurich,Zurich Critical Illness,22.67,0,10000,Zurich Critical Illness Enhanced,27.88,No,To Age 65,None
+2026-11-28,1cf7b18cef4c4550b46294a127e6db7bf701a9eed097f290ed49366b9a0f8a84,60,No,65,0,10000,Zurich,Zurich Critical Illness,22.67,0,10000,Zurich Critical Illness Enhanced Plus,29.49,No,To Age 65,None
+2026-11-28,c3961abbb0a28f2d1ea572e55f72d2f9143aa6f3ab9fa8d9fab1fe401e0ff74c,60,No,65,30000,10000,Zurich,Zurich Life & CI,31.02,30000,10000,Zurich Life & CI Enhanced,36.83,No,To Age 65,None
+2026-11-28,c3961abbb0a28f2d1ea572e55f72d2f9143aa6f3ab9fa8d9fab1fe401e0ff74c,60,No,65,30000,10000,Zurich,Zurich Life & CI,31.02,30000,10000,Zurich Life & CI Enhanced Plus,37.84,No,To Age 65,None
+2026-11-28,c20b6dbd487186b1dc7617a1aabb27f2f040fb26759f7180b3791f3e16042b1e,37,No,65,50000,10000,Zurich,Zurich Life & CI,11.60,50000,10000,Zurich Life & CI Enhanced,13.47,No,To Age 65,None
+2026-11-28,c20b6dbd487186b1dc7617a1aabb27f2f040fb26759f7180b3791f3e16042b1e,37,No,65,50000,10000,Zurich,Zurich Life & CI,11.60,50000,10000,Zurich Life & CI Enhanced Plus,13.28,No,To Age 65,None
+2026-11-28,c20b6dbd487186b1dc7617a1aabb27f2f040fb26759f7180b3791f3e16042b1e,37,No,65,50000,10000,Aviva,Aviva Multi-Product with Core CI,11.65,50000,10000,Aviva Multi-Product Upgraded CI/No Child Upgrade,13.47,No,To Age 65,None
+2026-11-28,b385ace723afff6e85b831e38ac4f2de3a5e23554664e6ad5ae4c67809a5f11b,31,No,65,65000,15000,Zurich,Zurich Life & CI,11.84,65000,15000,Zurich Life & CI Enhanced,14.02,No,To Age 65,None
+2026-11-28,b385ace723afff6e85b831e38ac4f2de3a5e23554664e6ad5ae4c67809a5f11b,31,No,65,65000,15000,Zurich,Zurich Life & CI,11.84,65000,15000,Zurich Life & CI Enhanced Plus,13.88,No,To Age 65,None
+2026-11-28,b385ace723afff6e85b831e38ac4f2de3a5e23554664e6ad5ae4c67809a5f11b,31,No,65,65000,15000,Aviva,Aviva Multi-Product with Core CI,12.85,65000,15000,Aviva Multi-Product Upgraded CI/No Child Upgrade,15.01,No,To Age 65,None
+2026-11-28,97d46981b25e9785ab1f7a94ff8b2315b05078c009ac290b466acf5e48891725,31,No,65,90000,10000,Zurich,Zurich Life & CI,10.82,90000,10000,Zurich Life & CI Enhanced,12.47,No,To Age 65,None
+2026-11-28,97d46981b25e9785ab1f7a94ff8b2315b05078c009ac290b466acf5e48891725,31,No,65,90000,10000,Zurich,Zurich Life & CI,10.82,90000,10000,Zurich Life & CI Enhanced Plus,12.19,No,To Age 65,None
+2026-11-28,d9c8aaae2e9f2364b53cc7a2dafad9eb51d3506bbf842ea5335ea123e017e219,31,No,65,105000,10000,Zurich,Zurich Life & CI,11.26,105000,10000,Zurich Life & CI Enhanced,12.91,No,To Age 65,None
+2026-11-28,d9c8aaae2e9f2364b53cc7a2dafad9eb51d3506bbf842ea5335ea123e017e219,31,No,65,105000,10000,Zurich,Zurich Life & CI,11.26,105000,10000,Zurich Life & CI Enhanced Plus,12.63,No,To Age 65,None
+2026-11-28,e96f20f3621a52f53a1f8f518bc2b296098f77dbdacf87db6f7f8be9be79ffe7,31,No,65,70000,15000,Zurich,Zurich Life & CI,11.96,70000,15000,Zurich Life & CI Enhanced,14.14,No,To Age 65,None
+2026-11-28,e96f20f3621a52f53a1f8f518bc2b296098f77dbdacf87db6f7f8be9be79ffe7,31,No,65,70000,15000,Zurich,Zurich Life & CI,11.96,70000,15000,Zurich Life & CI Enhanced Plus,14.00,No,To Age 65,None
+2026-11-28,e96f20f3621a52f53a1f8f518bc2b296098f77dbdacf87db6f7f8be9be79ffe7,31,No,65,70000,15000,Aviva,Aviva Multi-Product with Core CI,13.30,70000,15000,Aviva Multi-Product Upgraded CI/No Child Upgrade,15.46,No,To Age 65,None
+2026-11-28,7b11f1f0d45acffc398bb73757e57131d0e2c00a44a69ba4b77c081a692e3e05,31,No,65,80000,10000,Zurich,Zurich Life & CI,10.57,80000,10000,Zurich Life & CI Enhanced,12.22,No,To Age 65,None
+2026-11-28,7b11f1f0d45acffc398bb73757e57131d0e2c00a44a69ba4b77c081a692e3e05,31,No,65,80000,10000,Zurich,Zurich Life & CI,10.57,80000,10000,Zurich Life & CI Enhanced Plus,11.94,No,To Age 65,None
+2026-11-28,0813ecbaa2dbc2a6049156ea4c20524f80e53c6810a3ce91f00380b17fc99adb,31,No,65,120000,10000,Zurich,Zurich Life & CI,11.81,120000,10000,Zurich Life & CI Enhanced,13.46,No,To Age 65,None
+2026-11-28,0813ecbaa2dbc2a6049156ea4c20524f80e53c6810a3ce91f00380b17fc99adb,31,No,65,120000,10000,Zurich,Zurich Life & CI,11.81,120000,10000,Zurich Life & CI Enhanced Plus,13.18,No,To Age 65,None
+2026-11-28,2112d34ba92b61f719b3386cccad3e501e3c21b2dac01718ff8f200da9186db9,31,No,65,140000,10000,Zurich,Zurich Life & CI,12.55,140000,10000,Zurich Life & CI Enhanced,14.20,No,To Age 65,None
+2026-11-28,2112d34ba92b61f719b3386cccad3e501e3c21b2dac01718ff8f200da9186db9,31,No,65,140000,10000,Zurich,Zurich Life & CI,12.55,140000,10000,Zurich Life & CI Enhanced Plus,13.92,No,To Age 65,None

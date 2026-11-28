@@ -102,18 +102,27 @@ def extract(path, model_id, age, smoker, to_age, life, ci, *, allow_unlisted=Fal
         capitals = r"£([\d,]+)" + (r"\s+£([\d,]+)" + earlier_column if ci else "")
         if not life:
             capitals = r"£([\d,]+)" + earlier_column
-        tpd = "None"
-        if include_tpd and all(re.search(r"\bLevel\s+Own\s+No\s*$", line) for line in lines):
-            # Verify the wrapped word is in the TPD column under Own on the next line.
+        allowed = {"None": ""}
+        if include_tpd:
+            allowed["Own"] = "occupation"
+        if requested_own_tpd:
+            allowed.update({"Specified": "work tasks", "FATs": ""})
+        definition = re.search(r"\bLevel\s+(\w+)\s+No\s*$", lines[0])
+        if not definition or definition[1] not in allowed:
+            raise ValueError(f"Unrecognised product terms for {provider}.")
+        first_word = definition[1]
+        continuation = allowed[first_word]
+        if continuation:
+            # The second line belongs to this insurer only when aligned in the same column.
             for match in matches:
                 following = result[match.end():].split("\n", 2)
-                position = match.start(1) - match.start() + match[1].rindex("Own")
-                if len(following) < 2 or following[1][position:position+10].strip() != "occupation":
+                position = match.start(1) - match.start() + match[1].rindex(first_word)
+                if len(following) < 2 or following[1][position:].strip() != continuation:
                     raise ValueError(f"Unconfirmed disability definition for {provider}.")
-            tpd = "Own occupation"
+        tpd = (first_word + " " + continuation).strip()
         entry = re.fullmatch(
             r"£([\d,]+\.\d{2})\s+Guaranteed\s+(Yes|No)\s+Monthly\s+" + capitals
-            + r"\s+(To Age \d+|\d+ years?)\s+Level\s+" + ("Own" if tpd == "Own occupation" else "None")
+            + r"\s+(To Age \d+|\d+ years?)\s+Level\s+" + re.escape(first_word)
             + r"\s+No\s*", lines[0])
         if not entry:
             raise ValueError(f"Unrecognised product terms for {provider}.")

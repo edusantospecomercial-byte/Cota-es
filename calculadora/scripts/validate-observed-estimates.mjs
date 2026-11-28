@@ -51,6 +51,23 @@ for (const value of ["£23.72", "£24.07", "£24.46", "14 anos de prazo", "até 
 }
 const completeEvidence = run("waiverRows");
 const evidence = run("waiverRows.concat(individualWaivers)");
+const generalAudit = run("generalBudgetAudit");
+assert.ok(generalAudit && generalAudit.comparable < generalAudit.registered);
+assert.ok(generalAudit.passed > 0 && generalAudit.passed < generalAudit.comparable);
+assert.ok(node("generalBudgetAccuracyScore").textContent.includes(generalAudit.passed + " de " + generalAudit.comparable + " estimativas gerais"));
+const generalChecks = run("parsePriorityCsv")(readFileSync(new URL("../data/general-budget-validation.csv", import.meta.url), "utf8"));
+const auditGeneral = run("generalBudgetAccuracy"), latestReports = run("reportedRows");
+assert.equal(auditGeneral([...generalChecks, generalChecks[0]], latestReports), null);
+assert.equal(auditGeneral([{...generalChecks[0], registered_at:"2099-01-01T00:00:00Z"}], latestReports), null);
+const {comparisons: generalComparisons, ...generalTotals} = generalAudit;
+assert.equal(generalComparisons.length, generalAudit.comparable);
+const budgetHistory = run("generalBudgetHistory");
+const testProfile = {toAge:65, waiver:"No", smoker:"smoker", life:50000, ci:0, monthlyBudget:28};
+const boundarySample = {comparisons:[{predicted:1499,actual:1500,smoker:"Yes",life:true,ci:false},
+  {predicted:1500,actual:1200,smoker:"Yes",life:true,ci:false}, {predicted:1300,actual:1300,smoker:"No",life:true,ci:false}]};
+assert.ok(budgetHistory(testProfile,{total:13},boundarySample).includes("0 de 1 ficaram abaixo"));
+assert.equal(budgetHistory({...testProfile,toAge:70},{total:13},boundarySample),"");
+console.log(JSON.stringify({generalBudgetAudit: generalTotals}));
 const captures = run("observedRows");
 const group = (rows, key) => {
   const groups = new Map();

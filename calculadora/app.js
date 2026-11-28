@@ -8,6 +8,7 @@ let catalog = { models: {} },
   verifiedArchiveRows = [],
   validatedCapitalRanges = [],
   capitalTrials = [],
+  generalBudgetAudit = null,
   waiverRows = null,
   individualWaivers = [],
   illustratedLifeRows = [],
@@ -103,7 +104,7 @@ async function init() {
     loadedSupplementalLife,
     loadedFixedTermLife,
     historicalPolicies,
-    ageChecks, ageCohorts,
+    ageChecks, ageCohorts, generalChecks,
   ] = await Promise.all([
     fetch("./data/models.json", { cache: "no-store" })
       .then((r) => r.json())
@@ -226,6 +227,8 @@ async function init() {
       .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
     fetch("./data/age-validation-cohorts.csv", { cache: "no-store" })
       .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
+    fetch("./data/general-budget-validation.csv", { cache: "no-store" })
+      .then(response => response.ok ? response.text() : "").then(parsePriorityCsv).catch(() => []),
   ]);
   lgFixedLife = historicalPolicies.filter(row => row.provider === "Legal & General" && row.to_age === "" &&
     row.product === "Life" && row.critical_illness_component === "0" &&
@@ -269,6 +272,16 @@ async function init() {
   validatedCapitalRanges = buildCapitalRanges(trials, capitalHoldout);
   showCapitalAccuracy(trials, capitalHoldout.length);
   showAgeAccuracy(ageChecks, loadedReports.concat(verifiedArchive), ageCohorts);
+  generalBudgetAudit = generalBudgetAccuracy(generalChecks, loadedReports);
+  const generalPanel = $("generalBudgetAccuracy");
+  generalPanel.hidden = !generalBudgetAudit;
+  if (generalBudgetAudit) {
+    const { registered, comparable, passed, meanError, minProviders, maxProviders } = generalBudgetAudit;
+    $("generalBudgetAccuracyScore").textContent = passed + " de " + comparable + " estimativas gerais ficaram a até £1 e a até 5% do menor preço comparável. Erro médio absoluto de " + gbp(meanError) + "/mês.";
+    $("generalBudgetAccuracyScope").textContent = "Para cada cenário com lacunas na base, comparamos a estimativa registrada antes da consulta com o menor preço oferecido nas mesmas condições. " +
+      comparable + " de " + registered + " cenários tiveram preço comparável, com " + minProviders + " a " + maxProviders + " das três seguradoras prioritárias por cenário. " +
+      "O teste usou cobertura até os 65 anos e mediu a proteção principal antes da MetLife.";
+  }
   observedRows = loadedObservedRows;
   waiverRows = loadedWaiverRows;
   catalog = loadedCatalog;
@@ -485,6 +498,7 @@ function evaluateCapitalTrials(reports, holdout) {
         Number(check.model_id) <= Math.max(Number(lower.model_id), Number(upper.model_id))) continue;
     if (["age", "smoker", "to_age", fixedAxis, "product", "quoted_term", "occupation_rated"]
       .some(field => lower[field] !== upper[field] || lower[field] !== check[field])) continue;
+    if (check.occupation_rated === "Yes" && !occupationalBasis("", lower, upper, check).occupationLabel) continue;
     const capital = Number(check[axis]);
     if (!(Number(lower[axis]) < capital && capital < Number(upper[axis]))) continue;
     const estimate = priceAlongCapital(lower, upper, capital);
@@ -594,6 +608,55 @@ function showTemporalAccuracy(holdout) {
   $("temporalAccuracySmokers").textContent = "Para fumantes, o teste conseguiu estimar " +
     stats.smokerLife.predicted + " de " + stats.smokerLife.eligible + " preços de vida e " +
     stats.smokerCI.predicted + " de " + stats.smokerCI.eligible + " com doenças graves.";
+}
+
+function generalBudgetAccuracy(checks, reports) {
+  if (!checks.length) return null;
+  const byHash = new Map();
+  for (const row of reports) {
+    if (!byHash.has(row.sha256)) byHash.set(row.sha256, []);
+    byHash.get(row.sha256).push(row);
+  }
+  const seen = new Set(), counts = [], comparisons = [];
+  let passed = 0, totalError = 0;
+  for (const check of checks) {
+    const offers = byHash.get(check.check_sha256) || [];
+    const base = offers[0];
+    if (offers.length !== 3 || !["Zurich", "Aviva", "Legal & General"].every(name => offers.some(row => row.provider === name)) ||
+        !/^[1-9]\d*$/.test(check.predicted_pence) || !Number.isFinite(Date.parse(check.registered_at)) ||
+        !offers.every(row => row.source_date > check.registered_at.slice(0, 10) && row.to_age === "65" &&
+          ["age", "smoker", "life_cover", "critical_illness_cover"].every(field => row[field] === base[field]))) return null;
+    const key = [base.age, base.smoker, base.life_cover, base.critical_illness_cover].join("|");
+    if (seen.has(key)) return null;
+    seen.add(key);
+    const prices = offers.filter(row => row.available === "true" && row.quoted_term === "To Age 65" &&
+      row.occupation_rated === "No" && (row.quoted_tpd || "None") === "None" &&
+      row.quoted_life_cover === row.life_cover && row.quoted_critical_illness_cover === row.critical_illness_cover &&
+      Number(row.monthly_premium) > 0).map(row => displayedPence(row.monthly_premium));
+    if (!prices.length) continue;
+    const actual = Math.min(...prices), error = Math.abs(actual - Number(check.predicted_pence));
+    comparisons.push({actual, predicted: Number(check.predicted_pence), smoker: base.smoker,
+      life: Number(base.life_cover) > 0, ci: Number(base.critical_illness_cover) > 0});
+    counts.push(prices.length);
+    totalError += error;
+    if (error <= 100 && error * 20 <= actual) passed++;
+  }
+  return counts.length ? { registered: checks.length, comparable: counts.length, passed, comparisons, meanError: totalError / counts.length / 100,
+    minProviders: Math.min(...counts), maxProviders: Math.max(...counts) } : null;
+}
+
+function generalBudgetHistory(p, metlife, audit) {
+  if (!audit || p.toAge !== 65 || p.waiver === "Yes" || metlife.unavailable || !(p.monthlyBudget > 0)) return "";
+  const limit = displayedPence(p.monthlyBudget) - displayedPence(metlife.total);
+  const smoker = p.smoker === "smoker" ? "Yes" : "No";
+  const below = audit.comparisons.filter(row => row.smoker === smoker && row.life === (p.life > 0) &&
+    row.ci === (p.ci > 0) && row.predicted < limit);
+  if (!below.length) return "";
+  const stayedBelow = below.filter(row => row.actual < limit).length;
+  return " Nos testes com o mesmo tabagismo e tipo de cobertura, a previsão ficou abaixo de " +
+    gbp(p.monthlyBudget) + "/mês em " + below.length + (below.length === 1 ? " caso" : " casos") +
+    ", considerando " + gbp(metlife.total) + " de MetLife. Após conferir o preço, " +
+    stayedBelow + " de " + below.length + " ficaram abaixo desse teto.";
 }
 
 function showCapitalAccuracy(trials, registered) {
@@ -2365,6 +2428,9 @@ function priceProtection(p, m) {
   r.aggregateOnly = r.supported && !r.providerQuotes?.length && !r.illustratedBase && !r.ageEstimate;
   if (r.aggregateOnly) {
     r.budgetNote = "Referência de orçamento calculada pelo modelo geral. O valor para Zurich, Legal & General ou Aviva precisa de confirmação.";
+    if (p.toAge === 65 && p.waiver !== "Yes" && generalBudgetAudit) r.budgetNote += " Nos cenários testados com lacunas, " +
+      generalBudgetAudit.passed + " de " + generalBudgetAudit.comparable + " estimativas gerais ficaram a até £1 e a até 5% do menor preço comparável." +
+      generalBudgetHistory(p, m, generalBudgetAudit);
     warnings.unshift(r.budgetNote);
     const part = !avivaRecord && avivaLifeInPackage(p);
     if (part) r.componentNote = "Aviva · no pacote de " + part.source_date + " (ref. " + part.reference +

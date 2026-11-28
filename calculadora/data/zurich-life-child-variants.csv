@@ -327,3 +327,17 @@ source_date,sha256,provider,product,age,smoker,to_age,life_cover,quoted_life_cov
 2026-11-28,f060e468ac46e38d7da2b2601379c46586901fe2415a86262b59216b455996ef,Zurich,Zurich Life + Child,59,Yes,65,35000,35000,36.53,Zurich Life,35.47,To Age 65,No,not_requested,None
 2026-11-28,907699d29f36e912668b1aa885b660d28f5a9ca62dfb2efc94d93cd8e10700f8,Zurich,Zurich Life + Child,59,Yes,65,75000,75000,75.15,Zurich Life,73.64,To Age 65,No,not_requested,None
 2026-11-28,c0738986c6854639a321c28d06dc8b838fd7bf26a3734cd8a206c4a72f6cbf07,Zurich,Zurich Life + Child,51,No,65,60000,60000,14.76,Zurich Life,13.25,To Age 65,No,not_requested,None
+2026-11-28,b6f848f6a01df28143e81b55b0b16fb77b9c0de0bd86f593029cec1213ce424d,Zurich,Zurich Life + Child,60,No,65,75000,75000,23.74,Zurich Life,22.23,To Age 65,No,not_requested,None
+2026-11-28,ac903fdcf2716b5a9bebd5b395b5ddd84ec703eb511e3b9120114777c8f657e2,Zurich,Zurich Life + Child,37,No,65,75000,75000,8.95,Zurich Life,7.44,To Age 65,No,not_requested,None
+2026-11-28,46a5727a74ff3145baa82fa4fa4e3b4f23c00fa4235b84871af1e1ed785ea783,Zurich,Zurich Life + Child,60,No,65,30000,30000,11.76,Zurich Life,10.85,To Age 65,No,not_requested,None
+2026-11-28,e36fd1576c281accd639552893ccf26b71e3d4f6d310424d807e16cb08c7e7d0,Zurich,Zurich Life + Child,60,No,70,50000,50000,22.32,Zurich Life,20.81,To Age 70,No,not_requested,None
+2026-11-28,352c11520dfecd4e7168e54de19e249a533fed1d52461448ed11f60fb1b93e7b,Zurich,Zurich Life + Child,60,No,70,30000,30000,14.52,Zurich Life,13.61,To Age 70,No,not_requested,None
+2026-11-28,fe4f4a2e1e1388a1698d3301006bb75cbb21db2ebf976bacc2d326a9fd93c0a0,Zurich,Zurich Life + Child,38,No,65,50000,50000,7.61,Zurich Life,6.10,To Age 65,No,not_requested,None
+2026-11-28,5959a5ef3a92364a240374b1442277f4d3d0b0ad4162eb5c1e9750bc320fc1f7,Zurich,Zurich Life + Child,60,No,65,50000,50000,17.73,Zurich Life,16.22,To Age 65,No,not_requested,None
+2026-11-28,9e05e8c021873a472dcd4b2fc40cf9a27a97e65b1e504a32fdd5d0eff85b0081,Zurich,Zurich Life + Child,37,No,65,50000,50000,7.57,Zurich Life,6.06,To Age 65,No,not_requested,None
+2026-11-28,ba0ecf3de75192758685adb02629feaef81a6212b91ffea97c50170b6d8161c1,Zurich,Zurich Life + Child,31,No,65,40000,40000,6.21,Zurich Life,5.00,To Age 65,No,not_requested,None
+2026-11-28,9be677814cbb11dcaeacf46a9848cb2ff94cca4b9243a0aa3c58784849f99d29,Zurich,Zurich Life + Child,31,No,65,60000,60000,7.31,Zurich Life,5.80,To Age 65,No,not_requested,None
+2026-11-28,1b317edf93ae8ba9c31734e8f54523adf43ad19c29e7c14f7de18daa0122fa43,Zurich,Zurich Life + Child,31,No,65,35000,40062,6.21,Zurich Life,5.00,To Age 65,No,not_requested,None
+2026-11-28,7d0e40c5a9776adb62c6ce88567b5ef2345d8bf294919c39a02c3858e0611923,Zurich,Zurich Life + Child,31,No,65,20000,40062,6.21,Zurich Life,5.00,To Age 65,No,not_requested,None
+2026-11-28,6abcd2da8ed29e83168e72887f9c1f69cfb8eb9cbd65075ad69d9d971411a181,Zurich,Zurich Life + Child,31,No,65,245000,245000,13.58,Zurich Life,12.07,To Age 65,No,not_requested,None
+2026-11-28,99f74984e2aa8d8c0a494f2b7c1c6d8f1ad8e5431fa84f7f3bdf1e92c351aa72,Zurich,Zurich Life + Child,31,No,65,25000,40062,6.21,Zurich Life,5.00,To Age 65,No,not_requested,None
